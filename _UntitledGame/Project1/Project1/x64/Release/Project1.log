@@ -1,0 +1,47 @@
+﻿  grid.cpp
+  LVL1_grid.cpp
+  console(v1.9).cpp
+  GameNo1.cpp
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(209,16): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,30): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,34): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,38): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,42): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,46): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(222,24): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(273,32): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(273,36): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(273,40): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(273,44): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(275,30): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(275,34): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(275,38): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\global.h(275,42): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(291,9): warning C4244: 'argument': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(1579,14): warning C4129: ' ': unrecognized character escape sequence
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(1581,14): warning C4129: ' ': unrecognized character escape sequence
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(1612,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2135,6): warning C4101: 'Destruction': unreferenced local variable
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2467,19): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2480,19): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2567,13): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2566,15): warning C4101: 'Direction': unreferenced local variable
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2731,66): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(2732,63): warning C4018: '<': signed/unsigned mismatch
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3357,17): warning C4018: '<=': signed/unsigned mismatch
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3495,36): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3521,66): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3552,7): warning C4101: 'Sym': unreferenced local variable
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3622,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3630,39): warning C4309: 'argument': truncation of constant value
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3617,7): warning C4101: 'Sym': unreferenced local variable
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3701,40): warning C4129: ']': unrecognized character escape sequence
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3744,25): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(3959,13): warning C4309: 'initializing': truncation of constant value
+  main_REFORGED.cpp
+D:\CODE\C++\First_Game_GIT\MAIN\GameNo1.cpp(4000,8): warning C4309: '=': truncation of constant value
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 194 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Project1.vcxproj -> D:\CODE\C++\First_Game_GIT\_UntitledGame\Project1\x64\Release\_UntitledGame.exe
