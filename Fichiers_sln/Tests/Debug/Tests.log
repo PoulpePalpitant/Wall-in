@@ -1,0 +1,11 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Tests.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  GameNo1.cpp
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(242,25): warning C4305: 'initializing': truncation from 'int' to 'char'
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(242,19): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(442,8): warning C4244: 'argument': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(1293,26): warning C4018: '<=': signed/unsigned mismatch
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(1762,19): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(1774,19): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(1831,65): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\MAIN\GameNo1.cpp(1832,62): warning C4018: '<': signed/unsigned mismatch
+  Tests.vcxproj -> D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\Tests\Debug\GameNo1.exe

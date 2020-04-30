@@ -1,0 +1,33 @@
+﻿  GameNo1.cpp
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(334,8): warning C4244: 'argument': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(742,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(800,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(847,24): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(867,49): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(868,48): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(869,40): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(870,42): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(877,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(955,19): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(973,14): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1130,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1135,29): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1199,11): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1201,17): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1231,30): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1248,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1273,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1311,27): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1313,19): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1334,31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1336,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1363,12): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1365,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1410,2): warning C4060: switch statement contains no 'case' or 'default' labels
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1451,6): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\GameNo1.cpp(1453,12): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 95 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Tests.vcxproj -> D:\CODE\C++\Expérimentation 2019\Jeu!\Testing stuff\Tests\Release\GameNo1.exe

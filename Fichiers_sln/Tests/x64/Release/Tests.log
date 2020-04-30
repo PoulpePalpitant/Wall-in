@@ -1,0 +1,39 @@
+﻿  GameNo1.cpp
+D:\CODE\C++\First Game\MAIN\global.h(198,16): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(199,30): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(199,34): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(199,38): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(199,42): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(199,46): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(260,32): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(260,36): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(260,40): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(260,44): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(261,30): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(261,34): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(261,38): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\global.h(261,42): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(513,9): warning C4244: 'argument': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(1997,52): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2013,20): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2093,6): warning C4101: 'Destruction': unreferenced local variable
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2425,19): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2438,19): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2527,13): warning C4309: 'initializing': truncation of constant value
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2526,15): warning C4101: 'Direction': unreferenced local variable
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2681,66): warning C4018: '>=': signed/unsigned mismatch
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(2682,63): warning C4018: '<': signed/unsigned mismatch
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3390,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3424,40): warning C4129: ']': unrecognized character escape sequence
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3467,68): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3500,48): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3507,39): warning C4309: 'argument': truncation of constant value
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3495,7): warning C4101: 'Sym': unreferenced local variable
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3557,25): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\CODE\C++\First Game\MAIN\GameNo1.cpp(3698,17): warning C4018: '<=': signed/unsigned mismatch
+  Generating code
+  12 of 170 functions ( 7.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Tests.vcxproj -> D:\CODE\C++\First Game\Fichiers_sln\x64\Release\GameNo1.exe
