@@ -1,11 +1,8 @@
 #pragma once
 
 
-#include "../../../coord/grid.h"
+#include "../../../grid/grid.h"
 
 
  
-void INIT_Grids();
-
-
-// *pointeur de grid = new const?;
+void INIT_Grids();		// Initialise les valeurs des grids du lvl 1

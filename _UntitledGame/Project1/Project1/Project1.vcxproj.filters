@@ -18,16 +18,19 @@
     <ClCompile Include="..\..\..\MAIN\console(v1.9).cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\MAIN\GameNo1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\MAIN\main_REFORGED.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\FONCTIONS\lvls\LVL_1\GRID\LVL1_grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\FONCTIONS\coord\grid.cpp">
+    <ClCompile Include="..\..\..\FONCTIONS\grid\grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MAIN\GameNo1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\FONCTIONS\coord\coord.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +41,10 @@
     <ClInclude Include="..\..\..\FONCTIONS\lvls\LVL_1\GRID\LVL1_grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\FONCTIONS\coord\grid.h">
+    <ClInclude Include="..\..\..\FONCTIONS\grid\grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\FONCTIONS\coord\coord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

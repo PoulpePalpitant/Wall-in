@@ -11,6 +11,7 @@ Version		: 1.0
 
 
 #include "global.h"
+#include "../FONCTIONS/lvls/LVL_1/GRID/LVL1_grid.h"
 //#include "GameNo1_Spawn_BOT.cpp"
 
 using namespace std;
@@ -207,8 +208,25 @@ int main()
 		// Section tests!/////////////////////////////////////////////////////Section tests!///////////////////////////////////////////////////
 
 
-		/*UI_Aff_Keyboard(5, 15);
-		_getch();*/
+
+		
+		INIT_Grids();
+
+
+
+
+		//const int var = 2;
+		//const int* const ptr = &var;
+		//const int** pptr = &ptr;
+
+		////ptr = &var;
+		//pptr = &ptr;
+
+		//int swger[var][*ptr];
+
+
+
+		_getch();
 
 		
 		//Section tests!/////////////////////////////////////////////////////Section tests!///////////////////////////////////////////////////*/

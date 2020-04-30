@@ -124,14 +124,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\FONCTIONS\coord\grid.cpp" />
+    <ClCompile Include="..\..\..\FONCTIONS\coord\coord.cpp" />
+    <ClCompile Include="..\..\..\FONCTIONS\grid\grid.cpp" />
     <ClCompile Include="..\..\..\FONCTIONS\lvls\LVL_1\GRID\LVL1_grid.cpp" />
     <ClCompile Include="..\..\..\MAIN\console(v1.9).cpp" />
     <ClCompile Include="..\..\..\MAIN\GameNo1.cpp" />
     <ClCompile Include="..\..\..\MAIN\main_REFORGED.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\FONCTIONS\coord\grid.h" />
+    <ClInclude Include="..\..\..\FONCTIONS\coord\coord.h" />
+    <ClInclude Include="..\..\..\FONCTIONS\grid\grid.h" />
     <ClInclude Include="..\..\..\FONCTIONS\lvls\LVL_1\GRID\LVL1_grid.h" />
     <ClInclude Include="..\..\..\MAIN\global.h" />
   </ItemGroup>
