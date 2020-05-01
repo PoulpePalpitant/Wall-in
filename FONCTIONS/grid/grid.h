@@ -17,7 +17,7 @@ enum class CaseWallGrd {Empty, Wall, Bot};
 //	LES TYPES DE MURS POUVANT 
 
 enum class WallType {Weak, Normal, Ghost, Strong, BIGSTRONGWOW};	// Par défaut, les tirs du joueur font des murs normal
-															// "Ghost" : pourrait être des murs que les bot peuvent traverser
+																	// "Ghost" : pourrait être des murs que les bot peuvent traverser
 
 // CONSTANTES POUR L'AFFICHAGE SEULEMENT
 // *************************************
