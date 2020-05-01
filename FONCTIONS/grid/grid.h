@@ -8,17 +8,31 @@ struct grdCoord { int c; int l; };	//  Les grids du jeux seront tous navigué par
 										
 // LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DE DÉPLACEMENT DU JEU
 
-enum HERE { Empty, Item, Player, Link, WeakLink };	// Les links sont les points qui relient chaque WALLS créés par le joueur. 
+enum class CaseMainGrd { Empty, Item, Player, Link, WeakLink };	// Les links sont les points qui relient chaque WALLS créés par le joueur. 
 
-//	LES TYPES DE MURS POUVANT SE TROUVER SUR LE GRID DES WALLS CRÉÉS PAR LE JOUEUR
+// LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DES "WALLS" 
 
-enum WallType {Weak, Normal, Strong, BIGSTRONGWOW};	// Par défaut, les tirs du joueur font des murs normal
+enum class CaseWallGrd {Empty, Wall, Bot};
+
+//	LES TYPES DE MURS POUVANT 
+
+enum class WallType {Weak, Normal, Ghost, Strong, BIGSTRONGWOW};	// Par défaut, les tirs du joueur font des murs normal
+															// "Ghost" : pourrait être des murs que les bot peuvent traverser
+
+// CONSTANTES POUR L'AFFICHAGE SEULEMENT
+// *************************************
+
+extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
+extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
+
+extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre
+extern const int DELTA_Y;	// Saut sur l'axe des Y d'une case à l'autre
 
 
 // Les pointeurs vers les dimensions MAX des trois différents grids du jeu
-extern const grdCoord *pMAXgrdMain;							
-extern const grdCoord *pMAXgrdWall;
-extern const grdCoord *pMAXgrdSpw;
+extern const grdCoord *pMaxGrdMain;							
+extern const grdCoord *pMaxGrdWall;
+extern const grdCoord *pMaxGrdSpw;
 
 
 

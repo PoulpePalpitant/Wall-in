@@ -3,11 +3,14 @@
 
 
 
-// CONSTANTES POUR L'AFFICHAGE SEULEMENT
-// *************************************
+Main axe
 
-extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du mainGrid
-extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du mainGrid
+main axe ++ ou --
 
-extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre
-extern const int DELTA_Y;	// Saut sur l'axe des Y d'une case à l'autre
+
+gotoxy(int main axe,)
+
+ifmainaxe = x
+gotoxy(mainaxe,y)
+else
+gotoxy(x, mainaxe)

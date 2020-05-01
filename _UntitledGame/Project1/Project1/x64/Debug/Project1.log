@@ -1,7 +1,5 @@
-﻿  grid.cpp
-  LVL1_grid.cpp
+﻿  coord.cpp
   GameNo1.cpp
-D:\CODE\C++\First_Game_GIT\FONCTIONS\lvls\LVL_1\GRID\LVL1_grid.cpp(17,6): warning C4101: 'grid': unreferenced local variable
 D:\CODE\C++\First_Game_GIT\MAIN\global.h(209,16): warning C4309: 'initializing': truncation of constant value
 D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,30): warning C4309: 'initializing': truncation of constant value
 D:\CODE\C++\First_Game_GIT\MAIN\global.h(210,34): warning C4309: 'initializing': truncation of constant value
