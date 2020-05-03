@@ -11,8 +11,8 @@ using namespace std;
 void INIT_Grids()
 {
 	// Ce que j'essaie de faire /,:
-	static const grdCoord MAXgrdMain = { 15,13 };		// Les dimensions constantes du grid du niveau 1
-	static const grdCoord MAXgrdWall = { 15, 13 };		
+	static const GrdCoord MAXgrdMain = { 15,13 };		// Les dimensions constantes du grid du niveau 1
+	static const GrdCoord MAXgrdWall = { 15, 13 };		
 	pMaxGrdMain = &MAXgrdMain;	// Pointe vers les dimensions constantes du Main grid
 	pMaxGrdWall = &MAXgrdWall;	// Pointe vers les dimensions constantes du Wall grid
 

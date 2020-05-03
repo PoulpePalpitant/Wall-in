@@ -1598,13 +1598,15 @@ void UPD_Hero_Heart(HERO& hero)
 		Layer[1] = "    - (*Y*)	-";
 		Layer[2] = ". + / _`v'_ \ + .";
 		break;
-	case 3:Layer[1] = "( Y*)";
-		   Layer[2] = " `v'   ";
-		   crd.X =  39;
+	case 3:
+		Layer[0] = "        ";
+		Layer[1] = "     ( Y*)  ";
+		Layer[2] = "      `v'   ";
+		crd.X =  39;
 		   break;
 	case 2:
-		Layer[1] = "( Y ";
-		Layer[2] = " `v ";
+		Layer[1] = "     ( Y    ";
+		Layer[2] = "      `v    ";
 		crd.X = 39;
 		break;
 	case 1:

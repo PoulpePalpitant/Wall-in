@@ -4,7 +4,7 @@
 
 // COORDONNÉES LOGIQUES DANS LA CONSOLE
 
-struct grdCoord { int c; int l; };	//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
+struct GrdCoord { int c; int l; };	//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
 										
 // LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DE DÉPLACEMENT DU JEU
 
@@ -25,14 +25,14 @@ enum class WallType {Weak, Normal, Ghost, Strong, BIGSTRONGWOW};	// Par défaut, 
 extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
 extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
 
-extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre
+extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre(Main Grid)
 extern const int DELTA_Y;	// Saut sur l'axe des Y d'une case à l'autre
 
 
 // Les pointeurs vers les dimensions MAX des trois différents grids du jeu
-extern const grdCoord *pMaxGrdMain;							
-extern const grdCoord *pMaxGrdWall;
-extern const grdCoord *pMaxGrdSpw;
+extern const GrdCoord *pMaxGrdMain;							
+extern const GrdCoord *pMaxGrdWall;
+extern const GrdCoord *pMaxGrdSpw;
 
 
 
@@ -47,7 +47,7 @@ extern const grdCoord *pMaxGrdSpw;
 //extern HERE* pgrdSpw;			
 
 // Variable qui servira à naviguer dans les tableaux des grids
-extern grdCoord grd;
+extern GrdCoord grd;
 
 
 //	FONCTIONS

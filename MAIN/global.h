@@ -172,6 +172,8 @@ int L = 0, VL = 0;	//Les indices suivant permettEnt de liER les vitallink avec l
 int NbBlastLink, MaxBlastLink;
 int NbBlastLinkX = 3, NbBlastLinkY = 2;	//Nombre d'intersection maximum(Link/vitalLink) que peut créer un Blast
 int NbWallX = 4, NbWallY = 2;	//	Le nombre de Walls séparant chaque links sur l'axe des X et Y
+//calculé dans une fonction
+
 int CmbDeWalls;
 bool NoVLSym = false, Skip_FirstVL = false;
 int Couleur = 15;
@@ -265,6 +267,10 @@ struct BOT_Tracker
 	int TOT_Alive = 0;				// Le nombre de bots spawné
 	int TOT_Spawned = 0;
 };
+
+//Devrait plutôt être
+// Bot
+// BotMeta(Meta data)
 
 BOT_Tracker BOT;
 
