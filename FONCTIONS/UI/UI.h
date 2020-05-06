@@ -12,7 +12,7 @@ struct TextConstant
 	const std::string EMPTY = "";
 };
 
-TextConstant TXT_CONST;
+
 
 
 

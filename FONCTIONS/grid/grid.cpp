@@ -12,8 +12,7 @@ extern const int START_Y = 2;	// Position, sur l'axe des Y de la console, du coi
 extern const int DELTA_X = 5;	// Distance séparant chaque point du du Main Grid en X 
 extern const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer sur cette distance
 
-
-
+// DIMENSIONS DES GRIDS
 
 // LOGIQUES DES GRIDS: MAIN GRID, WALL GRID ET SPAWN GRID
 // ------------------------------------------------------
@@ -41,21 +40,87 @@ extern const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer su
 
 */
 
-// Tentative de faire des class:...
+MainGrdElem **Grid::mainGrdElem;
 
-class Grid {
-	GrdCoord MaxGrdDim;		// Dimension du Grid
-public:
-	Grid(int col, int lig);	// Déclaration du Constructor
-	// Get object on grid
-	// Set object on grid
-	// Get coord XY
-};
 
-Grid::Grid(int col, int lig){	// Définition du constructor
-								// Setup la dimension du Grid
+// Définition du Constructor de la class Grid	
+Grid::Grid(int col, int row)	 // Ceci entâme la CRÉATION D'UN GRID!
+{
+	// Le grid va pointer vers la liste de colonnes
+	mainGrdElem = new MainGrdElem * [col];
 
+	// Chaques colonnes aura une liste de lignes(rows) contenant chacun 1 élément du Grid
+	for (int i = 0; i < col; ++i) {
+		mainGrdElem[i] = new MainGrdElem[row];
+
+		for (size_t j = 0; j < row; j++){
+			mainGrdElem[i][j] = MainGrdElem::EMPTY;
+		}
+	}
+
+	// Assignation de la dimension du Nouveau Grid :)
+	numCol = col;
+	numRow = row;
 }
+
+// Détruit tout ce qui se trouvait sur le grid et le redimensionne
+void Grid::Resize(int col, int row)
+{
+	
+	// DESTRUCTION
+	// Destruction de l'array
+	for (int i = 0; i < col; ++i) {
+		delete[] Grid::mainGrdElem[i];
+	}
+
+	delete[] Grid::mainGrdElem;	// Détruit le tableau de tableaux
+
+	// CRÉATION
+	// Le grid va pointer vers la liste de colonnes
+	Grid::mainGrdElem = new MainGrdElem * [col];
+
+	// Chaques colonnes aura une liste de lignes(rows) contenant chacun 1 élément du Grid
+	for (int i = 0; i < col; ++i) {
+		Grid::mainGrdElem[i] = new MainGrdElem[row];
+	}
+
+
+
+
+
+	// REDIMENSION
+	// Assignation de la dimension du Nouveau Grid :)
+	numCol = col;
+	numRow = row;
+}
+
+bool Grid::isInbound(int col, int row)
+{
+	if (col > numCol || row > numRow)	// Validation d'une coordonnée trop grande
+		return false;
+
+	if (numCol < 0 || row < 0)		// Validation d'une coordonnée dans les négatifs
+		return false;
+
+	return true;
+}
+
+void Grid::setValue(int col, int row, MainGrdElem &Ele)	// tu passe juste un élément >:(
+{
+	mainGrdElem[col][row] = Ele;
+}
+
+MainGrdElem Grid::getValue(int col, int row)
+{
+	return mainGrdElem[col][row];
+}
+
+
+ MainGrdElem** mainGrdElem = 0;
+
+
+
+
 
 // Décision: 
 //faire une class Grid
@@ -63,6 +128,10 @@ Grid::Grid(int col, int lig){	// Définition du constructor
 // meme chose avec Wallgrid hor, wallgrid ver
 // et spawnCoord UP, down, left right
 // A chaque lvl je redimensionne les grids?
+
+
+// Les spawns ne sont pas vraiment des grids? 
+
 
 // adpate les constructor, Ex:spawn contient 1 array slmt.
 //Et les attributes: ex : Main contient plyer. Wall contient BOTS, 
@@ -84,11 +153,11 @@ const GrdCoord* pMaxGrdSpw;    // Les valeurs maximales	du grid des spawns des b
 //grdCoord** pMAXgrdMain;		
 
 // Les pointeurs vers ces différents Grd(ceux-ci changeront pour chaque niveaux)
-CaseMainGrd* pGrdMain;
+MainGrdElem* pGrdMain;
 WallType* pGrdWall;
 
 // Servira à naviguer dans les tableaux des grids
-GrdCoord grd;
+GrdCoord gGrd;
 
 
 

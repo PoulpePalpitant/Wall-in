@@ -24,6 +24,12 @@ void Get_GrdXY(int &col, int &lig)	// WATCHOUT :Passage par référence
 	lig = Get_GrdY(lig);
 }
 
+
+
+
+
+
+
 // On obtient la coord X et Y selon la position logique des WallGrid horizontale et vertical
 // -----------------------------------------------------------------------------------------
 
@@ -37,6 +43,10 @@ void Get_VerWallGrdXY(int& col, int& lig)
 	col = Get_GrdX(col);			// Le COORD XY du wall vertical se trouvera tjrs une case plus loin en Y(+1) que celle du Main Grid
 	lig = Get_GrdY(lig) + 1;		// Voir grid.h -> WallGrd pour la logique
 }
+
+
+
+
 
 //
 //

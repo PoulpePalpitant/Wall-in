@@ -1,5 +1,10 @@
 #pragma once
 
+struct ConCoord { int x; int y; };	// Coordonnée xy dans la console windows
+
+extern ConCoord gFrom;				// position de départ 
+extern ConCoord gTo;				// position d'arrivée
+
 
 int Get_GrdX(int col);	//	La conversion d'une position logique en colonne du main Grd vers la coord X dans la console
 int Get_GrdY(int lig);	//	La conversion d'une position logique en ligne du main Grd vers la coord Y dans la console

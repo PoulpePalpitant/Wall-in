@@ -2,28 +2,31 @@
 #include <iostream>   // pour le cout
 
 #include "../../../../MAIN/console(v1.9).h"
-#include "LVL1_grid.h"
+#include "../../../grid/grid.h"
 
+
+#include "LVL1_grid.h"
 using namespace std;
 
-// INITIALISE LES DIMENSIONS MAXIMALES DU GRID
+
+
 
 void INIT_Grids()
 {
 	// Ce que j'essaie de faire /,:
-	static const GrdCoord MAXgrdMain = { 15,13 };		// Les dimensions constantes du grid du niveau 1
-	static const GrdCoord MAXgrdWall = { 15, 13 };		
-	pMaxGrdMain = &MAXgrdMain;	// Pointe vers les dimensions constantes du Main grid
-	pMaxGrdWall = &MAXgrdWall;	// Pointe vers les dimensions constantes du Wall grid
+	//static const GrdCoord const  MAXgrdMain = { 15,13 };		// Les dimensions constantes du grid du niveau 1
+	//static const GrdCoord MAXgrdWall = { 15, 13 };		
+	//pMaxGrdMain = &MAXgrdMain;	// Pointe vers les dimensions constantes du Main grid
+	//pMaxGrdWall = &MAXgrdWall;	// Pointe vers les dimensions constantes du Wall grid
 
 
-	static const int MaxGrdMainC = 15;		// Les dimensions constantes du grid du niveau 1
-	static const int MaxGrdMainL = 13;		// Les dimensions constantes du grid du niveau 1
+	
+	// Dimensions des Main grids de chacun des niveaux
+	static const int LVL1_GRDMAIN_MAX_C = 15; // Les dimensions constantes du grid du niveau 1
+	static const int LVL1_GRDMAIN_MAX_L = 13; // Les dimensions constantes du grid du niveau 1
+	MainGrdElem MainGrd1[LVL1_GRDMAIN_MAX_C][LVL1_GRDMAIN_MAX_L] = {};		// Le grid du Level 1!
 
 
-
-
-	CaseMainGrd MainGrd1[10][12] = {};		// Le grid du Level 1!
 	
 	// le grid est bien là
 	for (int l = 0; l < pMaxGrdMain->l; l++)
@@ -40,17 +43,6 @@ void INIT_Grids()
 	//		 Alors pour l,instant je vais créer un grid qui va juste rester. Je reviendrais plus tard
 	//		Voici théoriquement comment ça pourrait se faire selon les internets
 
-	//// Création du array qui pointe vers un tableau de pointer qui pointe sur un tableau de int :O
-	//int** ary = new int* [sizeY];
-	//for (int i = 0; i < sizeY; ++i) {
-	//	ary[i] = new int[sizeX];
-	//}
-	//
-	//// Destruction de l'array
-	//for (int i = 0; i < sizeY; ++i) {
-	//	delete[] ary[i];
-	//}
-	//delete[] ary;
 
 
 

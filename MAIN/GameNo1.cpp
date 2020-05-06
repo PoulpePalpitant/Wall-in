@@ -10,8 +10,8 @@ Version		: 1.0
 
 
 
+#include "../FONCTIONS/grid/grid.h"
 #include "global.h"
-#include "../FONCTIONS/lvls/LVL_1/GRID/LVL1_grid.h"
 //#include "GameNo1_Spawn_BOT.cpp"
 
 using namespace std;
@@ -207,13 +207,17 @@ int main()
 
 		// Section tests!/////////////////////////////////////////////////////Section tests!///////////////////////////////////////////////////
 
-
-
+		int AV;
+		MainGrdElem swag = MainGrdElem::LINK;
 		
-		INIT_Grids();
+		Grid Maingrid(10,12);	// Fonctionne
+		AV = Maingrid.getCols();
+		Maingrid.Resize(5, 3); //...Fonctionne
+		AV = Maingrid.getCols();	// fonctionne
 
-
-
+		//Maingrid.Set(col, lig, Valeur)
+		//ou
+		//Maingrid[col][row] = Valeur
 
 		//const int var = 2;
 		//const int* const ptr = &var;
