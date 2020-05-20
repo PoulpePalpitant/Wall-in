@@ -1,0 +1,37 @@
+#pragma once
+
+#include <string>
+
+
+// Constantes de symboles souvent utulisés
+struct TextConstant
+{
+	const std::string MINUS = "-";
+	const std::string PLUS = "+";
+	const std::string SPACE = " ";
+	const std::string PARENTHESIS_OPEN = "(";
+	const std::string PARENTHESIS_CLOSE = ")";
+	const std::string EMPTY = "";
+};
+
+extern TextConstant TXT_CONST;
+
+// Des couleurs
+enum Colors
+{
+	BLACK = 0, GRAY = 8,
+	BLUE = 1, LIGHT_BLUE = 9,
+	GREEN = 2, LIGHT_GREEN = 10,
+	AQUA = 3, LIGHT_AQUA = 11,							// Numbers after 15 include background colors
+	RED = 4, LIGHT_RED = 12,
+	PURPLE = 5, LIGHT_PURPLE = 13,
+	YELLOW = 6, LIGHT_YELLOW = 14,
+	WHITE = 7, BRIGHT_WHITE = 15
+};
+
+
+extern Colors gCurrentColor;	// La couleur actuelle d'output dans la console. 
+
+
+Colors Get_Current_Color();// Si on veut affiché quoi que ce soit, on utilise ceci pour vérifier si on a besoin, oui ou non de changer la couleur de l'output de la console
+void Change_Color(int c);		// Permet de changer la couleur des prochains output de textes dans la console

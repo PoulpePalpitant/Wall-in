@@ -2,17 +2,19 @@
 
 #include "grid.h"
 
-
 // CONSTANTES POUR L'AFFICHAGE SEULEMENT
 // *************************************
 
 extern const int START_X = 10;	// Position, sur l'axe des X de la console, du coin supérieur gauche du MAIN grid
-extern const int START_Y = 2;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du MAIN grid
+extern const int START_Y = 5;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du MAIN grid
 
 extern const int DELTA_X = 5;	// Distance séparant chaque point du du Main Grid en X 
 extern const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer sur cette distance
 
-// DIMENSIONS DES GRIDS
+
+// Servira à naviguer dans les tableaux des grids
+GrdCoord gGrd;
+
 
 // LOGIQUES DES GRIDS: MAIN GRID, WALL GRID ET SPAWN GRID
 // ------------------------------------------------------
@@ -36,142 +38,71 @@ extern const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer su
 																					 |
 																					 |
 	
-	SPAWN GRID:
+	SPAWN GRID: ...
 
 */
 
-MainGrdElem **Grid::mainGrdElem;
-
-
-// Définition du Constructor de la class Grid	
-Grid::Grid(int col, int row)	 // Ceci entâme la CRÉATION D'UN GRID!
+// Méthode de Création de base d'un grid selon les dimensions colonnes et lignes (ici, le grid est de type int, et sera aussi jamais utilisé lol)
+void Grid::Create(int col, int row, int** &grid)	 // Ceci entâme la CRÉATION D'UN GRID!
 {
 	// Le grid va pointer vers la liste de colonnes
-	mainGrdElem = new MainGrdElem * [col];
+	grid = new int * [col];
 
 	// Chaques colonnes aura une liste de lignes(rows) contenant chacun 1 élément du Grid
 	for (int i = 0; i < col; ++i) {
-		mainGrdElem[i] = new MainGrdElem[row];
+		grid[i] = new int[row];
 
-		for (size_t j = 0; j < row; j++){
-			mainGrdElem[i][j] = MainGrdElem::EMPTY;
+		for (int j = 0; j < row; j++){
+			grid[i][j] = {};	// Peut mettre une valeur par défaut
 		}
 	}
-
-	// Assignation de la dimension du Nouveau Grid :)
-	numCol = col;
-	numRow = row;
+	UpdSize(col, row);	// Update le nb de col et de rows
 }
 
 // Détruit tout ce qui se trouvait sur le grid et le redimensionne
-void Grid::Resize(int col, int row)
-{
-	
+void Grid::Resize(int col, int row, int** &grid)
+{	
+	int maxCol = this->Get_Cols();	// Le nombre max de colonnes
+
 	// DESTRUCTION
-	// Destruction de l'array
-	for (int i = 0; i < col; ++i) {
-		delete[] Grid::mainGrdElem[i];
+	for (int i = 0; i < maxCol; ++i) {
+		delete[] grid[i];
 	}
 
-	delete[] Grid::mainGrdElem;	// Détruit le tableau de tableaux
+	delete[] grid;	// Détruit le tableau de tableaux
 
 	// CRÉATION
-	// Le grid va pointer vers la liste de colonnes
-	Grid::mainGrdElem = new MainGrdElem * [col];
-
-	// Chaques colonnes aura une liste de lignes(rows) contenant chacun 1 élément du Grid
-	for (int i = 0; i < col; ++i) {
-		Grid::mainGrdElem[i] = new MainGrdElem[row];
-	}
-
-
-
-
-
-	// REDIMENSION
-	// Assignation de la dimension du Nouveau Grid :)
-	numCol = col;
-	numRow = row;
+	Create(col, row, grid);
 }
 
-bool Grid::isInbound(int col, int row)
+// Vérification de si le nb de col et de row son valide selon la dimension du Grid
+bool Grid::Is_Inbound(int col, int row)
 {
-	if (col > numCol || row > numRow)	// Validation d'une coordonnée trop grande
+	if (col > this->Get_Cols() || row > this->Get_Rows())	// Validation d'une coordonnée trop grande
 		return false;
 
-	if (numCol < 0 || row < 0)		// Validation d'une coordonnée dans les négatifs
+	if (col < 0 || row < 0)		// Validation d'une coordonnée dans les négatifs
 		return false;
 
 	return true;
 }
 
-void Grid::setValue(int col, int row, MainGrdElem &Ele)	// tu passe juste un élément >:(
+// Créer une égalité entre deux coordonnées XY.		La première sera égale à la seconde
+void Equal_Coordinates(GrdCoord& from, GrdCoord to)
 {
-	mainGrdElem[col][row] = Ele;
-}
-
-MainGrdElem Grid::getValue(int col, int row)
-{
-	return mainGrdElem[col][row];
+	from.c = to.c;
+	from.r = to.r;
 }
 
 
- MainGrdElem** mainGrdElem = 0;
-
-
-
-
-
-// Décision: 
-//faire une class Grid
-// Utilise Grid pour faire Maingrid
-// meme chose avec Wallgrid hor, wallgrid ver
-// et spawnCoord UP, down, left right
-// A chaque lvl je redimensionne les grids?
-
-
-// Les spawns ne sont pas vraiment des grids? 
-
-
-// adpate les constructor, Ex:spawn contient 1 array slmt.
-//Et les attributes: ex : Main contient plyer. Wall contient BOTS, 
-
-
-
-
-
-
-
-
-// POINTEURS LOGIQUES VERS LES DIMENSIONS DE CHAQUE GRIDS
-// ******************************************************
-
-const GrdCoord* pMaxGrdMain;   // Les valeurs maximales	du grid des déplacements du joueur
-const GrdCoord* pMaxGrdWall;   // Les valeurs maximales	du grid des WALLS (lignes que le joueurs créés avec les touches de tirs)
-const GrdCoord* pMaxGrdSpw;    // Les valeurs maximales	du grid des spawns des bots
-
-//grdCoord** pMAXgrdMain;		
-
-// Les pointeurs vers ces différents Grd(ceux-ci changeront pour chaque niveaux)
-MainGrdElem* pGrdMain;
-WallType* pGrdWall;
-
-// Servira à naviguer dans les tableaux des grids
-GrdCoord gGrd;
-
-
-
-// Je reviendrais te compléter toi!!!
-void DEL_lvlgrid()	// Détruit tous les variables crées pour le grid du niveau
+// Initialise un CoordIncrementor à partir d'une direction d'incrémentation
+void Init_Axis_Incrementor(Direction direction, GridIndexIncrementor& incre)
 {
-	// Les pointeurs vers les dimensions MAX des trois différents grids du jeu
-	delete pMaxGrdMain;
-	delete pMaxGrdWall;
-	delete pMaxGrdSpw;
-
-	pMaxGrdMain = pMaxGrdWall = pMaxGrdSpw = 0;	// Pointe vers NULL
-
-	// Les pointeurs vers ces différents Grd(ceux-ci changeront pour chaque niveaux
-	delete pGrdMain;  pGrdMain = 0;	// Pointe vers NULL
-	delete pGrdWall;  pGrdWall = 0; // Pointe vers NULL
+	switch (direction)
+	{
+	case UP:	incre.axis = &incre.index.r;	incre.polar = NEG;break;	// L'incrémentation se fera à la vertical, donc sur l'axe des Y, donc vers le haut avec une polarisation de  -1
+	case LEFT:	incre.axis = &incre.index.c;	incre.polar = NEG;break;
+	case DOWN:	incre.axis = &incre.index.r;	incre.polar = POS;break;
+	case RIGHT: incre.axis = &incre.index.c;	incre.polar = POS;break;
+	}
 }

@@ -24,7 +24,7 @@ void INIT_Grids()
 	// Dimensions des Main grids de chacun des niveaux
 	static const int LVL1_GRDMAIN_MAX_C = 15; // Les dimensions constantes du grid du niveau 1
 	static const int LVL1_GRDMAIN_MAX_L = 13; // Les dimensions constantes du grid du niveau 1
-	MainGrdElem MainGrd1[LVL1_GRDMAIN_MAX_C][LVL1_GRDMAIN_MAX_L] = {};		// Le grid du Level 1!
+	Grid MainGrd1[LVL1_GRDMAIN_MAX_C][LVL1_GRDMAIN_MAX_L] = {};		// Le grid du Level 1!
 
 
 	

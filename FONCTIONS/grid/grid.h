@@ -1,23 +1,23 @@
 #pragma once
 
+#include "../UI/polarisation.h"
+#include "../UI/direction.h"
+
 // p = pointeur!
 
 // COORDONNÉES LOGIQUES DANS LA CONSOLE
 
-struct GrdCoord { int c; int l; };	//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
-										
-// LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DE DÉPLACEMENT DU JEU
+struct GrdCoord { int c; int r; };		//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
 
-enum class MainGrdElem { EMPTY, ITEM, PLAYER, LINK, WEAKLINK };	// Les links sont les points qui relient chaque WALLS créés par le joueur. 
+struct GridIndexIncrementor {	// Permet d'incrémenter une pair d'index [col][row] facilement
+	GrdCoord index;				// La coordonnée en xy ou en Col/row
+	Polarization polar;			// La polarisation positive ou négative du déplacement. +1 (pos) = Droite/Bas : -1 (neg) = Left/haut
+	int* axis;					// Le pointeur vers l'axe à incrémenter
+};
 
-// LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DES "WALLS" 
+// Variable qui servira à naviguer dans les tableaux des grids
+extern GrdCoord gGrd;
 
-enum class CaseWallGrd {EMPTY, WALL, BOT};
-
-//	LES TYPES DE MURS
-
-enum class WallType {WEAK, NORMAL, GHOST, STRONG, BIGSTRONGWOW};	// Par défaut, les tirs du joueur font des murs normal
-																	// "Ghost" : pourrait être des murs que les bot peuvent traverser
 
 // CONSTANTES POUR L'AFFICHAGE SEULEMENT
 // *************************************
@@ -28,86 +28,24 @@ extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin su
 extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre(Main Grid)
 extern const int DELTA_Y;	// Saut sur l'axe des Y d'une case à l'autre
 
-// Metre main gridet wall grid dans une seule classe grid?
-
-// ou séprarer les méthodes de walls et main pour faire deux objet grid distinct?//
-// le truc cest que les deux sont tr`s lié
-
 // CLASS DE GRID HERE WE GO
 
-class Grid {
-
-	int numCol;	// Dimension en colonne du Grid
-	int numRow;	// Dimension en lignes du Grid
-	static MainGrdElem** mainGrdElem;	// Le grid est un pointeur vers un tableau de pointeurs vers un élément GRID
-
+class Grid {	// Le Grid servira uniquement de références pour le LinkGrid et le WallGrid
+private:
+	int numCol;	// Dimension en colonne du Grid		// Warning, quand on accède au max, il faut faire [numCol -1]
+	int numRow;	// Dimension en lignes du Grid		// Warning, quand on accède au max, il faut faire [numRow -1]
+protected:
+	void UpdSize(int col, int row) { this->numCol = col;this->numRow = row; };	//Update les lignes et les colonnes: utilisé dans la méthode Create
 public:
-	// Déclaration du Constructor
-	Grid(int col, int row);				// Créer le Grid. Persistera tout le long de la game
-	
-	// LES MÉTHODES: Plyer Grid
-	int getRows() {return numRow;};		// Get numRow
-	int getCols() {return numCol;};		// Get numCol
-	bool isInbound(int col, int row);	// Vérifie si la coord donnée est présente dans le grid
-
-	void Resize(int col, int row);		// Redimensionne.... Mais détruit aussi le grid...Et set aussi les valeurs à empty >:(
-	void setValue(int col, int row, MainGrdElem &Ele);
-	MainGrdElem getValue(int col, int row);
-
-	// Overload operator [][] pour accéder à un élément du Grid
-	//MainGrdElem operator[] (int col, int row);
-
-
-	// Wall grid: Fait juste changer le type qui sera traité!!!!
-	//void Resize(int col, int row);		// Redimensionne.... Mais détruit aussi le grid...
-	//Grid(int col, int row);				// Créer le Grid. Persistera tout le long de la game
-	
-	// void setValue(int col, int row, CaseWallGrd &Ele);
-	// getvalue
-
-
-	// Get object on grid
-	// Get coord XY
-	
-	
-	// SetAll
-	// Check IfInbound
-	
-		// operator
-		//grid[row][col]	Overloads [] to select elements from this grid.
+	// LES MÉTHODES
+	void Create(int col, int row, int**& grid);	// Créer le Grid. Persistera jusqu'au prochain Resize
+	void Resize(int col, int row, int**& grid);	// Redimensionne.... Mais détruit aussi les valeurs du grid...
+	bool Is_Inbound(int col, int row);			// Vérifie si la coord donnée est présente dans le grid
+	int Get_Rows() { return this->numRow; };				// Get numRow
+	int Get_Cols() { return this->numCol; };				// Get numCol
 };
 
-// Object GridHorizontal
-
-// static WallGridElem** wallGridElem
-
+void Equal_Coordinates(GrdCoord& from, GrdCoord to);								// Permet d'égaliser deux valeurs de coordonnées de grid [col][row]
+void Init_Axis_Incrementor(Direction direction, GridIndexIncrementor& incre);		// Initialise l'incrémenteur de position de grid
 
 
-
-
-
-
-
-
-// Les pointeurs vers les dimensions MAX des trois différents grids du jeu
-extern const GrdCoord *pMaxGrdMain;							
-extern const GrdCoord *pMaxGrdWall;
-extern const GrdCoord *pMaxGrdSpw;
-
-
-
-
-//	PLUS COMPLIQUÉ QUE PRÉVU! voir lvl1grid.cpp
-// Les pointeurs vers ces différents Grd(ceux-ci changeront pour chaque niveaux
-//extern HERE* pgrdMain;
-//extern WallType* pgrdWall;
-//extern HERE* pgrdSpw;			
-
-// Variable qui servira à naviguer dans les tableaux des grids
-extern GrdCoord gGrd;
-
-
-//	FONCTIONS
-//	---------
-
-void DEL_lvlgrid();	// Détruit tous les variables créés pour les grid du niveau

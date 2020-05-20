@@ -25,7 +25,7 @@ void Swag_Animation(Colors col1, Colors col2, Colors col3);	// So pretty...
 void Swag_Animation2(Colors col0, Colors col1, Colors col2, Colors col3, Colors col4, Colors col5);	// So pretty...
 void UnSwagidy_Animation();	// So Unpretty... :(
 
-void Change_Color(int c) {
+void changeColor(int c) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
 // Initialisation des coordonnées d'où vont spawner les bots
@@ -182,7 +182,7 @@ int main()
 		//Reset tout les variables pour un restart
 
 		//On revient à la couleur blanc pâle
-		Change_Color(7); clrscr();	Reset_Everything___or_almost();
+		changeColor(7); clrscr();	Reset_Everything___or_almost();
 	
 		restart = reset = BOT_Escape = 0;		// si tu veux vraiment mettre un piton retry. tu dois TOUT réinitisialiser les tableaux: 45min environ
 		hero.health = 2; hero.clr = LIGHT_GREEN;
@@ -319,7 +319,7 @@ int main()
 				countdown -= countdown / 2;
 			}
 
-			Change_Color(12);
+			changeColor(12);
 
 			while (countdown > 5)
 			{
@@ -334,7 +334,7 @@ int main()
 				countdown -= (countdown / 5);
 			}
 
-			Change_Color(7);
+			changeColor(7);
 		}
 
 
@@ -363,7 +363,7 @@ int main()
 
 		
 		//	AFFICHE JOUEUR
-		HeroX = box.limit[RIGHT] / 2;	HeroY = box.limit[DOWN] / 2; gotoxy(HeroX, HeroY);	cout << AllPlyrSym[4]; 
+		HeroX = box.limit[RIGHT] / 2;	HeroY = box.limit[DOWN] / 2; gotoxy(HeroX, HeroY);	cout << AllHeroSym[4]; 
 		//UI_Aff_String(HeroX - 1, HeroY - 4, "YOU", 100, LIGHT_GREEN);
 		//UI_Aff_Char(HeroX, HeroY - 3, '|', 100, BRIGHT_WHITE);
 		//UI_Aff_Char(HeroX - 1, HeroY - 2, '\\', 100, BRIGHT_WHITE);
@@ -909,22 +909,22 @@ int main()
 				case 'A':
 					if (!(HeroX - HeroMoveX < box.limit[LEFT])) //x -= ShipMoveX;	//Le joueur veut se déplacer en dehors de la box,... DENIED!
 						GridX = HeroX - HeroMoveX;
-					GridY = HeroY; HeroSym = AllPlyrSym[LEFT];	break;
+					GridY = HeroY; HeroSym = AllHeroSym[LEFT];	break;
 
 				case 'D':
 					if (!(HeroX + HeroMoveX > box.limit[RIGHT])) //x += ShipMoveX;
 						GridX = HeroX + HeroMoveX;
-					GridY = HeroY; HeroSym = AllPlyrSym[RIGHT];	break;
+					GridY = HeroY; HeroSym = AllHeroSym[RIGHT];	break;
 
 				case 'W':
 					if (!(HeroY - HeroMoveY < box.limit[UP]))	//y -= ShipMoveY;
 						GridY = HeroY - HeroMoveY;
-					GridX = HeroX; HeroSym = AllPlyrSym[UP];	break;
+					GridX = HeroX; HeroSym = AllHeroSym[UP];	break;
 
 				case 'S':
 					if (!(HeroY + HeroMoveY > box.limit[DOWN])) //y += ShipMoveY;
 						GridY = HeroY + HeroMoveY;
-					GridX = HeroX; HeroSym = AllPlyrSym[DOWN];
+					GridX = HeroX; HeroSym = AllHeroSym[DOWN];
 				}
 
 
@@ -961,7 +961,7 @@ int main()
 				else	//Si le Mouvement est invalide, une animation est créer pour que le joueur comprenne
 				{
 					gotoxy(HeroX, HeroY);
-					Change_Color(LIGHT_PURPLE);
+					changeColor(LIGHT_PURPLE);
 					cout << HeroSym;
 					Sleep(90);			//Le ship y flash pendant .90 secondes
 				}
@@ -972,9 +972,9 @@ int main()
 
 
 			if (Le_Boute)
-				Change_Color(LIGHT_YELLOW);
+				changeColor(LIGHT_YELLOW);
 			else
-				Change_Color(hero.clr);		//Couleur 15 = très blanc
+				changeColor(hero.clr);		//Couleur 15 = très blanc
 			cout << HeroSym;
 
 
@@ -999,7 +999,7 @@ int main()
 			gotoxy(0, 0);		//Le curseur qui flash, on le place dans un coin pour qui fasse pas chier
 
 			//On revient à la couleur blanc pâle
-			Change_Color(7);
+			changeColor(7);
 			Sleep(50);
 
 
@@ -1385,7 +1385,7 @@ void LVL1_Events(Time Current_Time, int BOTSpwnedTOT)
 
 
 			EV_Box_Trap();		// Créer une trap pour montrer au joueur comment bouger
-			UI_Aff_Char(box.limit[RIGHT] / 2, box.limit[DOWN] / 2, AllPlyrSym[4], 0, LIGHT_GREEN);	// Affiche joueur
+			UI_Aff_Char(box.limit[RIGHT] / 2, box.limit[DOWN] / 2, AllHeroSym[4], 0, LIGHT_GREEN);	// Affiche joueur
 			EventisDone = true; 
 		}break;
 		
@@ -2019,7 +2019,7 @@ void Afficher_Char(int CoordXY, char Sym)
 // Création d'une tit structure pour le début de la game
 void EV_Create_Vertical_Structure(int GridXy, int L, int V, int NbWalls)
 {
-	Change_Color(BRIGHT_WHITE);
+	changeColor(BRIGHT_WHITE);
 
 	int Delay = 40;
 	V = Search_For_Available_VitalLink(V);
@@ -2058,14 +2058,14 @@ void EV_Create_Vertical_Structure(int GridXy, int L, int V, int NbWalls)
 
 		}
 		Afficher_Char(LinkXY[V], BlastSymBoute);
-		Change_Color(WHITE);
+		changeColor(WHITE);
 	}
 }
 
 // Création d'une tit structure pour le début de la game
 void EV_Create_Horizontal_Structure(int GridXy, int L, int V, int NbWalls)			
 {
-	Change_Color(BRIGHT_WHITE);
+	changeColor(BRIGHT_WHITE);
 	int Delay = 40;
 
 	int somethinghere = Search_Coordinnates(VitalLinkXY, ML, GridXY);	// Si retourne -1, il na rien trouvé
@@ -2595,8 +2595,8 @@ void Affi_ou_Effa_BOT_Esc_Door(int BoxSide, int& CoordX, int& CoordY, bool Effac
 	}
 
 	// On affiche la porte de sortie du bot!!!
-	gotoxy(CoordX, CoordY); Change_Color(GRAY); cout << Sym;
-	Change_Color(7);
+	gotoxy(CoordX, CoordY); changeColor(GRAY); cout << Sym;
+	changeColor(7);
 
 }
 
@@ -2817,7 +2817,7 @@ void SpawnBOT()
 			}
 
 			// Donne la distance que doit franchir le BOT pour sortir de la box
-			BOT.warCountdown[BOT_Ind] = SPWN_DLAY;				// Le nombre de cycle avant que le bot ne commence son avancé!
+			BOT.warCountdown[BOT_Ind] = BOT_delay;				// Le nombre de cycle avant que le bot ne commence son avancé!
 			BOT.MaxSteps[BOT_Ind] = Total_BOT_Steps_Before_Exit(BoxSide);
 			BOT.StepsToEscape[BOT_Ind] = BOT.MaxSteps[BOT_Ind];
 
@@ -2888,8 +2888,8 @@ void SpawnBOT()
 				from_BOT_To_Side[1] = spawn.limit[DOWN] - CoordY;	break;	//SideB
 			}
 			// Jai ajouté la valeur du delay ici même si ça fait aucun sens dans la structure. Je crois que ce cheat va marcher doe
-			from_BOT_To_Side[0] += SPWN_DLAY;
-			from_BOT_To_Side[1] += SPWN_DLAY;
+			from_BOT_To_Side[0] += BOT_delay;
+			from_BOT_To_Side[1] += BOT_delay;
 
 			// Pour déterminer la coordonnée(x ou y) du point d'intersection du premier Spawn a blocker (FONCTION 3)
 			for (Side = 0; Side < 2; ++Side)
@@ -3246,13 +3246,13 @@ void UI_AF_BOT_Warning(int Ind)
 		if (BOT.warCountdown[Ind] < 6)
 		{
 			if (BOT.warCountdown[Ind] < 3)
-				Change_Color(LIGHT_RED);			// 3 cycle left
+				changeColor(LIGHT_RED);			// 3 cycle left
 			else
-				Change_Color(LIGHT_YELLOW);		// 6 cycle left
+				changeColor(LIGHT_YELLOW);		// 6 cycle left
 
 			cout << BOT.warSym[Ind];
 		
-			Change_Color(WHITE);
+			changeColor(WHITE);
 		}
 	}
 	else
@@ -3267,7 +3267,7 @@ void Afficher_ou_Effacer_BOT(int BOT_In, bool Effacer)
 	if (Effacer)
 		Sym = ' ';		// On efface le Bot au lieu de l'afficher
 	else {
-		Change_Color(BOT.color[BOT_In]);	// La couleur du BOT
+		changeColor(BOT.color[BOT_In]);	// La couleur du BOT
 		Sym = BOT_design.BOT_Sym[BOT_In];		// Le symbole du Bot
 	}
 
@@ -3277,7 +3277,7 @@ void Afficher_ou_Effacer_BOT(int BOT_In, bool Effacer)
 	case 2:	Afficher_BOT_Design_2(BOT_In, Sym); break;
 	}
 
-	Change_Color(WHITE);		// On reviens à la couleur normale
+	changeColor(WHITE);		// On reviens à la couleur normale
 }
 
 // Affiche un BOT avec le desing à deux charactères
@@ -3349,7 +3349,7 @@ void EV_Box_Trap()
 	Coord depart = { coord.X, coord.Y };			// Position de départ
 	Polarisation PoX, PoY;							// Polarisation dans la console
 
-	C_D Wallhit = 0;								// Compte le nombre d'input du joueur
+	Ctr Wallhit = 0;								// Compte le nombre d'input du joueur
 	int MaxHits = 18;								// nombre de hit pour sortir de la box
 	int lig = 3, col = 3;							// nombre de lignes et de colonnes sur la box
 	Colors color = BRIGHT_WHITE;					// Couleur de la box
@@ -3363,7 +3363,7 @@ void EV_Box_Trap()
 	while (Wallhit <= MaxHits)
 	{
 		UI_Afficher_Box(depart.X, depart.Y, lig, col, color);				// L' affichage D'une BOX autours d'un point central
-		Change_Color(LIGHT_GREEN);	gotoxy(depart.X, depart.Y); cout << AllPlyrSym[4];		// Coord de départ
+		changeColor(LIGHT_GREEN);	gotoxy(depart.X, depart.Y); cout << AllHeroSym[4];		// Coord de départ
 
 		while (_kbhit())
 			_getch();
@@ -3384,26 +3384,26 @@ void EV_Box_Trap()
 		gotoxy(depart.X, depart.Y); cout << ' ';						// Coord de départ
 
 		coord.X = depart.X + PoX; coord.Y = depart.Y + PoY;			//Saute sur le mur
-		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllPlyrSym[4], 10, GREEN);
+		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllHeroSym[4], 10, GREEN);
 
 		coord.X += PoX * 2; coord.Y += PoY * 2;			//Saute sur le mur
-		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllPlyrSym[4], 8, LIGHT_PURPLE);
+		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllHeroSym[4], 8, LIGHT_PURPLE);
 		//Afficher_Box(depart.X, depart.Y, 5, 5, LIGHT_AQUA);
 
 		coord.X += PoX * 2; coord.Y += PoY * 2;			//Saute sur le mur
-		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllPlyrSym[4], 8, LIGHT_RED);
+		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllHeroSym[4], 8, LIGHT_RED);
 		//Afficher_Box(depart.X, depart.Y, 5, 5, LIGHT_BLUE);
 
 		coord.X += PoX * 8; coord.Y += PoY * 8;			//Saute sur le mur
-		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllPlyrSym[4], 8, YELLOW);
+		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllHeroSym[4], 8, YELLOW);
 		//Afficher_Box(depart.X, depart.Y, 5, 5, LIGHT_PURPLE);
 
 		coord.X -= PoX * 4; coord.Y -= PoY * 4;			//Saute sur le mur
-		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllPlyrSym[4], 8, WHITE);
+		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllHeroSym[4], 8, WHITE);
 		//Afficher_Box(depart.X, depart.Y, 5, 5, LIGHT_YELLOW);
 
 		coord.X -= PoX; coord.Y -= PoY;				//Saute sur le mur
-		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllPlyrSym[4], 15, LIGHT_AQUA);
+		UI_Aff_ET_Del_Char(coord.X, coord.Y, AllHeroSym[4], 15, LIGHT_AQUA);
 
 		//if ((Wallhit >= 13))
 		//	color = LIGHT_RED;
@@ -3524,8 +3524,8 @@ void EV_MsAF_Not_Got_Out()
 void EV_MsgAf_Touche_Mouvement(int CoordX, int CoordY)
 {
 	string titre = "GET OUT";
-	Change_Color(LIGHT_RED); gotoxy(CoordX - titre.size() / 2, CoordY); cout << titre;
-	Change_Color(LIGHT_YELLOW);
+	changeColor(LIGHT_RED); gotoxy(CoordX - titre.size() / 2, CoordY); cout << titre;
+	changeColor(LIGHT_YELLOW);
 
 	CoordY += 27, CoordX--; 
 	//gotoxy(CoordX, CoordY);Afficher_Box(CoordX, CoordY, 3, 3, YELLOW);
@@ -3542,7 +3542,7 @@ void EV_MsgAf_Touche_Mouvement(int CoordX, int CoordY)
 	CoordX += 3;
 	//gotoxy(CoordX , CoordY );Afficher_Box(CoordX, CoordY, 3, 3, YELLOW);
 	gotoxy(CoordX , CoordY); cout << "[D]";
-	Change_Color(BRIGHT_WHITE);
+	changeColor(BRIGHT_WHITE);
 }
 
 // Afficher les touches de tirs
@@ -3704,8 +3704,8 @@ void UI_Aff_Keyboard(int CoordX, int CoordY)
 		case 4:UI_Aff_String(CoordX, CoordY, "|[`][1][2][3][4][5][6][7][8][9][0][-][=][_<_] [I][H][U]  [N][/][*][-]|"); break;
 		case 5:UI_Aff_String(CoordX, CoordY, "|[| -][Q][W][E][R][T][Y][U][I][O][P][{][}]| | [D][E][D]  [7][8][9]|+||"); break;
 		case 6:UI_Aff_String(CoordX, CoordY, "|[CAP][A][S][D][F][G][H][J][K][L][;]['][#]|_|            [4][5][6]|_||"); break;
-		case 7:UI_Aff_String(CoordX, CoordY, "| [^][\][Z][X][C][V][B][N][M][, ][.][/ ][ ^ ]     ");Change_Color(LIGHT_YELLOW); cout << "[^]";	Change_Color(WHITE);	 cout << "     [1][2][3]| ||"; break;
-		case 8:UI_Aff_String(CoordX, CoordY, "|[c][a][________________________][a]      [c] ");Change_Color(LIGHT_YELLOW); cout << "[<][V][>]";Change_Color(WHITE); cout << "	 [0][.]|_|| "; break;
+		case 7:UI_Aff_String(CoordX, CoordY, "| [^][\][Z][X][C][V][B][N][M][, ][.][/ ][ ^ ]     ");changeColor(LIGHT_YELLOW); cout << "[^]";	changeColor(WHITE);	 cout << "     [1][2][3]| ||"; break;
+		case 8:UI_Aff_String(CoordX, CoordY, "|[c][a][________________________][a]      [c] ");changeColor(LIGHT_YELLOW); cout << "[<][V][>]";changeColor(WHITE); cout << "	 [0][.]|_|| "; break;
 		case 9:UI_Aff_String(CoordX, CoordY, "`--------------------------------------------------------------------'"); break;
 		}
 
@@ -3729,15 +3729,15 @@ void UI_Aff_Keyboard(int CoordX, int CoordY)
 void UI_Msg_Animation_1(int CoordX, int CoordY, string titre, Time time, Colors color)
 {
 
-	gotoxy(CoordX, CoordY); Change_Color(BRIGHT_WHITE); cout << titre; Sleep(time * 2 + 5);
-	gotoxy(CoordX, CoordY);	Change_Color(color);
+	gotoxy(CoordX, CoordY); changeColor(BRIGHT_WHITE); cout << titre; Sleep(time * 2 + 5);
+	gotoxy(CoordX, CoordY);	changeColor(color);
 
 	for (size_t i = 0; i < titre.size(); i++)		// Réaffiche le titre lettre dans une couleur différente, lettres par lettres
 	{
 		cout << titre[i]; Sleep(time);
 	}
 
-	Change_Color(WHITE);
+	changeColor(WHITE);
 }
 
 
@@ -3750,14 +3750,14 @@ void UI_Aff_String(int CoordX, int CoordY, string txt, Time time, Colors color)
 	int length = txt.size();
 
 	gotoxy(CoordX, CoordY);		// Positionnement du curseur
-	Change_Color(color);			// Changement de couleur
+	changeColor(color);			// Changement de couleur
 
 	for (size_t i = 0; i < length; i++)
 	{
 		cout << txt[i]; Sleep(time);
 	}
 
-	Change_Color(WHITE);
+	changeColor(WHITE);
 }
 
 // AFFICHE UN char! SELON UN RYTHME ET UNE COULEUR
@@ -3765,9 +3765,9 @@ void UI_Aff_String(int CoordX, int CoordY, string txt, Time time, Colors color)
 void UI_Aff_Char(int CoordX, int CoordY, char Sym, Time time, Colors color)
 {
 	gotoxy(CoordX, CoordY);		// Positionnement du curseur
-	Change_Color(color);			// Changement de couleur
+	changeColor(color);			// Changement de couleur
 	cout << Sym; Sleep(time);
-	Change_Color(WHITE);
+	changeColor(WHITE);
 }
 
 // EFFACEMENT DE TOUS LES CHARACTÈRES PRÉSENT DANS UN RECTANGLE DE LA CONSOLE
@@ -3841,7 +3841,7 @@ void UI_Afficher_Box(int CoordX, int CoordY, int NBLIG, int NBCOL,  Colors Coule
 	Ca.c = 0;
 	Ca.l = 0;
 
-	Change_Color(Couleur);		// Le couleur du curseur 
+	changeColor(Couleur);		// Le couleur du curseur 
 
 	while (Ca.l < NBLIG)					//	Permet d'afficher le bon symbole de la BOX jeu selon la position du curseur de la console windows dans la case 
 	{											//	Les dimensions de la case sont régit par le NB_LIG_CASE ET NB_COL_CASE
@@ -3905,7 +3905,7 @@ void UI_Afficher_Box(int CoordX, int CoordY, int NBLIG, int NBCOL,  Colors Coule
 // Affiche un char et l'efface ensuite
 void UI_Aff_ET_Del_Char(int CoordX, int CoordY, char Sym, Time time, Colors color)
 {
-	Change_Color(color);									// Couleur désiré
+	changeColor(color);									// Couleur désiré
 	gotoxy(CoordX, CoordY); cout << Sym; Sleep(time);	// Affiche le char, selon une durée de temps
 	gotoxy(CoordX, CoordY); cout << " ";				// Efface le char après la durée de temps
 }
@@ -3983,12 +3983,12 @@ void Swag_Animation(Colors col1, Colors col2, Colors col3)	// So pretty...
 		gotoxy(x, y); 
 		
 			if (i % 3 == 0)	
-				Change_Color(col1);	
+				changeColor(col1);	
 			else 
-				Change_Color(col2);
+				changeColor(col2);
 
-			if (i % 7 == 0)	Change_Color(col3);
-			if (i % 10 == 0) Change_Color(0);						
+			if (i % 7 == 0)	changeColor(col3);
+			if (i % 10 == 0) changeColor(0);						
 		 
 			if(y != yMax )
 				cout << Sym;
@@ -4020,12 +4020,12 @@ void Swag_Animation2(Colors col0 , Colors col1, Colors col2, Colors col3, Colors
 				x = box.limit[RIGHT];	continue;
 			}
 
-		gotoxy(x, y); Change_Color(col0);	
-		if (i % 3 == 0)	Change_Color(col1);
-		if (i % 5 == 0) Change_Color(col2);
-		if (i % 7 == 0)	Change_Color(col3);
-		if (i % 8 == 0) Change_Color(col4);
-		if (i % 11 == 0) Change_Color(col5);
+		gotoxy(x, y); changeColor(col0);	
+		if (i % 3 == 0)	changeColor(col1);
+		if (i % 5 == 0) changeColor(col2);
+		if (i % 7 == 0)	changeColor(col3);
+		if (i % 8 == 0) changeColor(col4);
+		if (i % 11 == 0) changeColor(col5);
 
 
 		cout << Sym;

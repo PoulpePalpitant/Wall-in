@@ -1,0 +1,11 @@
+
+#include"botmeta.h"
+
+
+extern BotMeta gBotMetaReg = {};		// L'objet global botmeta
+
+
+ 
+
+
+// CHECK SI TES CAPABLE DE MODIFIER LES VALEURS DUNE OBJECT AVEC UNE AUTRE CLASSE, SANS UTILISER DE POINTER VERS L'OBJET EN QUESTION

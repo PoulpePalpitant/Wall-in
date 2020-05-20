@@ -1,7 +1,6 @@
 //
 #include <iostream>   // pour le cout
 #include <conio.h>   // pour le _getch()
-#include <thread>	// Pour multiplier les processus en simultané!
 //#include <string>	// pour le string
 //#include <iomanip> // pour les manipulateurs
 //#include <windows.h> //pour le time, et toute sorte de shits.
@@ -9,17 +8,11 @@
 //#include "WinUser.h"
 
 
-#include "../FONCTIONS/time/clock.h"
+
 #include "../FONCTIONS/grid/managegrids.h"
 #include "../FONCTIONS/grid/wallgrid.h"
 #include "../FONCTIONS/link/link.h"
 #include "../FONCTIONS/bots/botlist.h"
-#include "../FONCTIONS/bots/bot.h"
-#include "../FONCTIONS/bots/botinitialize/bot_intializer.h"
-
-
-#include "../FONCTIONS/UI/console_output/dsp_char.h"
-#include "../FONCTIONS/UI/console_output/dsp_int.h"
 
 using namespace std;
 
@@ -57,7 +50,7 @@ int main()	// Le début!
 	{
 		for (int j = 0; j < maxR; j++)
 		{
-			crd = linkGrid.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
+			linkGrid.link[i][j].Get_XY(crd); gotoxy(crd.x, crd.y); cout << UI;
 		}
 	}
 
@@ -68,11 +61,7 @@ int main()	// Le début!
 	{
 		for (int j = 0; j < maxR; j++)
 		{
-			UI = wallGrids.hor->wall[i][j].Get_Sym();crd=wallGrids.hor->wall[i][j].Get_XY();
-			
-			UI_Dsp_Char(crd, UI,(Colors)j);
-			
-			
+			UI = wallGrids.hor->wall[i][j].Get_Sym();crd=wallGrids.hor->wall[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;		// Ceci pourrait être une fonction d'affichage
 		}
 	}
 
@@ -84,8 +73,7 @@ int main()	// Le début!
 	{
 		for (int j = 0; j < maxR; j++)
 		{
-			UI = wallGrids.ver->wall[i][j].Get_Sym();crd = wallGrids.ver->wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI,(Colors)i);
-
+			UI = wallGrids.ver->wall[i][j].Get_Sym();crd = wallGrids.ver->wall[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
 		}
 	}
 
@@ -95,9 +83,7 @@ int main()	// Le début!
 		{
 			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
 			crd = spawnGrid.border[i].spawn[j].Get_XY();
-			UI_Dsp_Int(crd, j, (Colors)j);	// Ceci pourrait être une fonction d'affichage
-
-				// Cette fonction est incapable d'afficher un int...
+			gotoxy(crd.x, crd.y); cout << j;		// Ceci pourrait être une fonction d'affichage
 		}
 	}
 
@@ -105,25 +91,10 @@ int main()	// Le début!
 	
 	Bot *bot;
 
+	bot = botList.Add_Bot();
 	
 	
 
-	CustomBot specialBot;
-	specialBot.NoWarning = true;
-
-	gGrd = { 2,3 };
-
-	bot = Create_New_Bot(BotType::REGULAR, gGrd, true);
-	
-	gGrd = { 0, 10 };
-	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	
-
-	
-	
-
-	
 	Coord dep, arr;
 
 	dep.x = 3, dep.y = 5;
@@ -133,41 +104,9 @@ int main()	// Le début!
 		true;
 	cout << TXT_CONST.MINUS;
 
-	// THREADING TESTING
-
-	std::thread swag[10];
-
-	for (size_t i = 0; i < 100; i++)
-	{
-		thread th1(Get_GrdX, 2);
-		
-		if(th1.joinable())
-			th1.join();
-
-	}
-
-	// CLOCK TESTING
-
-	GameClock LvlClock;
-	LvlClock.clockName = "Swag Clock";
-	LvlClock.updateDelay = 0;
-	crd = { 0,0 };
-	LvlClock.Dsp_Name(crd);
-	
-	thread thbla ;
-	thbla(LvlClock.Activate_Clock());
-
-	crd = { 13,0 };
-
-	while (true)
-	{
-		LvlClock.Dsp_Time(crd);
-	}
 
 
 
-
-	
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 
 	do

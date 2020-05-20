@@ -7,7 +7,6 @@
 #include < ctime >	// pour utiliser la fonction clock()
 #include "console(v1.9).h"
 #include "WinUser.h"
-#include <string>
 
 using namespace std;
 
@@ -28,7 +27,7 @@ using Distance = int;			// Pour calculer les distances entre les choses, selon l
 using Coordinates = int;
 using border = int;				//Dimension de la map
 using CoordinatesXY = int;
-using Ctr = unsigned int;		// Compteur
+using C_D = unsigned int;		// Compteur
 
 
 // TAILLE DES TABLEAUX
@@ -117,9 +116,9 @@ struct Inv_SpCrd
 
 // à faire plus tard i guess
 //Structure pour les dimensions de la map+
-struct Map_border { border limit[4]; };
-Map_border box;		// La box est l'aire de déplacement du joueur
-Map_border spawn;	// Les spawns des bots sont localisés sur une bordure un peu à l'extérieur de la box. 
+struct MapBorder { border limit[4]; };
+MapBorder box;		// La box est l'aire de déplacement du joueur
+MapBorder spawn;	// Les spawns des bots sont localisés sur une bordure un peu à l'extérieur de la box. 
 
 // VARIABES GLOBALES!!!
 
@@ -209,7 +208,7 @@ HERO hero;
 
 
 char HeroSym = 197;
-const char AllHeroSym[5] = { 193,180,194,195,197 };	// Haut, Left, Down, Droite,  Neutre
+const char AllPlyrSym[5] = { 193,180,194,195,197 };	// Haut, Left, Down, Droite,  Neutre
 int HeroX = 0;									//La coordonnée XY du Ship dans la console
 int HeroY = 0, HeroXY;
 int HeroMoveX = 5, HeroMoveY = 3, HeroMoveXY;	//La distance que peut parcourir le Ship pour un Mouvement sur les X et Y
@@ -247,7 +246,7 @@ int BOTXY[MaxNumBOTS];					// Coordonéée du bot en valeure compressée
 int BOT_Direction[MaxNumBOTS];			// Ça direction de déplacement
 bool Move_BOTS_this_Cycle = true;		// Détermine si on bouge, ou on a déjà bougé les BOTS durant ce cycles
 bool BOT_Escape = false;				// Si un bot sort de la box. Selon le niveau, on perd la game ou 1 de vie
-int BOT_delay = 9;						// Le nombre de bot move cycle avant que le bot va commencer à avancer
+int SPWN_DLAY = 9;						// Le nombre de bot move cycle avant que le bot va commencer à avancer
 
 // VARIABLES D'ÉVÈNEMENTS LVL1
 bool FastStart = false;			// Enclanche le tutorial
