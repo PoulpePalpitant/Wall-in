@@ -9,7 +9,7 @@
 
 	State: Un Link sans child est un FREE link. Le joueur peut intéragir avec un FREE Link en se déplaçant dessus. Une fois 
 	par dessus le joueur peut le transféré si il tir dans une autre direction que celle du Link. Le transfert détruit d'abord
-	le link et créer un blast dans la direction du tir.	Quand un Link possède des childs, on dit qu'il est bound. 
+	le link et créer un blast dans la direction du tir.	Quand un Link possède des childs, on dit qu'il est bound. Quand il est root, c'est qu'il est le premier sur la bordure, et qu'il ne peut pas avoir de parent
 	Il devient donc un obstacle pour le joueur qui ne peut ni se déplacer dessus, ni le transférer. Si le Link est DEAD, il est
 	inactif, et n'est donc pas affichés dans la console du jeu. Si il est LONER, les tirs sur celui-ci ne vont rien créer. Un Loner ne peut donc pas avoir de Child. Il peut néanmoins avoir un parent!
 	Le type de Link est également important. Le type invincible est très puissant et ne pourra jamais être détruit ou transféré. Néanmoins, se type peut devenir un fardeau pour le joueur si celui-ci possède
@@ -22,8 +22,8 @@
 */
 
 
-enum class LinkState { DEAD, FREE, BOUND, LONER };
-enum class LinkType{ REGULAR, INVINCIBLE, STRONG, EXPLODY, CHASER };
+enum class LinkState { DEAD, FREE, BOUND, ROOT };
+enum class LinkType{ REGULAR, LONER , INVINCIBLE, STRONG, EXPLODY, CHASER };
 
 enum LinkSym 
 {
@@ -35,23 +35,32 @@ enum LinkSym
 
 class Link {
 private:
-	Coord coord;		// Coord xy du Link dans la console
-	LinkState state;	// L'état du Link. Le joueur peut seulement se déplacer dessus si il est FREE.
-	Link* parent;		// Pointe vers le parent
-	Link* child[3];		// Pointe vers ses childs, trois MAX
+	Coord coord;						// Coord xy du Link dans la console
+	LinkState state = LinkState::DEAD;	// L'état du Link. Le joueur peut seulement se déplacer dessus si il est FREE.
+	LinkType type;						// type du link
+	Link* pParent = NULL;		// Pointe vers le parent
+	Link* pChild[3] = {};	// Pointe vers ses childs, trois MAX
 	
+	// UI
+	Colors clr = Colors::WHITE;			// Couleur du Link. Par défaut c'est white
+	char sym = 'B';						// Symbole représentant le Link, varie selon le nombre de child et du parent
+	void Set_UI();						// Change la couleur et le symbole selon le Type et le State du Link
+	void Dsp_Link();					// Affiche le Link
+
+	// Activation
+	void Bound_Link_To_Child(Link* child);				// Assigne les pointeurs du parent à son child et vice versa
+	void Set_State(Link* child = NULL);	// Assigne le state 
+
 	// Le grid va handle sa position XY
 	friend class LinkGrid;
-	void Set_LinkXY(int col, int row);	// Initialise position X et Y du Link dans la console par rapport à sa position col et row dans son Grid (ne jamais utilisé directement, seul son grid devrait faire ça)
-
+	void Set_LinkXY(int col, int row);					// Initialise position X et Y du Link dans la console par rapport à sa position col et row dans son Grid (ne jamais utilisé directement, seul son grid devrait faire ça)
 public:
-	Colors color = Colors::WHITE;		// Couleur du Link. Par défaut c'est white
-	char Sym;							// Symbole représentant le Link, varie selon le nombre de child et du parent
-	Coord Get_XY() { return coord; }	// Retrouve les Coord XY du Link 
+	Coord Get_XY() { return coord; }				// Retrouve les Coord XY du Link 
 	LinkState Get_State() { return this->state; };	// Donne l'état du Link pour savoir si il existe
 	
+	bool Activate_Link(LinkType &type, Link* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
+
 	void KillLink();					// À DÉTERMINER LORS de la destruction
-	void BoundLink();					// À déterminer lors de la création
 	void FreeLink();					// À déterminer lors de la création
 };
 

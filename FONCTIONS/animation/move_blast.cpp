@@ -1,8 +1,13 @@
+#include <iostream>
+
+
 
 #include "../UI/console(v1.9).h"
-#include "move_blast.h"
 #include "../UI/txtstyle.h"
-#include <iostream>
+#include "../UI/console_output/dsp_char.h"
+
+
+#include "move_blast.h"
 
 // L'animation va se faire dans cette ordre:
 
@@ -20,34 +25,34 @@ void MoveBlast::Animate_Blast(Blast* blast) // voir paragraph
 	
 	if(Chk_Max_Blast_Length(blast))
 		Erase_Blast_Tail(blast);
+
 }
 
 
 
 void MoveBlast::Move_Blast_Head_Forward(Blast* blast)	// DISPLAY: la tête du blast
 {
-	gotoxy(blast->frontXY.coord.x, blast->frontXY.coord.y);	// XY du blast
-	Change_Color(blast->color);								// Couleur du symbole			// Sudden Réalisation que changer la position du curseur va faire chier avec les thread!!! c'est comme une race condition pour changer les 
-	std::cout << blast->sym;								// affiche le symbole				valeurs de la console!!!!
-	Change_Color(blast->color);								// Couleur du symbole			// sudden réalisation que les threads vont faire chier avec les changements de couleurs!!!
+	// Affichage du symbole du blast 
+	UI_Dsp_Char(blast->frontXY.coord, blast->sym, blast->color);
 
-	//d'ailleur' cette fonction est suffisament basic pour être placé ailleurs
-
-		//check ton autre main pour savoir comment
+	// XY du blast
+	// Couleur du symbole			
+	// affiche le symbole			
+	// Couleur du symbole			
 
 }
 
 bool MoveBlast::Chk_Max_Blast_Length(Blast* blast)	// CHECK: Si le blast à atteint sa taille max
 {
-	return blast->nbSteps == blast->maxSize;	
+	return blast->nbSteps >= blast->length ;	
 }
 
 void MoveBlast::Erase_Blast_Tail(Blast* blast)	// ERASE: la queue du blast, si le blast à parcouru une distance >= que sa taille max
 {
-	// Position de la tail
-	gotoxy(blast->tailXY.coord.x, blast->tailXY.coord.y);
-	std::cout << TXT_CONST.EMPTY;		// Efface la tail!
+	// Efface la tail!
+	UI_Dsp_Char(blast->tailXY.coord, TXT_CONST.SPACE);
 
 	// Incrémentation da la prochaine position XY
-	blast->tailXY.axis += blast->tailXY.polar;
+	Increment_Coordinates(blast->tailXY);
+
 }

@@ -19,8 +19,10 @@
 
 
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
-#include "../FONCTIONS/UI/console_output/dsp_int.h"
+#include "../FONCTIONS/UI/console_output/dsp_string.h"
 
+
+#include "../FONCTIONS/inputs/detect_input.h"
 using namespace std;
 
 
@@ -45,6 +47,7 @@ int main()	// Le début!
 	
 
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// AFFICHE TOUS LES GRIDS 
 
 	char UI; Coord crd;	int maxC, maxR;
 	
@@ -95,19 +98,15 @@ int main()	// Le début!
 		{
 			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
 			crd = spawnGrid.border[i].spawn[j].Get_XY();
-			UI_Dsp_Int(crd, j, (Colors)j);	// Ceci pourrait être une fonction d'affichage
+			UI_Dsp_String(crd, std::to_string(i), (Colors)j);	// Ceci pourrait être une fonction d'affichage
 
 				// Cette fonction est incapable d'afficher un int...
 		}
 	}
 
-	
-	
+	/*
+	 Création de bots liés dans une liste
 	Bot *bot;
-
-	
-	
-
 	CustomBot specialBot;
 	specialBot.NoWarning = true;
 
@@ -118,14 +117,12 @@ int main()	// Le début!
 	gGrd = { 0, 10 };
 	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
 	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	
+	*/
 
-	
 	
 
 	
 	Coord dep, arr;
-
 	dep.x = 3, dep.y = 5;
 	arr.x = 0, arr.y = 1;
 
@@ -133,40 +130,37 @@ int main()	// Le début!
 		true;
 	cout << TXT_CONST.MINUS;
 
-	// THREADING TESTING
-
-	std::thread swag[10];
-
-	for (size_t i = 0; i < 100; i++)
-	{
-		thread th1(Get_GrdX, 2);
-		
-		if(th1.joinable())
-			th1.join();
-
-	}
 
 	// CLOCK TESTING
+	Coord crd2 = { 35,1 };
+	Coord crd3 = { 35,2 };
 
 	GameClock LvlClock;
 	LvlClock.clockName = "Swag Clock";
-	LvlClock.updateDelay = 0;
-	crd = { 0,0 };
+	crd = { 0,1 };
 	LvlClock.Dsp_Name(crd);
-	
-	thread thbla ;
-	thbla(LvlClock.Activate_Clock());
+	crd = { 13,1 };
+	LvlClock.Start_Clock();
 
-	crd = { 13,0 };
+	thread Clockydy(&GameClock::Infinite_Dsp, &LvlClock, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
 
-	while (true)
-	{
-		LvlClock.Dsp_Time(crd);
-	}
+	//for (size_t i = 0; i < 1000000; i++)
+	//{
+	//	for (size_t j = 0; j < 100; j++)
+	//	{
+	//		UI_Dsp_Int(crd2, i);
+	//		UI_Dsp_Int(crd3, j);
+
+	//	}
+	//}
+	//Sleep(10000);
+
+	//LvlClock.Pause_Clock();
 
 
 
-
+	std::thread blastThread;	// test les input qui font des blast
+	int input = 0;
 	
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 
@@ -177,6 +171,23 @@ int main()	// Le début!
 		
 		do	// Affiche MENU
 		{	
+			//blastThread = thread(Check_Input);
+			//blastThread.join();
+			
+			
+			while (_kbhit())
+				_getch();
+			input = 0;
+
+			do
+			{
+				if ((_kbhit()))
+					input++;
+
+			} while (input < 1);
+			
+			Check_Input();
+			
 			// Check input
 			// if (input) -> Stuff
 		} while (true); // Game pas starté
@@ -189,6 +200,10 @@ int main()	// Le début!
 		{
 			// Check lvl stuff
 			// Check input stuff
+
+			
+
+
 			// if(input) -> stuff
 		}
 

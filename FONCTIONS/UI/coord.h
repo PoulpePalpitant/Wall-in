@@ -6,21 +6,16 @@
 
 using Distance = int;	// Les distances
 
-
-
-
-
-
 struct Coord { int x; int y; };	// Coordonnée xy dans la console windows
 
-struct CoordIncrementor {
+struct CoordIncrementor {	// Pour une position XY mobile, qui se déplace sur un axe
 	Coord coord;			// La coordonnée en xy ou en Col/row
 	Polarization polar;		// La polarisation positive ou négative du déplacement. +1 (pos) = Droite/Bas : -1 (neg) = Left/haut
 	int* axis;				// Le pointeur vers l'axe à incrémenter
 };
 
-extern Coord gFrom;				// position de départ 
-extern Coord gTo;				// position d'arrivée
+extern Coord gFrom;			// position de départ 
+extern Coord gTo;			// position d'arrivée
 
 
 int Get_GrdX(int col);	//	La conversion d'une position logique en colonne du main Grd vers la coord X dans la console

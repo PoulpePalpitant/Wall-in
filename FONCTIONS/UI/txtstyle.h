@@ -6,12 +6,12 @@
 // Constantes de symboles souvent utulisés
 struct TextConstant
 {
-	const std::string MINUS = "-";
-	const std::string PLUS = "+";
-	const std::string SPACE = " ";
-	const std::string PARENTHESIS_OPEN = "(";
-	const std::string PARENTHESIS_CLOSE = ")";
-	const std::string EMPTY = "";
+	const char MINUS = '-';
+	const char PLUS = '+';
+	const char SPACE = ' ';
+	const char PARENTHESIS_OPEN = '(';
+	const char PARENTHESIS_CLOSE = ')';
+	const std::string EMPTY = "";		// EMPTY c'est le 'string' rebel
 };
 
 extern TextConstant TXT_CONST;

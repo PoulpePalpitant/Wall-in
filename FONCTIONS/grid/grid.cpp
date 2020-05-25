@@ -94,15 +94,3 @@ void Equal_Coordinates(GrdCoord& from, GrdCoord to)
 	from.r = to.r;
 }
 
-
-// Initialise un CoordIncrementor à partir d'une direction d'incrémentation
-void Init_Axis_Incrementor(Direction direction, GridIndexIncrementor& incre)
-{
-	switch (direction)
-	{
-	case UP:	incre.axis = &incre.index.r;	incre.polar = NEG;break;	// L'incrémentation se fera à la vertical, donc sur l'axe des Y, donc vers le haut avec une polarisation de  -1
-	case LEFT:	incre.axis = &incre.index.c;	incre.polar = NEG;break;
-	case DOWN:	incre.axis = &incre.index.r;	incre.polar = POS;break;
-	case RIGHT: incre.axis = &incre.index.c;	incre.polar = POS;break;
-	}
-}

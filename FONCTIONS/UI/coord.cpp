@@ -56,7 +56,7 @@ void Equal_Coordinates(Coord &from, Coord to)
 // Augmente de 1 ou -1 une coordonnée sur les X ou les Y!!
 void Increment_Coordinates(CoordIncrementor& coord)		
 {
-	coord.axis += coord.polar;
+	*coord.axis += coord.polar;
 }
 
 // Initialise un CoordIncrementor à partir d'une direction d'incrémentation

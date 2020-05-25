@@ -32,19 +32,19 @@ void BotList::Del_Bot(Bot * botToDel)
 
 
 	// Si le bot est au milieu de la liste
-	if (botToDel != botStrt && botToDel != botEnd)
+	if (botToDel != pBotStrt && botToDel != pBotEnd)
 	{
-		botToDel->prev->next = botToDel->next;	// Le Bot précédent pointe maintenant vers celui qui se trouvait après le Delete
-		botToDel->next->prev = botToDel->prev;	// Le bot suivant pointe sur le bot derrière celui qu'on delete
+		botToDel->pPrev->pNext = botToDel->pNext;	// Le Bot précédent pointe maintenant vers celui qui se trouvait après le Delete
+		botToDel->pNext->pPrev = botToDel->pPrev;	// Le bot suivant pointe sur le bot derrière celui qu'on delete
 	}
 	else
 	{	// Si le bot était le premier de liste
-		if (botToDel == botStrt)
-			botToDel->next->prev = NULL;	// Le pointeur suivant va pointer vers NULL, car il est maintenant le nouveau DÉbut de la liste!
+		if (botToDel == pBotStrt)
+			botToDel->pNext->pPrev = NULL;	// Le pointeur suivant va pointer vers NULL, car il est maintenant le nouveau DÉbut de la liste!
 
 		// Si le bot était le dernier de liste
-		if (botToDel == botEnd)
-			botToDel->prev->next = NULL;	// Le pointeur précédant est maintenant le nouveau fin de la liste
+		if (botToDel == pBotEnd)
+			botToDel->pPrev->pNext = NULL;	// Le pointeur précédant est maintenant le nouveau fin de la liste
 	}
 	
 	
@@ -58,17 +58,17 @@ void BotList::Del_Bot(Bot * botToDel)
 
 Bot* BotList::Add_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised) {
 
-	if (!botEnd)		// Liste vide
+	if (!pBotEnd)		// Liste vide
 	{
-		botStrt = botEnd = new Bot(type, spGrdCrd, isBotCustomised);
+		pBotStrt = pBotEnd = new Bot(type, spGrdCrd, isBotCustomised);
 	}
 	else 
 	{
-		static Bot* prevEnd; prevEnd = botEnd;		// Le pointeur sur le dernier de la liste(qui deviendra l'avant dernier)
+		static Bot* prevEnd; prevEnd = pBotEnd;		// Le pointeur sur le dernier de la liste(qui deviendra l'avant dernier)
 
-		botEnd = botEnd->next = new Bot(type, spGrdCrd, isBotCustomised);	// Le bot ajouté, est ajouté à la fin
-		botEnd->prev = prevEnd;		// Le dernier point sur l'avant dernier
-		prevEnd->next = botEnd;		// L'avant dernier pointe sur le dernier
+		pBotEnd = pBotEnd->pNext = new Bot(type, spGrdCrd, isBotCustomised);	// Le bot ajouté, est ajouté à la fin
+		pBotEnd->pPrev = prevEnd;		// Le dernier point sur l'avant dernier
+		prevEnd->pNext = pBotEnd;		// L'avant dernier pointe sur le dernier
 
 	}
 	//botEnd->next = NULL; Se fait par défaut :O
@@ -76,23 +76,23 @@ Bot* BotList::Add_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised) {
 	// On oublie pas d'update le meta
 	gBotMetaReg.New_Bot();
 
-	return botEnd;		// L'adresse du bot créé
+	return pBotEnd;		// L'adresse du bot créé
 }
 // Destroy tout les bots! (sort of...)
 // ----------------------------------
 
 void BotList::CLEANSE_THEM_ALL() {		// À noter que ça détruit juste les bots, ça enlève pas les spawnblock, ni l'affichage, c'est basically useless Lol
 
-	this->iter;	// Si ça bug, utilise les "this"
-	this->botStrt;
+	this->pIter;	// Si ça bug, utilise les "this"
+	this->pBotStrt;
 
-	while (iter = botStrt) // affectation (iterator = debut) suivi du test sur la valeur de it != NULL
+	while (pIter = pBotStrt) // affectation (iterator = debut) suivi du test sur la valeur de it != NULL
 	{
-		botStrt = botStrt->next;
-		delete iter;
+		pBotStrt = pBotStrt->pNext;
+		delete pIter;
 	}
 	
-	botEnd = NULL;	// bonne pratique
+	pBotEnd = NULL;	// bonne pratique
 
 }
 

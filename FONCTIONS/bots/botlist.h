@@ -7,9 +7,9 @@ class BotList
 {
 private:
 	// Naviguation sur la liste de bot
-	Bot* botStrt;	// Pointe vers le début de la liste de bots				À vérifier, ces trois trucs serait supposément initialisé à 0
-	Bot* botEnd;		// Pointe vers la fin de la liste de bots
-	Bot* iter;		// L'iterator qui permet de parcouri la liste des bots
+	Bot* pBotStrt;	// Pointe vers le début de la liste de bots				À vérifier, ces trois trucs serait supposément initialisé à 0
+	Bot* pBotEnd;		// Pointe vers la fin de la liste de bots
+	Bot* pIter;		// L'iterator qui permet de parcouri la liste des bots
 public:
 	Bot* Add_Bot();					// Ajoute un bot a la liste : Retourne un pointeur vers celui-ci
 	Bot* Add_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised);					// Ajoute un bot a la liste : Retourne un pointeur vers celui-ci

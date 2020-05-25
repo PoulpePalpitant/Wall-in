@@ -28,7 +28,7 @@ void Wall::Set_Wall_UI(WallType newType)
 
 	switch (newType)
 	{
-	case WallType::NORMAL:
+	case WallType::REGULAR:
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
 	case WallType::GHOST:	
@@ -62,3 +62,5 @@ void Wall::Set_Default_Wall_UI()
 	// Changement de la couleur par défaut
 	color = Colors::WHITE;
 }
+
+

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../UI/polarisation.h"
 #include "../UI/direction.h"
 
 // p = pointeur!
@@ -8,12 +7,6 @@
 // COORDONNÉES LOGIQUES DANS LA CONSOLE
 
 struct GrdCoord { int c; int r; };		//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
-
-struct GridIndexIncrementor {	// Permet d'incrémenter une pair d'index [col][row] facilement
-	GrdCoord index;				// La coordonnée en xy ou en Col/row
-	Polarization polar;			// La polarisation positive ou négative du déplacement. +1 (pos) = Droite/Bas : -1 (neg) = Left/haut
-	int* axis;					// Le pointeur vers l'axe à incrémenter
-};
 
 // Variable qui servira à naviguer dans les tableaux des grids
 extern GrdCoord gGrd;
@@ -46,6 +39,6 @@ public:
 };
 
 void Equal_Coordinates(GrdCoord& from, GrdCoord to);								// Permet d'égaliser deux valeurs de coordonnées de grid [col][row]
-void Init_Axis_Incrementor(Direction direction, GridIndexIncrementor& incre);		// Initialise l'incrémenteur de position de grid
+
 
 

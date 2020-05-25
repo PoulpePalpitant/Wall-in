@@ -10,7 +10,7 @@
 Bot* Create_New_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised)	// NOT A MEMBBER OF CLASS BOT!!!
 {
 	// Pointeur vers le nouveau Bot créé
-	static Bot* newBot = NULL;
+	static Bot* newBot = NULL;				// Avec les thread, les variables static risquent de causé problème?
 
 	//CRÉATION DU BOT
 	newBot = botList.Add_Bot(type, spGrdCrd, isBotCustomised);	// passage par référencex3...

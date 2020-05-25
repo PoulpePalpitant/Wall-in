@@ -5,6 +5,7 @@
 #include "../UI/txtstyle.h"
 #include "../math/math_stuff.h"
 #include "../grid/grid.h"
+#include "../grid/grd_incrementor.h"
 #include "spawnwarning.h"
 //#include "./botinitialize/"
 
@@ -42,9 +43,9 @@ private:
 	// DÉPLACEMENTS/Position
 	Direction dir;						// Ça direction de déplacement
 	Coord XY;							// Coordonéée du bot en valeure compressée
-	GridIndexIncrementor nxtWallCrd;	// Donne la coordonnée en colonnes et lignes du prochain mur que le bot va percuter. Se renouvelle à chaque fois que le bot traverse un élément du wall grid sans crever
 	Distance btwWalls;					// LA distance qui sépare chaque élément du grid de walls. Sert de référence pour la prochaine variable
 	C_D tillNxtWall;					// Donne le nombre actuel de Bot_move_cycle, de cycles de mouvement de Bot, avant que le Bot se retrouve sur la même position qu'un wall. Se renouvelle de la même manière.
+	GridIndexIncrementor nxtWallCrd;	// Donne la coordonnée en colonnes et lignes du prochain mur que le bot va percuter. Se renouvelle à chaque fois que le bot traverse un élément du wall grid sans crever
 
 	int stepCount = 0;		//	Le nombre de déplacement fait depuis le début de son éxistence.
 	int stepLeft;			//	Le nombre de déplacement pour atteindre l'autre decôté de la box, par rapport à sa position actuelle 
@@ -52,8 +53,8 @@ private:
 
 	// GESTION DE LA LISTE DES BOTS
 	friend class BotList;	// La classe Botlist va s'en charger
-	Bot* prev;				// Pointeur vers le bot précédent de la liste de bots
-	Bot* next;				// Pointeur vers le prochain bot de la liste
+	Bot* pPrev;				// Pointeur vers le bot précédent de la liste de bots
+	Bot* pNext;				// Pointeur vers le prochain bot de la liste
 	
 	// INITALISATION DU BOT -  // Tous les définitions se retrouveront dans d'autres cpp
 	friend Bot* Create_New_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised);			// NOT A MEMBBER OF CLASS BOT!!!
@@ -70,6 +71,7 @@ public:
 	// MÉTHODES D'ACCÈS GET
 	Direction Get_Dir() { return dir; }						// Direction de déplacement
 	Coord Get_XY() { return XY; }							// Coord XY
+	Get_nxtWallCrd()
 	C_D Get_Cycles_Till_Nxt_Wall() { return tillNxtWall; } // Nombre de cycles avant le prochain impact de wall
 	int Get_Steps_Count() { return stepCount; }				// Nombre de steps fais par le bot
 	int Get_Step_Left() { return stepLeft; }				// Nombre de steps à faire restant

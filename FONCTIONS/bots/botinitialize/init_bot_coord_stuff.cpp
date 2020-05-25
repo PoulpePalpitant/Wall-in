@@ -1,9 +1,9 @@
 
 
-
-#include "../bot.h"
 #include "../../grid/spawngrid.h"
 #include "../../grid/wallgrid.h"
+#include "../bot.h"
+
 
 // INITIALISATION DES VARIABLES DE POSITIONS
 // -----------------------------------------
@@ -15,7 +15,8 @@ void Bot::Init_Bot_Coord_Stuff(GrdCoord& spGrdCrd)
 
 	Equal_Coordinates(this->XY, spawn->Get_XY());		// La coordonnée xy du Bot sera égale à celle du spawn sur lequel il se trouve
 	dir = Find_Opposite_Dir((Direction)spGrdCrd.c);		// La direction de déplacement sera l'opposé de la direction de son spawn. Si spawn en bas, va se diriger vers le haut Ex: la colonne C représente le numéro de bordure de spawn(0 à 4, pour chaque côté de la console)
-	Init_Axis_Incrementor(dir, nxtWallCrd);				// L'axe d'incrémentation et la polarisation son intialisé. Manque plus que trouvé la coordXY du premier wall
+	
+	nxtWallCrd.Init_Axis_Incrementor(dir);				// L'axe d'incrémentation et la polarisation son intialisé. Manque plus que trouvé la coordXY du premier wall			
 	Find_First_Wall_Grd_Index((Direction)spGrdCrd.c, spGrdCrd.r, nxtWallCrd);	// Tu dois passer somehow ici, les deux index du spawnborder
 }
 

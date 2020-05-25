@@ -6,7 +6,7 @@ class BotMeta {
 	
 public:
 	int alive;		// Le nombre de bots en vie en ce moment
-	int spawned;		// Le nombre de bots spawné
+	int spawned;	// Le nombre de bots spawné
 	int dead;		// Le nombre de bots qui ont péris
 	//static int dmgDone;
 

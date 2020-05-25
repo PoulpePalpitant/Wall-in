@@ -1,17 +1,25 @@
 #pragma once
 
 #include "grid.h"
+#include "../blast/blast.h"
 #include "../link/link.h"
 
 // Grid de Links
 class LinkGrid : public Grid {
-	public:
+	int Nb_Of_Link_Per_Blast(Blast* blast);		// Calcul le nombre de walls à enregistrer après un blast.
+
+
+
+public:
 	Link** link;	// Va contenir le Grid contenant les pointeurs vers les arrays de Walls
+	
 	void Create(int col, int row);	// Créer le Grid. Persistera jusqu'au prochain Resize. Assignent une valeur XY pour chacun des éléments du Grid
 	void Resize(int col, int row);	// Redimensionne.... Mais détruit aussi le grid...
-	
 	// Vérification de la présence d'un Link(vivant) dans le grid
-	bool Is_Link_Here(int col, int row);						// WHERE IS LINK? I CAN'T FIND HIM!?
+	int Is_Link_Here(int col, int row);						// WHERE IS LINK? I CAN'T FIND HIM!?
+
+	// Créer une chaîne de link à partir d'un blast
+	void Activate_Links_From_Blast(Blast* blast);
 };
 
 extern LinkGrid linkGrid;	// Le seul et unique, le champion, le dernier de sa grande lignée de Grid

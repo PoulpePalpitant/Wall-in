@@ -10,6 +10,7 @@ void Player::Player_Lose_HP(int hpLost )
 	HP -= hpLost;
 	Upd_State();
 	Upd_Color();
+	//update heart
 }	
 
 // Gagne 1 point de vie!
@@ -18,6 +19,8 @@ void Player::Player_Gains_HP(int hpGain)
 	HP += hpGain; 
 	Upd_State();	// Change le state du joueur
 	Upd_Color();	// Change sa couleur
+	//update heart
+
 }
 
 // Change le STate du joueur quand son hp tombe à 0 ou devient plus grand que zéro
