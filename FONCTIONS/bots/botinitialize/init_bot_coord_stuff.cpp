@@ -1,7 +1,6 @@
 
 
-#include "../../grid/spawngrid.h"
-#include "../../grid/wallgrid.h"
+#include "../../grid/AllGrids.h"
 #include "../bot.h"
 
 
@@ -11,7 +10,7 @@
 void Bot::Init_Bot_Coord_Stuff(GrdCoord& spGrdCrd)
 {
 	static Spawn* spawn;
-	spawn = &spawnGrid.border[spGrdCrd.c].spawn[spGrdCrd.r];	// Le spawn du bot en question
+	spawn = &spawnGrid->border[spGrdCrd.c].spawn[spGrdCrd.r];	// Le spawn du bot en question
 
 	Equal_Coordinates(this->XY, spawn->Get_XY());		// La coordonnée xy du Bot sera égale à celle du spawn sur lequel il se trouve
 	dir = Find_Opposite_Dir((Direction)spGrdCrd.c);		// La direction de déplacement sera l'opposé de la direction de son spawn. Si spawn en bas, va se diriger vers le haut Ex: la colonne C représente le numéro de bordure de spawn(0 à 4, pour chaque côté de la console)
@@ -36,9 +35,9 @@ void Bot::Find_First_Wall_Grd_Index(Direction indexBoxSide, int indexrow, GridIn
 	switch (indexBoxSide)	// trouve le reste
 	{
 	case UP:wallcrd.index.r = 0; break;
-	case DOWN: wallcrd.index.r = wallGrids.hor->Get_Rows() - 1; break;	// La dernière ligne du wallgrid
+	case DOWN: wallcrd.index.r = wallGridHor->Get_Rows() - 1; break;	// La dernière ligne du wallgrid
 	case LEFT:wallcrd.index.c = 0; break;
-	case RIGHT: wallcrd.index.c = wallGrids.ver->Get_Cols() - 1;
+	case RIGHT: wallcrd.index.c = wallGridVer->Get_Cols() - 1;
 	}
 
 }

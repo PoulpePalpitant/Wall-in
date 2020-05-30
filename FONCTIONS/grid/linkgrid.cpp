@@ -1,11 +1,9 @@
 
 
 #include "linkgrid.h"
+#include "../player/player.h"
 #include "../blast/convert_blast_type_to_link.h"
 
-// VARIABLE GLOBAL
-
-extern LinkGrid linkGrid = {};	// Le seul et unique, le champion, le dernier de sa grande lignée de Grid
 
 // Création d'un grid selon les dimensions colonnes et lignes	(Celui-ci sera utilisé pour entreposer tous les Links)
 void LinkGrid::Create(int col, int row)	 // Ceci entâme la CRÉATION D'UN GRID!
@@ -53,52 +51,60 @@ int LinkGrid::Is_Link_Here(int col, int row)			// WHERE IS LINK? I CAN'T FIND HI
 	if (!Is_Inbound(col, row))	// Doit tjrs vérifier si la crd est INBOUND	
 		return -1;
 	
-	if(linkGrid.link[col][row].Get_State() != LinkState::DEAD)										// Si le link sur ce grid est Dead, aussi bien dire qu'il n'y en a pas
-		return true;
+	if (this->link[col][row].Get_State() != LinkState::DEAD)										// Si le link sur ce grid est Dead, aussi bien dire qu'il n'y en a pas
+		return true;	// Link here, ain't dead
+	else
+		return false;	// No Link here, dead
+
+	
+
 }
 
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Le nombre de Link à "Activer" selon un "Blast" du joueur
-//---------------------------------------------------------
-
-int LinkGrid::Nb_Of_Link_Per_Blast(Blast* blast)
-{
-	if (blast->nbSteps == 0)	// Le blast n'a parcouru aucune distance (le player à sûrement tiré sur la bordure)
-		return 0;
-	else
-		if (blast->nbSteps >= blast->length)		// La blast à parcouru une distance plus grande ou égale à sa longueur 
-			return 1 + (blast->length) / (blast->btwLinks + 1);	// Longueur du blast / par DELTA_X/DELTA_Y sur le grid + 1 (NOMBRE MAX DE WALLS À ENREGISTRER)
-		else
-			return 1 + blast->nbSteps / (blast->btwLinks + 1) ;	// +1, car garentie d'avoir au moins deux Link
-}
-
-
+//
+//void Find_Link_ToActivate()
+//{
+//
+//	// *Link
+//	if (nbLinks == nbLinksTot)
+//		toActivate = &this->link[linkCrd.index.c][linkCrd.index.r];
+//	else
+//		toActivate = child;
+//
+//	// *child
+//	if (nbLinks == 1)		// Le dernier Link n'a pas de child		
+//		child = NULL;
+//	else
+//	{
+//		linkCrd.Decrement_Coord();							// Adresse du link précédent, que le blast à traversé
+//		child = &this->link[linkCrd.index.c][linkCrd.index.r];	// Et voilà comment tu trouve le child
+//	}
+//}
 
 
 // Active tout les Link après un blast
-void LinkGrid::Activate_Links_From_Blast(Blast* blast)	
+void LinkGrid::Activate_Links_From_Blast(Blast* blast, bool drawLastLink)	
 {
 	static int  nbLinks, nbLinksTot;
 	static LinkType type;
-	static Link* toActivate;	// Linka à activer
-	static Link* child;			// et son child
-	static GridIndexIncrementor linkCrd;	// Coord final du blast
+	static Link* toActivate, *child, *parent; toActivate = parent = child = NULL;	// Linka à activer et son child
+	static GridIndexIncrementor linkCrd;						// Coord final du blast
 
-	linkCrd = blast->grdPos;	// Position du premier Link à créer
-	type = Convert_Blast_Type_To_Link_Type(blast->type);		// Tout les Link auront le même Link brah?
-	nbLinksTot = nbLinks = Nb_Of_Link_Per_Blast(blast);			// Total à activer
+	
+	linkCrd = blast->grdPos;									// Position du premier Link à créer
+	type = Convert_Blast_Type_To_Link_Type(blast->type);		// Tout les Link auront le même type brah?
+	nbLinksTot = nbLinks = blast->Nb_Of_Links_To_Activate();			// Total à activer
 	
 	if (!nbLinks)
 		return;	// Le blast n'a franchie aucune distance
 
 	while (nbLinks)	// [0,2+[. Les links viennent en pair avec le blast		o----.	
 	{
-		// *Link
 		if (nbLinks == nbLinksTot)
-			toActivate = &linkGrid.link[linkCrd.index.c][linkCrd.index.r];
+			toActivate = &this->link[linkCrd.index.c][linkCrd.index.r];
 		else
 			toActivate = child;
 
@@ -107,17 +113,34 @@ void LinkGrid::Activate_Links_From_Blast(Blast* blast)
 			child = NULL;
 		else
 		{
-			*linkCrd.axis -= linkCrd.polar;							// Adresse du link précédent, que le blast à traversé
-			child = &linkGrid.link[linkCrd.index.c][linkCrd.index.r];	// Et voilà comment tu trouve le child
+			linkCrd.Decrement_Coord();							// Adresse du link précédent, que le blast à traversé
+			child = &this->link[linkCrd.index.c][linkCrd.index.r];	// Et voilà comment tu trouve le child
 		}
 
 		// VOILÀ
 
-		toActivate->Activate_Link(type, child);		// Active le Link
-		
+		toActivate->Activate_Link(type, child);		// Active le Link, et le lis à son child
+
+		/*theoretical perte de tempo, les links s'activent toujours en pairs anyway, tu veux pas set le state 2fois c'est pourquoi ta fais ce que ta fais en haut*/
+
+		/*1stloop*/
+		//toActivate = &this->link[linkCrd.index.c][linkCrd.index.r];
+		//toActivate->Activate_Link(type, child); // minus the child
+		//linkCrd.Decrement_Coord();
+
+		///*nextloops*/
+		//parent = toActivate;
+		//toActivate = &this->link[linkCrd.index.c][linkCrd.index.r];
+		//toActivate->Activate_Link(type, child); // minus the child
+		//if(nbLinks > 1)
+		//	parent->Bond_Link_To_Child(toActivate);
+		//linkCrd.Decrement_Coord();
+
 		// dumb stuff hehe
-		toActivate->Dsp_Link();		// dsp le symbole du Link
+		if(!(drawLastLink && nbLinks == 1))	// ne veut pas afficher inutilement!
+			toActivate->Dsp_Link();		// dsp le symbole du Link
 
 		nbLinks--;
 	}
+
 }

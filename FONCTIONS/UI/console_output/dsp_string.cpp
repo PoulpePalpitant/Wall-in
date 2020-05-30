@@ -17,8 +17,8 @@ void UI_Dsp_String(Coord crd, std::string txt, Colors clr, time_t time)
 	{		 
 		//	T'es mieux d'utiliser qu'une seule fonction d'affichage. *done*
 		
-		crd.x++;	// Incrémente x pour le prochain charactère	
 		UI_Dsp_Char(crd, txt[loop], clr, time);
+		crd.x++;	// Incrémente x pour le prochain charactère	
 
 
 		//gotoxy(crd.x + loop, crd.y);	// Position de départ

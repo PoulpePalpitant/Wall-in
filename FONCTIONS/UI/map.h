@@ -17,10 +17,14 @@ private:
 	Distance height;		// La hauteur de la map en Y
 	Distance limit[4];	// La bordure de la map ou le joueur peut se déplacer. Représente un point dans la console, mais avec une seule valeur, en x ou y
 	public:
-	Distance Get_Length() { return length; };
-	Distance Get_Height() { return height; };
-	Distance Get_Box_Limit(Direction boxSide) { return limit[boxSide]; };	// Cahcune des Bordures de la map
+	Distance Get_Length() { return length; }
+	Distance Get_Height() { return height; }
+	Distance Get_Box_Limit(Direction boxSide) { return limit[boxSide]; }	// Cahcune des Bordures de la map
 	void Resize(LinkGrid& linkGrid);	// Resize selon la dimension du Grid principal(LinkGrid)
 };
 
 extern Map map;	// Déclaration de la map. Sera définis ailleurs, à genre SpawnBorder
+
+
+// DON'T PUT ; AFTER {					
+//						}

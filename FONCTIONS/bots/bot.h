@@ -71,7 +71,7 @@ public:
 	// MÉTHODES D'ACCÈS GET
 	Direction Get_Dir() { return dir; }						// Direction de déplacement
 	Coord Get_XY() { return XY; }							// Coord XY
-	Get_nxtWallCrd()
+	GridIndexIncrementor Get_nxtWallCrd();
 	C_D Get_Cycles_Till_Nxt_Wall() { return tillNxtWall; } // Nombre de cycles avant le prochain impact de wall
 	int Get_Steps_Count() { return stepCount; }				// Nombre de steps fais par le bot
 	int Get_Step_Left() { return stepLeft; }				// Nombre de steps à faire restant

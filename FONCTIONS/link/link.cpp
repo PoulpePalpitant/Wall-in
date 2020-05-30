@@ -45,11 +45,11 @@ void Link::Set_UI()
 }
 
 // Assigne les pointeurs du parent à son child et vice versa
-void Link::Bound_Link_To_Child(Link* child)
+void Link::Bond_Link_To_Child(Link* child)
 {
 	if (child == NULL)	// Pas d'enfant icitte moé
 		return;	
-
+	/*mutex*/
 	for (int i = 0; i < 3; i++)	// 3 = max number of childs. For real, si tu fais cette fonctions et qu'ya déjà trois child, ta foiré quelque part
 	{
 		if (this->pChild[i] == NULL)
@@ -59,28 +59,58 @@ void Link::Bound_Link_To_Child(Link* child)
 			break;
 		}
 	}
+	
+	numChild++;	
+	/*if(numChild++ == 0)
+	Set_state*/
+	/*mutex*/
 }
 
 // Active un Link et le relie à un Child
 bool Link::Activate_Link(LinkType& type, Link* child)
 {
-	if (this->state == LinkState::BOUND)		// error brah, le link était pas libre ou DEAD
-		return false;
+	this->type = type;	// Son nouveau type	(certaines conversions seront impossible dans le futur)
 
-	static char sym;		
-	static LinkState state;
+	if (this->state == LinkState::DEAD || this->state == LinkState::FREE)		// error brah, le link était pas libre ou DEAD
+	{
+		Set_State(child);				// Set le state selon le fait qu'il a un child ou non, ou si ya pas de parent
+	}
 
-	this->type = type;	// Son type
-
-	Set_State(child);				// Set le state selon le fait qu'il a un child ou non, ou si ya pas de parent
-	Bound_Link_To_Child(child);		// Assignation des pointeurs
+	Bond_Link_To_Child(child);		// Assignation des pointeurs
 	Set_UI();						// affichage
 
 	return true;
 }
 
+void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
+{
+	this->pParent = NULL;
+								// reset pointers
+	for (int i = 0; i < 3; i++)	// reset pointers
+		this->pChild[i] = NULL;	// reset pointers
+	
+	this->parentPos = Polarization::NUL;
+
+
+	state = LinkState::DEAD;
+
+	//if(type != LinkType::REGULAR)
+		/*do stuff*/
+
+	// Efface le Link
+	Dsp_Link();
+}
+
+
+
+
 //UI
 void Link::Dsp_Link()						// Affiche le Link
 {
 	UI_Dsp_Char(this->coord, this->sym, this->clr);
+}
+
+void Link::Clr_Link()						// Clear le Link
+{
+	UI_Dsp_Char(this->coord, TXT_CONST.SPACE);
 }

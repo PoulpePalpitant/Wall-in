@@ -1,4 +1,9 @@
+#include <iostream>
 
+#include "../grid/AllGrids.h"
+#include "../UI/console(v1.9).h"
+#include "../UI/txtstyle.h"
+#include "../UI/console_output/dsp_char.h"
 #include "player.h"
 
 extern Player P1 = {};		// Un joueur! 
@@ -44,11 +49,18 @@ void Player::Upd_Color()
 	}
 }
 
-
-// Affiche le joueur
-void Dis_Player_Sym()
+// Affiche le joueur		
+void Player::Dis_Player_Sym()
 {
+	static Coord crd;
+	crd = linkGrid->link[grdCrd.c][grdCrd.r].Get_XY();	// Position XY
+	
+	UI_Dsp_Char(crd,sym,clr);	// display
+}
 
-	// juste le sym?
-	// ou on trouve la pos xy?
+// Change le symbole du joueur lors d'un mouvement
+void Player::Upd_Sym_From_Direction(Direction dir)								
+{
+	sym = AllPlyrSym[dir];
+
 }

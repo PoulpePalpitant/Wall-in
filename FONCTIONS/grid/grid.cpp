@@ -6,7 +6,7 @@
 // *************************************
 
 extern const int START_X = 10;	// Position, sur l'axe des X de la console, du coin supérieur gauche du MAIN grid
-extern const int START_Y = 5;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du MAIN grid
+extern const int START_Y = 8;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du MAIN grid
 
 extern const int DELTA_X = 5;	// Distance séparant chaque point du du Main Grid en X 
 extern const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer sur cette distance
@@ -78,7 +78,7 @@ void Grid::Resize(int col, int row, int** &grid)
 // Vérification de si le nb de col et de row son valide selon la dimension du Grid
 bool Grid::Is_Inbound(int col, int row)
 {
-	if (col > this->Get_Cols() || row > this->Get_Rows())	// Validation d'une coordonnée trop grande
+	if (col > this->Get_Cols() - 1 || row > this->Get_Rows() - 1)	// Validation d'une coordonnée trop grande
 		return false;
 
 	if (col < 0 || row < 0)		// Validation d'une coordonnée dans les négatifs

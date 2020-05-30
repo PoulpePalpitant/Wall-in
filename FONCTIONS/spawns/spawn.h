@@ -12,7 +12,9 @@ class Spawn
 {
 public:
 	void Set_XY(Coord Coord) { coord = Coord; }	// Initialise le x et y du Spawn (Ne doit pas être utilisé directement, se référer au Grid de Spawn : SpawnGrid)
-	Coord Get_XY() { return coord;}	// retrouve la crd xy pour l'affichage 
+	Coord Get_XY() { 
+		this;
+			return coord;}	// retrouve la crd xy pour l'affichage 
 	void Set_Spw_Index(int index) { this->SpawnIndex = index; }
 	int Get_Spw_Index() { return this->SpawnIndex; }
 	SpawnState Is_Blocked() { return this->state; }		// L'état du Spawn, si il est disponible pour spawné un Bot(FREE), ou si il est bloqué(BLOCKED)!

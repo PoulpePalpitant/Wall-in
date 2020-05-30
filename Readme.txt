@@ -29,6 +29,8 @@ ex: NORD, SUD, EST, NORD_OUEST, NORD_SUD? (woah)
  NOICE VISAL STUDIO SHORTCUTS
 /************
 
+ctrl+shift+s		Save all documents
+
 f5			Debug
 f7			Compile
 shift + f5		Stop Debugger

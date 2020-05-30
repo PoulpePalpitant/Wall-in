@@ -5,7 +5,7 @@
 
 // Va créer l'animation du blast
 
-class MoveBlast {
+class UI_MoveBlast {
 private:
 static void Move_Blast_Head_Forward(Blast* blast);
 static bool Chk_Max_Blast_Length(Blast* blast);

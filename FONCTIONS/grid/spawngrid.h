@@ -5,10 +5,10 @@
 #include "../spawns/spawnborder.h"
 
 
-class Spawn_Grid : public Grid {
+class SpawnGrid : public Grid {
 public:
 	//// Création de 4 bordures de Bot spawners, une pour chaque côté de la Box. (Il y en aura toujours 4, pour autant que windows ne release pas une console triangulaire)
-	Spawn_Grid() {
+	SpawnGrid() {
 		
 		border = new SpawnBorder[4];
 	}// CONSTRUCTOR
@@ -22,6 +22,3 @@ public:
 	void Resize(LinkGrid& linkGrid);	// Détruit, et ensuite redimensionne le Grid	
 };
 
-// VARIABLE GLOBALE
-
-extern Spawn_Grid spawnGrid;

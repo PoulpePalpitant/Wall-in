@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../grid/grid.h"
 #include "../grid/grd_incrementor.h"
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
@@ -24,12 +23,10 @@ enum class BlastType{REGULAR};	// Les propriétés spéciales du blast
 
 class Blast
 {
-
 	protected:
-		friend class MoveBlast;	// L'animation du blast 
-		friend class AllWallGrids;		// Accès pour enregistré des nouveaux murs
+		friend class UI_MoveBlast;	// L'animation du blast 
 		friend class WallGrid;		// Accès pour enregistré des nouveaux murs
-
+		friend class AllGrids;
 		friend class LinkGrid;		// Pour enregistré des nouveaux Links
 
 	BlastType type;	// Le type de blast
@@ -67,11 +64,16 @@ class Blast
 	void Reset_Countdown_Till_Nxt_Link() { movesTillNxtLink = btwLinks; }		// Reset le temps que ça va prendre pour rencontrer un autre Link
 	void Setup_Blast(BlastType type, GrdCoord &startPos, Direction &blastDir);	// Setup tout les paramètre du blast pour le tir
 
+	// POST-BLAST
+	int Nb_Of_Links_To_Activate();
+
+
 public:
-	Blast* Blast_Shot(BlastType type, GrdCoord& startPos, Direction& blastDir);	// le tir du blast...
+	Blast* Blast_Shot(BlastType type, GrdCoord startPos, Direction& blastDir);	// le tir du blast...
 };
 
 // Les objets blasts :D
 
 extern Blast blastP1;
 extern Blast blastP2;
+

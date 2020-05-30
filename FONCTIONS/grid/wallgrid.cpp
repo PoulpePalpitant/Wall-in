@@ -1,12 +1,8 @@
 
+#include "../blast/convert_blast_type_to_wall.h"
+#include "AllGrids.h"
 #include "wallgrid.h"
 
-
-// DÉFINITION DES VARIABLES GLOBALES
-
-extern WallGrid wallGridHor(HOR);
-extern WallGrid wallGridVer(VER);
-extern AllWallGrids wallGrids(wallGridHor, wallGridVer);		// Contient les deux grids plus haut	 
 
 // Créer un Grid de walls contenant tous les walls du jeu
 // -----------------------------------------------
@@ -69,31 +65,31 @@ void WallGrid::Adapt_To_LinkGrid_Size(int& col, int& row, LinkGrid& linkGrid)
 											  	//					Comme on peut voir Le Grid des Walls vertical contient 4 col pour trois lignes (4 x 3)	 
 }											  		 
 									
-// Trouve quel wallgrid correspond à une direction 
-WallGrid* AllWallGrids::Find_Grid_From_Direction(Direction dir)
-{
-	if (dir == UP || dir == DOWN)
-		return this->ver;			// WallGrid vertical
-	else
-		return this->hor;			// Wallgrid horizontal
-}
 
 
-// Trouve la crd de wall entre deux Link
-GridIndexIncrementor WallGrid::Find_Wall_Btwn_Links()
-{
-	if(this.)
+//// Trouve la crd de wall entre deux Link
+//GridIndexIncrementor WallGrid::Find_Wall_Btwn_Links()
+//{
+//	if(this.)
+//
+//
+//
+//}
+//
+//GridIndexIncrementor Find_Wall_With_LinkDir()		// Trouve le wall avec la coord d'un Link et une direction
+//{
+//
+//
+//
+//}
 
-
-
-}
-
-GridIndexIncrementor Find_Wall_With_LinkDir()		// Trouve le wall avec la coord d'un Link et une direction
-{
-
-
-
-}
+//GridIndexIncrementor WallGrid::Find_Wall_From_Link_Dir(GrdCoord crd, Direction dir)		// Trouve le wall avec la coord d'un Link et une direction
+//{
+//
+//
+//
+//
+//}
 
 // Le nombre de walls à "Creer" selon un "Blast" du joueur
 //---------------------------------------------------------
@@ -104,9 +100,9 @@ int WallGrid::Nb_Of_Walls_Per_Blast(Blast* blast)
 		return 0;
 	else
 		if (blast->nbSteps >= blast->length)		// La blast à parcouru une distance plus grande ou égale à sa longueur 
-			return blast->length / blast->btwLinks;	// La longueur max / par la distance qui sépare chaque link	(NOMBRE MAX DE WALLS À ENREGISTRER)
+			return blast->length / (blast->btwLinks + 1) ;	// La longueur max / par la distance qui sépare chaque link	(NOMBRE MAX DE WALLS À ENREGISTRER)
 		else
-			return blast->nbSteps / blast->btwLinks;	// Devrait donner entre 0 et 1 si la longueur du blast fait moins de deux intervalles de distance de grid, sinon, well ce commentaire est vraiment utile		
+			return blast->nbSteps / (blast->btwLinks + 1); //works
 }
 
 
@@ -114,24 +110,66 @@ int WallGrid::Nb_Of_Walls_Per_Blast(Blast* blast)
 
 
 // Active tout les murs créé par un blast
-void AllWallGrids::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie leur valeurs) d'après un certains blast . Quand le joueur tir, ça laisse un mur, et il faut le record dans le grid
+void WallGrid::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie leur valeurs) d'après un certains blast . Quand le joueur tir, ça laisse un mur, et il faut le record dans le grid
 {
 	static int nbOfWalls;
-	static GridIndexIncrementor wallCrd;	// crd du wall
-	static WallGrid* wallgrd;				// le bon grid de wall
+	static WallType type;
+	static Wall* toActivate;	// Wall à activer
+	static GridIndexIncrementor crd;	// crd du wall
 	
-	wallgrd = Find_Grid_From_Direction(blast->dir);
 
+	type = Convert_Blast_Type_To_Wall_Type(blast->type);	
 
-	nbOfWalls = wallgrd.Nb_Of_Walls_Per_Blast(blast);
+	/*find first wall crd*/
+	crd = blast->grdPos;
+	if(blast->dir == RIGHT)		// Tu déborde du grid mon gars. Le dernier Wall à droite correspond à L'AVANT dernier Link	   1    2    3	|	(Links)		col[3]
+		crd.index.c--;																										 //o----o----o	|Fin
+	else																													 //   1   2		|	(walls)		col[2]
+		if (blast->dir == DOWN)		// Tu déborde du grid mon gars
+		crd.index.r--;
 
+	nbOfWalls = this->Nb_Of_Walls_Per_Blast(blast);	// si merge: clear
 	while (nbOfWalls)
 	{
+		toActivate = &this->wall[crd.index.c][crd.index.r];	// wall à activer
+		toActivate->Activate_Wall(type);
 
+		if(nbOfWalls > 1)
+			crd.Decrement_Coord();	
 
-
-
+		nbOfWalls--;
 	}
 
 }
 							  		 
+//
+//
+//// Création ou Destruction de tous les murs possibles se situant entre deux coord (côte-à-côte sur le grid)
+//void Creation_or_Destruction_Walls_Btwn_Links(int CoordDepart, int CoordFin, Time Delay, bool Creation)
+//{
+//	int NbdeWalls;		// Le nombre de walls entre 2 coord
+//	Axe axe;			// L'axe des murs entre la CoordDepart et la Coord de fin
+//	Polarisation polar;	// La polarisation entre la Coordonnée de départ et la coord de fin
+//	char Sym;			// Le symbole pour l'affichage du Wall
+//
+//	axe = Axe_Entre_Deux_Coord(CoordDepart, CoordFin);				// Donne l'axe
+//	polar = Polarisation_Selon_Deux_Coord(CoordDepart, CoordFin);	// Trouve la polarisation entre là coordonnée 
+//
+//	//// Le nombre de walls et le symbol du wall
+//	if (axe == x) { NbdeWalls = NbWallX; Sym = BlastSymX; }
+//	else { NbdeWalls = NbWallY; Sym = BlastSymY; }
+//
+//	// On va commencer la destruction/Création à partir de la coordonnée de départ
+//	Goto_Coordinnates(CoordX, CoordY, CoordDepart);
+//
+//	for (int l = 0; l < NbdeWalls; ++l)	// Destruction de chacun des murs entre les deux Links
+//	{
+//		// La coordonnée de chacun des murs à détruire est déterminée par l'incrémentation de x ou y de +1 ou -1 case selon l'axe ou se trouve les walls
+//		axe == y ? CoordY += polar : CoordX += polar;
+//		if (Creation)
+//			Create_Wall(CoordX, CoordY, Sym);	// Création d'un mur
+//		else
+//			Destroy_WALL(CoordX, CoordY);		// Destruction du mur et effacement du symbole
+//		Sleep(Delay);
+//	}
+//}

@@ -23,12 +23,12 @@ void GridIndexIncrementor::Initialize(GrdCoord crd, Direction dir)	// Initialize
 // Augmente de 1 ou -1 une coordonnée sur le grid des link (Col ou Row)
 void GridIndexIncrementor::Increment_Coord()
 {
-	this->axis += this->polar;
+	*this->axis += this->polar;
 }
 
 // Augmente de 1 ou -1 une coordonnée sur le grid des link (Col ou Row), mais dans la direction inverse de la polarisation	
-void GridIndexIncrementor::Décrement_Coord()							// Décrémente une position [col][row] dans le grid	-BackWard!
+void GridIndexIncrementor::Decrement_Coord()							// Décrémente une position [col][row] dans le grid	-BackWard!
 {
-	this->axis -= this->polar;
+	*this->axis -= this->polar;
 }
 

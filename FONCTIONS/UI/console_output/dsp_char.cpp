@@ -8,6 +8,7 @@
 
 
 // Affiche un char à une certaine position dans la console, selon une couleur.
+// Pour effacer un char à une position. Remplace le SYM par un charactère vide , soit Txt_Const.SPACE ' ' 
 
  void UI_Dsp_Char(Coord crd, char sym, Colors clr, time_t time)
 {
@@ -22,6 +23,6 @@
 	Basic_Output(sym);				// Affichage du char
 	mu.unlock();					// Dévérouille.
 
-	Sleep((int)time);				// temps d'attente, si la fonction est utilisé en rafale
-	//unlock()
+	if(time)
+		Sleep((int)time);				// temps d'attente, si la fonction est utilisé en rafale
 }

@@ -6,7 +6,6 @@
 
 // Grid de Links
 class LinkGrid : public Grid {
-	int Nb_Of_Link_Per_Blast(Blast* blast);		// Calcul le nombre de walls à enregistrer après un blast.
 
 
 
@@ -19,10 +18,9 @@ public:
 	int Is_Link_Here(int col, int row);						// WHERE IS LINK? I CAN'T FIND HIM!?
 
 	// Créer une chaîne de link à partir d'un blast
-	void Activate_Links_From_Blast(Blast* blast);
+	void Activate_Links_From_Blast(Blast* blast, bool drawLastLink);
 };
 
-extern LinkGrid linkGrid;	// Le seul et unique, le champion, le dernier de sa grande lignée de Grid
 
 
 

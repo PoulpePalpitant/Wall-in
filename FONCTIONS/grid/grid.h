@@ -28,14 +28,14 @@ private:
 	int numCol;	// Dimension en colonne du Grid		// Warning, quand on accède au max, il faut faire [numCol -1]
 	int numRow;	// Dimension en lignes du Grid		// Warning, quand on accède au max, il faut faire [numRow -1]
 protected:
-	void UpdSize(int col, int row) { this->numCol = col;this->numRow = row; };	//Update les lignes et les colonnes: utilisé dans la méthode Create
+	void UpdSize(int col, int row) { this->numCol = col;this->numRow = row; }	//Update les lignes et les colonnes: utilisé dans la méthode Create
 public:
 	// LES MÉTHODES
 	void Create(int col, int row, int**& grid);	// Créer le Grid. Persistera jusqu'au prochain Resize
 	void Resize(int col, int row, int**& grid);	// Redimensionne.... Mais détruit aussi les valeurs du grid...
 	bool Is_Inbound(int col, int row);			// Vérifie si la coord donnée est présente dans le grid
-	int Get_Rows() { return this->numRow; };				// Get numRow
-	int Get_Cols() { return this->numCol; };				// Get numCol
+	int Get_Rows() { return this->numRow; }				// Get numRow
+	int Get_Cols() { return this->numCol; }				// Get numCol
 };
 
 void Equal_Coordinates(GrdCoord& from, GrdCoord to);								// Permet d'égaliser deux valeurs de coordonnées de grid [col][row]

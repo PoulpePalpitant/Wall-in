@@ -4,6 +4,9 @@
 #include "../UI/txtstyle.h"
 
 
+
+
+
 class Items {
 
 private:
@@ -25,6 +28,8 @@ private:
 		Si je fais un jeu punitifs, les items pourrait être des debuffs?  : Difficile à faire comprendre au joueur MM kinda bad
 	*/																																	
 
+
+
 	// UI
 	Colors clr = Colors::LIGHT_GREEN;		// Sa couleur
 	char sym;								// Le symbole le représentant 
@@ -43,7 +48,7 @@ public:
 	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur 
 
 	// UPDATES
-
+	void Spawn_Item(GrdCoord);
 
 };
 

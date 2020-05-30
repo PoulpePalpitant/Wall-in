@@ -1,8 +1,7 @@
 #include <thread>
 
-#include "../walls/walls.h"
-#include "../grid/linkgrid.h"
-#include "../animation/move_blast.h"
+#include "../grid/AllGrids.h"
+#include "../animation/UI_move_blast.h"
 #include "blast.h"
 
 /*
@@ -13,7 +12,7 @@
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD = 8000;						// milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
+extern const time_t DFLT_BLAST_SPD = 8000;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
 
 // PEW PEW!!
 
@@ -100,7 +99,7 @@ void Blast::Setup_Position_Incrementors(GrdCoord &startPos)	// Sa position
 	// SETUP: POSITION EN XY
 	// Cette incrémenteur va faire avancer la position du DEVANT du blast dans la console en X et Y. Seul la coord de la tête du blast est nécessaire pour l'affichage
 	Init_Axis_Incrementor(dir, frontXY);		// Initialise l'incrémenteur de position XY
-	Equal_Coordinates(frontXY.coord, linkGrid.link[startPos.c][startPos.r].Get_XY());		// La coordonnée xy du Blast est initialisé à une position de départ, soit vraisemblablement celle du joueur
+	Equal_Coordinates(frontXY.coord, linkGrid->link[startPos.c][startPos.r].Get_XY());		// La coordonnée xy du Blast est initialisé à une position de départ, soit vraisemblablement celle du joueur
 	
 	Init_Axis_Incrementor(dir, tailXY);		// Initialise l'incrémenteur de d'Axe de position XY
 	tailXY.coord = frontXY.coord;					// Head and tail commence avec le même XY
@@ -116,8 +115,8 @@ void Blast::Setup_Grid_Limit()													// Calcul la limite ou le blast va de
 	case UP:														// La limite sera la row 0 du grid
 	case LEFT:	grdLimit = 0; break;								// La limite sera la col 0 du grid
 
-	case DOWN:	grdLimit = linkGrid.Get_Rows() - 1; break;			// Le nombre de rows maximum du grid sera la limite
-	case RIGHT:	grdLimit = linkGrid.Get_Cols() - 1;					// Le nombre de col maximum du link grid sera la limite
+	case DOWN:	grdLimit = linkGrid->Get_Rows() - 1; break;			// Le nombre de rows maximum du grid sera la limite
+	case RIGHT:	grdLimit = linkGrid->Get_Cols() - 1;					// Le nombre de col maximum du link grid sera la limite
 	}
 
 }
@@ -157,7 +156,7 @@ void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de 
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 
-Blast* Blast::Blast_Shot(BlastType type, GrdCoord& startPos, Direction& blastDir)
+Blast* Blast::Blast_Shot(BlastType type, GrdCoord startPos, Direction& blastDir)
 {
 	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
 
@@ -172,9 +171,10 @@ Blast* Blast::Blast_Shot(BlastType type, GrdCoord& startPos, Direction& blastDir
 			if(nbSteps)							// Si le blast n'est pas sur sa première position de départ
 				grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
 			
-			if (linkGrid.Is_Link_Here(grdPos.index.c, grdPos.index.r))		// Vérifie la présence d'un link 
+			if (linkGrid->Is_Link_Here(grdPos.index.c, grdPos.index.r))		// Vérifie la présence d'un link 
 			{
-				MoveBlast::Animate_Blast(this);			// Sert principalement à effacer la tail bien franchement 
+				if(nbSteps != 0)
+					UI_MoveBlast::Animate_Blast(this);			// Sert principalement à effacer la tail bien franchement 
 				break;		// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement 
 			}
 			// OPTIONAL:  Check si d'autres trucs, comme un joueur ou un item est ici
@@ -191,7 +191,7 @@ Blast* Blast::Blast_Shot(BlastType type, GrdCoord& startPos, Direction& blastDir
 		}
 
 		// ANIMATION!!!
-		MoveBlast::Animate_Blast(this); // Bouge le blast!
+		UI_MoveBlast::Animate_Blast(this); // Bouge le blast!
 		std::this_thread::sleep_for(std::chrono::microseconds(speed)); // Temps de pause entre chaque affichages		// speed * deltatime?
 
 
@@ -225,3 +225,25 @@ bool Blast::Has_Reached_Limit()		// Ça c'est la prochaine limite, c'est pas cell
 {
 	return *grdPos.axis == grdLimit;	// Si la colonne, ou la row, sur lequel se trouve le blast est égal à la limite(soit la bordure de la box du terrain de jeu)
 }										// Si cela est vrai, le blast s'arrête maintenant
+
+
+
+
+
+// POST-BLAST
+// **********
+
+
+// Le nombre de Link à "Activer" selon la distance parcouru
+//---------------------------------------------------------
+
+int Blast::Nb_Of_Links_To_Activate()
+{
+	if (nbSteps == 0)	// Le blast n'a parcouru aucune distance (le player à sûrement tiré sur la bordure)
+		return 0;
+	else
+		if (nbSteps >= length)		// La blast à parcouru une distance plus grande ou égale à sa longueur 
+			return 1 + (length) / (btwLinks + 1);	// Longueur du blast / par DELTA_X/DELTA_Y sur le grid + 1 (NOMBRE MAX DE WALLS À ENREGISTRER)
+		else
+			return 1 + nbSteps / (btwLinks + 1);	// +1, car garentie d'avoir au moins deux Link
+}

@@ -25,8 +25,6 @@
 #include "../FONCTIONS/inputs/detect_input.h"
 using namespace std;
 
-void Test_Animation(Colors one, Colors two);	// So pretty...
-
 
 // ALL IN ONE PLACE MOTHERFUCKER!
 
@@ -37,33 +35,31 @@ int main()	// Le début!
 
 	char UI; Coord crd;	int maxC, maxR;
 
-	Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
-
+	AllGrids Grids;
+	Create_All_Grids2(Grids, 13, 15);
 	
-										
-										// test the all grids
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// AFFICHE TOUS LES GRIDS 
-	maxC = gGrids.linkGrd.Get_Cols();
-	maxR = gGrids.linkGrd.Get_Rows();
+	// test the all grids
+	maxC = Grids.linkGrd.Get_Cols();
+	maxR = Grids.linkGrd.Get_Rows();
+
 	UI = LinkSym::PARENT;
 
 	for (int i = 0; i < maxC; i++)	// Affiche Le Link grid
 	{
 		for (int j = 0; j < maxR; j++)
 		{
-			crd = gGrids.linkGrd.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
+			crd = Grids.linkGrd.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
 		}
 	}
 
-	maxC = gGrids.wallGrdHor.Get_Cols();
-	maxR = gGrids.wallGrdVer.Get_Cols();
+	maxC = Grids.wallGrdHor.Get_Cols();
+	maxR = Grids.wallGrdVer.Get_Cols();
 
 	for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
 	{
 		for (int j = 0; j < maxR; j++)
 		{
-			UI = gGrids.wallGrdHor.wall[i][j].Get_Sym();crd = gGrids.wallGrdHor.wall[i][j].Get_XY();
+			UI = Grids.wallGrdHor.wall[i][j].Get_Sym();crd = Grids.wallGrdHor.wall[i][j].Get_XY();
 
 			UI_Dsp_Char(crd, UI, (Colors)j);
 
@@ -72,30 +68,89 @@ int main()	// Le début!
 	}
 
 
-	maxC = gGrids.wallGrdVer.Get_Cols();
-	maxR = gGrids.wallGrdVer.Get_Rows();
+	maxC = Grids.wallGrdVer.Get_Cols();
+	maxR = Grids.wallGrdVer.Get_Rows();
 
 	for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
 	{
 		for (int j = 0; j < maxR; j++)
 		{
-			UI = gGrids.wallGrdVer.wall[i][j].Get_Sym();crd = gGrids.wallGrdVer.wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI, (Colors)i);
+			UI = Grids.wallGrdVer.wall[i][j].Get_Sym();crd = Grids.wallGrdVer.wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI, (Colors)i);
 
 		}
 	}
 
 	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
 	{
-		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+		for (int j = 0; j < Grids.spawnGrd.border[i].Get_Num_Spawns(); j++)
 		{
 			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+			crd = Grids.spawnGrd.border[i].spawn[j].Get_XY();
 			UI_Dsp_String(crd, std::to_string(j), (Colors)j);	// Ceci pourrait être une fonction d'affichage
 
-				
+				// Cette fonction est incapable d'afficher un int...
 		}
 	}
+	
 
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// AFFICHE TOUS LES GRIDS 
+
+	
+	//Resize_Grids_To_Level(linkGrid, wallGrids, spawnGrid, 1);	// Woorks ^^
+
+	//maxC = linkGrid.Get_Cols();
+	//maxR = linkGrid.Get_Rows();
+
+	//UI = LinkSym::PARENT;
+
+	//for (int i = 0; i < maxC; i++)	// Affiche Le Link grid
+	//{
+	//	for (int j = 0; j < maxR; j++)
+	//	{
+	//		crd = linkGrid.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
+	//	}
+	//}
+
+	//maxC = wallGrids.hor->Get_Cols();
+	//maxR = wallGrids.hor->Get_Rows();
+
+	//for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
+	//{
+	//	for (int j = 0; j < maxR; j++)
+	//	{
+	//		UI = wallGrids.hor->wall[i][j].Get_Sym();crd=wallGrids.hor->wall[i][j].Get_XY();
+	//		
+	//		UI_Dsp_Char(crd, UI,(Colors)j);
+	//		
+	//		
+	//	}
+	//}
+
+
+	//maxC = wallGrids.ver->Get_Cols();
+	//maxR = wallGrids.ver->Get_Rows();
+
+	//for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
+	//{
+	//	for (int j = 0; j < maxR; j++)
+	//	{
+	//		UI = wallGrids.ver->wall[i][j].Get_Sym();crd = wallGrids.ver->wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI,(Colors)i);
+
+	//	}
+	//}
+
+	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	//{
+	//	for (int j = 0; j < spawnGrid.border[i].Get_Num_Spawns(); j++)
+	//	{
+	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+	//		crd = spawnGrid.border[i].spawn[j].Get_XY();
+	//		UI_Dsp_String(crd, std::to_string(j), (Colors)j);	// Ceci pourrait être une fonction d'affichage
+
+	//			// Cette fonction est incapable d'afficher un int...
+	//	}
+	//}
 
 	/*
 	 Création de bots liés dans une liste
@@ -136,7 +191,6 @@ int main()	// Le début!
 	LvlClock.Start_Clock();
 
 	thread Clockydy(&GameClock::Infinite_Dsp, &LvlClock, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
-	//thread Test(Test_Animation, RED, WHITE);
 
 	//for (size_t i = 0; i < 1000000; i++)
 	//{
@@ -151,8 +205,11 @@ int main()	// Le début!
 
 	//LvlClock.Pause_Clock();
 
-	// test la vitesse d'affichage
 
+
+	std::thread blastThread;	// test les input qui font des blast
+	int input = 0;
+	
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 
 	do
@@ -162,11 +219,25 @@ int main()	// Le début!
 		
 		do	// Affiche MENU
 		{	
-			//std::thread input(Detect_Input);	// Il semblerait que threader un input rend impossible l'utilisation de Get_Key_State
-			//input.join();
-			Detect_Input();
-			Test_Animation(RED, WHITE);
+			//blastThread = thread(Check_Input);
+			//blastThread.join();
+			
+			
+			while (_kbhit())
+				_getch();
+			input = 0;
 
+			do
+			{
+				if ((_kbhit()))
+					input++;
+
+			} while (input < 1);
+			
+			Check_Input();
+			
+			// Check input
+			// if (input) -> Stuff
 		} while (true); // Game pas starté
 
 	
@@ -185,22 +256,4 @@ int main()	// Le début!
 		}
 
 	} while (true);	// Le joueur ne quitte pas
-}
-
-void Test_Animation(Colors one, Colors two)	// So pretty...
-{
-	Coord crd = { 0, 2 };
-	int max = 35;
-	char sym = 178;
-
-	while (crd.x <= max) {
-
-		if(crd.x % 2 == 0)
-			UI_Dsp_Char(crd, sym, one);
-		else
-			UI_Dsp_Char(crd, 178, two);
-	
-		crd.x++;
-	}
-
 }
