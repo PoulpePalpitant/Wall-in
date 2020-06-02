@@ -12,8 +12,8 @@ public:
 	Polarization polar;			// La polarisation positive ou négative du déplacement. +1 (pos) = Droite/Bas : -1 (neg) = Left/haut
 	int* axis;					// Le pointeur vers l'axe à incrémenter
 	
-	void Initialize(GrdCoord crd, Direction dir);	// Initialize tout 
-	void Init_Axis_Incrementor(Direction direction);// Initialise une position			
+	void Initialize_All(GrdCoord crd, Direction dir);	// Initialize tout 
+	void Initialize_Axis(Direction direction);// Initialise une position			
 	void Increment_Coord();							// Incrémente une position [col][row] dans le grid	-Forward!
 	void Decrement_Coord();							// Décrémente une position [col][row] dans le grid	-BackWard!
 
@@ -26,6 +26,6 @@ public:
 		else
 			axis = &index.r;
 	}
-	// Le = est déjà overloadé :( no practice for you
+	
 
 };

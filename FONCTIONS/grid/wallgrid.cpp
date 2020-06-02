@@ -106,19 +106,16 @@ int WallGrid::Nb_Of_Walls_Per_Blast(Blast* blast)
 }
 
 
-
-
-
 // Active tout les murs créé par un blast
 void WallGrid::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie leur valeurs) d'après un certains blast . Quand le joueur tir, ça laisse un mur, et il faut le record dans le grid
 {
 	static int nbOfWalls;
-	static WallType type;
+	static WallStrength type;
 	static Wall* toActivate;	// Wall à activer
 	static GridIndexIncrementor crd;	// crd du wall
 	
 
-	type = Convert_Blast_Type_To_Wall_Type(blast->type);	
+	type = Convert_Blast_Type_To_Wall_Type(blast->strength);	
 
 	/*find first wall crd*/
 	crd = blast->grdPos;
@@ -141,7 +138,12 @@ void WallGrid::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie
 	}
 
 }
-							  		 
+	
+
+void WallGrid::UI_Draw_Wall(GridIndexIncrementor crd)	// Affiche un MUR		
+{
+
+}
 //
 //
 //// Création ou Destruction de tous les murs possibles se situant entre deux coord (côte-à-côte sur le grid)

@@ -2,11 +2,11 @@
 
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
-
+#include "../walls/walls.h"
 
 /*
 	Les propriétés des Links
-
+	
 	State: Un Link sans child est un FREE link. Le joueur peut intéragir avec un FREE Link en se déplaçant dessus. Une fois 
 	par dessus le joueur peut le transféré si il tir dans une autre direction que celle du Link. Le transfert détruit d'abord
 	le link et créer un blast dans la direction du tir.	Quand un Link possède des childs, on dit qu'il est bound. Quand il est root, c'est qu'il est le premier sur la bordure, et qu'il ne peut pas avoir de parent
@@ -24,7 +24,7 @@
 
 
 enum class LinkState { DEAD, FREE, BOUND, ROOT };
-enum class LinkType{ REGULAR, LONER , INVINCIBLE, STRONG, EXPLODY, CHASER };
+enum class LinkType{ REGULAR, BLOCKER , ETERNAL, GROWER, CORRUPTED, CHASER };
 
 enum LinkSym 
 {
@@ -48,15 +48,15 @@ private:
 	// Pour faire une destruction en chaîne de Links
 	friend class DestroyChainOfWalls;
 
-	Link* pChild[3] = {};		// Pointe vers ses childs, trois MAX
+	Wall* pChild[3] = {};		// Pointe vers ses childs de walls, trois MAX
 	int numChild;				// Le nombre de child actuelle qui sont lié au link
-	Link* pParent = NULL;		// Pointe vers le parent
+	Wall* pParent = NULL;		// Pointe vers le parent
 	Polarization parentPos;		// Renseigne sur la position du parent selon la polarisation POS/NEG		Si POS: Le parent est soit à droite, soit en bas.		Contraire pour le NEG
 	// Wall* btwnParent;		// Le wall positionné entre ce Link et son parent 
 private:
 	// Activation
-	void Bond_Link_To_Child(Link* child);				// Assigne les pointeurs du parent à son child et vice versa
-	void Set_State(Link* child = NULL);					// Assigne le state 
+	void Bond_Link_To_Child(Wall* child);				// Assigne les pointeurs du parent à son child et vice versa
+	void Set_State(Wall* child = NULL);					// Assigne le state 
 
 	// Le grid va handle sa position XY
 	friend class LinkGrid;
@@ -65,11 +65,12 @@ private:
 public:
 	Coord Get_XY() { return coord; }				// Retrouve les Coord XY du Link 
 	LinkState Get_State() { return this->state; }	// Donne l'état du Link pour savoir si il existe
+	LinkType Get_Type() { return type; }
 	
 	void Dsp_Link();			// Affiche le Link
 	void Clr_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
 	
-	bool Activate_Link(LinkType &type, Link* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
+	bool Activate_Link(LinkType &type, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
 	void Deactivate_Link();		// Désactive le Link
 };
 

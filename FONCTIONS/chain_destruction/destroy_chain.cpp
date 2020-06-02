@@ -59,66 +59,66 @@ bool pop( Link* &data)	// Détruit l'item sur le dessus, mais conserve la donnée 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void DestroyChainOfWalls::Add_Children_To_List(Link* parent)
-{
-	int numChild;					// Nombre de child à ajouter à la liste de destruction
-
-	numChild = parent->numChild;
-
-	for (int i = 0; i < numChild; i++)	// 3 children max
-	{
-		if (parent->pChild[i] != NULL)
-			push(parent->pChild[i]);	// Ajoute child Link à la liste
-	}
-}
-
-
-// Wall and Link destruction
-// *************************
-
-static GrdCoord;	// variable global, privé au cpp
-
-void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd)
-{
-	Link* parent, * child;			// 
-
-	Wall* wallBtwn;					// Le mur à détruire entre deux Link
-
-
-	parent = &linkGrid->link[crd.c][crd.r]; // le premier de la liste
-	
-	for (int i = 0; i < 3 - 1; i++)	// On décale pas le dernier élément
-	{
-		if (parent->pParent->pChild[i] = NULL)								// Décale les childs du parent du premier Link à détruire
-			parent->pParent->pChild[i] = parent->pParent->pChild[i + 1];	// pour optimiser la prochaine ligne
-	}
-
-	Add_Children_To_List(parent);	// Ajoute les enfants du Link à la liste de destruction
-	pop(child);						// Prend un élément da liste à détruire
-	parent->Deactivate_Link();		// détruit le Link
-
-	//wallBtwn =
-
-
-		parent = child;
-
-
-	/*
-	
-	-delete parent
-	-find wall
-	-delete wall
-
-	Rinse, Wash, repeat
-	*/
-
-
-
-
-	// Accès au Link. doit pouvoir ajouter à la liste tout ses childs
-	// Get_Child(int child);
-	// return child[1]
-
-	//wall
-}
+//
+//void DestroyChainOfWalls::Add_Children_To_List(Link* parent)
+//{
+//	int numChild;					// Nombre de child à ajouter à la liste de destruction
+//
+//	numChild = parent->numChild;
+//
+//	for (int i = 0; i < numChild; i++)	// 3 children max
+//	{
+//		if (parent->pChild[i] != NULL)
+//			push(parent->pChild[i]);	// Ajoute child Link à la liste
+//	}
+//}
+//
+//
+//// Wall and Link destruction
+//// *************************
+//
+//static GrdCoord;	// variable global, privé au cpp
+//
+//void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd)
+//{
+//	Link* parent, * child;			// 
+//
+//	Wall* wallBtwn;					// Le mur à détruire entre deux Link
+//
+//
+//	parent = &linkGrid->link[crd.c][crd.r]; // le premier de la liste
+//	
+//	for (int i = 0; i < 3 - 1; i++)	// On décale pas le dernier élément
+//	{
+//		if (parent->pParent->pChild[i] = NULL)								// Décale les childs du parent du premier Link à détruire
+//			parent->pParent->pChild[i] = parent->pParent->pChild[i + 1];	// pour optimiser la prochaine ligne
+//	}
+//
+//	Add_Children_To_List(parent);	// Ajoute les enfants du Link à la liste de destruction
+//	pop(child);						// Prend un élément da liste à détruire
+//	parent->Deactivate_Link();		// détruit le Link
+//
+//	//wallBtwn =
+//
+//
+//		parent = child;
+//
+//
+//	/*
+//	
+//	-delete parent
+//	-find wall
+//	-delete wall
+//
+//	Rinse, Wash, repeat
+//	*/
+//
+//
+//
+//
+//	// Accès au Link. doit pouvoir ajouter à la liste tout ses childs
+//	// Get_Child(int child);
+//	// return child[1]
+//
+//	//wall
+//}

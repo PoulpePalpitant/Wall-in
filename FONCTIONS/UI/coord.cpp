@@ -4,45 +4,18 @@
 #include "coord.h"
 #include "direction.h"
 
-
-// On obtient la coord X et Y selon la position logique du maingrid ()obselete
-// --------------------------------------------------------
-
-int Get_GrdX(int col)
-{
-	return START_X + DELTA_X * col;
-}
-int Get_GrdY(int lig)
-{
-	return START_Y + DELTA_Y * lig;
-}
-void Get_GrdXY(int &col, int &lig)	// WATCHOUT :Passage par référence
-{
-	col = Get_GrdX(col);
-	lig = Get_GrdY(lig);
-}
-
-// On obtient la coord X et Y selon la position logique des WallGrid horizontale et vertical
-// -----------------------------------------------------------------------------------------
-
-void Get_VerWallGrdXY(int& col, int& lig)
-{
-	col = Get_GrdX(col);			// Le COORD XY du wall vertical se trouvera tjrs une case plus loin en Y(+1) que celle du Main Grid
-	lig = Get_GrdY(lig) + 1;		// Voir grid.h -> WallGrd pour la logique
-}
-
 // Permet de comparer deux points ensemble. Si les deux ne sont pas égals, return false
 bool Is_Equal(Coord crd1, Coord crd2)
 {
 	if (crd1.x == crd2.x)
 	{
 		if (crd1.y == crd2.y)
+			return true;// Les deux sont identiques
+		else
 			return false;
 	}
 	else
 		return false;
-
-	return true;	// Les deux sont identiques
 }
 
 // Créer une égalité entre deux coordonnées XY.		La première sera égale à la seconde
@@ -52,39 +25,50 @@ void Equal_Coordinates(Coord &from, Coord to)
 	from.y = to.y;
 }
 
-
 // Augmente de 1 ou -1 une coordonnée sur les X ou les Y!!
-void Increment_Coordinates(CoordIncrementor& coord)		
+void CoordIncrementor::Increment_Coord()
 {
-	*coord.axis += coord.polar;
+	*axis += polar;
+}
+
+// Augmente de 1 ou -1 une coordonnée sur le grid des link (Col ou Row), mais dans la direction inverse de la polarisation	
+void CoordIncrementor::Decrement_Coord()							// Décrémente une position XY dans la Console	-BackWard!
+{
+	*this->axis -= this->polar;
+}
+
+// Initialise l'incrémenteur de position de grid à une une position de grid
+void CoordIncrementor::Initialize_All(Coord crd, Direction dir)	// Initialize tout 
+{
+	this->Initialize_Axis(dir);
+	Equal_Coordinates(this->coord, crd);	// Permet d'égaliser deux valeurs de coordonnées de grid [col][row]
 }
 
 // Initialise un CoordIncrementor à partir d'une direction d'incrémentation
-void Init_Axis_Incrementor(Direction direction, CoordIncrementor & incre)
+void CoordIncrementor::Initialize_Axis(Direction direction)
 {
 	switch (direction)
 	{
-	case UP:	incre.axis = &incre.coord.y;	incre.polar = NEG;break;	// L'incrémentation se fera à la vertical, donc sur l'axe des Y, donc vers le haut avec une polarisation de  -1
-	case LEFT:	incre.axis = &incre.coord.x;	incre.polar = NEG;break;
-	case DOWN:	incre.axis = &incre.coord.y;	incre.polar = POS;break;
-	case RIGHT: incre.axis = &incre.coord.x;	incre.polar = POS;break;
+	case UP:	axis = &coord.y; polar = NEG;break;	// L'incrémentation se fera à la vertical, donc sur l'axe des Y, donc vers le haut avec une polarisation de  -1
+	case LEFT:	axis = &coord.x; polar = NEG;break;
+	case DOWN:	axis = &coord.y; polar = POS;break;
+	case RIGHT: axis = &coord.x; polar = POS;break;
 	}
 }
 
+// Initialise le pointeur vers l'axe de déplacement à partir d'un Axe
+void CoordIncrementor::Initialize_Axis(Axis ax)
+{
+	if (ax == HOR)
+	{
+		axis = &coord.x;
+		axis = &coord.x;
+	}
+	else
+	{
+		axis = &coord.y;
+		axis = &coord.y;
+	}
 
+}
 
-//
-//
-//int Get_WallGrdX(int col)
-//{
-//
-//	Get_GrdX(col) + 1;
-//
-//}
-//
-//
-//int Get_WallGrdY(int lig)
-//{
-//	Get_GrdY(lig) + 1;
-//
-//}

@@ -60,6 +60,18 @@ int LinkGrid::Is_Link_Here(int col, int row)			// WHERE IS LINK? I CAN'T FIND HI
 
 }
 
+// Pour déterminer un si le Link pourrait être un ROOT
+bool LinkGrid::Is_Link_On_Border(GrdCoord crd)		
+{
+	if (crd.c == 0 || crd.r == 0)		// Bordure UP & Left
+		return true;
+
+	if (crd.c == Get_Cols() - 1 || crd.r == Get_Rows() - 1)	// bordure Right & Down
+		return true;
+
+	return false;
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +107,7 @@ void LinkGrid::Activate_Links_From_Blast(Blast* blast, bool drawLastLink)
 
 	
 	linkCrd = blast->grdPos;									// Position du premier Link à créer
-	type = Convert_Blast_Type_To_Link_Type(blast->type);		// Tout les Link auront le même type brah?
+	//type = Convert_Blast_Type_To_Link_Type(blast->strength);		// Tout les Link auront le même type brah?
 	nbLinksTot = nbLinks = blast->Nb_Of_Links_To_Activate();			// Total à activer
 	
 	if (!nbLinks)
@@ -119,22 +131,9 @@ void LinkGrid::Activate_Links_From_Blast(Blast* blast, bool drawLastLink)
 
 		// VOILÀ
 
-		toActivate->Activate_Link(type, child);		// Active le Link, et le lis à son child
+		toActivate->Activate_Link(blast->linkType, child);		// Active le Link, et le lis à son child
 
 		/*theoretical perte de tempo, les links s'activent toujours en pairs anyway, tu veux pas set le state 2fois c'est pourquoi ta fais ce que ta fais en haut*/
-
-		/*1stloop*/
-		//toActivate = &this->link[linkCrd.index.c][linkCrd.index.r];
-		//toActivate->Activate_Link(type, child); // minus the child
-		//linkCrd.Decrement_Coord();
-
-		///*nextloops*/
-		//parent = toActivate;
-		//toActivate = &this->link[linkCrd.index.c][linkCrd.index.r];
-		//toActivate->Activate_Link(type, child); // minus the child
-		//if(nbLinks > 1)
-		//	parent->Bond_Link_To_Child(toActivate);
-		//linkCrd.Decrement_Coord();
 
 		// dumb stuff hehe
 		if(!(drawLastLink && nbLinks == 1))	// ne veut pas afficher inutilement!

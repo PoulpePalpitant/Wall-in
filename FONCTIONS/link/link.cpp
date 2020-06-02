@@ -13,7 +13,7 @@ void Link::Set_LinkXY(int col, int row)
 	this->coord.y = START_Y + DELTA_Y * row;
 }
 
-void Link::Set_State(Link* child )	// Assigne le state 
+void Link::Set_State(Wall* child )	// Assigne le state 
 {
 	if (!this->pParent)	// Pas de Parent? T'es le premier d'une ligné!
 		state = LinkState::ROOT;
@@ -30,10 +30,10 @@ void Link::Set_UI()
 	switch (this->type)
 	{
 	case LinkType::REGULAR: 
-	case LinkType::EXPLODY:
-	case LinkType::INVINCIBLE:	// BREAK!
+	case LinkType::ETERNAL:
+	case LinkType::CORRUPTED:	// BREAK!
 	case LinkType::CHASER:
-	case LinkType::STRONG:
+	case LinkType::BLOCKER:
 		if (state == LinkState::ROOT)
 			sym = (char)LinkSym::ROOT;
 		if (state == LinkState::BOUND)
@@ -45,7 +45,7 @@ void Link::Set_UI()
 }
 
 // Assigne les pointeurs du parent à son child et vice versa
-void Link::Bond_Link_To_Child(Link* child)
+void Link::Bond_Link_To_Child(Wall* child)
 {
 	if (child == NULL)	// Pas d'enfant icitte moé
 		return;	
@@ -67,17 +67,23 @@ void Link::Bond_Link_To_Child(Link* child)
 }
 
 // Active un Link et le relie à un Child
-bool Link::Activate_Link(LinkType& type, Link* child)
+bool Link::Activate_Link(LinkType& type, Wall* child)
 {
+	//static bool drawLink; drawLink = false;
+
 	this->type = type;	// Son nouveau type	(certaines conversions seront impossible dans le futur)
 
 	if (this->state == LinkState::DEAD || this->state == LinkState::FREE)		// error brah, le link était pas libre ou DEAD
 	{
 		Set_State(child);				// Set le state selon le fait qu'il a un child ou non, ou si ya pas de parent
+		//drawLink = true;				// Affiche toujours le Link quand son state change
 	}
 
 	Bond_Link_To_Child(child);		// Assignation des pointeurs
 	Set_UI();						// affichage
+
+	//if (drawLink)
+		//Dsp_Link();		//	Draw Le Link nécessite de vérifier si le joueur si trouve avant! Alors que pour chaque blast, je veux pas faire ça.
 
 	return true;
 }

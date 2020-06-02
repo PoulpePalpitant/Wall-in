@@ -94,3 +94,16 @@ void Equal_Coordinates(GrdCoord& from, GrdCoord to)
 	from.r = to.r;
 }
 
+// Permet de comparer deux points ensemble. Si les deux ne sont pas égals, return false
+bool Is_Equal(const GrdCoord &crd1, const GrdCoord &crd2)
+{
+	if (crd1.c == crd2.c)
+	{
+		if (crd1.r != crd2.r)
+			return false;
+	}
+	else
+		return false;
+
+	return true;	// Les deux sont identiques
+}

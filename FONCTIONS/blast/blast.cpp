@@ -9,28 +9,48 @@
 	ce qui fait que les bot bougent deux fois plus vite sur cette axe. Ce qui fait qu'il est deux fois plus tough de les arrêter avec des blasts horizontales.
 	C'est pourquoi, chaque tir horizontal va créer 2 murs aux lieux d'un seul.
 */
+struct BlastType								// Change les propriétés du blast
+{
+	WallStrength strength;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
+	LinkType linkType;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
+};
+
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD = 8000;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
+extern const time_t DFLT_BLAST_SPD_VER = 8000;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
+extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER / 2;			
+
+// Les propriétés principales du Blast par défaut
+extern const BlastType DFLT_BLAST =	{WallStrength::REGULAR, LinkType::REGULAR};
 
 // PEW PEW!!
 
-extern Blast blastP1 = {};
+extern Blast blastP1 = {}; 
 extern Blast blastP2 = {};
 
 // PEW PEW!!	
 
+
+
+
 // INTIALISATION DES PROPRIÉTÉ DU BLAST
-void Blast::Setup_Blast(BlastType type, GrdCoord &startPos, Direction &blastDir)
+void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir, const BlastType &type)
 {
-	this->type = type;								// type de blast
-	dir = blastDir;								// La direction du blast
-	Setup_Blast_UI();						// Son apparence futur
-	Setup_Dist_Btw_Links();						// La distance entre chacune des colisions sur le grid de links
-	Setup_Position_Incrementors(startPos);		// Sa position sur le Linkgrid et en XY
-	Setup_Grid_Limit();							// La col, ou Row ou le blast va s'arrêté, s'il ne rentre dans rien d'autre avnat!
-	Setup_Speed();							// Sa vitesse
+	strength = type.strength;				// Force du blast. Affecte la puissance du wall qui sera créé
+	linkType = type.linkType;					// type de Link à créer
+	
+	//if (dir != newblastDir)					// aurait pu être nice, mais je dois vérifié à chaque fois si les valeurs max n'ont pas changé entre le blast précédent
+	//{
+		dir = newblastDir;							// La direction du blast
+		Setup_Length();								// Ajuste la longueur du blast. Pourrait varier selon le type de tir
+		Setup_Grid_Limit();							// La col, ou Row ou le blast va s'arrêté, s'il ne rentre dans rien d'autre avnat!
+		Setup_Speed();								// Sa vitesse
+		Setup_Dist_Btw_Links();						// La distance entre chacune des colisions sur le grid de links
+	//}			
+
+	Setup_Blast_UI();							// Son apparence futur
+	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +59,7 @@ void Blast::Setup_Blast(BlastType type, GrdCoord &startPos, Direction &blastDir)
 // SETUP: L'APPARENCE DU BLAST 
 void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 {
-	if (type == BlastType::REGULAR)
+	if (strength == WallStrength::REGULAR)
 	{
 		switch (dir)		// Symboles par défaut
 		{
@@ -52,7 +72,6 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 		color = Colors::WHITE;		// Couleur par défaut
 	}
 
-	Setup_Length();	// Ajuste la longueur du blast. Pourrait varier selon le type de tir
 
 	// Autres types 
 	// ...
@@ -62,18 +81,10 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 // SETUP: LONGUEUR MAX DU BLAST
 void Blast::Setup_Length()					// Ajuste la longueur du blast qui sera tiré
 {
-	switch (type)
+	switch (dir)		// Symboles par défaut
 	{
-	case BlastType::REGULAR:									// à noter que tu risque d'ajuster la size vers la même chose à chaque fois, 
-																// ¨ca me fait réalisé que je réassigne tout à chaque fois, même si c'est pas nécessaire quand je tir tjrs dans la même direction
-		switch (dir)		// Symboles par défaut
-		{
-		case UP:	case DOWN: this->length = maxlengthVer; break;	// Longueur sur la verticale
-		case LEFT:	case RIGHT:this->length = maxlengthHor; break;	// Longueur sur l'Horizontale
-		}
-		
-		break;
-		
+	case UP:	case DOWN: this->length = maxlengthVer; break;	// Longueur sur la verticale
+	case LEFT:	case RIGHT:this->length = maxlengthHor; break;	// Longueur sur l'Horizontale
 	}
 }
 
@@ -83,27 +94,12 @@ void Blast::Setup_Dist_Btw_Links()
 	switch (dir)
 	{
 	case UP:
-	case DOWN: btwLinks= DELTA_Y - 1; break;
+	case DOWN: btwLinks = DELTA_Y - 1; break;
 	case LEFT:
 	case RIGHT: btwLinks = DELTA_X - 1; break;
 	}
 }
 
-// SETUP: LA DIRECTION DU BLAST EN XY ET EN COORD DE GRIDS 
-void Blast::Setup_Position_Incrementors(GrdCoord &startPos)	// Sa position 
-{
-	// SETUP: POSITION DANS LE LINK GRID
-	// Cette incrémenteur va faire avancer la position du blast sur le LinkGrid. Ça va servir pour la détection de de colision sur les éléments LinkGrid 
-	grdPos.Initialize(startPos, dir);				// Initialise l'incrémenteur de position de grid à la position actuel.
-
-	// SETUP: POSITION EN XY
-	// Cette incrémenteur va faire avancer la position du DEVANT du blast dans la console en X et Y. Seul la coord de la tête du blast est nécessaire pour l'affichage
-	Init_Axis_Incrementor(dir, frontXY);		// Initialise l'incrémenteur de position XY
-	Equal_Coordinates(frontXY.coord, linkGrid->link[startPos.c][startPos.r].Get_XY());		// La coordonnée xy du Blast est initialisé à une position de départ, soit vraisemblablement celle du joueur
-	
-	Init_Axis_Incrementor(dir, tailXY);		// Initialise l'incrémenteur de d'Axe de position XY
-	tailXY.coord = frontXY.coord;					// Head and tail commence avec le même XY
-}
 
 // SETUP: LA POSITION EN COL OU ROW OU LE BLAST VA DEVOIR S'ARRÊTER (pour par qu'il sorte de la box)
 void Blast::Setup_Grid_Limit()													// Calcul la limite ou le blast va devoir s'arrêter
@@ -126,41 +122,39 @@ void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de 
 {
 	switch (dir)
 	{
-	case UP:case DOWN:	
-		switch (type)
-		{
-		case BlastType::REGULAR: speed = DFLT_BLAST_SPD;break;
-
-
-		}
-		break;
-
+	case UP:case DOWN:		
+		speed = speedVer;	break;
 	case LEFT:case RIGHT:	
-		switch (type)
-		{
-		case BlastType::REGULAR: speed = DFLT_BLAST_SPD / 2;break;	// Blast horizontal est maintenant 2x plus rapide qu'avant
-
-
-		}
+		speed = speedHor;	break;	// Blast horizontal est maintenant 2x plus rapide qu'avant		
 	}
-
-
-
-
 }
 
+// SETUP: LA DIRECTION DU BLAST EN XY ET EN COORD DE GRIDS 
+void Blast::Setup_Position_Incrementors(GrdCoord& startPos)	// Sa position 
+{
+	// SETUP: POSITION DANS LE LINK GRID
+	// Cette incrémenteur va faire avancer la position du blast sur le LinkGrid. Ça va servir pour la détection de de colision sur les éléments LinkGrid 
+	grdPos.Initialize_All(startPos, dir);				// Initialise l'incrémenteur de position de grid à la position actuel.
 
+	// SETUP: POSITION EN XY
+	// Cette incrémenteur va faire avancer la position du DEVANT du blast dans la console en X et Y. Seul la coord de la tête du blast est nécessaire pour l'affichage
+	Init_Axis_Incrementor(dir, frontXY);		// Initialise l'incrémenteur de position XY
+	Equal_Coordinates(frontXY.coord, linkGrid->link[startPos.c][startPos.r].Get_XY());		// La coordonnée xy du Blast est initialisé à une position de départ, soit vraisemblablement celle du joueur
+
+	Init_Axis_Incrementor(dir, tailXY);		// Initialise l'incrémenteur de d'Axe de position XY
+	tailXY.coord = frontXY.coord;					// Head and tail commence avec le même XY
+}
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 
-Blast* Blast::Blast_Shot(BlastType type, GrdCoord startPos, Direction& blastDir)
+Blast* Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType& type)
 {
 	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
 
-	Setup_Blast(type, startPos, blastDir);
+	Setup_Blast(startPos, blastDir, type);
 
 	// Si tu tir sur un link just enface, ça va juste faire un mur, no backtep amigo.
 
@@ -225,9 +219,6 @@ bool Blast::Has_Reached_Limit()		// Ça c'est la prochaine limite, c'est pas cell
 {
 	return *grdPos.axis == grdLimit;	// Si la colonne, ou la row, sur lequel se trouve le blast est égal à la limite(soit la bordure de la box du terrain de jeu)
 }										// Si cela est vrai, le blast s'arrête maintenant
-
-
-
 
 
 // POST-BLAST

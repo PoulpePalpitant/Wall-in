@@ -64,7 +64,7 @@ void Validate_Input()
 			// Destroy	// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer
 
 
-		Blast* blast = blastP1.Blast_Shot(BlastType::REGULAR, P1.Get_Grd_Coord(), keyDirection);	// tir
+		Blast* blast = blastP1.Blast_Shot(P1.Get_Grd_Coord(), keyDirection);	// tir
 		gGrids.Activate_Walls_And_Links_From_Blast(blast);					// activation des murs et links
 	}
 	

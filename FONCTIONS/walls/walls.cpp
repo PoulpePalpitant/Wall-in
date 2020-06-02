@@ -1,8 +1,11 @@
 
 
-#include "walls.h"
+#include "../UI/console_output/dsp_char.h"
 #include "../grid/grid.h"
+#include "walls.h"
 
+extern const int WALL_SIZE_X =  DELTA_X - 1;	// Le nombre de case qui composent chaque wall horizontale
+extern const int WALL_SIZE_Y = DELTA_Y - 1;		// Le nombre de case qui composent chaque wall verticale
 
 
 void Wall::Set_XY(int col, int row, Axis axis)
@@ -20,32 +23,41 @@ void Wall::Set_XY(int col, int row, Axis axis)
 }
 
 // ON CHANGE L'APPARANCE DU MUR SELON SON TYPE!
-void Wall::Set_Wall_UI(WallType newType)									
+void Wall::Set_Wall_UI(WallStrength newStrgt)									
 {
-	// On change rien si le nouveau type est le même que le précédent
-	if (type == newType)
-		return;
 
-	switch (newType)
+	// On change rien si le nouveau type est le même que le précédent
+	//if (strgt == newType)		// Doit être updaté
+		//return;
+
+	switch (newStrgt)
 	{
-	case WallType::REGULAR:
+	case WallStrength::REGULAR:
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
-	case WallType::GHOST:	
+	case WallStrength::WEAK:	
 		color = Colors::GRAY;				// La couleur est grise
 		//if (axis == HOR)
 		//	sym = WallSym::SYM_HOR;		// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
 		//else
 		//	sym = WallSym::SYM_VER;
 		break;
-	case WallType::STRONG: 
+	case WallStrength::STRONG: 
 		color = Colors::LIGHT_YELLOW;				
 		break;
 
-	case WallType::BIGSTRONGWOW:
+	case WallStrength::BIGSTRONGWOW:
 		color = Colors::LIGHT_AQUA;
 		break;
 	}
+}
+
+void Wall::Set_Strength(WallStrength newStrgt)
+{
+	if (pParent->Get_Type() == LinkType::CORRUPTED)		// Le parent corrompu change le Wall en weak pour l'instant
+		strgt = WallStrength::WEAK;
+	else
+		strgt = newStrgt;
 }
 
 
@@ -63,4 +75,38 @@ void Wall::Set_Default_Wall_UI()
 	color = Colors::WHITE;
 }
 
+// Dimension de chacun des walls
+int Wall::Get_Wall_Size(Axis axis)						// La longueur du wall
+{
+	if (axis == HOR)
+		return WALL_SIZE_X;
+	else
+		return WALL_SIZE_Y;
+}
 
+// Affiche un Mur selon une direction
+void Wall::UI_Draw_Wall(Polarization plr)
+{
+	CoordIncrementor startPos;	// Position de départ
+	int wallSize;	// Dimension du mur
+
+	// Initialisation de l'incrémenteur
+	startPos.Initialize_Axis(axis);
+	startPos.polar = plr;
+	startPos.coord = XY;
+
+	wallSize = Get_Wall_Size(axis);
+
+	if (plr == NEG)								//  x  ->   <-  x		x = startpos
+		*startPos.axis += wallSize - 1;			// O----O	O----O		-> = plr
+
+	for (int i = 0; i < wallSize; i++)
+	{
+		UI_Dsp_Char(startPos.coord, (char)sym, color);
+		Sleep(15);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
+
+		startPos.Increment_Coord();	// Prochaine case
+	}
+
+
+}

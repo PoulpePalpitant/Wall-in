@@ -2,14 +2,14 @@
 #include "grd_incrementor.h"
 
 // Initialise l'incrémenteur de position de grid à une une position de grid
-void GridIndexIncrementor::Initialize(GrdCoord crd, Direction dir)	// Initialize tout 
+void GridIndexIncrementor::Initialize_All(GrdCoord crd, Direction dir)	// Initialize tout 
 {
-	this->Init_Axis_Incrementor(dir);		
+	this->Initialize_Axis(dir);		
 	Equal_Coordinates(this->index, crd);	// Permet d'égaliser deux valeurs de coordonnées de grid [col][row]
 }
 
 // Initialise un CoordIncrementor à partir d'une direction d'incrémentation
- void GridIndexIncrementor::Init_Axis_Incrementor(Direction direction)
+ void GridIndexIncrementor::Initialize_Axis(Direction direction)
 {
 	switch (direction)
 	{
