@@ -91,59 +91,43 @@ void WallGrid::Adapt_To_LinkGrid_Size(int& col, int& row, LinkGrid& linkGrid)
 //
 //}
 
-// Le nombre de walls à "Creer" selon un "Blast" du joueur
-//---------------------------------------------------------
 
-int WallGrid::Nb_Of_Walls_Per_Blast(Blast* blast)
-{
-	if (blast->nbSteps == 0)	// Le blast n'a parcouru aucune distance (le player à sûrement tiré sur la bordure)
-		return 0;
-	else
-		if (blast->nbSteps >= blast->length)		// La blast à parcouru une distance plus grande ou égale à sa longueur 
-			return blast->length / (blast->btwLinks + 1) ;	// La longueur max / par la distance qui sépare chaque link	(NOMBRE MAX DE WALLS À ENREGISTRER)
-		else
-			return blast->nbSteps / (blast->btwLinks + 1); //works
-}
-
-
-// Active tout les murs créé par un blast
-void WallGrid::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie leur valeurs) d'après un certains blast . Quand le joueur tir, ça laisse un mur, et il faut le record dans le grid
-{
-	static int nbOfWalls;
-	static WallStrength type;
-	static Wall* toActivate;	// Wall à activer
-	static GridIndexIncrementor crd;	// crd du wall
+//
+//
+//// Active tout les murs créé par un blast
+//void WallGrid::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie leur valeurs) d'après un certains blast . Quand le joueur tir, ça laisse un mur, et il faut le record dans le grid
+//{
+//	static int nbOfWalls;
+//	static WallStrength type;
+//	static Wall* toActivate;	// Wall à activer
+//	static GridIndexIncrementor crd;	// crd du wall
+//	
+//
+//	//type = Convert_Blast_Type_To_Wall_Type(blast->strength);	
+//
+//	/*find first wall crd*/
+//	crd = blast->grdPos;
+//	if(blast->dir == RIGHT)		// Tu déborde du grid mon gars. Le dernier Wall à droite correspond à L'AVANT dernier Link	   1    2    3	|	(Links)		col[3]
+//		crd.index.c--;																										 //o----o----o	|Fin
+//	else																													 //   1   2		|	(walls)		col[2]
+//		if (blast->dir == DOWN)		// Tu déborde du grid mon gars
+//		crd.index.r--;
+//
+//	nbOfWalls = this->Nb_Of_Walls_Per_Blast(blast);	// si merge: clear
+//	while (nbOfWalls)
+//	{
+//		toActivate = &this->wall[crd.index.c][crd.index.r];	// wall à activer
+//		toActivate->Activate_Wall(type);
+//
+//		if(nbOfWalls > 1)
+//			crd.Decrement_Coord();	
+//
+//		nbOfWalls--;
+//	}
+//
+//}
 	
 
-	type = Convert_Blast_Type_To_Wall_Type(blast->strength);	
-
-	/*find first wall crd*/
-	crd = blast->grdPos;
-	if(blast->dir == RIGHT)		// Tu déborde du grid mon gars. Le dernier Wall à droite correspond à L'AVANT dernier Link	   1    2    3	|	(Links)		col[3]
-		crd.index.c--;																										 //o----o----o	|Fin
-	else																													 //   1   2		|	(walls)		col[2]
-		if (blast->dir == DOWN)		// Tu déborde du grid mon gars
-		crd.index.r--;
-
-	nbOfWalls = this->Nb_Of_Walls_Per_Blast(blast);	// si merge: clear
-	while (nbOfWalls)
-	{
-		toActivate = &this->wall[crd.index.c][crd.index.r];	// wall à activer
-		toActivate->Activate_Wall(type);
-
-		if(nbOfWalls > 1)
-			crd.Decrement_Coord();	
-
-		nbOfWalls--;
-	}
-
-}
-	
-
-void WallGrid::UI_Draw_Wall(GridIndexIncrementor crd)	// Affiche un MUR		
-{
-
-}
 //
 //
 //// Création ou Destruction de tous les murs possibles se situant entre deux coord (côte-à-côte sur le grid)

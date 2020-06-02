@@ -2,6 +2,8 @@
 
 #include "../grid/AllGrids.h"
 #include "../animation/UI_move_blast.h"
+#include "../player/player.h"
+
 #include "blast.h"
 
 /*
@@ -138,10 +140,10 @@ void Blast::Setup_Position_Incrementors(GrdCoord& startPos)	// Sa position
 
 	// SETUP: POSITION EN XY
 	// Cette incrémenteur va faire avancer la position du DEVANT du blast dans la console en X et Y. Seul la coord de la tête du blast est nécessaire pour l'affichage
-	Init_Axis_Incrementor(dir, frontXY);		// Initialise l'incrémenteur de position XY
+	frontXY.Initialize_Axis(dir);		// Initialise l'incrémenteur de position XY
 	Equal_Coordinates(frontXY.coord, linkGrid->link[startPos.c][startPos.r].Get_XY());		// La coordonnée xy du Blast est initialisé à une position de départ, soit vraisemblablement celle du joueur
 
-	Init_Axis_Incrementor(dir, tailXY);		// Initialise l'incrémenteur de d'Axe de position XY
+	tailXY.Initialize_Axis(dir);				// Initialise l'incrémenteur de d'Axe de position XY
 	tailXY.coord = frontXY.coord;					// Head and tail commence avec le même XY
 }
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -190,11 +192,13 @@ Blast* Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType
 
 
 		// PROCHAINE position XY	
-		Increment_Coordinates(frontXY);	// (+/- 1 dans une direction X/Y)
+		frontXY.Increment_Coord();	// (+/- 1 dans une direction X/Y)
 
 		// Prochain Nombre de steps total
 		nbSteps++;	// Un pas de plus!Mais pour le prochain?
 	}
+
+	P1.Upd_Sym_From_Direction(dir);	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
 
 	return this;	// Le nombre total de case que le blast à traversé
 
@@ -237,4 +241,18 @@ int Blast::Nb_Of_Links_To_Activate()
 			return 1 + (length) / (btwLinks + 1);	// Longueur du blast / par DELTA_X/DELTA_Y sur le grid + 1 (NOMBRE MAX DE WALLS À ENREGISTRER)
 		else
 			return 1 + nbSteps / (btwLinks + 1);	// +1, car garentie d'avoir au moins deux Link
+}
+
+// Le nombre de walls à "Creer" selon un "Blast" du joueur
+//---------------------------------------------------------
+
+int Blast::Nb_Of_Walls_Per_Blast()
+{
+	if (nbSteps == 0)	// Le blast n'a parcouru aucune distance (le player à sûrement tiré sur la bordure)
+		return 0;
+	else
+		if (nbSteps >= length)		// La blast à parcouru une distance plus grande ou égale à sa longueur 
+			return length / (btwLinks + 1);	// La longueur max / par la distance qui sépare chaque link	(NOMBRE MAX DE WALLS À ENREGISTRER)
+		else
+			return nbSteps / (btwLinks + 1); //works
 }

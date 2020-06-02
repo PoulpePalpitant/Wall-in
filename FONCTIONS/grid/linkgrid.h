@@ -1,7 +1,6 @@
 #pragma once
 
 #include "grid.h"
-#include "../blast/blast.h"
 #include "../link/link.h"
 
 // Grid de Links
@@ -18,7 +17,7 @@ public:
 	int Is_Link_Here(int col, int row);			// WHERE IS LINK? I CAN'T FIND HIM!?
 	bool Is_Link_On_Border(GrdCoord crd);		// Pour déterminer un si le Link pourrait être un ROOT
 	// Créer une chaîne de link à partir d'un blast
-	void Activate_Links_From_Blast(Blast* blast, bool drawLastLink);
+	//void Activate_Links_From_Blast(Blast* blast, bool drawLastLink);
 };
 
 

@@ -18,8 +18,6 @@ class DestroyChainOfWalls {
 	void Destroy_Chain_Of_Walls(GrdCoord linkCrd);							// Détruit la chaine de link et de mur dépendant d'un Link
 
 
-
-
 };
 
 

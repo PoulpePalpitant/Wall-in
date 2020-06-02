@@ -96,6 +96,12 @@ int main()	// Le début!
 		}
 	}
 
+	GrdCoord Jerry = { 5,10 };
+	gGrids.Activate_Chain_Of_Walls(Jerry, UP, 3);
+	Jerry = { 5,20 };
+	gGrids.Activate_Chain_Of_Walls(Jerry, DOWN, 2);
+	Jerry = { 1,7 };
+	gGrids.Activate_Chain_Of_Walls(Jerry, UP, 15);
 
 	/*
 	 Création de bots liés dans une liste
@@ -148,9 +154,7 @@ int main()	// Le début!
 	//	}
 	//}
 	//Sleep(10000);
-
 	//LvlClock.Pause_Clock();
-
 	// test la vitesse d'affichage
 
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------

@@ -53,6 +53,6 @@ void UI_MoveBlast::Erase_Blast_Tail(Blast* blast)	// ERASE: la queue du blast, s
 	UI_Dsp_Char(blast->tailXY.coord, TXT_CONST.SPACE);
 
 	// Incrémentation da la prochaine position XY
-	Increment_Coordinates(blast->tailXY);
+	blast->tailXY.Increment_Coord();
 
 }

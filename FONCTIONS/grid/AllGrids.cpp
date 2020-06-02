@@ -24,24 +24,26 @@ WallGrid* AllGrids::Find_Wall_Grid_From_Direction(Direction dir)
 }
 
 // Trouve quel wallgrid correspond à un axe de direction
-WallGrid* AllGrids::Find_Wall_Grid_From_Crd_Incrementor(GridIndexIncrementor crd)
+WallGrid* AllGrids::Find_Wall_Grid_From_Crd_Incrementor(const GridIndexIncrementor &crd)
 {
-	if (crd.axis == &crd.index.c)
+	if (crd.axis == &crd.index.c)	// LEÇON: Tu dois mettre la coord en référence, parce que tu compare Deux ADRESSES. Si tu passe la coord par valeur, ça créé une copie qui n'aura pas la même adresse
 		return wallGridVer;			// WallGrid vertical
 	else
 		return wallGridHor;			// Wallgrid horizontal
 }
 
 // Trouve un wall qui possède la même position qu'un Link avec la polarisation et l'axe
-GridIndexIncrementor AllGrids::Convert_LinkCrd_To_WallCrd(GridIndexIncrementor linkCrd)
+GrdCoord AllGrids::Convert_LinkCrd_To_WallCrd(const GridIndexIncrementor &linkCrd)
 {
-	if (linkCrd.polar == POS)
+	GrdCoord wallCrd = linkCrd.index;
+
+	if (linkCrd.polar == POS)// LEÇON: Tu dois mettre la coord en référence, parce que tu compare Deux ADRESSES. Si tu passe la coord par valeur, ça créé une copie qui n'aura pas la même adresse
 		if (linkCrd.axis == &linkCrd.index.c)	// Tu déborde du grid mon gars. Le dernier Wall à droite correspond à L'AVANT dernier Link	   1    2    3	|	(Links)		col[3]
-			linkCrd.index.c--;																												 //o----o----o	|Fin
+			wallCrd.c--;																												 //o----o----o	|Fin
 		else																																 //   1   2		|	(walls)		col[2]
-			linkCrd.index.r--;				// Tu déborde du grid mon gars
+			wallCrd.r--;				// Tu déborde du grid mon gars
 	
-	return linkCrd;
+	return wallCrd;
 }
 
 // Trouve un wall qui possède la même position qu'un Link avec la direction
@@ -56,19 +58,50 @@ GrdCoord AllGrids::Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir)
 }
 
 
-
 // Activation d'éléments sur les grids:
 // ***********************************
 
 void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 {
-	static bool drawPlayer;														// Affiche le joueur, si le dernier Link se retrouve sur la même position		//DONT TRY TO UNDESTAND, KEEP GOING, WE DOIN THIS
-	blast->length >= blast->nbSteps ? drawPlayer = true : drawPlayer = false;	// Le dernier Link sera certainemennt sur la même position que le joueur
-	P1.Upd_Sym_From_Direction(blast->dir);	P1.Dis_Player_Sym();				// Affiche le joueur
+	int nbOfWalls;	// Nombre de mur à activer
+	static Wall* wall;						// Wall à activer
+	static Link* child, * parent;			// Link à activer et son child
+	static WallGrid* wallGRID;				// grid de wall
+	static GridIndexIncrementor wallCrd;	// crd du wall
+	static GridIndexIncrementor linkCrd;	// Coord de chaque Link à afficher
+	bool playerOnLink = false;				// N'affiche pas le link child si le player se trouve dessus
 
-	linkGrid->Activate_Links_From_Blast(blast, drawPlayer);	
-	// bound Link to wall?
-	Find_Wall_Grid_From_Direction(blast->dir)->Activate_Walls_From_Blast(blast);	// Active les murs sur le bon grid de wall
+	parent = child = NULL;
+	wall = NULL; wallGRID = NULL;	/*safety*/
+
+	linkCrd = blast->grdPos;	// positions des links dans le grid
+	wallGRID = Find_Wall_Grid_From_Direction(blast->dir);	// Le bon grid
+	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(linkCrd);	// Première Coord de Wall
+
+	// Le nombre de murs 
+	nbOfWalls = blast->Nb_Of_Walls_Per_Blast();		
+
+	while (nbOfWalls)
+	{
+		wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];	// Le wall
+		parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// Le parent
+		linkCrd.Decrement_Coord();	// Crd du child
+		child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// le child
+		
+		parent->Activate_Link(blast->linkType, wall);		// Active le Link, et le lie à son child
+		wall->Activate_Wall(blast->strength, child);		// active wall
+		
+		if(nbOfWalls == 1)
+			child->Activate_Link(blast->linkType);				// On active le Child qu'une fois, car il n'y en a qu'un seul
+		
+		parent->Dsp_Link();	// Draw le link Parent
+
+		wallCrd.Decrement_Coord();	// prochaine coord de wall
+		nbOfWalls--;
+	}
+
+	if (!(Is_Equal(P1.Get_Grd_Coord(), linkCrd.index)))	// Si le joueur n'est PAS sur le dernier Link child
+		child->Dsp_Link();	// affiche le child
 }
 
 
@@ -90,17 +123,15 @@ static GridIndexIncrementor Find_First_Wall_Crd(const WallGrid &grid, const GrdC
 	GridIndexIncrementor wallCrd;
 
 	wallCrd.Initialize_All(linkCrd, dir);
-	wallCrd = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);
+	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);
 	return wallCrd;
 }
 
 // Créer manuellement une chaîne de murs et de Links dans une direction
 void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, LinkType type)	
 {
-	/* je dois merge les deux trucs ici*/
-
 	static Wall* wall;						// Wall à activer
-	static Link* child, * parent;			// Linka à activer et son child
+	static Link* child, * parent;			// Link à activer et son child
 	static WallGrid* wallGRID;				// grid de wall
 	static LinkState state;					// Pour vérifier si un Link est existe déjà
 	static GridIndexIncrementor wallCrd;	// crd du wall
@@ -111,21 +142,28 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 	wall = NULL; wallGRID = NULL;	/*safety*/
 
 	wallGRID = Find_Wall_Grid_From_Direction(dir);	// Le bon grid
-	Find_First_Wall_Crd(*wallGRID, grdCrd, dir);	// Première Coord de Wall
-	
+	linkCrd.Initialize_All(grdCrd, dir);	// Grd coord du premier Link
+	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);		// Première Coord de Wall
+	wallCrd.Increment_Coord();
+
 	while (numWalls)
 	{
+		wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];
+
 		if (linkGrid->Is_Inbound(linkCrd.index.c, linkCrd.index.r)) // premier check
 		{
 			parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];
 			state = parent->Get_State();
-			if(state > LinkState::FREE)								//Le parent doit être au maximum free pour activer un link
-				if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent, WE STOP
-				{
-					playerOnLink = true;	// On créé pas un Link par-dessus le joueur. Sauf si c'est un child
-					break;
-				}
+
+			if (state > LinkState::FREE)								//Le parent doit être au maximum free pour activer un link
+				return;
+
+			if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent, WE STOP
+				return;
+
 		}
+		else
+			return;	// Ta coord n'est pas dans le grid biiiiig
 
 		linkCrd.Increment_Coord();	// Crd du child
 
@@ -133,23 +171,45 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 		{
 			child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];
 			state = child->Get_State();
-			if (state > LinkState::FREE)						//Le parent doit être au maximum free pour activer un link
-				break;
+
+			if (state > LinkState::FREE)	// 	le child doit être DEAD sinon...			
+				return;
+
+			if (state == LinkState::FREE)	// LE child ne Peut pas être déjà FREE, Sinon tu connect deux Branches!!!
+			{
+				if (Are_Both_Links_Free(parent, child)) // La fonction est un échec, tu ne peux pas activer 1 mur connectant deux branches existantes
+					return;
+
+				parent->Activate_Link(type);	// Il faut activer le parent qui n'aura en fait aucun Child
+				parent->Dsp_Link();
+				return;
+			}		
+		}
+		else
+		{
+			parent->Activate_Link(type);	//On a atteint la limite.  Il faut activer le dernier parent qui n'aura en fait aucun Child
+			break;
 		}
 
-		if (Are_Both_Links_Free(parent, child))
-			break;
+		parent->Activate_Link(type, wall);		// Active le Link, et le lie à son child
+		wall->Activate_Wall(strength, child);	// active wall
+		
+		if (numWalls == 1)
+			child->Activate_Link(type);				// On active le Child qu'une fois, car il n'y en a qu'un seul 
 
-		parent->Activate_Link(type, child);		// Active le Link, et le lie à son child
-		child->Activate_Link(type);				// Eh oui, le child n'aura pas de child, ce qui veut dire qu'il devra être activé une seconde fois
-		wallGRID->wall[wallCrd.index.c][wallCrd.index.r].Activate_Wall(strength);			// active wall
 
 		// On affiche juste le parent, car le child pourrait changer de state, et donc de symbole à la prochaine loop. On l'affichera à la fin seulement
 		parent->Dsp_Link();	// Draw le link Parent
-		wallGRID->wall[wallCrd.index.c][wallCrd.index.r].UI_Draw_Wall(wallCrd.polar);	// Draw Le mur!
+		wall->UI_Draw_Wall(wallCrd.polar);	// Draw Le mur!
+
+
+
 		wallCrd.Increment_Coord();	// Coord du prochain wall
 		numWalls--;	// and here we go again
 	}
+
+	if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link child
+		playerOnLink = true;							
 
 	// Si le joueur n'est pas sur le child Link 
 	if (!playerOnLink)

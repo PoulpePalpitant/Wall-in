@@ -1,7 +1,7 @@
 
 #include "../grid/grid.h"
 #include "../UI/console_output/dsp_char.h"
-
+#include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
 
 #include "link.h"
 
@@ -44,34 +44,12 @@ void Link::Set_UI()
 	clr = WHITE;	//default bitch
 }
 
-// Assigne les pointeurs du parent à son child et vice versa
-void Link::Bond_Link_To_Child(Wall* child)
-{
-	if (child == NULL)	// Pas d'enfant icitte moé
-		return;	
-	/*mutex*/
-	for (int i = 0; i < 3; i++)	// 3 = max number of childs. For real, si tu fais cette fonctions et qu'ya déjà trois child, ta foiré quelque part
-	{
-		if (this->pChild[i] == NULL)
-		{
-			this->pChild[i] = child;	// Voici ton fils
-			child->pParent = this;		// Voici ton père
-			break;
-		}
-	}
-	
-	numChild++;	
-	/*if(numChild++ == 0)
-	Set_state*/
-	/*mutex*/
-}
-
 // Active un Link et le relie à un Child
 bool Link::Activate_Link(LinkType& type, Wall* child)
 {
 	//static bool drawLink; drawLink = false;
 
-	this->type = type;	// Son nouveau type	(certaines conversions seront impossible dans le futur)
+	this->type = type;	// Son nouveau type	(certaines conversions seront impossible dans le futur)				// Set_Type(type)
 
 	if (this->state == LinkState::DEAD || this->state == LinkState::FREE)		// error brah, le link était pas libre ou DEAD
 	{
@@ -79,7 +57,7 @@ bool Link::Activate_Link(LinkType& type, Wall* child)
 		//drawLink = true;				// Affiche toujours le Link quand son state change
 	}
 
-	Bond_Link_To_Child(child);		// Assignation des pointeurs
+	StructureManager::Bond_Link_To_Child(this, child);	// assigne les pointeurs parent/enfant
 	Set_UI();						// affichage
 
 	//if (drawLink)
@@ -92,7 +70,7 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 {
 	this->pParent = NULL;
 								// reset pointers
-	for (int i = 0; i < 3; i++)	// reset pointers
+	for (int i = 0; i < 4; i++)	// reset pointers
 		this->pChild[i] = NULL;	// reset pointers
 	
 	this->parentPos = Polarization::NUL;

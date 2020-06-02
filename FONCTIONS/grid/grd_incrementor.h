@@ -22,9 +22,9 @@ public:
 		polar = crd.polar;
 
 		if (crd.axis == &crd.index.c)	// Faut changer l'adresse du pointeur 
-			axis = &index.c;
+			axis = &(index.c);
 		else
-			axis = &index.r;
+			axis = &(index.r);
 	}
 	
 

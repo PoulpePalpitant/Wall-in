@@ -2,6 +2,8 @@
 
 #include "../UI/console_output/dsp_char.h"
 #include "../grid/grid.h"
+#include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
+
 #include "walls.h"
 
 extern const int WALL_SIZE_X =  DELTA_X - 1;	// Le nombre de case qui composent chaque wall horizontale
@@ -54,7 +56,7 @@ void Wall::Set_Wall_UI(WallStrength newStrgt)
 
 void Wall::Set_Strength(WallStrength newStrgt)
 {
-	if (pParent->Get_Type() == LinkType::CORRUPTED)		// Le parent corrompu change le Wall en weak pour l'instant
+	if(StructureManager::Is_Link_Corrupted(this, pParent))// Le parent corrompu change le Wall en weak pour l'instant
 		strgt = WallStrength::WEAK;
 	else
 		strgt = newStrgt;
@@ -82,6 +84,15 @@ int Wall::Get_Wall_Size(Axis axis)						// La longueur du wall
 		return WALL_SIZE_X;
 	else
 		return WALL_SIZE_Y;
+}
+
+// Créer un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
+void Wall::Activate_Wall(WallStrength newStrgt, Link* child) {
+
+	state = WallState::EXISTS;		// It's alive!
+	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
+	Set_Strength(newStrgt);			// La nouvelle force du mur
+	Set_Wall_UI(newStrgt);			// Update l'UI si le nouv type est différent que le précédent.
 }
 
 // Affiche un Mur selon une direction

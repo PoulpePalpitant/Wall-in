@@ -3,8 +3,7 @@
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
 #include "../UI/axis.h"
-#include "../blast/blast.h"
-#include "../link/link.h"
+
 
 extern const int WALL_SIZE_X;	// Le nombre de case qui composent chaque wall horizontale
 extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall verticale
@@ -21,8 +20,11 @@ enum class WallSym { SYM_HOR = 196 , SYM_HOR2 = 205, SYM_VER = 179, SYM_VER2= 18
 // Ils seront toujours constants jusqu'a leur destruction, c'est-à-dire une redimension du grid les contenants à la fin de 
 // chaque niveaux
 
+class Link;	// Les Walls sont relié au links
+
 class Wall {
 	friend class WallGrid;		// WallGrid va initialiser cette bouze
+	friend class StructureManager;
 
 private:
 	Coord XY = {};							// Coordxy
@@ -31,10 +33,13 @@ private:
 	Colors color = Colors::WHITE;			// Colors is great. Par défaut se sera Blanc doe
 	WallSym sym;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
 	Axis axis;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
-	
-	Link* pParent;							// Le Link par lequel le wall dépend pour éxister. Si le Link est détruit, le wall est détruit
-	Link* pChild;							// Le Link qui dépend de ce wall. Si ce Wall ou son parent est détruis, ce child le sera aussi
 
+	Link* pChild;							// Le Link qui dépend de ce wall. Si ce Wall ou son parent est détruis, ce child le sera aussi
+private:
+	friend class StructureManager;
+
+	Link* pParent;							// Le Link par lequel le wall dépend pour éxister. Si le Link est détruit, le wall est détruit
+private:
 	// NO TOUCHO!	BAD CODING HERE
 	void Set_XY(int col, int row, Axis gridaxis);		// Pas utiliser Pour setup manuellement le xy du mur selon un son axe de grid. Ceci est fait en masse lors de la création du grid
 	void Set_Axis(Axis gridAxis) { axis = gridAxis; }		// Ceci est fait à l'initialisation du Wallgrid, et ne devrait jamais changer!!!
@@ -43,7 +48,6 @@ private:
 	void Set_Wall_UI(WallStrength newType);				// On change l'apparance du mur selon son type!
 	void Set_State(WallState newState) { state = newState; }
 	void Set_Strength(WallStrength strgt);
-	void Bound_To_Adjacent_Links(Link* parent, Link* child) { pParent = parent; pChild = child; }	// Pointeurs vers les deux Links autours du wall
 
 public:
 	WallState Get_State() { return this->state; }
@@ -55,19 +59,20 @@ public:
 	Colors Get_Clr() { return color; }				// La couleur
 
 	// Créer un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
-	void Activate_Wall(WallStrength newStrgt, Link* parent, Link* child) {
-		
-		state = WallState::EXISTS;				// It's alive!
-		Bound_To_Adjacent_Links(parent, child);	// Relie le wall à deux Links
-		Set_Strength(newStrgt);					// La nouvelle force du mur
-		Set_Wall_UI(newStrgt);					// Update l'UI si le nouv type est différent que le précédent.
-
-		/* Fut changé */
-
-	}
+	void Activate_Wall(WallStrength newStrgt, Link* child);
 
 	// Détruit un Wall. Se produit surtout quand un bot rentre dedans
+	void Deactivate_Wall() {
+		state = WallState::DEAD;
+		pParent = pChild = NULL;
+	}
+
+	/* stuff to do here */
+	// get hit (réduit hp de 1)
+	// special effect when hit/destroyed
+	// erase wall
+
 	void Kill_Wall() { state = WallState::DEAD; }	
-	void UI_Draw_Wall(Polarization plr;
+	void UI_Draw_Wall(Polarization plr);
 };
 

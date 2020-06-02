@@ -2,7 +2,6 @@
 
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
-#include "../walls/walls.h"
 
 /*
 	Les propriétés des Links
@@ -33,29 +32,32 @@ enum LinkSym
 	CHILD = 250		// Le symbole de chaque Link n'ayant pas de child
 };
 
+class Wall;		// Les Links sont reliés aux walls
 
 class Link {
 private:
-	Coord coord;						// Coord xy du Link dans la console
-	LinkState state = LinkState::DEAD;	// L'état du Link. Le joueur peut seulement se déplacer dessus si il est FREE.
-	LinkType type;						// type du link
-
-	// UI
-	Colors clr = Colors::WHITE;			// Couleur du Link. Par défaut c'est white
-	char sym = 'B';						// Symbole représentant le Link, varie selon le nombre de child et du parent
-	void Set_UI();						// Change la couleur et le symbole selon le Type et le State du Link
-
 	// Pour faire une destruction en chaîne de Links
 	friend class DestroyChainOfWalls;
+	friend class StructureManager;
 
-	Wall* pChild[3] = {};		// Pointe vers ses childs de walls, trois MAX
-	int numChild;				// Le nombre de child actuelle qui sont lié au link
-	Wall* pParent = NULL;		// Pointe vers le parent
+	Coord coord;						// Coord xy du Link dans la console
+	LinkState state = LinkState::DEAD;	// L'état du Link. Le joueur peut seulement se déplacer dessus si il est FREE.						
+	LinkType type;						// type du link																						
+																																			
+	// UI																																							  //		 o	4 max		3max
+	Colors clr = Colors::WHITE;			// Couleur du Link. Par défaut c'est white																					  //		 |				
+	char sym = 'B';						// Symbole représentant le Link, varie selon le nombre de child et du parent												  //		 |
+	void Set_UI();						// Change la couleur et le symbole selon le Type et le State du Link														  //	  o--#--o	  o--#--o	
+																																									  //		 |			 |
+																																									  //		 |			 |
+	Wall* pChild[4] = {};		// Pointe vers ses childs de walls, trois MAX sur une bordure. 4 MAX si le Link est créer manuellement au milieu de la map			  //		 O			 O
+	int numChild;				// Le nombre de child actuelle qui sont lié au link				
+								//
+private:																																							  //
+	Wall* pParent = NULL;		// Pointe vers le parent wall. Quand le wall est activé, le ptr est assigné
 	Polarization parentPos;		// Renseigne sur la position du parent selon la polarisation POS/NEG		Si POS: Le parent est soit à droite, soit en bas.		Contraire pour le NEG
-	// Wall* btwnParent;		// Le wall positionné entre ce Link et son parent 
 private:
 	// Activation
-	void Bond_Link_To_Child(Wall* child);				// Assigne les pointeurs du parent à son child et vice versa
 	void Set_State(Wall* child = NULL);					// Assigne le state 
 
 	// Le grid va handle sa position XY

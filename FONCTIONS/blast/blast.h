@@ -4,7 +4,8 @@
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
 #include "../math/math_stuff.h"
-#include "../walls/walls.h"
+ #include "../walls/walls.h"
+#include "../link/link.h"
 
 /*
 	Le blast ça va être la façon pour le joueur de détruire les bots. Quand le joueur blast, il tir un projectile d'une certaine longueur à partir de sa position de départ. Ce projectile va avancé jusqu'à ce qu'il 
@@ -39,8 +40,8 @@ class Blast
 	Distance maxlengthHor = DFLT_BLAST_LENGTH_HOR;	// La longueur du blast selon l'axe des X. Peut être augmenté ou réduite durant la game
 	Distance maxlengthVer = DFLT_BLAST_LENGTH_VER;	// La longueur du blast selon l'axe des Y. Peut être augmenté ou réduite durant la game 
 	int speed;	/*milliseconds*/					// Vitesse du blast(ou délaie entre chaque affichage)
-	unsigned int speedVer = DFLT_BLAST_SPD_VER;		// Vitesse du blast verticale
-	unsigned int speedHor = DFLT_BLAST_SPD_HOR;		// Vitesse du blast horizontale
+	time_t speedVer = DFLT_BLAST_SPD_VER;		// Vitesse du blast verticale
+	time_t speedHor = DFLT_BLAST_SPD_HOR;		// Vitesse du blast horizontale
 	
 	// POSITION/DÉPLACEMENT
 	int grdLimit;					// L'endroit ou le blast va s'arrêter dans son épopé linéaire
@@ -79,6 +80,7 @@ class Blast
 
 	// POST-BLAST
 	int Nb_Of_Links_To_Activate();
+	int Nb_Of_Walls_Per_Blast();		// Calcul le nombre de walls à enregistrer après un blast.
 
 public:
 	Blast* Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType &type= DFLT_BLAST);	// le tir du blast...
