@@ -56,10 +56,18 @@ void Wall::Set_Wall_UI(WallStrength newStrgt)
 
 void Wall::Set_Strength(WallStrength newStrgt)
 {
-	if(StructureManager::Is_Link_Corrupted(this, pParent))// Le parent corrompu change le Wall en weak pour l'instant
+	if (StructureManager::Is_Link_Corrupted(pParent))// Le parent corrompu change le Wall en weak pour l'instant
+	{
+		type = WallType::CORRUPTED;
 		strgt = WallStrength::WEAK;
+		hp = (int)strgt;
+	}
 	else
+	{
+		type = WallType::REGULAR;		// optimize this please, (dont change if it's the same)
 		strgt = newStrgt;
+		hp = int(strgt);
+	}
 }
 
 
@@ -87,29 +95,48 @@ int Wall::Get_Wall_Size(Axis axis)						// La longueur du wall
 }
 
 // Créer un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
-void Wall::Activate_Wall(WallStrength newStrgt, Link* child) {
+void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 
 	state = WallState::EXISTS;		// It's alive!
+	childPos = plr;					// La position de son child dans la console
+
 	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
 	Set_Strength(newStrgt);			// La nouvelle force du mur
 	Set_Wall_UI(newStrgt);			// Update l'UI si le nouv type est différent que le précédent.
 }
 
+
+// Dépend de la force du bot
+void Wall::Take_Damage(int dmg)
+{
+	this->hp -= dmg;
+
+	if (hp <= 0)
+		DestroyChainOfWalls::Destroy_Chain_Of_Walls({}, this->pChild);	// Détruit la chaîne de mur bueno
+	else
+	{
+		strgt = (WallStrength)hp;		// Change la force du wall
+		this->Set_Wall_UI(strgt);		// Change l'apparance du wall
+		this->UI_Draw_Or_Erase_Wall();	// Redraw
+	}
+}
+
+
 // Affiche un Mur selon une direction
-void Wall::UI_Draw_Wall(Polarization plr)
+void Wall::UI_Draw_Or_Erase_Wall()
 {
 	CoordIncrementor startPos;	// Position de départ
 	int wallSize;	// Dimension du mur
 
 	// Initialisation de l'incrémenteur
 	startPos.Initialize_Axis(axis);
-	startPos.polar = plr;
+	startPos.polar = childPos;
 	startPos.coord = XY;
 
 	wallSize = Get_Wall_Size(axis);
 
-	if (plr == NEG)								//  x  ->   <-  x		x = startpos
-		*startPos.axis += wallSize - 1;			// O----O	O----O		-> = plr
+	if (childPos == NEG)								//  x  ->   <-  x		x = startpos
+		*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
 
 	for (int i = 0; i < wallSize; i++)
 	{
@@ -118,6 +145,5 @@ void Wall::UI_Draw_Wall(Polarization plr)
 
 		startPos.Increment_Coord();	// Prochaine case
 	}
-
-
 }
+

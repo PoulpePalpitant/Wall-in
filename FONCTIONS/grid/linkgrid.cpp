@@ -46,17 +46,15 @@ void LinkGrid::Resize(int col, int row)
 
 
 // CHECK: si la position actuelle sur le grid contient un Link vivant
-int LinkGrid::Is_Link_Here(int col, int row)			// WHERE IS LINK? I CAN'T FIND HIM!?
+int LinkGrid::Is_Link_Here(GrdCoord crd)			// WHERE IS LINK? I CAN'T FIND HIM!?
 {																									
-	if (!Is_Inbound(col, row))	// Doit tjrs vérifier si la crd est INBOUND	
+	if (!Is_Inbound(crd))	// Doit tjrs vérifier si la crd est INBOUND	
 		return -1;
 	
-	if (this->link[col][row].Get_State() != LinkState::DEAD)										// Si le link sur ce grid est Dead, aussi bien dire qu'il n'y en a pas
+	if (this->link[crd.c][crd.r].Get_State() != LinkState::DEAD)										// Si le link sur ce grid est Dead, aussi bien dire qu'il n'y en a pas
 		return true;	// Link here, ain't dead
 	else
 		return false;	// No Link here, dead
-
-	
 
 }
 

@@ -22,6 +22,7 @@ public:
 		spawnGrd = {};
 	}
 
+	WallGrid* Find_Wall_Grid_From_Axis(Axis ax);								// Trouve le grid de wall qui correspond à un axe
 	WallGrid* Find_Wall_Grid_From_Direction(Direction dir);						// Trouve le grid de wall qui correspond à une direction
 	WallGrid* Find_Wall_Grid_From_Crd_Incrementor(const GridIndexIncrementor &crd);	// Trouve le grid de wall qui correspond à un axe	
 	GrdCoord Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir);		// Trouve un wall qui possède la même position qu'un Link avec la direction

@@ -19,18 +19,18 @@ private:
 	char sym;								// Le symbole représentant le player
 
 	// POSITION
-	GrdCoord grdCrd;						// On utilise le système de coordonnées des grids pour changer la position du joueur
+	GrdCoord grdCrd = {0,0};						// On utilise le système de coordonnées des grids pour changer la position du joueur
 
 public:
 	// GETS
 	int Get_HP() { return HP; }					// La vie
 	char Get_Sym() { return sym; }				// Le symbole pour l'affichage
 	Colors Get_Clr() { return clr; }			// Couleur
-	GrdCoord Get_Grd_Coord() { return grdCrd; }	// Sa position dans le grid
+	GrdCoord Get_Grd_Coord() { return this->grdCrd; }	// Sa position dans le grid
 	PlayerState Get_State() { return state; }	// Le state du joueur
 
 	// SETS 
-	void Set_Position(GrdCoord newPos) { grdCrd = newPos; }			// Change la position du joueur sur le Grid
+	void Set_Position(GrdCoord newPos) { this->grdCrd = newPos; }			// Change la position du joueur sur le Grid
 	void Set_State(PlayerState newState) { state = newState; }		// Permet de détruire le joueur:  Le réssuciter : Ou le Rendre invincible
 	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole du joueur
 	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur du joueur

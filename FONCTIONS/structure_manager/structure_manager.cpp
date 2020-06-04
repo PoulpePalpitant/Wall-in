@@ -11,9 +11,9 @@ void StructureManager::Bond_Link_To_Child(Link* parent, Wall* child)
 	/*mutex*/
 	for (int i = 0; i < 4; i++)	// 4 = max number of childs. For real, si tu fais cette fonctions et qu'ya déjà 4 child, ta foiré quelque part Lol
 	{
-		if (parent->pChild[i] == NULL)
+		if (parent->pWalls[i] == NULL)
 		{
-			parent->pChild[i] = child;	// Voici ton fils
+			parent->pWalls[i] = child;	// Voici ton fils
 			child->pParent = parent;		// Voici ton père		/*je vais le faire au moment de créer le wall*/ 
 			parent->numChild++;
 			break;
@@ -40,7 +40,7 @@ void StructureManager::Bond_Wall_To_Adjacent_Links(Wall* wall, Link* parent, Lin
 
 
 // Vérifie si le Link parent est Corrompue
-bool StructureManager::Is_Link_Corrupted(Wall* wall, Link* parent)
+bool StructureManager::Is_Link_Corrupted(Link* parent)
 {
 	if (parent->Get_Type() == LinkType::CORRUPTED)
 		return true;
@@ -48,4 +48,14 @@ bool StructureManager::Is_Link_Corrupted(Wall* wall, Link* parent)
 		return false;
 }
 
+// Check si le parent est dans une certaine direction
+bool StructureManager::Is_Parent_In_This_Direction(Link* link, Direction dir)
+{
+	/*mutex*/
+	Wall* parntWall; 
+	parntWall = link->pParent;
+
+	return Is_Same_Direction(dir, parntWall->axis, Get_Opp_Polar(parntWall->childPos));	// childPos = à la position du child, on veut celle du parent, c'est donc l'opposé
+	/*mutex everything damn it*/
+}
 

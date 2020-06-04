@@ -76,12 +76,12 @@ void Grid::Resize(int col, int row, int** &grid)
 }
 
 // Vérification de si le nb de col et de row son valide selon la dimension du Grid
-bool Grid::Is_Inbound(int col, int row)
+bool Grid::Is_Inbound(GrdCoord crd)
 {
-	if (col > this->Get_Cols() - 1 || row > this->Get_Rows() - 1)	// Validation d'une coordonnée trop grande
+	if (crd.c > this->Get_Cols() - 1 || crd.r > this->Get_Rows() - 1)	// Validation d'une coordonnée trop grande
 		return false;
 
-	if (col < 0 || row < 0)		// Validation d'une coordonnée dans les négatifs
+	if (crd.c < 0 || crd.r < 0)		// Validation d'une coordonnée dans les négatifs
 		return false;
 
 	return true;

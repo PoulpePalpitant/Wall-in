@@ -7,6 +7,7 @@
 #include "../grid/grid.h"
 #include "../grid/grd_incrementor.h"
 #include "spawnwarning.h"
+#include "../UI/map.h"
 //#include "./botinitialize/"
 
 
@@ -29,14 +30,19 @@ extern bool gIsBotCustom;		// Permet de vérifier si on initialise un Bot custom.
 class Bot
 {
 private:
+	friend class UI_MoveBot;	// Pour "l'animation" des bots 
+	friend class BotMove;		// Pour les déplacements des bots
+
+	static bool Take_Dmg(int dmgs, Bot* &bot);							// le bot prend du dégât, quand il rentre dans un mur
+	static bool Bot_Impact(Bot*& bot, Wall* wall);						// Quand un bot rentre dans un wall
 
 	// DESIGN
 	char sym;						// Le symbole du Bot. Les Bots normaux N,auront qu'un seul symbol. Si tu veux changer de design, fais-toi une autre class
 	bool fixedColor = false;		// Détermine si la couleur reste fixe tout au long
-	Colors color = Colors::WHITE;	// Couleur du bot
+	Colors clr = Colors::WHITE;	// Couleur du bot
 
 	// STATS
-	int health;									// La puissance d'un bot, soit le nombre de mur reégulier qu'il peut traverser avant d'être détruit
+	int power = 1;								// La puissance d'un bot, soit le nombre de mur reégulier qu'il peut traverser avant d'être détruit
 	int speed = 1;								// Le nombre de case de déplacement par cycle.   Si tu veux faire de quoi de plus custom, faudrait que tu abandonne les movecycle global, et que tu en assigne un à chaque bot(meh)
 	BotType type = BotType::REGULAR;			// Son type ? Ne contient pas vraiement d'information, sert pas mal juste pour l'initialisation du Bot, meh
 
@@ -53,7 +59,7 @@ private:
 
 	// GESTION DE LA LISTE DES BOTS
 	friend class BotList;	// La classe Botlist va s'en charger
-	Bot* pPrev;				// Pointeur vers le bot précédent de la liste de bots
+	//Bot* pPrev;				// Pointeur vers le bot précédent de la liste de bots NON
 	Bot* pNext;				// Pointeur vers le prochain bot de la liste
 	
 	// INITALISATION DU BOT -  // Tous les définitions se retrouveront dans d'autres cpp
@@ -77,11 +83,14 @@ public:
 	int Get_Step_Left() { return stepLeft; }				// Nombre de steps à faire restant
 	int Get_Max_Possible_Steps() { return stepLeftMax; }	// Nombre de steps qu'il devait faire dès le moment de son spawn
 	BotType Get_Type() { return type; }						// Le type
+	int Get_Power() { return power; }						// son power
 
 	// MÉTHODES QUI UPDATE LES PROPRIÉTÉS DU BOT
-	void Strt_Nxt_Wall_Time(){ tillNxtWall = btwWalls / speed; }				// Reset le temps que ça va prendre pour rencontrer un autre wall
+	void Strt_Nxt_Wall_Time(){
+		tillNxtWall = btwWalls / 
+			speed; }				// Reset le temps que ça va prendre pour rencontrer un autre wall
 	void Upd_Nxt_Wall_Time() { tillNxtWall--; }									// Réduit de 1 le compteur
-	void Upd_Progression_Color(Colors& Color, int NumStepsLeft, int Max_Steps);	// Change la couleur du bot quand il s'approche de plus en plus de son escape
+	void Upd_Progression_Color();												// Change la couleur du bot quand il s'approche de plus en plus de son escape
 
 	// CONSTRUCTOR
 	Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised)	// Construit en utilisant d'autre fonctions
@@ -107,7 +116,9 @@ public:
 		Init_Step_Count();								// À besoin de la direction et de la vitesse du bot
 
 		Init_Dist_Btw_Walls();							// Fait juste initialiser btwWalls
-		Strt_Nxt_Wall_Time();							// Pour starter le prochain timer
+		//Strt_Nxt_Wall_Time();							// Pour starter le prochain timer
+		tillNxtWall = GAP_BTW_GRID - 1;						
+
 
 		// Je crois qu'il serait pertinent de faire une nouvelle classe de bot uniquement si ses mouvements ou ses intéractions avec les autres objets du jeux sont différentes
 

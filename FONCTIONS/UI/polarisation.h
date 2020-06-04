@@ -5,3 +5,4 @@
 
 enum Polarization { POS = 1, NEG = -1, NUL = 0 };
 
+Polarization Get_Opp_Polar(Polarization plr);	// Donne la polarisation opposé

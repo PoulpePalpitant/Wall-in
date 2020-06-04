@@ -7,6 +7,7 @@
 #include "../grid/AllGrids.h"
 #include "../player/player.h"
 #include "../player/player_move.h"
+#include "../structure_manager/structure_manager.h"
 
 #include "validate_input.h"
 
@@ -58,14 +59,39 @@ void Validate_Input()
 
 	if (action == BLAST)	// le type de blast pourrait varier selon le niveau et le statut du joueur
 	{
-		GrdCoord grdCrd = P1.Get_Grd_Coord();	// Position du joueur
+		static GrdCoord grdCrd;	// Position du joueur
+		grdCrd = P1.Get_Grd_Coord();	
 		
-		//if(linkGrid->link[grdCrd.c][grdCrd.c].Get_State == LinkState::FREE)		
-			// Destroy	// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer// wall transfer
+		static Link* link;	// Link se trouvant sur la position du joueur
+		link = &linkGrid->link[grdCrd.c][grdCrd.r];
+
+		static Blast* blast;	// da blast
+		bool cancelBlast = false;
+
+		// Action Spéciale: Un transfer
+		// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
+		if (link->Get_State() == LinkState::FREE && link->Get_Type() != LinkType::BLOCKER)// Un blocker empêche les transfer?
+		{
+			/*
+			
+			à Pt modifier un jour:		si tu fais un transfert sur une bordure, tu détruis le wall, mais le blast ne franchis aucune distance
+			si tu fais un transfert horizontale, la longueur maximale n'est pas limité à un wall...
+			*/
 
 
-		Blast* blast = blastP1.Blast_Shot(P1.Get_Grd_Coord(), keyDirection);	// tir
-		gGrids.Activate_Walls_And_Links_From_Blast(blast);					// activation des murs et links
+			// Si on tir dans la même direction que son parent wall		
+			if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
+				cancelBlast = true; // rien va se passer
+			else
+				DestroyChainOfWalls::Destroy_Chain_Of_Walls(grdCrd);	// On destroy le Link que l'on veut transférer
+			// ensuite on fait un tir normal
+		}
+		
+		if (!cancelBlast)
+		{
+			blast = blastP1.Blast_Shot(P1.Get_Grd_Coord(), keyDirection);		// tir
+			gGrids.Activate_Walls_And_Links_From_Blast(blast);					// activation des murs et links
+		}
 	}
 	
 

@@ -23,7 +23,7 @@
 
 
 enum class LinkState { DEAD, FREE, BOUND, ROOT };
-enum class LinkType{ REGULAR, BLOCKER , ETERNAL, GROWER, CORRUPTED, CHASER };
+enum class LinkType{ REGULAR , ETERNAL, GROWER, CORRUPTED, CHASER, BLOCKER};
 
 enum LinkSym 
 {
@@ -50,12 +50,9 @@ private:
 	void Set_UI();						// Change la couleur et le symbole selon le Type et le State du Link														  //	  o--#--o	  o--#--o	
 																																									  //		 |			 |
 																																									  //		 |			 |
-	Wall* pChild[4] = {};		// Pointe vers ses childs de walls, trois MAX sur une bordure. 4 MAX si le Link est créer manuellement au milieu de la map			  //		 O			 O
-	int numChild;				// Le nombre de child actuelle qui sont lié au link				
-								//
-private:																																							  //
+	Wall* pWalls[4] = {};		// Pointe vers ses childs de walls, trois MAX sur une bordure. 4 MAX si le Link est créer manuellement au milieu de la map			  //		 O			 O
+	int numChild = 0;				// Le nombre de child actuelle qui sont lié au link																													  //
 	Wall* pParent = NULL;		// Pointe vers le parent wall. Quand le wall est activé, le ptr est assigné
-	Polarization parentPos;		// Renseigne sur la position du parent selon la polarisation POS/NEG		Si POS: Le parent est soit à droite, soit en bas.		Contraire pour le NEG
 private:
 	// Activation
 	void Set_State(Wall* child = NULL);					// Assigne le state 
@@ -63,17 +60,17 @@ private:
 	// Le grid va handle sa position XY
 	friend class LinkGrid;
 	void Set_LinkXY(int col, int row);					// Initialise position X et Y du Link dans la console par rapport à sa position col et row dans son Grid (ne jamais utilisé directement, seul son grid devrait faire ça)
-
 public:
 	Coord Get_XY() { return coord; }				// Retrouve les Coord XY du Link 
 	LinkState Get_State() { return this->state; }	// Donne l'état du Link pour savoir si il existe
 	LinkType Get_Type() { return type; }
-	
+
 	void Dsp_Link();			// Affiche le Link
 	void Clr_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
 	
 	bool Activate_Link(LinkType &type, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
 	void Deactivate_Link();		// Désactive le Link
+	bool Unbound_Wall_Child(Wall* child);					// 
 };
 
 

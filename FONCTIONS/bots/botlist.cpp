@@ -6,30 +6,19 @@
 extern BotList botList = {};	// La liste de tout les bots
 
 
+bool BotList::Empty()	// La liste est vide ou non
+{
+	return botList.pBotEnd == NULL;	// La fin est null?, da shit is empty brah
+}
+
 // Delete un bot officiellement ... Quand même comploqué tout ça!
 // ------------------------------------------------------------
-void BotList::Del_Bot(Bot * botToDel)
+void BotList::Destroy_Bot(Bot* &botToDel)																										// PURGE LE pPREV POINTEUR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
-
+	Bot* next = botToDel->pNext;	// Le ptr vers le bot va pointer sur le suivant après ce delete
+	
 	// Utilise un destructor à la place?
 	//delete botToDel->spwnWarning;	// Doit à tout prix détruire le spawn warning AVANT de détruire le bot
-
-	//if (botToDel == botStrt && botToDel == botEnd)
-	//	delete botToDel;
-	//else
-	//{
-	//	if (botToDel == botStrt)			// Si le bot était le premier de liste
-	//		botToDel->next->prev = NULL;	// Le pointeur suivant va pointer vers NULL, car il est maintenant le nouveau DÉbut de la liste!
-	//	else
-	//		if (botToDel == botEnd)				// Si le bot était le dernier de liste
-	//			botToDel->prev->next = NULL;	// Le pointeur précédant est maintenant le nouveau fin de la liste
-	//		else
-	//		{
-	//			botToDel->prev->next = botToDel->next;	// Le Bot précédent pointe maintenant vers celui qui se trouvait après le Delete
-	//			botToDel->next->prev = botToDel->prev;	// Le bot suivant pointe sur le bot derrière celui qu'on delete
-	//		}
-	//} // delete botToDel;			// Version un peu plus efficace? mais moins lisible
-
 
 	// Si le bot est au milieu de la liste
 	if (botToDel != pBotStrt && botToDel != pBotEnd)
@@ -38,17 +27,26 @@ void BotList::Del_Bot(Bot * botToDel)
 		botToDel->pNext->pPrev = botToDel->pPrev;	// Le bot suivant pointe sur le bot derrière celui qu'on delete
 	}
 	else
-	{	// Si le bot était le premier de liste
-		if (botToDel == pBotStrt)
-			botToDel->pNext->pPrev = NULL;	// Le pointeur suivant va pointer vers NULL, car il est maintenant le nouveau DÉbut de la liste!
-
-		// Si le bot était le dernier de liste
-		if (botToDel == pBotEnd)
-			botToDel->pPrev->pNext = NULL;	// Le pointeur précédant est maintenant le nouveau fin de la liste
+	{
+		if (botToDel == pBotStrt && botToDel == pBotEnd)	// The Purge
+			botToDel = pBotStrt = pBotEnd = NULL;
+		else
+			if (botToDel == pBotStrt)	// Si le bot était le premier de liste
+			{
+				pBotStrt = botToDel->pNext;
+				pBotStrt->pNext->pPrev = pBotStrt;
+				botToDel->pNext->pPrev = NULL;	// Le pointeur suivant va pointer vers NULL, car il est maintenant le nouveau DÉbut de la liste!
+			}
+			else if (botToDel == pBotEnd) // Si le bot était le dernier de liste
+			{
+				pBotEnd = botToDel->pPrev; 
+				pBotEnd->pPrev->pNext = pBotEnd;
+				botToDel->pPrev->pNext = NULL;	// Le pointeur précédant est maintenant le nouveau fin de la liste
+			}
 	}
 	
-	
 	delete botToDel;		// On delete le bot Finalement. Le cycle de la vie
+	botToDel = next;	// Le pointeur du Bot va pointer vers le précédent maintenant
 
 	gBotMetaReg.Bot_Died();		// Record sa mort
 }

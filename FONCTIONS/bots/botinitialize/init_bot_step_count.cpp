@@ -11,8 +11,8 @@ void Bot::Init_Step_Count()																	// La distance qu'il doit parcourir 
 
 	switch (dir)
 	{
-	case UP:case DOWN: stepLeftMax = (map.Get_Height() + GAP_BTW_GRID) / speed;		break;	// Ya un tit gap entre la position du spawn et la "box". Le bot spawn donc à l'ext de la box
-	case LEFT:	case RIGHT:stepLeftMax = (map.Get_Length() + GAP_BTW_GRID) / speed;
+	case UP:case DOWN: stepLeftMax = (map.Get_Height() + GAP_BTW_GRID) / speed + 1;		break;	// Ya un tit gap entre la position du spawn et la "box". Le bot spawn donc à l'ext de la box
+	case LEFT:	case RIGHT:stepLeftMax = (map.Get_Length() + GAP_BTW_GRID) / speed + 1 ;
 	}
 
 	stepLeft = stepLeftMax;			//	Le nombre de déplacement pour atteindre l'autre decôté de la box, par rapport à sa position actuelle 

@@ -5,16 +5,17 @@
 
 class BotList
 {
+friend class BotMove;
+
 private:
 	// Naviguation sur la liste de bot
 	Bot* pBotStrt;	// Pointe vers le début de la liste de bots				À vérifier, ces trois trucs serait supposément initialisé à 0
-	Bot* pBotEnd;		// Pointe vers la fin de la liste de bots
-	Bot* pIter;		// L'iterator qui permet de parcouri la liste des bots
+	Bot* pBotEnd;	// Pointe vers la fin de la liste de bots
 public:
-	Bot* Add_Bot();					// Ajoute un bot a la liste : Retourne un pointeur vers celui-ci
 	Bot* Add_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised);					// Ajoute un bot a la liste : Retourne un pointeur vers celui-ci
-	void Del_Bot(Bot* botToDel);	// Enlève un bot de la liste (delete)
+	void Destroy_Bot(Bot* &botToDel);	// Enlève un bot de la liste (delete)
 	void CLEANSE_THEM_ALL();		// useless for now
+	bool Empty();	// La liste est vide ou non
 };
 
 extern BotList botList;	// La liste de tout les bots

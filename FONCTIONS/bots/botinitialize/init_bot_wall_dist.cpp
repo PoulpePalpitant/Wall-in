@@ -7,9 +7,9 @@ void Bot::Init_Dist_Btw_Walls()
 	switch (dir)
 	{
 	case UP:
-	case DOWN: btwWalls = DELTA_Y; break;
+	case DOWN: btwWalls = DELTA_Y - 1; break;
 	case LEFT:
-	case RIGHT: btwWalls = DELTA_X; break;
+	case RIGHT: btwWalls = DELTA_X - 1; break;
 	}
 
 }

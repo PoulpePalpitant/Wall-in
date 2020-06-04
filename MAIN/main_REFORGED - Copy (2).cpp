@@ -11,13 +11,12 @@
 
 #include "../FONCTIONS/time/clock.h"
 #include "../FONCTIONS/grid/managegrids.h"
-#include "../FONCTIONS/structure_manager/structure_manager.h"
 #include "../FONCTIONS/grid/AllGrids.h"
 #include "../FONCTIONS/link/link.h"
 #include "../FONCTIONS/bots/botlist.h"
 #include "../FONCTIONS/bots/bot.h"
 #include "../FONCTIONS/bots/botinitialize/bot_intializer.h"
-#include "../FONCTIONS/bots/botmove.h"
+
 
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
@@ -101,39 +100,26 @@ int main()	// Le début!
 	gGrids.Activate_Chain_Of_Walls(Jerry, UP, 3);
 	Jerry = { 5,20 };
 	gGrids.Activate_Chain_Of_Walls(Jerry, DOWN, 2);
-	Jerry = { 4,7 };
+	Jerry = { 1,7 };
 	gGrids.Activate_Chain_Of_Walls(Jerry, UP, 15);
-	Jerry = { 4,6 };
-	DestroyChainOfWalls::Destroy_Chain_Of_Walls(Jerry);
 
-
-	
-	// Création de bots liés dans une liste
+	/*
+	 Création de bots liés dans une liste
 	Bot *bot;
 	CustomBot specialBot;
 	specialBot.NoWarning = true;
 
 	gGrd = { 2,3 };
+
 	bot = Create_New_Bot(BotType::REGULAR, gGrd, true);
 	
-
 	gGrd = { 0, 10 };
 	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	gGrd = { 1, 5 };	// spawn coord fonctionne différemment: La première coord représente une des 4 bordures, et la deuxième, l'adresse du spawn selon ->, v
-	Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	gGrd = { 3, 9 };	// spawn coord fonctionne différemment: La première coord représente une des 4 bordures, et la deuxième, l'adresse du spawn selon ->, v
-	Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-
-	for (size_t i = 0; i < 100; i++)
-	{
-		BotMove::Move_Bots();
-		Sleep(10);
-	}
-	
+	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
+	*/
 
 	
 
-	
 	
 	Coord dep, arr;
 	dep.x = 3, dep.y = 5;
@@ -209,7 +195,7 @@ void Test_Animation(Colors one, Colors two)	// So pretty...
 {
 	Coord crd = { 0, 2 };
 	int max = 35;
-	unsigned char sym = 178;
+	char sym = 178;
 
 	while (crd.x <= max) {
 

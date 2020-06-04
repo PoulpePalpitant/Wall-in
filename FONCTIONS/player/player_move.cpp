@@ -19,6 +19,7 @@ void Move_Player(Player& player, Direction dir)
 	if (Validate_Move(end))						// Vérifie si position valide
 	{
 		player.Set_Position(end);				// Nouvelle position
+		player.Get_Grd_Coord();
 		UI_Move_Player(player, start, end);		// Efface l'ancienne position. Affiche la nouvelle
 	}
 	else
@@ -47,7 +48,7 @@ GrdCoord Find_End_Position(GrdCoord& start, Direction dir)	// Position dans le g
 bool Validate_Move(const GrdCoord &pos) {
 
 	//	Vérification que la position est dans le grid 
-	if (!gGrids.linkGrd.Is_Inbound(pos.c, pos.r))
+	if (!gGrids.linkGrd.Is_Inbound(pos))
 		return false;
 
 	// Vérification que le Link est passable	(le joueur peut circuleruniquement sur des Links qui sont FREE ou DEAD)

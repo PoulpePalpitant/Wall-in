@@ -70,11 +70,11 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 {
 	this->pParent = NULL;
 								// reset pointers
-	for (int i = 0; i < 4; i++)	// reset pointers
-		this->pChild[i] = NULL;	// reset pointers
-	
-	this->parentPos = Polarization::NUL;
-
+	for (int i = 0; i < numChild; i++)	// reset pointers
+	{
+		this->pWalls[i] = NULL;	// reset pointers
+		numChild--;
+	}
 
 	state = LinkState::DEAD;
 
@@ -82,9 +82,45 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 		/*do stuff*/
 
 	// Efface le Link
-	Dsp_Link();
+	Clr_Link();
 }
 
+bool Link::Unbound_Wall_Child(Wall* child)
+{
+	if (this->state == LinkState::DEAD)		// ça la foiré, ce link n'était même pas en vie
+		return false;
+
+	for (size_t i = 0; i < this->numChild; i++)
+	{
+		if (this->pWalls[i] == child)				// Le wall qu'on veut retirer
+		{
+			this->pWalls[i] = NULL;
+
+			for (size_t j = i; j < numChild; j++)	// décalage de tout les childs de la liste			
+				this->pWalls[i] = this->pWalls[i+1];
+
+			numChild--;	// -1 wall
+			break;
+		}
+	}
+
+	if (!numChild)
+	{ 
+		if (state == LinkState::BOUND)
+		{
+			state = LinkState::FREE;
+			this->Set_UI();	// change le sym
+			this->Dsp_Link();	// Affiche le sym
+		}
+		else
+			if (state == LinkState::ROOT)		// Si le root n'a plus de Child, il mourre
+				this->Deactivate_Link();
+
+		return true;		// success
+	}
+
+	return false;	// Ça se peut que le wall ne soit même pas un de ses childs
+}
 
 
 

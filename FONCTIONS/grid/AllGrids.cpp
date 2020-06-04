@@ -13,6 +13,14 @@ extern WallGrid* const wallGridHor = &gGrids.wallGrdHor;
 extern WallGrid* const wallGridVer = &gGrids.wallGrdVer;
 extern SpawnGrid* const spawnGrid = &gGrids.spawnGrd;				// LE GRID DE SPAWNBORDERS
 
+// Trouve le grid de wall qui correspond à un axe
+WallGrid* AllGrids::Find_Wall_Grid_From_Axis(Axis ax)
+{
+	if (ax == VER)
+		return wallGridVer;
+	else
+		return wallGridHor;
+}
 
 // Trouve quel wallgrid correspond à une direction 
 WallGrid* AllGrids::Find_Wall_Grid_From_Direction(Direction dir)
@@ -89,7 +97,7 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 		child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// le child
 		
 		parent->Activate_Link(blast->linkType, wall);		// Active le Link, et le lie à son child
-		wall->Activate_Wall(blast->strength, child);		// active wall
+		wall->Activate_Wall(blast->strength, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
 		
 		if(nbOfWalls == 1)
 			child->Activate_Link(blast->linkType);				// On active le Child qu'une fois, car il n'y en a qu'un seul
@@ -150,7 +158,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 	{
 		wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];
 
-		if (linkGrid->Is_Inbound(linkCrd.index.c, linkCrd.index.r)) // premier check
+		if (linkGrid->Is_Inbound(linkCrd.index)) // premier check
 		{
 			parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];
 			state = parent->Get_State();
@@ -167,7 +175,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 
 		linkCrd.Increment_Coord();	// Crd du child
 
-		if (linkGrid->Is_Inbound(linkCrd.index.c, linkCrd.index.r)) // 2eme check
+		if (linkGrid->Is_Inbound(linkCrd.index)) // 2eme check
 		{
 			child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];
 			state = child->Get_State();
@@ -192,7 +200,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 		}
 
 		parent->Activate_Link(type, wall);		// Active le Link, et le lie à son child
-		wall->Activate_Wall(strength, child);	// active wall
+		wall->Activate_Wall(strength, child, wallCrd.polar);	// active wall
 		
 		if (numWalls == 1)
 			child->Activate_Link(type);				// On active le Child qu'une fois, car il n'y en a qu'un seul 
@@ -200,7 +208,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 
 		// On affiche juste le parent, car le child pourrait changer de state, et donc de symbole à la prochaine loop. On l'affichera à la fin seulement
 		parent->Dsp_Link();	// Draw le link Parent
-		wall->UI_Draw_Wall(wallCrd.polar);	// Draw Le mur!
+		wall->UI_Draw_Or_Erase_Wall();	// Draw Le mur!
 
 
 

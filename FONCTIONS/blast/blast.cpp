@@ -125,9 +125,9 @@ void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de 
 	switch (dir)
 	{
 	case UP:case DOWN:		
-		speed = speedVer;	break;
+		speed = (int)speedVer;	break;
 	case LEFT:case RIGHT:	
-		speed = speedHor;	break;	// Blast horizontal est maintenant 2x plus rapide qu'avant		
+		speed = (int)speedHor;	break;	// Blast horizontal est maintenant 2x plus rapide qu'avant		
 	}
 }
 
@@ -167,7 +167,7 @@ Blast* Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType
 			if(nbSteps)							// Si le blast n'est pas sur sa première position de départ
 				grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
 			
-			if (linkGrid->Is_Link_Here(grdPos.index.c, grdPos.index.r))		// Vérifie la présence d'un link 
+			if (linkGrid->Is_Link_Here(grdPos.index))		// Vérifie la présence d'un link 
 			{
 				if(nbSteps != 0)
 					UI_MoveBlast::Animate_Blast(this);			// Sert principalement à effacer la tail bien franchement 

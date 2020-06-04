@@ -33,7 +33,7 @@ public:
 	// LES MÉTHODES
 	void Create(int col, int row, int**& grid);	// Créer le Grid. Persistera jusqu'au prochain Resize
 	void Resize(int col, int row, int**& grid);	// Redimensionne.... Mais détruit aussi les valeurs du grid...
-	bool Is_Inbound(int col, int row);			// Vérifie si la coord donnée est présente dans le grid
+	bool Is_Inbound(GrdCoord crd);			// Vérifie si la coord donnée est présente dans le grid
 	int Get_Rows() { return this->numRow; }				// Get numRow
 	int Get_Cols() { return this->numCol; }				// Get numCol
 };

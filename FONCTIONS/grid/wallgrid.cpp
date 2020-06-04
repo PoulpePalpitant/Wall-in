@@ -64,98 +64,15 @@ void WallGrid::Adapt_To_LinkGrid_Size(int& col, int& row, LinkGrid& linkGrid)
 											  	//	O--O--O--O		Par contre, le nombre de col du WallGrid Horizontal est plutôt de 3 (3 x 4)	 
 											  	//					Comme on peut voir Le Grid des Walls vertical contient 4 col pour trois lignes (4 x 3)	 
 }											  		 
-									
+								
+bool WallGrid::Is_Wall_here(GrdCoord crd)		// WHERE IS WALL? I CAN'T FIND IT!
+{
+	if (!Is_Inbound(crd))	// Doit tjrs vérifier si la crd est INBOUND	
+		return -1;
 
+	if (this->wall[crd.c][crd.r].Get_State() == WallState::DEAD)										// Si le link sur ce grid est Dead, aussi bien dire qu'il n'y en a pas
+		return false;	// Wall here is DEAD
+	else
+		return true;	// Wall here is alive
+}
 
-//// Trouve la crd de wall entre deux Link
-//GridIndexIncrementor WallGrid::Find_Wall_Btwn_Links()
-//{
-//	if(this.)
-//
-//
-//
-//}
-//
-//GridIndexIncrementor Find_Wall_With_LinkDir()		// Trouve le wall avec la coord d'un Link et une direction
-//{
-//
-//
-//
-//}
-
-//GridIndexIncrementor WallGrid::Find_Wall_From_Link_Dir(GrdCoord crd, Direction dir)		// Trouve le wall avec la coord d'un Link et une direction
-//{
-//
-//
-//
-//
-//}
-
-
-//
-//
-//// Active tout les murs créé par un blast
-//void WallGrid::Activate_Walls_From_Blast(Blast* blast)	// Créer des murs(modifie leur valeurs) d'après un certains blast . Quand le joueur tir, ça laisse un mur, et il faut le record dans le grid
-//{
-//	static int nbOfWalls;
-//	static WallStrength type;
-//	static Wall* toActivate;	// Wall à activer
-//	static GridIndexIncrementor crd;	// crd du wall
-//	
-//
-//	//type = Convert_Blast_Type_To_Wall_Type(blast->strength);	
-//
-//	/*find first wall crd*/
-//	crd = blast->grdPos;
-//	if(blast->dir == RIGHT)		// Tu déborde du grid mon gars. Le dernier Wall à droite correspond à L'AVANT dernier Link	   1    2    3	|	(Links)		col[3]
-//		crd.index.c--;																										 //o----o----o	|Fin
-//	else																													 //   1   2		|	(walls)		col[2]
-//		if (blast->dir == DOWN)		// Tu déborde du grid mon gars
-//		crd.index.r--;
-//
-//	nbOfWalls = this->Nb_Of_Walls_Per_Blast(blast);	// si merge: clear
-//	while (nbOfWalls)
-//	{
-//		toActivate = &this->wall[crd.index.c][crd.index.r];	// wall à activer
-//		toActivate->Activate_Wall(type);
-//
-//		if(nbOfWalls > 1)
-//			crd.Decrement_Coord();	
-//
-//		nbOfWalls--;
-//	}
-//
-//}
-	
-
-//
-//
-//// Création ou Destruction de tous les murs possibles se situant entre deux coord (côte-à-côte sur le grid)
-//void Creation_or_Destruction_Walls_Btwn_Links(int CoordDepart, int CoordFin, Time Delay, bool Creation)
-//{
-//	int NbdeWalls;		// Le nombre de walls entre 2 coord
-//	Axe axe;			// L'axe des murs entre la CoordDepart et la Coord de fin
-//	Polarisation polar;	// La polarisation entre la Coordonnée de départ et la coord de fin
-//	char Sym;			// Le symbole pour l'affichage du Wall
-//
-//	axe = Axe_Entre_Deux_Coord(CoordDepart, CoordFin);				// Donne l'axe
-//	polar = Polarisation_Selon_Deux_Coord(CoordDepart, CoordFin);	// Trouve la polarisation entre là coordonnée 
-//
-//	//// Le nombre de walls et le symbol du wall
-//	if (axe == x) { NbdeWalls = NbWallX; Sym = BlastSymX; }
-//	else { NbdeWalls = NbWallY; Sym = BlastSymY; }
-//
-//	// On va commencer la destruction/Création à partir de la coordonnée de départ
-//	Goto_Coordinnates(CoordX, CoordY, CoordDepart);
-//
-//	for (int l = 0; l < NbdeWalls; ++l)	// Destruction de chacun des murs entre les deux Links
-//	{
-//		// La coordonnée de chacun des murs à détruire est déterminée par l'incrémentation de x ou y de +1 ou -1 case selon l'axe ou se trouve les walls
-//		axe == y ? CoordY += polar : CoordX += polar;
-//		if (Creation)
-//			Create_Wall(CoordX, CoordY, Sym);	// Création d'un mur
-//		else
-//			Destroy_WALL(CoordX, CoordY);		// Destruction du mur et effacement du symbole
-//		Sleep(Delay);
-//	}
-//}
