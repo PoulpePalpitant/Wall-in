@@ -14,7 +14,7 @@
 // SPAWN WARNING SERA UNE ANIMATION "DÉCLANCHER PAR UN SPAWN" ET NON UN OBJET À L'INTÉRIEUR DE BOT
 
 
-
+// Sera différent selon le type de bot
 
 
 

@@ -4,8 +4,14 @@
 #include "validate_input.h"
 #include "detect_input.h"
 
+#include "../UI/console_output/dsp_char.h"
+void Test_Animation(Colors one, Colors two);	// So pretty...
+
+
 void Detect_Input()
 {
+
+
 	int input;
 
 	while (_kbhit())	// tampon vidé
@@ -15,17 +21,23 @@ void Detect_Input()
 
 	do
 	{
+		
+		
 		if ((_kbhit()))
 			input++;
 
 	} while (input < 1); // Loop de détectionj d'input
 
+
 	//std::thread inputThread(Check_Input);	// pour l'instant, chaque input est threadé and thast how we do
 	//inputThread.join();
+	std::thread test(Test_Animation, RED, WHITE);
 
 	Validate_Input();		// Les actions du joueur se font ici
 	
-
+	if (test.joinable())	// test de thread
+		test.join();
+		
 	//std::thread blastThread(&Blast::Blast_Shot, &blastP1, type, crd, keyDirection); // Thread tir de blast
 	//blastThread.join();	// On attend que le blast finis avant de détecter d'autres inputs
 
@@ -47,3 +59,20 @@ void Detect_Input()
 
 }
 
+void Test_Animation(Colors one, Colors two)	// So pretty...
+{
+	Coord crd = { 0, 2 };
+	int max = 80;
+	unsigned char sym = 178;
+
+	while (crd.x <= max) {
+
+		if (crd.x % 2 == 0)
+			UI_Dsp_Char(crd, sym, one);
+		else
+			UI_Dsp_Char(crd, 178, two);
+
+		crd.x++;
+	}
+
+}

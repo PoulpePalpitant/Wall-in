@@ -16,7 +16,7 @@
 void Validate_Input()
 {
 	ActionType action = IDLE;
-	Direction keyDirection = RESTE_ICITTE;
+	Direction keyDirection = NONE;
 	int key = _getch();
 
 	// Input autres que des charactères

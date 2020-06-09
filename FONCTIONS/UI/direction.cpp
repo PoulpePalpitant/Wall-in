@@ -3,6 +3,8 @@
 #include "direction.h"
 
 
+
+
 // Trouve la direction opposée d'une direction
 // ---------------------------
 
@@ -20,6 +22,8 @@ Direction Find_Opposite_Dir(Direction direction)
 		break;
 	}
 	return direction;
+
+	
 }
 
 Direction Create_Direction(Axis ax, Polarization plr) // transforme un Axe et une polarisation en une direction

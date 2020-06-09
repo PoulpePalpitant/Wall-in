@@ -93,12 +93,15 @@ bool Link::Unbound_Wall_Child(Wall* child)
 	for (size_t i = 0; i < this->numChild; i++)
 	{
 		if (this->pWalls[i] == child)				// Le wall qu'on veut retirer
-		{
-			this->pWalls[i] = NULL;
-
-			for (size_t j = i; j < numChild; j++)	// décalage de tout les childs de la liste			
-				this->pWalls[i] = this->pWalls[i+1];
-
+		{		
+			for (size_t j = i; j < numChild; j++)	// décalage de tout les childs de la liste							
+			{
+				if (j + 1 < numChild)
+					this->pWalls[j] = this->pWalls[j + 1];
+				else
+					this->pWalls[j] = NULL;	// Le dernier sera NULL car on viens de le destroy hha. pOW. Pachinka Haha... SzwIINNg.. PAF! Hehe. SPatatra!!! Ohoho' FLshaq, HaHa.
+			}
+			
 			numChild--;	// -1 wall
 			break;
 		}

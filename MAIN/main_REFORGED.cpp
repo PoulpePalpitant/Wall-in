@@ -8,7 +8,7 @@
 //#include < ctime >	// pour utiliser la fonction clock()
 //#include "WinUser.h"
 
-
+#include "../FONCTIONS/rng/rng.h"
 #include "../FONCTIONS/time/clock.h"
 #include "../FONCTIONS/grid/managegrids.h"
 #include "../FONCTIONS/structure_manager/structure_manager.h"
@@ -18,6 +18,9 @@
 #include "../FONCTIONS/bots/bot.h"
 #include "../FONCTIONS/bots/botinitialize/bot_intializer.h"
 #include "../FONCTIONS/bots/botmove.h"
+#include "../FONCTIONS/spawns/spawn_bot.h"
+#include "../FONCTIONS/spawns/bots_to_spawn.h"
+
 
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
@@ -25,8 +28,6 @@
 
 #include "../FONCTIONS/inputs/detect_input.h"
 using namespace std;
-
-void Test_Animation(Colors one, Colors two);	// So pretty...
 
 
 // ALL IN ONE PLACE MOTHERFUCKER!
@@ -36,12 +37,13 @@ int main()	// Le début!
 	// START STUFF LOOP
 	// ***************
 
+	Initialize_Rng();
+
 	char UI; Coord crd;	int maxC, maxR;
 
 	Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
 
 	
-										
 										// test the all grids
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // AFFICHE TOUS LES GRIDS 
@@ -72,7 +74,6 @@ int main()	// Le début!
 		}
 	}
 
-
 	maxC = gGrids.wallGrdVer.Get_Cols();
 	maxR = gGrids.wallGrdVer.Get_Rows();
 
@@ -97,51 +98,33 @@ int main()	// Le début!
 		}
 	}
 
-	GrdCoord Jerry = { 5,10 };
-	gGrids.Activate_Chain_Of_Walls(Jerry, UP, 3);
-	Jerry = { 5,20 };
-	gGrids.Activate_Chain_Of_Walls(Jerry, DOWN, 2);
-	Jerry = { 4,7 };
-	gGrids.Activate_Chain_Of_Walls(Jerry, UP, 15);
-	Jerry = { 4,6 };
-	DestroyChainOfWalls::Destroy_Chain_Of_Walls(Jerry);
+	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
 
+	/* test les spawns bot*/
 	
-	// Création de bots liés dans une liste
-	Bot *bot;
-	CustomBot specialBot;
-	specialBot.NoWarning = true;
+	/* Attributs généraux testé*/
+	bots_to_spawn::gNumSpawnTOT = 2;	// repeat, pour vérifier si sa block
+	bots_to_spawn::gRandomBoxSide = false;
+	bots_to_spawn::gBoxSide = LEFT;
+	bots_to_spawn::gRandomSpwn = false;
+	bots_to_spawn::gSpwNum = 6;
+	Spawn_Bot();
+	BotMove::Move_Bots();	// we show where they are
+	bots_to_spawn::Reset_To_Default();
+	bots_to_spawn::gNumSpawnTOT = 10;	// repeat, pour vérifier si sa block
+	bots_to_spawn::gHorizontalBorder = true;		// vertical 
+	bots_to_spawn::Set_Interval(3, 13);	// interval trop grand
+	bots_to_spawn::gRandomSpwn = false;
+	bots_to_spawn::Add_Specific(RIGHT, -1);
+	gCustomBot.is = true;		
+	gCustomBot.health = 100;		// thats strongk!
+	Spawn_Bot();
 
-	gGrd = { 2,3 };
-	bot = Create_New_Bot(BotType::REGULAR, gGrd, true);
-	
+	BotMove::Move_Bots();	// we show where they are
 
-	gGrd = { 0, 10 };
-	bot = Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	gGrd = { 1, 5 };	// spawn coord fonctionne différemment: La première coord représente une des 4 bordures, et la deuxième, l'adresse du spawn selon ->, v
-	Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
-	gGrd = { 3, 9 };	// spawn coord fonctionne différemment: La première coord représente une des 4 bordures, et la deuxième, l'adresse du spawn selon ->, v
-	Create_New_Bot(BotType::SUPERSONIC, gGrd, true);
+	/* test les spawns bot*/
 
-	for (size_t i = 0; i < 100; i++)
-	{
-		BotMove::Move_Bots();
-		Sleep(10);
-	}
-	
-
-	
-
-	
-	
-	Coord dep, arr;
-	dep.x = 3, dep.y = 5;
-	arr.x = 0, arr.y = 1;
-
-	if (Is_Equal(dep, arr))
-		true;
-	cout << TXT_CONST.MINUS;
 
 
 	// CLOCK TESTING
@@ -171,6 +154,13 @@ int main()	// Le début!
 	//LvlClock.Pause_Clock();
 	// test la vitesse d'affichage
 
+
+
+
+
+	
+		
+
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 
 	do
@@ -182,8 +172,8 @@ int main()	// Le début!
 		{	
 			//std::thread input(Detect_Input);	// Il semblerait que threader un input rend impossible l'utilisation de Get_Key_State
 			//input.join();
+
 			Detect_Input();
-			Test_Animation(RED, WHITE);
 
 		} while (true); // Game pas starté
 
@@ -205,20 +195,3 @@ int main()	// Le début!
 	} while (true);	// Le joueur ne quitte pas
 }
 
-void Test_Animation(Colors one, Colors two)	// So pretty...
-{
-	Coord crd = { 0, 2 };
-	int max = 35;
-	unsigned char sym = 178;
-
-	while (crd.x <= max) {
-
-		if(crd.x % 2 == 0)
-			UI_Dsp_Char(crd, sym, one);
-		else
-			UI_Dsp_Char(crd, 178, two);
-	
-		crd.x++;
-	}
-
-}

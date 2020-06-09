@@ -1279,7 +1279,7 @@ void Level_1_Spawn_Script(int Spwn_cycleTOT)
 	case 28:break;
 	case 29:Skip = 5;break;
 	// Start les doubles spawns
-	case 30:BoxSide = RIGHT; Spawn_Crd_Interv(5, 6, CoordIntv); NumSpawnTOT = 2; break;
+	case 30:BoxSide = RIGHT; (5, 6, CoordIntv); NumSpawnTOT = 2; break;
 	case 31:BoxSide = RIGHT; Spawn_Crd_Interv(5, 6, CoordIntv); NumSpawnTOT = 2; break;
 	case 32:BoxSide = RIGHT; Spawn_Crd_Interv(5, 6, CoordIntv); NumSpawnTOT = 2; break;
 	case 33:BoxSide = RIGHT; Spawn_Crd_Interv(5, 6, CoordIntv); NumSpawnTOT = 2; break;
@@ -1343,7 +1343,7 @@ void Level_1_Spawn_Script(int Spwn_cycleTOT)
 	// traitement du random
 	if(BoxSide != -1)
 		Random_Boxside = false;
-	if (Indice_Spawn_COORD != -1 || CoordIntv.interval)
+	if (Indice_Spawn_COORD != -1 || CoordIntv.active)
 		Random_Spawn_COORD = false;
 	if (NumSpawnTOT > 1)
 		Multi_Spawn = true;
@@ -1694,7 +1694,7 @@ void Spawn_Crd_Interv(int min, int max, Sp_CoordIn &coordIn)
 {
 	coordIn.min = min;
 	coordIn.max = max;
-	coordIn.interval = true;
+	coordIn.active = true;
 }
 
 void Create_New_Spawn_Coord(int ShipMoveX, int ShipMoveY, int SpawnXY[][MaxNumBOTS])

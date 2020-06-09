@@ -8,7 +8,7 @@
 // L'état du Spawn, si il est disponibe pour spawné un Bot, ou si il est bloqué!
 enum class SpawnState { BLOCKED, FREE };	// Un Spawn sera Bloqué pour éviter de créer un BOT qui entrarait en contact avec un autre Bot déjà éxistant.
 
-class Spawn
+class BotSpawner
 {
 public:
 	void Set_XY(Coord Coord) { coord = Coord; }	// Initialise le x et y du Spawn (Ne doit pas être utilisé directement, se référer au Grid de Spawn : SpawnGrid)

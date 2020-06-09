@@ -303,7 +303,7 @@ int NumSpawn;											// Le nombre de spawns relatif durant un cycle de "Curre
 int NumSpawnTOT;										// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
 int Spwn_cycleTOT = 0;
 
-struct Sp_CoordIn { int min; int max; bool interval = false; };
+struct Sp_CoordIn { int min; int max; bool active = false; };
 
 Sp_CoordIn CoordIntv;					// Le prochain spawn de bot se situera entre un interval min et maximum de coord de spawn
 

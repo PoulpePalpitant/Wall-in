@@ -1,17 +1,23 @@
 
 
-#include "bot_intializer.h"
 #include "../botlist.h"
+#include "../../grid/AllGrids.h"
+#include "../../grid/spawngrid.h"
+
+#include "bot_intializer.h"
 
 
 // L'UNIQUE BOT INITIALIZER
 //extern BotInitializer botInitializer;
 
-Bot* Create_New_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised)	// NOT A MEMBBER OF CLASS BOT!!!
+Bot* Create_New_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// NOT A MEMBBER OF CLASS BOT!!!
 {
 	// Pointeur vers le nouveau Bot créé
-	static Bot* newBot = NULL;				// Avec les thread, les variables static risquent de causé problème?
-
+	static Bot* newBot; newBot = NULL;				// Avec les thread, les variables static risquent de causé problème?
+	
+	if(!spawnGrid->Is_Inbound(spGrdCrd.border, spGrdCrd.spwNum))	// That ain't a valid spawn location braah
+		return newBot;
+	
 	//CRÉATION DU BOT
 	newBot = botList.Add_Bot(type, spGrdCrd, isBotCustomised);	// passage par référencex3...
 

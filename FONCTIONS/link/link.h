@@ -23,7 +23,7 @@
 
 
 enum class LinkState { DEAD, FREE, BOUND, ROOT };
-enum class LinkType{ REGULAR , ETERNAL, GROWER, CORRUPTED, CHASER, BLOCKER};
+enum class LinkType{ REGULAR , ETERNAL, GROWER, CORRUPTED,MINE,	 CHASER, BLOCKER};		// Si tu pile sur la mine, tu prend 1 de dégât. Si tu tir dessus, tu va créer une autre mine avec ton blast!!!
 
 enum LinkSym 
 {

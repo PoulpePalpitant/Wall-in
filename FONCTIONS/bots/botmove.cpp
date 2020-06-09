@@ -1,6 +1,5 @@
 
 #include "botlist.h"
-#include "../animation/UI_move_bot.h"
 #include "../grid/AllGrids.h"
 #include "../player/player.h"
 
@@ -40,7 +39,7 @@ void BotMove::Move_Bots()
 		start = bot->XY;		// Coord de départ
 		XY.Initialize_All(start, bot->dir);	// Inrémenteur de position
 		XY.Increment_Coord();	// avance d'un mouvement
-		bot->XY = end = XY.coord;	// Coord d'arrivée et nouvelle position du bot		// ça va pt chier
+		end = XY.coord;	// Coord d'arrivée et nouvelle position du bot		// ça va pt chier
 		
 		// Enregistrement du mouvement au début de la loop
 		bot->stepCount++;
@@ -49,8 +48,10 @@ void BotMove::Move_Bots()
 		if(!bot->fixedColor)	// pas couleur fixe
 			bot->Upd_Progression_Color();	// Change la couleur du bot quand il s'approche de sa sortie
 
-		UI_MoveBot::Animate_Bot(bot, start);		// Erase and draw
+		Bot::Animate_Bot(bot, end);		// Erase and draw
 		
+		bot->XY = end; // Ceci est après, deal with it
+
 		grdCrd = bot->nxtWallCrd;									// Crd du prochain mur qu'il va percuter
 		wallGrid = gGrids.Find_Wall_Grid_From_Axis(Find_Opp_Axis(bot->dir));	// trouve le grid que le bot va traverser	/*IMPORTANT*/ Le grid que le Bot va traverser sera Perpendiculaire à celui-ci!
 		
@@ -59,7 +60,7 @@ void BotMove::Move_Bots()
 			if (wallGrid->Is_Wall_here(grdCrd.index))
 			{
 				/* Fait un impact. Si l'impact tue le bot, we continue */
-				if(Bot::Bot_Impact(bot, &wallGrid->wall[grdCrd.index.c][grdCrd.index.r]))	// Im Pact!		
+				if(Bot::Bot_Impact(bot, prev, &wallGrid->wall[grdCrd.index.c][grdCrd.index.r]))	// Im Pact!		
 					continue;	
 			}					
 
@@ -73,7 +74,7 @@ void BotMove::Move_Bots()
 		if (!bot->stepLeft)	// Le bot est sortie de la box!
 		{
 			P1.Player_Lose_HP();	// OUCH
-			botList.Destroy_Bot(bot);
+			botList.Destroy_Bot(bot, prev);
 			continue;	// NÉCESSAIRE. Quand tu détruit, ton ptr est automatiquement assigné au suivant
 			// if dead, continue, else keep going
 
@@ -81,6 +82,7 @@ void BotMove::Move_Bots()
 			Destroy_BOT_and_Spawn_Blocks(bot, front_Spawn_COORD[bot]);*/
 		}
 
+		prev = bot;
 		bot = bot->pNext; 		// Passe au prochain bot mon ami!
 
 	} 

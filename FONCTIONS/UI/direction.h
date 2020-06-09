@@ -3,7 +3,7 @@
 #include "polarisation.h"
 #include "axis.h"
 
-enum Direction { UP, LEFT , DOWN, RIGHT, RESTE_ICITTE = -1 };
+enum Direction { UP, LEFT , DOWN, RIGHT, NONE = -1 };
 
 Direction Find_Opposite_Dir(Direction direction);	// Trouve la direction opposée
 Direction Create_Direction(Axis ax, Polarization plr); // transforme un Axe et une polarisation en une direction

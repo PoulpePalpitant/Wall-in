@@ -42,7 +42,7 @@ void SpawnBorder::Create_Border(LinkGrid& linkGrid, Direction border) {
 	case LEFT:	case RIGHT: this->btwSpw = DELTA_Y;	incrBtwSpw = &SpawnXY.y; numSpawns = linkGrid.Get_Rows() - 1;break;	// À noter que le bordure Left est Vertical, même si elle est elle n'est pas en haut
 	}	
 	
-	this->spawn = new Spawn[numSpawns]; // Création du nombre de spawn sur la bordure
+	this->spawn = new BotSpawner[numSpawns]; // Création du nombre de spawn sur la bordure
 
 	for (int i = 0; i < numSpawns; i++)
 	{
