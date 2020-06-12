@@ -20,7 +20,7 @@
 #include "../FONCTIONS/bots/botmove.h"
 #include "../FONCTIONS/spawns/spawn_bot.h"
 #include "../FONCTIONS/spawns/bots_to_spawn.h"
-
+#include "../FONCTIONS/spawns/valid_spwn_intervals.h"
 
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
@@ -102,19 +102,22 @@ int main()	// Le début!
 
 
 	/* test les spawns bot*/
-	
+	ValidSpwnIntervals::Initialize_Valid_Spawn_List();	// Doit Initialiser les listes d'ABORD!
+
 	/* Attributs généraux testé*/
-	bots_to_spawn::gNumSpawnTOT = 2;	// repeat, pour vérifier si sa block
-	bots_to_spawn::gRandomBoxSide = false;
-	bots_to_spawn::gBoxSide = LEFT;
-	bots_to_spawn::gRandomSpwn = false;
-	bots_to_spawn::gSpwNum = 6;
+	//bots_to_spawn::gBoxSide = LEFT;		// ça essaie de spawn à gauche 
+
+	bots_to_spawn::Add_Spwns(6);
+	bots_to_spawn::Set_Interval(LEFT, 5, 8);
+	//bots_to_spawn::Set_Interval(RIGHT, 5, 8);
+
+	bots_to_spawn::Set_Randomness();
 	Spawn_Bot();
 	BotMove::Move_Bots();	// we show where they are
 	bots_to_spawn::Reset_To_Default();
 	bots_to_spawn::gNumSpawnTOT = 10;	// repeat, pour vérifier si sa block
 	bots_to_spawn::gHorizontalBorder = true;		// vertical 
-	bots_to_spawn::Set_Interval(3, 13);	// interval trop grand
+	bots_to_spawn::Set_Interval(LEFT, 3, 13);	// interval trop grand
 	bots_to_spawn::gRandomSpwn = false;
 	bots_to_spawn::Add_Specific(RIGHT, -1);
 	gCustomBot.is = true;		

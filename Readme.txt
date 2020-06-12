@@ -51,6 +51,7 @@ CTRL+K+C 		for Bulk Comment
 CTRL+K+C 		for Uncomment
 
 Ctrl+x			delete une ligne
+Ctrl+w + del		delete word at cursor		woah
 CTRL+SHIFT+V 		for the Clipboard Ring		bientôt la vie
 
 Click Alt souris	Step Through History

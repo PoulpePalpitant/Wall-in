@@ -1,6 +1,7 @@
 
-
+#include "../spawns/valid_spwn_intervals.h"
 #include "spawngrid.h"
+
 
  int SpawnGrid::maxSpwnCrdX;		// Nombre de COORD de spawn Maximum sur les bordures horizontales UP(0) et DOWN(2)
  int SpawnGrid::maxSpwnCrdY;		// Nombre de COORD de spawn Maximum sur les bordures verticales LEFT(1) et RIGHT(3)
@@ -25,6 +26,9 @@ void SpawnGrid::Create(LinkGrid& linkGrid)	// Création de tous les éléments spaw
 
 	maxSpwnCrdX = this->border[UP].Get_Num_Spawns();		// Nombre de COORD de spawn Maximum sur les bordures horizontales UP(0) et DOWN(2)
 	maxSpwnCrdY = this->border[LEFT].Get_Num_Spawns();		// Nombre de COORD de spawn Maximum sur les bordures verticales LEFT(1) et RIGHT(3)
+	
+	ValidSpwnIntervals::Set_Maximums(maxSpwnCrdX, maxSpwnCrdY);	// shhhhhh, st'un secret
+
 }
 
 

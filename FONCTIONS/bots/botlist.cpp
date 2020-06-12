@@ -48,7 +48,10 @@ void BotList::Destroy_Bot(Bot*& botToDel, Bot*& prev)
 	/// yes
 
 	if (botToDel == pBotStrt && botToDel == pBotEnd)	// 1 élément dans la liste
+	{
+		delete botToDel;	// DELETE
 		botToDel = pBotStrt = pBotEnd = NULL;
+	}
 	else
 	{
 		if (botToDel == pBotStrt)

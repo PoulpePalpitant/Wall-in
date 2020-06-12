@@ -1,6 +1,8 @@
 
 
-#include "../grid/spawngrid.h"
+#include "valid_spwn_intervals.h"
+//#include "../grid/spawngrid.h"
+#include "../grid/AllGrids.h"
 
 #include "bots_to_spawn.h"
 
@@ -22,11 +24,11 @@ namespace bots_to_spawn {
    
 	bool gRandomSpwn = true;
 	bool gRandomBoxSide = true;	// Le prochain bot spawnera sur une COORD Aléatoire
-	bool gHorizontalBorder = false, gVerticalBorder = false, Allsides = false;		// Le prochain spawn sera vertical, ou horizontal	
+	bool gHorizontalBorder = false, gVerticalBorder = false, gAllSides = false;		// Le prochain spawn sera vertical, ou horizontal	
 	BotType type = {};
 
 	int gNumSpawnTOT = 0;				// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
-	int gAdditonnalSpawns = 0;			// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
+	int gAdditonnalSpawns = 0;			
 
 	Sp_CoordIn gCrdInterval = {};		// Donne un interval de coordonnée sur une bordure
 
@@ -87,6 +89,7 @@ namespace bots_to_spawn {
 		 gRandomBoxSide = true;		// BoxSide random
 		 gHorizontalBorder = false;	// Le prochain spawn sera horizontal	
 		 gVerticalBorder = false;	// Le prochain spawn sera vertical	
+		 gAllSides = true;			// Spawn sur une bordure random
 		 type = BotType::REGULAR;	// I'll take a regular one please.
 
 		gNumSpawnTOT = 1;			// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
@@ -97,13 +100,35 @@ namespace bots_to_spawn {
 
 	// Setup un interval de coordonnée
 	// --------------------------------
-	void Set_Interval(int min, int max)		// NOTE: Un interval peut être invalide si il est plus grand que le nombre de spawn sur une bordure
-	{
-		gCrdInterval.min = min;
-		gCrdInterval.max = max;
-		gCrdInterval.active = true;
+	bool Set_Interval(Direction border, int min, int max)		// NOTE: Un interval peut être invalide si il est plus grand que le nombre de spawn sur une bordure
+	{		
+		if (spawnGrid->Is_Inbound(border, max))			// Ne vérifira pas si le min est valide.	:			Peut bugger si min < 0
+		{
+			ValidSpwnIntervals::Add_Primary_Interval(border, min, max);
+			return true;	// valid stuf
+		}
+		else
+			return false;	// ain't gonna work
 	}
 
+	// Ajoute des bots à spawner
+	// -------------------------
+	void Add_Spwns(int amount)		// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
+	{
+		gNumSpawnTOT += amount;		
+	}
+
+	// Donne une valeur précise à une coordonnée, affecte le random
+	// -------------------------------------------------------------
+
+	void Set_Randomness() {				// Doit être utilisé qu'une seule fois par cycle
+		
+		// traitement du random
+		if (gBoxSide != -1)
+			gRandomBoxSide = false;
+		if (gSpwNum != -1 )
+			gRandomSpwn = false;
+	}
 }
 
 // EN DEHORS DU NAMESPACE

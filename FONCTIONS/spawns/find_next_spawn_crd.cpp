@@ -1,6 +1,6 @@
 
 #include "../grid/AllGrids.h"
-#include "invalid_spwns.h"
+#include "valid_spwn_intervals.h"
 #include "bots_to_spawn.h"
 //#include "rng.h"	// no need apparently
 
@@ -14,54 +14,81 @@ struct RandomCrd {	// Random coord
 };
 
 //	Pour copier les valeurs des nouveaux bot généraux. Ceci évite de changer attributs de base du prochain spawn en cas d'échec de création
-static SpwCrd spwCrd;				// Attributs pour trouver le prochain spawn de bot
-static RandomCrd rdmCrd;			// Randomness des prochains spawns
-
+static SpwCrd spwCrd = {};				// Attributs pour trouver le prochain spawn de bot
+static RandomCrd rdmCrd = {};			// Randomness des prochains spawns
+static bool cancelSpwn = false;			
 
 // Trouve la bordure de spawn 
 // --------------------------
 
-static void Find_BoxSide()		
+static void Find_BoxSide()		// NOTE: Si tu fournis un spawn number, ça brise complètement le random des intervalles
 {
-
 	if (rdmCrd.border)	// Veux Dire qu'aucune boxside n'est spécifié. On va en choisir une au hasard
 	{
-		if (gVerticalBorder)
-			rand() % 2 == 0 ? spwCrd.border = LEFT : spwCrd.border = RIGHT;	// Spawn sur les bordures gauches ou droites
-		else
-			if (gHorizontalBorder)
-				rand() % 2 == 0 ? spwCrd.border = UP : spwCrd.border = DOWN;	// Spawn sur les bordures haut et bas
-			else
-				spwCrd.border = rand() % 4;	//	Bordure random
-	}
+		if (rdmCrd.spawn)		// Si la coordonnée de spawn est random					
+		{
+			spwCrd.border = ValidSpwnIntervals::Pick_Primary_Border();// Doit trouver une bordure avec un intervalle prioritaire	
+
+			if (spwCrd.border == -1)	// Plus d'intervalles prioritaires de disponibles
+			{
+				if (gAllSides)					// Tout les bordures				   //				// YO SI CETTE LISTE EST AUSSI GRANDE QUE LE NOMBRE DE SPAWN COORD SUR UNE BORDURE, TU DEVRAIS CANCELLER LE 
+					spwCrd.border = rand() % 4;	//	Bordure random					   //				// RESTE DES SPAWNS EN FAISANT BREAK; ET EN SETTANT LE NUMSPAWN À 0!
+				else
+					if (gVerticalBorder) // Bordures LEFT & RIGHT
+					{
+						rand() % 2 == 0 ? spwCrd.border = LEFT : spwCrd.border = RIGHT;	// Spawn sur les bordures gauches ou droites
+
+						if (ValidSpwnIntervals::Is_Border_Full(spwCrd.border)) 	// Check si la bordure est toute bloqué
+							Find_Opposite_Dir((Direction)spwCrd.border);		// Si oui, Prend la bordure en face
+						else
+							return;	// hey that's valid						
+					}
+					else
+						if (gHorizontalBorder)	// Bordures UP & DOWN
+						{
+							rand() % 2 == 0 ? spwCrd.border = UP : spwCrd.border = DOWN;	// Spawn sur les bordures haut et bas
+
+							if (ValidSpwnIntervals::Is_Border_Full(spwCrd.border)) 	// Check si la bordure est toute bloqué
+								Find_Opposite_Dir((Direction)spwCrd.border);		// Si oui, Prend la bordure en face
+							else
+								return;	// we good here						
+						}
+			}
+		}
+	}	
+	
+	if (ValidSpwnIntervals::Is_Border_Full(spwCrd.border)) 	// Check si la bordure est toute bloqué
+		cancelSpwn = true;	// cancel that, no space here
 }
-// Trouve le numéro du spawn sur la bordure
-// ----------------------------------------
+
+// Trouve le numéro du spawn sur la bordure, si non-acessible, en choisit un random
+// --------------------------------------------------------------------------------
 
 static void Find_Spwn_Num()		
 {
-	// Si le spawn est invalidé, par la présence d'un block. On va trouver une autre COORD, Mais pas un nouveau côté de BoxSide
-	if (rdmCrd.spawn)
+	do
 	{
-		if (gBoxSide % 2 == 0)	// border horizontaux
-			spwCrd.spwNum = rand() % SpawnGrid::Get_MaxSpwnCrdX(); // Setup ça au début du niveau
-		else
-		{
-			spwCrd.spwNum = rand() % SpawnGrid::Get_MaxSpwnCrdY();
-		}
-	}
-	else
-		if (gCrdInterval.active) // Si l'intervalle est activé autre chose que Zéro 				
-			spwCrd.spwNum = rand() % (gCrdInterval.max - gCrdInterval.min + 1) + gCrdInterval.min;	// Création d'une coord à l'int. de l'interval
+		spwCrd.spwNum = ValidSpwnIntervals::Pick_Valid_Spawn(spwCrd.border, rdmCrd.spawn, spwCrd.spwNum);
+
+	} while (spwCrd.spwNum == -1);		// Tant et aussi longtemps qu'on a pas trouvé un spawn valide
 }
 
 // Copy les attributs génériques qui dictent quels seront les Crd de spawn valides durant ce cycle
 static void Copy_Generic_Attributes()
 {
-	if(spwCrd.border != gBoxSide)			spwCrd.border = gBoxSide;
-	if(spwCrd.spwNum != gSpwNum)			spwCrd.spwNum = gSpwNum;
-	if(rdmCrd.border != gRandomBoxSide)		rdmCrd.border = gRandomBoxSide;
-	if(rdmCrd.spawn != gRandomSpwn)			rdmCrd.spawn= gRandomSpwn;
+	int Fuckyou;
+	if(spwCrd.border != gBoxSide)			
+		spwCrd.border = bots_to_spawn::gBoxSide;
+	
+	Fuckyou = bots_to_spawn::gSpwNum;				//	Wow lol. Merci
+
+	if (spwCrd.spwNum != gSpwNum)
+		spwCrd.spwNum = bots_to_spawn::gSpwNum;
+	
+	if(rdmCrd.border != gRandomBoxSide)		
+		rdmCrd.border = bots_to_spawn::gRandomBoxSide;
+	if(rdmCrd.spawn != gRandomSpwn)			
+		rdmCrd.spawn= bots_to_spawn::gRandomSpwn;
 }
 
 // Copy UNE bunch d'attributs spécifiques pour le spawn immédiat. Si la liste est vide, le spawn n'aura que les attributs génériques
@@ -74,63 +101,26 @@ static void Add_Specific_Attributes()
 
 		if (spwCrd.spwNum == -1)		// Si égal -1, on rend le spawn random
 			rdmCrd.spawn = true;		// la coord sera COMPLETEMENT random, ou spécifique(pas d'interval, parce que un interval peut être trop grand pour une bordure différente)
+		else
+			rdmCrd.spawn = false;
 	}
 }
-
-// Vérifie si la coordonnée de spawn est une coordonnée valide
-static bool Validate_Coord()
-{
-	if (!spawnGrid->Is_Inbound(spwCrd.border, spwCrd.spwNum))		//chck si la coord est inbound d'abord
-		return false;
-	
-	if (InvalidSpwCrd::Check_Invalid_Coord_Lists(spwCrd))	//Mmm je devrais pas m'arranger pour ne juste pas générer une coord une deuxième fois? à la place...
-		return false;
-
-	//InvalidSpwCrd::Add_Invalid_Coord_To_List(spwCrd);	// why?		si spawn block, thats why
-		//return false;
-
-	return true;
-
-}
-
 
 // Trouve le prochain spawn 
 // ----------------------------------------
 
 SpwCrd Find_Spwn_Coord()
 {
-	bool validSpwn;
+	cancelSpwn = false;	// Si rien n'est disponible, on cancel
 
 	Copy_Generic_Attributes();	// on doit copier les attributs génériques, parcequ'on risque de les modifier. Si on les modifient, les prochains spawns de ce cycle vont spawner tout croche
 	Add_Specific_Attributes();	// Trouve une crd spécifique dans la liste. Si la liste est vide, ne change rien
 
+	Find_BoxSide();	// Trouve la bordure 
 
-	//spawn.c = genBoxSide;
-	//spawn.r = genInterval?;
-	do
-	{
-		validSpwn = true; // La coord Commence par être valide
-
-		Find_BoxSide();	// Trouve la bordure 
+	if(!cancelSpwn)	
 		Find_Spwn_Num();// Trouve le numéro du spawn
 	
-
-			//spawnGrid->border[Spw.border].spawn[Spw.spw];
-
-		// VALIDATION
-		if (!Validate_Coord())				//La Coord, ou le Spawn? mm
-		{
-			validSpwn = false;
-			rdmCrd.spawn = true;			// En ce moment, si un spawn foire, on en cherche un autre randomnly
-			continue;	// no validos
-		}
-
-	// Si le spawn y foire, on change les proprités de CE spawn uniquement, pas les Generic Attributes.
-	 // Ce qui va être chagé : Le randomness de la coordonnée en gros [Boxside][SpwNum]
-
-		// faudrait que je me fasse une liste des spawn qui ont été fait sur l'interval, parce que la ça se peut qu'une coord survient 2fois. Et dans ce cas, on en choisit une autre au hasard, c'est juste pas efficace
-		// et une liste pour chaque boxside		-> almost done
-	} while (validSpwn == false);
 
 	return spwCrd;	// SOFLOCK: Si aucun spawn est valide
 }
