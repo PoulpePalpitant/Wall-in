@@ -24,8 +24,8 @@ private:
 	// Le temps updaté par le timer
 	time_t time = 0;
 
-	void Update_Time();		// Update le temps écoulé
 	void Reset_Time() { time = 0; }		// reset le temps
+	void Update_Time();		// Update le temps écoulé
 
 public:
 	void Start_Clock();	// Enclanche le temps. Conserve les données relié au temps écoulé
@@ -47,4 +47,6 @@ public:
 /// FOUND THE SOLUTION : Si ta un default argument(ici Color = White), tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
 
 
+
+extern GameClock gameClockTEST;
 extern time_t gCrntLvLTime;	 // Temps total écoulé depuis le début d'un niveau

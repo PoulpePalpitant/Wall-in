@@ -17,7 +17,7 @@
 	//int Spwn_cycleTOT = 0;
 
 
-	void Spawn_Bot();//if (Spawn_this_Cycle)
+	void Spawn_Bots();//if (Spawn_this_Cycle)
 
 
 	void Is_Blocked();	// prob not

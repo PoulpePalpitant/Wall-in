@@ -78,7 +78,6 @@ void Validate_Input()
 			si tu fais un transfert horizontale, la longueur maximale n'est pas limité à un wall...
 			*/
 
-
 			// Si on tir dans la même direction que son parent wall		
 			if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
 				cancelBlast = true; // rien va se passer

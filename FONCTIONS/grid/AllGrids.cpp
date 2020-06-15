@@ -1,6 +1,6 @@
 
 #include "../player/player.h"
-
+#include "../structure_manager/destroy_chain.h"
 #include "AllGrids.h"
 
 
@@ -99,6 +99,16 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 		parent->Activate_Link(blast->linkType, wall);		// Active le Link, et le lie à son child
 		wall->Activate_Wall(blast->strength, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
 		
+		// WE STOP, si un bot est sur un mur qu'on veut créer
+		if (wall->Get_Bot_On_Me())	// Si y'avait un bot sur le wall qu'on vient de créer, on détruit les deux
+		{
+			if (Bot::Bot_Impact(Get_Bot_On_Me(), Get_Bot_On_Me(), &wallGrid->wall[grdCrd.index.c][grdCrd.index.r]))	// Im Pact!		
+
+
+
+			return;
+		}
+
 		if(nbOfWalls == 1)
 			child->Activate_Link(blast->linkType);				// On active le Child qu'une fois, car il n'y en a qu'un seul
 		

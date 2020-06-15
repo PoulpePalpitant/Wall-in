@@ -11,7 +11,7 @@ const unsigned char AllPlyrSym[5] = { 193,180,194,195,197 };	// Haut, Left, Down
 class Player {
 private:
 	// ATTRIBUTES
-	int HP = 3;								// La vie du joueur. : Le nombre de bots qui peuvent sortir de la bot avant qu'il soit dead
+	int hp = 3;								// La vie du joueur. : Le nombre de bots qui peuvent sortir de la bot avant qu'il soit dead
 	PlayerState state = PlayerState::ALIVE; //
 
 	// UI
@@ -23,7 +23,7 @@ private:
 
 public:
 	// GETS
-	int Get_HP() { return HP; }					// La vie
+	int Get_HP() { return hp; }					// La vie
 	char Get_Sym() { return sym; }				// Le symbole pour l'affichage
 	Colors Get_Clr() { return clr; }			// Couleur
 	GrdCoord Get_Grd_Coord() { return this->grdCrd; }	// Sa position dans le grid
@@ -34,7 +34,7 @@ public:
 	void Set_State(PlayerState newState) { state = newState; }		// Permet de détruire le joueur:  Le réssuciter : Ou le Rendre invincible
 	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole du joueur
 	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur du joueur
-	
+	void Set_Hp(int HP) { hp = HP; }								// Chane l'hp pour une valeur fixe
 
 	// UPDATES
 	void Upd_Sym_From_Direction(Direction dir);							// Change le symbole du joueur lors d'un mouvement ou d'un tir dans une direction

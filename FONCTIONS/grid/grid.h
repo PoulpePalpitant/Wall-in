@@ -8,10 +8,6 @@
 
 struct GrdCoord { int c; int r; };		//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
 
-// Variable qui servira à naviguer dans les tableaux des grids
-extern GrdCoord gGrd;
-
-
 // CONSTANTES POUR L'AFFICHAGE SEULEMENT
 // *************************************
 

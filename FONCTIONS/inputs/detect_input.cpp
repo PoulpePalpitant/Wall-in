@@ -14,26 +14,25 @@ void Detect_Input()
 
 	int input;
 
-	while (_kbhit())	// tampon vidé
-		_getch();
+
 
 	input = 0;
 
-	do
-	{
+
 		
 		
 		if ((_kbhit()))
-			input++;
+			Validate_Input();		// Les actions du joueur se font ici
 
-	} while (input < 1); // Loop de détectionj d'input
+		while (_kbhit())	// tampon vidé
+			_getch();
 
 
 	//std::thread inputThread(Check_Input);	// pour l'instant, chaque input est threadé and thast how we do
 	//inputThread.join();
 	std::thread test(Test_Animation, RED, WHITE);
 
-	Validate_Input();		// Les actions du joueur se font ici
+	
 	
 	if (test.joinable())	// test de thread
 		test.join();

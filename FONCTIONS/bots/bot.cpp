@@ -5,7 +5,7 @@
 
 #include "bot.h"
 
-extern CustomBot gCustomBot = {};	// Permet de faire des bots customs 
+extern CustomBotStats gCustomBot = {};	// Permet de faire des bots customs 
 extern bool gIsBotCustom = false;
 
 // Change la couleur du BOT selon sa progression

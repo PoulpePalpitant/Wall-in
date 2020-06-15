@@ -22,7 +22,6 @@ TimerOP* TimerOP::Set_Instance()
 // Sert à delete le Timer pointé par instance
 void TimerOP::Release()
 {
-
 	delete pInstance;
 	pInstance = NULL;
 }
@@ -40,7 +39,6 @@ TimerOP::~TimerOP()
 // reset Start time
 void TimerOP::Reset_Timer() {
 	startTime = std::chrono::system_clock::now();
-
 }
 
 // Va chercher delta time c'est la durée qui sépare chaque tick de la clock je crois

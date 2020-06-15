@@ -69,7 +69,7 @@ void BotList::Destroy_Bot(Bot*& botToDel, Bot*& prev)
 	}
 
 
-	gBotMetaReg.Bot_Died();		// Record sa mort
+	gAllBotMeta.Bot_Died();		// Record sa mort
 }
 
 // Ajoute un bot à la liste de bots
@@ -94,7 +94,7 @@ Bot* BotList::Add_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised) {
 	//botEnd->next = NULL; Se fait par défaut :O
 
 	// On oublie pas d'update le meta
-	gBotMetaReg.New_Bot();
+	gAllBotMeta.New_Bot();
 
 	return pBotEnd;		// L'adresse du bot créé
 }

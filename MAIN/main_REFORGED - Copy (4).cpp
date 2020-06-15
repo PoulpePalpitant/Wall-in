@@ -25,7 +25,7 @@
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
 
-#include "../FONCTIONS/update_game/update_game.h"
+
 #include "../FONCTIONS/inputs/detect_input.h"
 using namespace std;
 
@@ -101,31 +101,32 @@ int main()	// Le début!
 	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
 
-	///* test les spawns bot*/
-	//ValidSpwnIntervals::Initialize_Valid_Spawn_List();	// Doit Initialiser les listes d'ABORD!
+	/* test les spawns bot*/
+	ValidSpwnIntervals::Initialize_Valid_Spawn_List();	// Doit Initialiser les listes d'ABORD!
 
-	///* Attributs généraux testé*/
-	////bots_to_spawn::gBoxSide = LEFT;		// ça essaie de spawn à gauche 
+	/* Attributs généraux testé*/
+	//bots_to_spawn::gBoxSide = LEFT;		// ça essaie de spawn à gauche 
 
-	//bots_to_spawn::Reset_To_Default();
-	//bots_to_spawn::Add_Spwns(0);
-	//bots_to_spawn::Set_Interval(DOWN, 5, 10);
-	//bots_to_spawn::Add_Specific(DOWN, 9);
-	//bots_to_spawn::gVerticalBorder = true;
+	bots_to_spawn::Reset_To_Default();
+	bots_to_spawn::Add_Spwns(0);
+	bots_to_spawn::Set_Interval(DOWN, 5, 10);
+	bots_to_spawn::Add_Specific(DOWN, 9);
+	bots_to_spawn::gVerticalBorder = true;
 
-	//bots_to_spawn::Set_Randomness();Spawn_Bots();bots_to_spawn::Reset_To_Default();
-	//
-	//
-	//BotMove::Move_Bots();	// we show where they are
-	//bots_to_spawn::Add_Spwns(300);	// repeat, pour vérifier si sa block
-	//bots_to_spawn::Set_Interval(LEFT, 3, 100);	// interval trop grand, il ne sera même pas considéré mon vieux :)
-	//gCustomBot.is = true;		
-	//gCustomBot.health = 100;		// thats strongk!
-	//bots_to_spawn::Set_Randomness();Spawn_Bots();bots_to_spawn::Reset_To_Default();
+	bots_to_spawn::Set_Randomness();Spawn_Bot();bots_to_spawn::Reset_To_Default();
+	
+	
+	BotMove::Move_Bots();	// we show where they are
+	bots_to_spawn::Add_Spwns(300);	// repeat, pour vérifier si sa block
+	bots_to_spawn::Set_Interval(LEFT, 3, 100);	// interval trop grand, il ne sera même pas considéré mon vieux :)
+	gCustomBot.is = true;		
+	gCustomBot.health = 100;		// thats strongk!
+	bots_to_spawn::Set_Randomness();Spawn_Bot();bots_to_spawn::Reset_To_Default();
 
 
-	//BotMove::Move_Bots();	// we show where they are
-	///* test les spawns bot*/
+	BotMove::Move_Bots();	// we show where they are
+
+	/* test les spawns bot*/
 
 
 
@@ -138,7 +139,7 @@ int main()	// Le début!
 	crd = { 0,1 };
 	LvlClock.Dsp_Name(crd);
 	crd = { 13,1 };
-	LvlClock.Start_Clock();	// Start l'horologe en bakcground!
+	LvlClock.Start_Clock();
 
 	thread Clockydy(&GameClock::Infinite_Dsp, &LvlClock, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
 	//thread Test(Test_Animation, RED, WHITE);
@@ -164,52 +165,36 @@ int main()	// Le début!
 		
 
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
-		// GAME LOOP DES INTERNETS!
 
+	do
+	{
+		// MENU LOOP
+		// *********
 		
-		//double previous = getCurrentTime();
-		//double lag = 0.0;
-		//while (true)
-		//{
-		//	double current = getCurrentTime();
-		//	double elapsed = current - previous;
-		//	previous = current;
-		//	lag += elapsed;
+		do	// Affiche MENU
+		{	
+			//std::thread input(Detect_Input);	// Il semblerait que threader un input rend impossible l'utilisation de Get_Key_State
+			//input.join();
 
-		//	processInput();
+			Detect_Input();
 
-		//	while (lag >= MS_PER_UPDATE)
-		//	{
-		//		update();
-		//		lag -= MS_PER_UPDATE;
-		//	}
+		} while (true); // Game pas starté
 
-		//	render();
-		//}
 	
+		// GAME LOOP
+		// *********
 
-		
-		
-		//LOAD FILES
-
-		// GAME LOOP	MENU LOOP	
-		// *********	*********
-	// time test 
-			gameClockTEST.Start_Clock();
-	
-		while (gIsRunning)	// Le jeu est ouvert
+		while (true)	// Le joueur joue, ou n'est pas mort 
 		{
+			// Check lvl stuff
+			// Check input stuff
 
-			Detect_Input();		// Détect les inputs mah dude0
-			Update_Game();		// Update le jeu mah dude
+			
 
 
 			// if(input) -> stuff
-
-
 		}
 
-		// SAVE FILES
-
-}	// OU :)
+	} while (true);	// Le joueur ne quitte pas
+}
 

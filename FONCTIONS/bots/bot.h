@@ -9,25 +9,24 @@
 #include "../grid/grd_incrementor.h"
 #include "spawnwarning.h"
 #include "../UI/map.h"
-//#include "./botinitialize/"
 
 
 enum class BotType{ REGULAR, TOUGH, SUPERSONIC, GHOSTER };		// Le ghoster transforme tout murs qu'il touche en un mur indestructible par les bots. Comment le stop? : si tu pèse sur space sur un boute . : tous les walls de la chaine deviennent gold?
 
-const unsigned char BOT_DESIGN_1C[4]{ 202,185,203,204 };		// Le design du BOt à 1 charactère
-//const char BOT_DESIGN_2C[4]{ 202,185,203,204 };		// Le design du BOt à 2charactères, si jamais t'en fais un
+const int MAX_NUM_BOTS = 35;		// Nombre de bot maximum dans la console
 
-struct CustomBot
+const unsigned char BOT_DESIGN_1C[4]{ 202,185,203,204 };		// Le design du BOt à 1 charactère
+
+struct CustomBotStats
 {
 //	bool NoWarning;					// La possibilité de ne pas afficher de warning	, fait un niveau là dessu à la place
 	int health;	int speed;			// Stats custom
-	char boSym;	Colors botColor;	// Possibilité de changer le Design
 	bool is;						// Permet de vérifier si on initialise un Bot custom.. devrait pt être dans la fct spawn. plus loin dans le futur
 
 };
 
 // Si tu veux spécifier des stats custom pour plus qu'un bot, tu va devoir faire des tableaux mon gars
-extern CustomBot gCustomBot;	// Permet de faire des bots customs 
+extern CustomBotStats gCustomBot;	// Permet de faire des bots customs 
 
 
 class Bot
@@ -69,8 +68,8 @@ private:
 
 	void Init_Bot_Coord_Stuff(SpwCrd& spGrdCrd);												// Le design du bot est initialisé( son symbole et sa couleur)
 	void Init_Step_Count();																		// La distance qu'il doit parcourir and shit
-	void Init_Bot_Stats(CustomBot* customBot = NULL);											//  Initialise health and speed : Le type du Bot doit être initialisé d'abord.
-	void Init_Bot_Design(CustomBot* customBot = NULL);											// Le design du bot est initialisé( son symbole et sa couleur)
+	void Init_Bot_Stats(CustomBotStats* customBot = NULL);											//  Initialise health and speed : Le type du Bot doit être initialisé d'abord.
+	void Init_Bot_Design(CustomBotStats* customBot = NULL);											// Le design du bot est initialisé( son symbole et sa couleur)
 	void Init_Dist_Btw_Walls();																	// Initialise btwWalls
 	void Find_First_Wall_Grd_Index(Direction indexBoxSide, int indexrow, GridIndexIncrementor& wallcrd);	// Trouver l'index [c][r] du premier wall que le bot va rencontrer
 	void Init_Spawn_Warning(Direction botDir, C_D warnCycles = SPWN_DLAY);						// to figure out
@@ -103,7 +102,7 @@ public:
 	// CONSTRUCTOR
 	Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Construit en utilisant d'autre fonctions
 	{
-		static CustomBot* customBot;	customBot = NULL;
+		static CustomBotStats* customBot;	customBot = NULL;
 
 		// Le bot qui va suivre est customized
 		if (isBotCustomised)

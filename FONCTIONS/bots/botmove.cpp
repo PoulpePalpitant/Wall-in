@@ -2,7 +2,7 @@
 #include "botlist.h"
 #include "../grid/AllGrids.h"
 #include "../player/player.h"
-
+#include "botmeta.h"
 #include "botmove.h"
 
 // ÇA SE PEUT QUE J'AILLE À FAIRE ÇA:
@@ -22,13 +22,18 @@
 
 
 
-void BotMove::Move_Bots()
+void BotMove::Move_Bots()	//// On bouge tous les BOTS
 {
-	static Coord start, end;	// Pos départ et d'arrivée
+
+
+	static Coord start, end;			// Pos départ et d'arrivée
 	static Bot* bot, *prev;				// Itérateurs pour la liste de bots et son précédant
-	static CoordIncrementor XY;// Position du bot
-	static GridIndexIncrementor grdCrd;// Position du bot
-	static WallGrid* wallGrid;	// Le bon wall grid
+	static CoordIncrementor XY;			// Position du bot
+	static GridIndexIncrementor grdCrd; // Position du bot
+	static WallGrid* wallGrid;			// Le bon wall grid
+
+	if (gAllBotMeta.alive == 0)	// Ain't nobody here
+		return;
 
 	prev = NULL;	// Le bot précédant
 	bot = botList.pBotStrt;	// Le début de la liste: le premier bot
@@ -64,6 +69,7 @@ void BotMove::Move_Bots()
 					continue;	
 			}					
 
+			wallGrid->wall[grdCrd.index.c][grdCrd.index.r].Add_Bot_On_Me(prev);	// Ajoute la position du bot précédant, parceque pour détruire un bot, il faut avoir son prev, a cause que ta pas fait un tableau de bot
 			bot->nxtWallCrd.Increment_Coord();	/*ou it->nxtWallcrd*/			// Prochain wall que le bot va percuter
 			bot->Strt_Nxt_Wall_Time();									// et le temps que ça va prendre
 		}

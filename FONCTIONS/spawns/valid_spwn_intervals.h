@@ -95,7 +95,7 @@ private:
 
 	// INFORMATION SUR LISTE
 	static bool Is_Secondary_List_Full(int border);	// Liste secondaire est pleine?
-	static bool Is_Empty(int border);				// Liste Secondaire est vide?
+	static bool Is_Secondary_List_Empty(int border);				// Liste Secondaire est vide?
 	static bool Are_Primary_Lists_Empty();			// Vérification de ça
 	// is primaryempty
 	// RECHERCHE DE VALEUR
@@ -107,13 +107,13 @@ private:
 	// MODIFICATION DES LISTES
 	static void Modify_Min(Interval* intval, int newMin);	// Augmente le min de 1
 	static void Modify_Max(Interval* intval, int newMax);	// Réduit le Max de 1
-	static void Split_Interval_In_Two(IntervalList &list, int border, Interval* intval, int newMin);	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
+	static void Split_Interval_In_Two(IntervalList &list, int border, Interval* &intval, int newMin);	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
 	static bool Exclude_Primary_Interval(int border, int min, int max);	// Exclut un intervalle de la liste primaire dans la liste secondaire
 	static void Remove_Spawn_From_List(IntervalList &list, Interval* intval, int border, int bannedCrd);	// Retire un spawn dans une liste 
 
 	// AJOUT/DESTRUCTION D'ITEM
 	static Interval* Create_New_Interval(IntervalList& list, int border, int min, int max);				// Créer un Nouvel intervalle!!
-	static void Destroy_Empty_Interval(IntervalList& list, Interval* intval, int border);	// Delete un intervalle quand il est vide
+	static void Destroy_Empty_Interval(IntervalList &list, Interval* intval, int border);	// Delete un intervalle quand il est vide
 
 	// INITIALISATION
 	static void Set_Maximum_Ver(int max) { maxVer = max; }				// setup le maximum de spawn sur la bordure au début du niveau

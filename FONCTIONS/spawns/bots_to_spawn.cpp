@@ -124,6 +124,8 @@ namespace bots_to_spawn {
 	void Set_Randomness() {				// Doit être utilisé qu'une seule fois par cycle
 		
 		// traitement du random
+		if (gHorizontalBorder || gVerticalBorder)
+			gAllSides = false;
 		if (gBoxSide != -1)
 			gRandomBoxSide = false;
 		if (gSpwNum != -1 )
