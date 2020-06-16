@@ -36,7 +36,7 @@ private:
 	WallSym sym;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
 	Axis axis;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
 	int hp;									// La force du wall
-	Bot* botOnMe = NULL;					// Avertis si un bot est présent sur le wall. Si le wall s'active au même moment qu'un bot se trouve dessus, celui-ci sera détruit
+	int botOnMe = -1;						// Avertis si un bot est présent sur le wall. Si le wall s'active au même moment qu'un bot se trouve dessus, celui-ci sera détruit
 private:
 	friend class StructureManager;
 
@@ -64,12 +64,14 @@ public:
 	Coord Get_XY() { return this->XY; }				// Retrouve les Coord XY du Wall 
 	Colors Get_Clr() { return color; }				// La couleur
 	int Get_Wall_Size(Axis axis);					// La longueur du wall
-	Bot* Get_Bot_On_Me() { return botOnMe; }		// Le bot se trouvant sur le wall
+	int Get_Bot_On_Me() { return botOnMe; }			// Le bot se trouvant sur le wall
 
 	// Active un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
 	void Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr);
+	bool Is_Activated();		
 
-	void Add_Bot_On_Me(Bot *bot) { botOnMe = bot; }	// Un bot se trouve sur le wall  CE BOT, C'EST CELUI PRÉCÉDANT DANS LA LISTE
+	void Add_Bot_On_Me(int botIndex) { botOnMe = botIndex; }	// Un bot se trouve sur le wall 
+	void Remove_Bot_On_Me(int botIndex) { botOnMe = -1; }		// Le bot est pati :)
 
 	// Détruit un Wall. Se produit surtout quand un bot rentre dedans
 	void Deactivate_Wall() {
@@ -80,7 +82,6 @@ public:
 		color = WHITE;			//UI
 	}
 
-	bool Bot_Impact(Bot* &bot);		// Les trucs qui se passent quand un  bot rentre dans le wall
 	void Take_Damage(int dmg);		// Dépend de la force du bot
 	void UI_Draw_Or_Erase_Wall();
 };

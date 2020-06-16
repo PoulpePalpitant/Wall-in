@@ -28,14 +28,12 @@ struct CustomBotStats
 // Si tu veux spécifier des stats custom pour plus qu'un bot, tu va devoir faire des tableaux mon gars
 extern CustomBotStats gCustomBot;	// Permet de faire des bots customs 
 
-
 class Bot
 {
 private:
 	friend class BotMove;		// Pour les déplacements des bots
 
-	static bool Take_Dmg(int dmgs, Bot* &bot, Bot*& prev);							// le bot prend du dégât, quand il rentre dans un mur
-	static bool Bot_Impact(Bot*& bot, Bot*& prev, Wall* wall);					// Quand un bot rentre dans un wall
+	bool Take_Dmg(int dmgs);						// le bot prend du dégât, quand il rentre dans un mur
 
 	// DESIGN
 	char sym;						// Le symbole du Bot. Les Bots normaux N,auront qu'un seul symbol. Si tu veux changer de design, fais-toi une autre class
@@ -43,8 +41,8 @@ private:
 	Colors clr = Colors::WHITE;	// Couleur du bot
 
 	// STATS
-	int power = 1;								// La puissance d'un bot, soit le nombre de mur reégulier qu'il peut traverser avant d'être détruit. si égal à zéro, le bot est DEAD
-	int speed = 1;								// Le nombre de case de déplacement par cycle.   Si tu veux faire de quoi de plus custom, faudrait que tu abandonne les movecycle global, et que tu en assigne un à chaque bot(meh)
+	int hp ;								// La puissance d'un bot, soit le nombre de mur reégulier qu'il peut traverser avant d'être détruit. si égal à zéro, le bot est DEAD
+	int speed ;								// Le nombre de case de déplacement par cycle.   Si tu veux faire de quoi de plus custom, faudrait que tu abandonne les movecycle global, et que tu en assigne un à chaque bot(meh)
 	BotType type = BotType::REGULAR;			// Son type ? Ne contient pas vraiement d'information, sert pas mal juste pour l'initialisation du Bot, meh
 
 	// DÉPLACEMENTS/Position
@@ -53,18 +51,11 @@ private:
 	Distance btwWalls;					// LA distance qui sépare chaque élément du grid de walls. Sert de référence pour la prochaine variable
 	C_D tillNxtWall;					// Donne le nombre actuel de Bot_move_cycle, de cycles de mouvement de Bot, avant que le Bot se retrouve sur la même position qu'un wall. Se renouvelle de la même manière.
 	GridIndexIncrementor nxtWallCrd;	// Donne la coordonnée en colonnes et lignes du prochain mur que le bot va percuter. Se renouvelle à chaque fois que le bot traverse un élément du wall grid sans crever
+	GrdCoord onAWall;		// Donne la coordonnée en colonnes et lignes du prochain mur que le bot va percuter. Se renouvelle à chaque fois que le bot traverse un élément du wall grid sans crever
 
 	int stepCount = 0;		//	Le nombre de déplacement fait depuis le début de son éxistence.
 	int stepLeft;			//	Le nombre de déplacement pour atteindre l'autre decôté de la box, par rapport à sa position actuelle 
 	int stepLeftMax;		//	Nb de déplacement total à faire au moment du spawn,
-
-	// GESTION DE LA LISTE DES BOTS
-	friend class BotList;	// La classe Botlist va s'en charger
-	//Bot* pPrev;				// Pointeur vers le bot précédent de la liste de bots NON
-	Bot* pNext;				// Pointeur vers le prochain bot de la liste
-	
-	// INITALISATION DU BOT -  // Tous les définitions se retrouveront dans d'autres cpp
-	friend Bot* Create_New_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised);			// NOT A MEMBBER OF CLASS BOT!!!
 
 	void Init_Bot_Coord_Stuff(SpwCrd& spGrdCrd);												// Le design du bot est initialisé( son symbole et sa couleur)
 	void Init_Step_Count();																		// La distance qu'il doit parcourir and shit
@@ -78,14 +69,14 @@ public:
 	// MÉTHODES D'ACCÈS GET
 	Direction Get_Dir() { return dir; }						// Direction de déplacement
 	Coord Get_XY() { return XY; }							// Coord XY
-	GridIndexIncrementor Get_nxtWallCrd();
+	GridIndexIncrementor Get_nxtWallCrd() { return nxtWallCrd; }
 	C_D Get_Cycles_Till_Nxt_Wall() { return tillNxtWall; } // Nombre de cycles avant le prochain impact de wall
 	int Get_Steps_Count() { return stepCount; }				// Nombre de steps fais par le bot
 	int Get_Step_Left() { return stepLeft; }				// Nombre de steps à faire restant
 	int Get_Max_Possible_Steps() { return stepLeftMax; }	// Nombre de steps qu'il devait faire dès le moment de son spawn
 	BotType Get_Type() { return type; }						// Le type
-	int Get_Power() { return power; }						// son power
-
+	int Get_Power() { return hp; }						// son power
+	
 	// MÉTHODES QUI UPDATE LES PROPRIÉTÉS DU BOT
 	void Strt_Nxt_Wall_Time(){
 		tillNxtWall = btwWalls / 
@@ -94,43 +85,25 @@ public:
 	void Upd_Progression_Color();												// Change la couleur du bot quand il s'approche de plus en plus de son escape
 
 	// UI
-
 	static void UI_Draw_Bot(Bot* bot, Coord& nxtPos);	// draw le bot
 	static void UI_Erase_Bot(Bot* bot);	// l'efface
 	static void Animate_Bot(Bot* bot, Coord& nxtPos);	// efface et draw le bot
 
-	// CONSTRUCTOR
-	Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Construit en utilisant d'autre fonctions
-	{
-		static CustomBotStats* customBot;	customBot = NULL;
+	// INTÉRACTIONS
+	bool Is_Dead();		// vérifie si un bot est mort
+	void Destroy_Bot();	// Destruction d'un bot
+	void Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised);	// Construit en utilisant d'autre fonctions
+	bool Bot_Impact(Wall* wall);					// Quand un bot rentre dans un wall
 
-		// Le bot qui va suivre est customized
-		if (isBotCustomised)
-			customBot = &gCustomBot;		// Je pourrais mettre ce test dans chacune des fonctions suivantes aussi
+	// GESTION DE LA LISTE DES BOTS
+	//friend class BotList;	// La classe Botlist va s'en charger
+	//Bot* pPrev;				// Pointeur vers le bot précédent de la liste de bots NON
+	//Bot* pNext;				// Pointeur vers le prochain bot de la liste
 
-		this->type = type;	// Le type de bot est initialisé
-
-		// INITIALISATION DES VARIABLES DE POSITIONS 'N SHIT
-		Init_Bot_Coord_Stuff(spGrdCrd);
-
-		// INITIALISATION DU DESIGN DU BOT 
-		Init_Bot_Design(customBot);
-
-		// INITIALISE LES STATS DU BOT
-		Init_Bot_Stats(customBot);						// Le type du Bot doit être initialisé d'abord
-
-		// INITIALISE DISTANCE À PARCOURIR
-		Init_Step_Count();								// À besoin de la direction et de la vitesse du bot
-
-		Init_Dist_Btw_Walls();							// Fait juste initialiser btwWalls
-		//Strt_Nxt_Wall_Time();							// Pour starter le prochain timer
-		tillNxtWall = GAP_BTW_GRID - 1;						
-
-
-		// Je crois qu'il serait pertinent de faire une nouvelle classe de bot uniquement si ses mouvements ou ses intéractions avec les autres objets du jeux sont différentes
-	}
-
-	// Les constructors sont tough à design :O					 Indeed...
+	// INITALISATION DU BOT -  // Tous les définitions se retrouveront dans d'autres cpp
+	//friend Bot* Create_New_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised);			// NOT A MEMBBER OF CLASS BOT!!!
 };
+
+
 
 

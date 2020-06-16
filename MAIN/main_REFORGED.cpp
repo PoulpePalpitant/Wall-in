@@ -140,7 +140,7 @@ int main()	// Le début!
 	crd = { 13,1 };
 	LvlClock.Start_Clock();	// Start l'horologe en bakcground!
 
-	thread Clockydy(&GameClock::Infinite_Dsp, &LvlClock, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
+	//thread Clockydy(&GameClock::Infinite_Dsp, &LvlClock, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
 	//thread Test(Test_Animation, RED, WHITE);
 
 	//for (size_t i = 0; i < 1000000; i++)
@@ -196,7 +196,7 @@ int main()	// Le début!
 		// *********	*********
 	// time test 
 			gameClockTEST.Start_Clock();
-	
+			thread Clockydy(&GameClock::Infinite_Dsp, &gameClockTEST, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
 		while (gIsRunning)	// Le jeu est ouvert
 		{
 

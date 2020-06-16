@@ -26,7 +26,7 @@ void Lvl_1_Initializer()
 	
 	
 	//test
-	gBotMoveCycle = 300;
+	gBotMoveCycle = 400;
 	gCurrentBotMoveCycle = gCurrentSpawnCycle;					// On bouge les bots quand y va avoir des bots de spawné
 	gNextBotMoveCycle = gCurrentBotMoveCycle + gBotMoveCycle;
 	gMoveBotsThisCycle = true;

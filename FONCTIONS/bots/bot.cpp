@@ -1,13 +1,60 @@
 
-#include "botlist.h"
+//#include "botlist.h"						// J'ai décidé de ne pas utilisé des linked list pour gérer les bots
 #include "../walls/walls.h"
+
 #include "../UI/console_output/dsp_char.h"
+#include "botmeta.h"
 
 #include "bot.h"
 
 extern CustomBotStats gCustomBot = {};	// Permet de faire des bots customs 
 extern bool gIsBotCustom = false;
 
+bool Bot::Is_Dead()											// vérifie si un bot est mort
+{
+	if (this->hp <= 0)
+		return true;
+	else
+		return false;
+}
+
+void Bot::Destroy_Bot()
+{
+	this->hp = 0;		// Remet le HP à 0. this boi is dead
+	gAllBotMeta.Bot_Died();	// One more :(
+}
+
+
+// Création d'un bot
+void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Construit en utilisant d'autre fonctions
+{
+	static CustomBotStats* customBot;	customBot = NULL;
+
+	// Le bot qui va suivre est customized
+	if (isBotCustomised)
+		customBot = &gCustomBot;		// Je pourrais mettre ce test dans chacune des fonctions suivantes aussi
+
+	this->type = type;	// Le type de bot est initialisé
+
+	// INITIALISATION DES VARIABLES DE POSITIONS 'N SHIT
+	Init_Bot_Coord_Stuff(spGrdCrd);
+
+	// INITIALISATION DU DESIGN DU BOT 
+	Init_Bot_Design(customBot);
+
+	// INITIALISE LES STATS DU BOT
+	Init_Bot_Stats(customBot);						// Le type du Bot doit être initialisé d'abord
+
+	// INITIALISE DISTANCE À PARCOURIR
+	Init_Step_Count();								// À besoin de la direction et de la vitesse du bot
+
+	Init_Dist_Btw_Walls();							// Fait juste initialiser btwWalls
+	//Strt_Nxt_Wall_Time();							// Pour starter le prochain timer
+	tillNxtWall = GAP_BTW_GRID - 1;
+
+	gAllBotMeta.New_Bot();		// +1 les mecs!
+	// Je crois qu'il serait pertinent de faire une nouvelle classe de bot uniquement si ses mouvements ou ses intéractions avec les autres objets du jeux sont différentes
+}
 // Change la couleur du BOT selon sa progression
 // ----------------------------------------------
 
@@ -25,15 +72,15 @@ void Bot::Upd_Progression_Color()
 // Le bot prend du dégât, quand il rentre dans un mur
 // ----------------------------------------------
 
-bool Bot::Take_Dmg(int dmg, Bot*& bot, Bot*& prev)
+bool Bot::Take_Dmg(int dmg)
 {
 	bool deadBot = false;
 
-	bot->power -= dmg;	// power = HP
+	this->hp -= dmg;	// power = HP
 
-	if (bot->power <= 0)
+	if (this->Is_Dead())
 	{
-		botList.Destroy_Bot(bot, prev); // da bot is destroyed
+		this->Destroy_Bot(); // da bot is destroyed
 		deadBot = true;
 	}
 
@@ -44,8 +91,11 @@ bool Bot::Take_Dmg(int dmg, Bot*& bot, Bot*& prev)
 
 
 // Les trucs qui se passent quand un  bot rentre dans un wall
-bool Bot::Bot_Impact(Bot*& bot, Bot*& prev ,Wall* wall)
+bool Bot::Bot_Impact(Wall* wall)
 {
+	if (!wall->Is_Activated())	// Le wall n'était pas activé, le bot survis!
+		return false;
+
 	bool deadBot = false;
 	int HP;	// l'hp du wall, AVANT l'impact
 	HP = wall->Get_Hp();
@@ -54,8 +104,8 @@ bool Bot::Bot_Impact(Bot*& bot, Bot*& prev ,Wall* wall)
 		wall->UI_Draw_Or_Erase_Wall();		// Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
 	else
 	{
-		wall->Take_Damage(bot->Get_Power()); // Taking dmg here!
-		deadBot = Bot::Take_Dmg(HP, bot, prev);		// Hey me too!
+		wall->Take_Damage(this->Get_Power()); // Taking dmg here!
+		deadBot = Bot::Take_Dmg(HP);		// Hey me too!
 	}
 
 	return deadBot;

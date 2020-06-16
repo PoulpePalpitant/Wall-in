@@ -19,8 +19,10 @@ static bool ValidCoord;
 
 static void Spawn_Da_Bot_On_Da_Coord(SpwCrd crd)
 {
-	// type = Poptypelist() ;p
-	botList.Add_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// Tous le même TYPE, ils ont
+	// type = Poptypelist() ;p			// Tous le même TYPE, ils ont
+
+	int botIndex = botList.Find_Available_Bot();	// trouve un bot accessible
+	botList.bot[botIndex].Create_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// spawn da bot!!
 	// SpawnWarning Stuff???
 
 }
@@ -49,7 +51,7 @@ void Spawn_Bots()
 		Spawn_Da_Bot_On_Da_Coord(spawn);
 	}
 
-d	ValidSpwnIntervals::Reset_For_Next_Cycle();	// Doit ré-initialiser les listes à chaque cycle de spawn
+	ValidSpwnIntervals::Reset_For_Next_Cycle();	// Doit ré-initialiser les listes à chaque cycle de spawn
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
 }
 
