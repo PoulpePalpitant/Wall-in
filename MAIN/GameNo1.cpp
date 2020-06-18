@@ -135,14 +135,6 @@ void EV_MsgAf_Del_Touche_Tir(int CoordX, int CoordY, bool Effacer = false);	// A
 void EV_MsgAf_Touche_Mouvement(int CoordX, int CoordY);		// Affiche les touches de mouvements WASD
 //--
 
-
-
-
-
-
-
-
-
 //Fonctions Levels!!!
 void Move_BOTS();	// On bouge les BOTs
 void SpawnBOT();	//	Permet de Spawner des bots et blocker certains spawn pour éviter des colisions
@@ -1229,6 +1221,7 @@ void Level_1_Spawn_Script(int Spwn_cycleTOT)
 
 	int Scripted_spawn = Spwn_cycleTOT;	// Pour aller dans la switch et déterminé quel va être le spawn
 	int Skip = 0;						// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
+
 	NumSpawnTOT = 1;					// Reset le nb de spawn max ce cycle-ci
 	CoordIntv = {};						// Reset l'interval
 	Multi_Spawn = Same_Side =  false;	// Reset la fonctionnalité multispawn

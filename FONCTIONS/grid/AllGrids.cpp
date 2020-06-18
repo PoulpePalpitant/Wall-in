@@ -1,5 +1,7 @@
 
 #include "../player/player.h"
+#include "../structure_manager/destroy_chain.h"
+#include "../bots/botlist.h"
 
 #include "AllGrids.h"
 
@@ -72,7 +74,7 @@ GrdCoord AllGrids::Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir)
 void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 {
 	int nbOfWalls;	// Nombre de mur à activer
-	static Wall* wall;						// Wall à activer
+	static Wall* wall, *impactedWall;		// Wall à activer		/  Un wall est créer par dessus un bot, il faut donc détruire ce wall
 	static Link* child, * parent;			// Link à activer et son child
 	static WallGrid* wallGRID;				// grid de wall
 	static GridIndexIncrementor wallCrd;	// crd du wall
@@ -80,7 +82,7 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	bool playerOnLink = false;				// N'affiche pas le link child si le player se trouve dessus
 
 	parent = child = NULL;
-	wall = NULL; wallGRID = NULL;	/*safety*/
+	wall = impactedWall = NULL; wallGRID = NULL;	/*safety*/
 
 	linkCrd = blast->grdPos;	// positions des links dans le grid
 	wallGRID = Find_Wall_Grid_From_Direction(blast->dir);	// Le bon grid
@@ -99,6 +101,10 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 		parent->Activate_Link(blast->linkType, wall);		// Active le Link, et le lie à son child
 		wall->Activate_Wall(blast->strength, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
 		
+		// WE won't STOP, si un bot est sur un mur qu'on veut créer
+		if (wall->Get_Bot_On_Me() != -1)	// Si y'avait un bot sur le wall qu'on vient de créer, on VA détruire les deux
+			impactedWall = wall;
+
 		if(nbOfWalls == 1)
 			child->Activate_Link(blast->linkType);				// On active le Child qu'une fois, car il n'y en a qu'un seul
 		
@@ -110,6 +116,11 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 
 	if (!(Is_Equal(P1.Get_Grd_Coord(), linkCrd.index)))	// Si le joueur n'est PAS sur le dernier Link child
 		child->Dsp_Link();	// affiche le child
+
+	if(impactedWall)
+		botList.bot[impactedWall->Get_Bot_On_Me()].Bot_Impact(impactedWall);	// Im pact. Un mur fut créer par dessus un bot
+
+
 }
 
 

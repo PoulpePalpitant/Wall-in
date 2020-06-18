@@ -11,16 +11,10 @@
 	ce qui fait que les bot bougent deux fois plus vite sur cette axe. Ce qui fait qu'il est deux fois plus tough de les arrêter avec des blasts horizontales.
 	C'est pourquoi, chaque tir horizontal va créer 2 murs aux lieux d'un seul.
 */
-struct BlastType								// Change les propriétés du blast
-{
-	WallStrength strength;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
-	LinkType linkType;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
-};
-
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD_VER = 8000;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
+extern const time_t DFLT_BLAST_SPD_VER = 100000;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
 extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER / 2;			
 
 // Les propriétés principales du Blast par défaut
@@ -152,7 +146,7 @@ void Blast::Setup_Position_Incrementors(GrdCoord& startPos)	// Sa position
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 
-Blast* Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType& type)
+void Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType& type)
 {
 	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
 
@@ -198,10 +192,10 @@ Blast* Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType
 		nbSteps++;	// Un pas de plus!Mais pour le prochain?
 	}
 
-	P1.Upd_Sym_From_Direction(dir);	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
+	P1.Upd_Sym_From_Direction(dir);	
+	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
 
-	return this;	// Le nombre total de case que le blast à traversé
-
+	gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés
 }
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!

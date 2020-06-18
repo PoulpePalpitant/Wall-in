@@ -12,7 +12,11 @@
 	atteigne un obstacle. Quand le projectile s'arrête, il laisse un mur que les bots ne peuvent franchir. Si un bot fonce dedans, le mur est détruit
 
 */
-struct BlastType;								// Change les propriétés du blast
+struct BlastType						
+{
+	WallStrength strength;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
+	LinkType linkType;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
+};							// Change les propriétés du blast
 
 extern const BlastType DFLT_BLAST;				// Les propriétés principales du Blast par défaut
 extern const Distance DFLT_BLAST_LENGTH_HOR;		// La longueur par défaut du blast 
@@ -83,7 +87,7 @@ class Blast
 	int Nb_Of_Walls_Per_Blast();		// Calcul le nombre de walls à enregistrer après un blast.
 
 public:
-	Blast* Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType &type= DFLT_BLAST);	// le tir du blast...
+	void Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType &type= DFLT_BLAST);	// le tir du blast...
 };
 
 // Les objets blasts :D

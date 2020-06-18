@@ -5,7 +5,7 @@
 #include "find_next_spawn_crd.h"
 #include "valid_spwn_intervals.h"
 #include "../grid/spawngrid.h"
-
+#include "../bots/botmeta.h"
 #include "spawn_bot.h"
 
 // Ça c'était pour les spawn block je crois
@@ -19,17 +19,29 @@ static bool ValidCoord;
 
 static void Spawn_Da_Bot_On_Da_Coord(SpwCrd crd)
 {
-	// type = Poptypelist() ;p
-	botList.Add_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// Tous le même TYPE, ils ont
+	// type = Poptypelist() ;p			// Tous le même TYPE, ils ont
+
+	int botIndex = botList.Find_Available_Bot();	// trouve un bot accessible
+	botList.bot[botIndex].Create_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// spawn da bot!!
 	// SpawnWarning Stuff???
 
 }
 
-
+static void Prevent_Overspawning()	// Réduit le nombre de spawn si on atteindrait le max
+{
+	if (gAllBotMeta.alive + bots_to_spawn::gNumSpawnTOT >= MAX_NUM_BOTS)				// Limite le nb de spawn au maximum alloué
+	{
+		int excess = gAllBotMeta.alive + bots_to_spawn::gNumSpawnTOT - MAX_NUM_BOTS;
+		bots_to_spawn::gNumSpawnTOT -= excess;
+	}
+}
 static SpwCrd spawn = {};
 
-void Spawn_Bot()
+void Spawn_Bots()
 {
+	Prevent_Overspawning();	// On dépasse pas la limite de spawn permise
+	bots_to_spawn::Set_Randomness();	// Set le taux de random pour ce spawn cycle
+
 	for (int &i = bots_to_spawn::gNumSpawnTOT; i > 0; i--)
 	{
 		spawn = Find_Spwn_Coord();			//retourne le spawn
@@ -41,6 +53,7 @@ void Spawn_Bot()
 	}
 
 	ValidSpwnIntervals::Reset_For_Next_Cycle();	// Doit ré-initialiser les listes à chaque cycle de spawn
+	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
 }
 
 

@@ -70,8 +70,6 @@ void Wall::Set_Strength(WallStrength newStrgt)
 	}
 }
 
-
-
 // RESET L'APPARENCE DU WALL À SES VALEURS PAR DÉFAUTS
 void Wall::Set_Default_Wall_UI()
 {
@@ -105,6 +103,13 @@ void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 	Set_Wall_UI(newStrgt);			// Update l'UI si le nouv type est différent que le précédent.
 }
 
+bool Wall::Is_Activated()
+{
+	if (this->state == WallState::DEAD)
+		return false;
+	else
+		return true;
+}
 
 // Dépend de la force du bot
 void Wall::Take_Damage(int dmg)

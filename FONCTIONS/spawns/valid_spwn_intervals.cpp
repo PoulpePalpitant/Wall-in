@@ -40,9 +40,9 @@ bool ValidSpwnIntervals::Is_Secondary_List_Full(int border)
 }
 // Bordure d'intervalle vide
 // -------------------------
-bool ValidSpwnIntervals::Is_Empty(int border)
+bool ValidSpwnIntervals::Is_Secondary_List_Empty(int border)
 {
-	return bannedSpwn[border] == 0;	// La liste d'intervalle est vide
+	return scndary.start[border] == NULL && bannedSpwn[border] == 0;	// La liste d'intervalle est vide
 }
 
 void ValidSpwnIntervals::Modify_Min(Interval* intval, int newMin)// Modifie le min
@@ -81,7 +81,11 @@ void ValidSpwnIntervals::Destroy_Empty_Interval(IntervalList& list, Interval* in
 	if (intval == list.start[border] && intval == list.end[border])	// 1 élément dans la liste
 	{
 		delete intval;									// on le delete
+
 		list.start[border] = list.end[border] = NULL;	// bonne pratique
+
+		if (isPriority)	// POURRAIT ÊTRE POTENTIELLEMENT ÉRRONÉ
+			allPrimeEmpty = Are_Primary_Lists_Empty();	// Les listes prioritaires sont maintenant vides!
 	}
 	else
 	{
@@ -89,8 +93,7 @@ void ValidSpwnIntervals::Destroy_Empty_Interval(IntervalList& list, Interval* in
 		{
 			list.start[border] = list.start[border]->nxt;
 			
-			if (isPriority)
-				allPrimeEmpty = Are_Primary_Lists_Empty();	// Les listes prioritaires sont maintenant vides!
+
 		}
 		else
 			if (intval == list.end[border])	// end isnt recorded!!!
@@ -148,15 +151,14 @@ void ValidSpwnIntervals::Initialize_Valid_Spawn_List()							// DOIT ÊTRE FAIT À
 {
 	for (int border = 0; border < 4; border++)
 	{
-		Set_First_Interval(border);			// Premier Intervalle
-		scndary.numIntervals[border] = 1;	// 1 intervalle !
+		Set_First_Interval(border);			// Premier Intervalle	
 	}
 }
 // // Set le premier interval, soit de "0 à Max Number of Spawn on border"
 // ----------------------------------------------------------------------------
 Interval* ValidSpwnIntervals::Set_First_Interval(int border)
 {
-	if (Is_Empty(border))
+	if (Is_Secondary_List_Empty(border))
 	{
 		scndary.start[border] = scndary.end[border] = new Interval;	// Nouvel intervalle
 
@@ -168,8 +170,9 @@ Interval* ValidSpwnIntervals::Set_First_Interval(int border)
 		else
 			scndary.start[border]->max = maxHor;
 
-		scndary.end[border]->nxt = NULL;	// bonne pratique
+		scndary.numIntervals[border] = 1;	// 1 intervalle !
 
+		scndary.end[border]->nxt = NULL;	// bonne pratique
 		return scndary.start[border];
 	}
 	else
@@ -212,7 +215,7 @@ bool ValidSpwnIntervals::Add_Primary_Interval(int border, int min, int max)	// S
 // Ajoute un intervalle de spawn invalide à la liste secondaire
 bool ValidSpwnIntervals::Exclude_Primary_Interval(int border, int min, int max)		// SIDENOTE: L'exclusion se fait toujours sur une liste à 1 intervalle 0 à max. Cuz I said So!
 {
-	if (!Is_Empty(border))	// dafuck, y'avais déjà quek chose icitte!
+	if (!Is_Secondary_List_Empty(border))	// dafuck, y'avais déjà quek chose icitte!
 		return false;
 
 	int scndaryMax = scndary.start[border]->max;	// backup du max original
@@ -236,7 +239,7 @@ bool ValidSpwnIntervals::Exclude_Primary_Interval(int border, int min, int max)	
 			}
 	}
 
-	bannedSpwn[border] = max - min;		// Update le nombre de spawn bannis
+	//bannedSpwn[border] = max - min;		// Update le nombre de spawn bannis  NO!
 
 	return true;	// worked
 }
@@ -267,7 +270,7 @@ void ValidSpwnIntervals::Remove_Spawn_From_List(IntervalList &list, Interval* in
 
 // Split un intervalle en ajoutant une nouvelle valeur à exclure
 // ----------------------------------------------------------------------------
-void ValidSpwnIntervals::Split_Interval_In_Two(IntervalList &list, int border, Interval* intval, int bannedCrd)	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
+void ValidSpwnIntervals::Split_Interval_In_Two(IntervalList &list, int border, Interval* &intval, int bannedCrd)	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
 {
 	static Interval* interval_1; interval_1 = NULL;	// Fais des static cuz i dont know if it really helps
 
@@ -304,6 +307,7 @@ void ValidSpwnIntervals::Reset_Secondary_List()
 				delete prev;	// Vide la liste
 			}
 
+			scndary.start[i] = NULL;	// ?
 			prev = it = NULL;	// Bonne pratique
 		}
 
@@ -343,7 +347,10 @@ Interval* ValidSpwnIntervals::Pick_Random_Interval(const IntervalList& list, int
 
 	if (list.numIntervals[border] != 1)				// % 1 donne toujours 1.		% > 1  peut donner 0		(par définition, un intervalle de zéro n'existe pas)
 		for (int i = 0; i < rdmIntervalle; i++)
+		{
+			prev = it;		// voilà!!
 			it = it->nxt;
+		}
 
 	return it;	// L'Intervalle !
 }
@@ -378,13 +385,13 @@ int ValidSpwnIntervals::Pick_Primary_Border()	// Prend une bordure contenant une
 // Trouve un spawn disponible sur une bordure prédéterminé
 int ValidSpwnIntervals::Pick_Valid_Spawn(int border, bool random, int spwNum)	// On trouve un intervalle qui ensuite trouve un spawn
 {
-	static Interval* it; it = NULL;	// Fais des static cuz i dont know if it really helps
+	static Interval* it; prev = it = NULL;	// Fais des static cuz i dont know if it really helps						// J'ai blocké longtemps parce que prev n'avait pas été ré-initialisé à NULL
 	static IntervalList *list;		// La liste dans laquelle on va piger un spawn
-	static int spawn;
-
-	// Trouve la bonne liste si le spawn qu'on choisit est random
-	if (primary.start[border] != NULL)	// On va prendre une coord là dedans mah dude
-	{
+	static int spawn;																									 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
+																														 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
+	// Trouve la bonne liste si le spawn qu'on choisit est random														 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
+	if (primary.start[border] != NULL)	// On va prendre une coord là dedans mah dude									 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
+	{																													 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
 		list = &primary;	// Liste prioritaire
 		isPriority = true;
 	}
@@ -393,6 +400,9 @@ int ValidSpwnIntervals::Pick_Valid_Spawn(int border, bool random, int spwNum)	//
 		if (Is_Secondary_List_Full(border))	// Safety
 			return -1;						// La bordure sélectionné ne contient aucun spawn de disponible durant ce cycle
 		else
+			if (Is_Secondary_List_Empty(border))	// La liste n'avait pas été initialisé
+				Set_First_Interval(border);
+
 			list = &scndary;		// autre liste
 	}
 
@@ -412,8 +422,8 @@ int ValidSpwnIntervals::Pick_Valid_Spawn(int border, bool random, int spwNum)	//
 
 	Remove_Spawn_From_List(*list, it, border, spawn);	// Modifie l'intervalle pour exclure le spawn sélectionné par les DieuX
 
-	if (!isPriority)				// Le nombre de spawn bannis par un prioritaire n'a pas besoin d'être enregistré, puisque c'est déjà fait au début
-		bannedSpwn[border]++;		// + 1 au nombre de spawn exclut dans l'intervalle de cette bordure de spawn bot  
+	//if (list == &scndary)			// Le nombre de spawn bannis par un prioritaire n'a pas besoin d'être enregistré, puisque c'est déjà fait au début
+	bannedSpwn[border]++;		// + 1 au nombre de spawn exclut dans l'intervalle de cette bordure de spawn bot  
 
 	Is_Border_Full(border);	// Bordure pleine?
 

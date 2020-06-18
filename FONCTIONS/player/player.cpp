@@ -12,7 +12,7 @@ extern Player P2 = {};		// Des joueurs!
 // En général, le joueur perdra 1hp seulement
 void Player::Player_Lose_HP(int hpLost ) 
 {
-	HP -= hpLost;
+	hp -= hpLost;
 	Upd_State();
 	Upd_Color();
 	//update heart
@@ -21,7 +21,7 @@ void Player::Player_Lose_HP(int hpLost )
 // Gagne 1 point de vie!
 void Player::Player_Gains_HP(int hpGain)
 {
-	HP += hpGain; 
+	hp += hpGain; 
 	Upd_State();	// Change le state du joueur
 	Upd_Color();	// Change sa couleur
 	//update heart
@@ -31,7 +31,7 @@ void Player::Player_Gains_HP(int hpGain)
 // Change le STate du joueur quand son hp tombe à 0 ou devient plus grand que zéro
 void Player::Upd_State()
 {
-	if (HP > 0)
+	if (hp > 0)
 		state = PlayerState::ALIVE;
 	else
 		state = PlayerState::DEAD;
@@ -40,7 +40,7 @@ void Player::Upd_State()
 // Change la couleur du joueur quand il pred ou gagne de la vie
 void Player::Upd_Color()													
 {
-	switch (HP)
+	switch (hp)
 	{
 	case 4:clr = Colors::LIGHT_AQUA; break;		// LE MAX, TU COMMENCE PAS UNE GAME AVEC ÇA
 	case 3:clr = Colors::LIGHT_GREEN; break;	// Standard: Commence chaque lvl avec ça
