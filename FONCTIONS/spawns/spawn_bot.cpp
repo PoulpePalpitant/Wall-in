@@ -40,6 +40,7 @@ static SpwCrd spawn = {};
 void Spawn_Bots()
 {
 	Prevent_Overspawning();	// On dépasse pas la limite de spawn permise
+	bots_to_spawn::Set_Randomness();	// Set le taux de random pour ce spawn cycle
 
 	for (int &i = bots_to_spawn::gNumSpawnTOT; i > 0; i--)
 	{

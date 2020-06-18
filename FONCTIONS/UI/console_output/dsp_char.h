@@ -6,4 +6,4 @@
 
 
 // AFFICHE UN CHAR
-void UI_Dsp_Char(Coord crd, char sym, Colors clr = WHITE, time_t time = 0);
+void UI_Dsp_Char(Coord crd, char sym, Colors clr = WHITE);

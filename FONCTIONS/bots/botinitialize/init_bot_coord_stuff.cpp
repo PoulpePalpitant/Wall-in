@@ -17,6 +17,7 @@ void Bot::Init_Bot_Coord_Stuff(SpwCrd& spGrdCrd)
 	
 	nxtWallCrd.Initialize_Axis(dir);				// L'axe d'incrémentation et la polarisation son intialisé. Manque plus que trouvé la coordXY du premier wall			
 	Find_First_Wall_Grd_Index((Direction)spGrdCrd.border, spGrdCrd.spwNum, nxtWallCrd);	// Tu dois passer somehow ici, les deux index du spawnborder
+	onAWall = {};	// le bot ne sera pas encore sur un wall
 }
 
 // Ceci permet de trouver la coord( en col et en row) du premier élément "Wall" se trouvant sur le wallgrid que le bot percutera dans sa folle aventure linéaire

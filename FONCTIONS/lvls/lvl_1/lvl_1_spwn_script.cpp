@@ -14,12 +14,23 @@ void Lvl_1_Spwn_Script()
 	int skip = 0;						// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
 
 	
-	gHorizontalBorder = true;
-
+	//gHorizontalBorder = true;
+	gVerticalBorder = true;
 	switch (numSpawnWaves)
 	{
-
+	case 0:Add_Specific(LEFT, 1); break;
+	case 1:Add_Specific(LEFT, 1); break;
+	case 2:Add_Specific(LEFT, 1);break;
+	case 3:Add_Specific(RIGHT, 1);break;
+	case 4:Add_Specific(RIGHT, 1);break;
+	case 5:Add_Specific(RIGHT, 1);break;
+	case 6:gBoxSide = RIGHT;break;
+	case 7:gBoxSide = LEFT;break;
+	case 8:gBoxSide = RIGHT;break;
+	case 9:gBoxSide = RIGHT;break;
 
 
 	}
+
+
 }

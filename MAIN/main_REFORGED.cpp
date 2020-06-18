@@ -9,7 +9,6 @@
 //#include "WinUser.h"
 
 #include "../FONCTIONS/rng/rng.h"
-#include "../FONCTIONS/time/clock.h"
 #include "../FONCTIONS/grid/managegrids.h"
 #include "../FONCTIONS/structure_manager/structure_manager.h"
 #include "../FONCTIONS/grid/AllGrids.h"
@@ -27,6 +26,9 @@
 
 #include "../FONCTIONS/update_game/update_game.h"
 #include "../FONCTIONS/inputs/detect_input.h"
+#include "../FONCTIONS/time/clock.h"
+#include "../FONCTIONS/time/timerOP.h"
+#include "../FONCTIONS/bots/botmeta.h"
 using namespace std;
 
 
@@ -43,7 +45,7 @@ int main()	// Le début!
 
 	Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
 
-	
+
 										// test the all grids
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // AFFICHE TOUS LES GRIDS 
@@ -94,7 +96,7 @@ int main()	// Le début!
 			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
 			UI_Dsp_String(crd, std::to_string(j), (Colors)j);	// Ceci pourrait être une fonction d'affichage
 
-				
+
 		}
 	}
 
@@ -130,8 +132,8 @@ int main()	// Le début!
 
 
 	// CLOCK TESTING
-	Coord crd2 = { 35,1 };
-	Coord crd3 = { 35,2 };
+	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Bots Alive");
+	Coord crd3 = { 59,1 };	// Update bot alive count
 
 	GameClock LvlClock;
 	LvlClock.clockName = "Swag Clock";
@@ -140,33 +142,49 @@ int main()	// Le début!
 	crd = { 13,1 };
 	LvlClock.Start_Clock();	// Start l'horologe en bakcground!
 
-	//thread Clockydy(&GameClock::Infinite_Dsp, &LvlClock, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
-	//thread Test(Test_Animation, RED, WHITE);
-
-	//for (size_t i = 0; i < 1000000; i++)
-	//{
-	//	for (size_t j = 0; j < 100; j++)
-	//	{
-	//		UI_Dsp_Int(crd2, i);
-	//		UI_Dsp_Int(crd3, j);
-
-	//	}
-	//}
-	//Sleep(10000);
-	//LvlClock.Pause_Clock();
-	// test la vitesse d'affichage
 
 
 
+	// La clock du dude    #include "timerOp"
+
+	bool isRunning = true;
+	float frameRate = 60.0f;// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
+	float fps = 1 / frameRate;
 
 
-	
+	TimerOP* Timer = TimerOP::Set_Instance();
+
+	while (isRunning)	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
+	{
+		Timer->Tick();	// Delta time est en seconde!!!
+		//Timer->Reset_Timer();				// Durée entre End-Start
+		gLvlTime += Timer->Get_Delta_Time();	// Update du temps actuel
 		
+
+		if (Timer->Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps			
+		Timer->Reset_Timer();	// Reset la frame!
+
+		Detect_Input();		// Détect les inputs mah dude0
+		Update_Game();		// Update le jeu mah dude
+		//// render stuff	// Fait tout les affichages
+
+			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
+			//cout << 1 / Timer->Get_Delta_Time() << "\t \t";	// Le nombre de FRAMES en une seconde, soit le framerate : 60
+			// OU cout << gLvlTime << endl;		// Temps total écoulé
+		
+		UI_Dsp_String(crd, std::to_string(gLvlTime));	
+		if(gAllBotMeta.alive > 30)
+			UI_Dsp_String(crd3, std::to_string(gAllBotMeta.alive));	
+
+		}
+	}
+
+	Timer->Release(); // Release da timer
 
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 		// GAME LOOP DES INTERNETS!
 
-		
+
 		//double previous = getCurrentTime();
 		//double lag = 0.0;
 		//while (true)
@@ -186,30 +204,30 @@ int main()	// Le début!
 
 		//	render();
 		//}
-	
-
-		
-		
-		//LOAD FILES
-
-		// GAME LOOP	MENU LOOP	
-		// *********	*********
-	// time test 
-			gameClockTEST.Start_Clock();
-			thread Clockydy(&GameClock::Infinite_Dsp, &gameClockTEST, crd, WHITE);			/// FOUND THE SOLUTION : Si ta un default argument, tu dois quand même mettre quekchose en paramètre! Sinon ça ne marche pas!!!
-		while (gIsRunning)	// Le jeu est ouvert
-		{
-
-			Detect_Input();		// Détect les inputs mah dude0
-			Update_Game();		// Update le jeu mah dude
 
 
-			// if(input) -> stuff
+		// POUR PASSER une référence dans un thread, tu es obliger d'utiliser		std::ref("mavariable")
+	//	Exemple fonctionel : std::thread destroyTHREAD(&DestroyChainOfWalls::LameStaticFunction, false, std::ref(fuck), swag);
+
+	//LOAD FILES
+
+	// GAME LOOP	MENU LOOP	
+	// *********	*********
 
 
-		}
+	gameClockTEST.Start_Clock(); 	// time test 
 
-		// SAVE FILES
+	while (gIsRunning)	// Le jeu est ouvert
+	{
+		gameClockTEST.Tick();	// va ajouter du temps à chaque loop à la place
+		gameClockTEST.Dsp_Time(crd);
+
+		Detect_Input();		// Détect les inputs mah dude0
+		Update_Game();		// Update le jeu mah dude
+
+	}
+
+	// SAVE FILES
 
 }	// OU :)
 

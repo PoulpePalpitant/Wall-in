@@ -9,12 +9,22 @@
 #include "../player/player_move.h"
 #include "../structure_manager/structure_manager.h"
 
-#include "validate_input.h"
+#include <thread>
 
+
+#include "validate_input.h"
 
 
 void Validate_Input()
 {
+	//static std::thread blastTh;
+	GrdCoord* swa; 
+	GrdCoord swag;
+	BlastType BLASTtype = DFLT_BLAST; //{WallStrength::REGULAR, LinkType::REGULAR};
+	swa = &swag;
+	GrdCoord& fuck = swag;
+
+
 	ActionType action = IDLE;
 	Direction keyDirection = NONE;
 	int key = _getch();
@@ -51,7 +61,6 @@ void Validate_Input()
 	}
 
 
-
 	if (action == MOVE)
 	{
 		Move_Player(P1, keyDirection);	// bouge le joueuruu!
@@ -67,6 +76,9 @@ void Validate_Input()
 
 		static Blast* blast;	// da blast
 		bool cancelBlast = false;
+		
+		blast = &blastP1;
+		swag = P1.Get_Grd_Coord();
 
 		// Action Spéciale: Un transfer
 		// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
@@ -84,12 +96,23 @@ void Validate_Input()
 			else
 				DestroyChainOfWalls::Destroy_Chain_Of_Walls(grdCrd);	// On destroy le Link que l'on veut transférer
 			// ensuite on fait un tir normal
+
+			//std::thread destroyTHREAD(&DestroyChainOfWalls::Destroy_Chain_Of_Walls, grdCrd);
+			//std::thread destroyTHREAD(&DestroyChainOfWalls::LameStaticFunction, false, std::ref(*swa));
 		}
 		
 		if (!cancelBlast)
-		{
-			blast = blastP1.Blast_Shot(P1.Get_Grd_Coord(), keyDirection);		// tir
-			gGrids.Activate_Walls_And_Links_From_Blast(blast);					// activation des murs et links
+		{		
+			////std::thread blastTh(&Blast::Blast_Shot, &blastP1, swag, std::ref(keyDirection), std::ref(BLASTtype)); // Thread pour le blast
+			//blastTh = std::thread(&Blast::Blast_Shot, &blastP1, swag, std::ref(keyDirection), std::ref(BLASTtype)); // Thread pour le blast
+
+			//if (blastTh.joinable())		// thread waiting!
+			//	blastTh.join();
+
+
+
+			blastP1.Blast_Shot(P1.Get_Grd_Coord(), keyDirection);		// tir
+			//gGrids.Activate_Walls_And_Links_From_Blast(blast);					// activation des murs et links
 		}
 	}
 	

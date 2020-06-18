@@ -10,10 +10,10 @@ void Bot::Init_Bot_Design(CustomBotStats* customBot)
 	this->sym = BOT_DESIGN_1C[dir];
 
 	// la couleur change selon son type
+	switch (type)
+	{
+	case BotType::REGULAR: clr = WHITE; break;
 
-	//switch (this->type)
-	//{
-	//case :
-	//}
 
+	}
 }

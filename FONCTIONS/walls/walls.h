@@ -71,7 +71,7 @@ public:
 	bool Is_Activated();		
 
 	void Add_Bot_On_Me(int botIndex) { botOnMe = botIndex; }	// Un bot se trouve sur le wall 
-	void Remove_Bot_On_Me(int botIndex) { botOnMe = -1; }		// Le bot est pati :)
+	void Remove_Bot_On_Me() { botOnMe = -1; }		// Le bot est pati :)
 
 	// Détruit un Wall. Se produit surtout quand un bot rentre dedans
 	void Deactivate_Wall() {

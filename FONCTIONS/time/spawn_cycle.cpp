@@ -14,7 +14,7 @@ int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
 
 void UPD_Spawn_Cycle()			// Refresh Timer des spawns
 {
-	if (gameClockTEST.Get_Time() >= gNextSpawnCycle)
+	if (/*gameClockTEST.Get_Time()*/gLvlTime >= gNextSpawnCycle)
 	{
 		gSpawnThisCycle = true;
 		gCurrentSpawnCycle = gNextSpawnCycle;	// j'ai pt pas besoin de Current_Spawn_Cycle

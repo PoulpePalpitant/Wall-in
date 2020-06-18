@@ -42,12 +42,20 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 	{
 		bot = &botList.bot[b];	// Le bot à bouger
 
+		if (bot->Is_Dead())		// Un bot dead ne bouge pas
+			continue;
+
 		wallGrid = gGrids.Find_Wall_Grid_From_Axis(Find_Opp_Axis(bot->dir));	// trouve le grid que le bot va traverser	/*IMPORTANT*/ Le grid que le Bot va traverser sera Perpendiculaire à celui-ci!
 		grdCrd = bot->nxtWallCrd;									// Crd du prochain mur qu'il va percuter
-		
-		if (bot->Bot_Impact(&wallGrid->wall[bot->onAWall.c][bot->onAWall.r]))	// // Vérification qu'un wall n'a pas été créé par dessus le bot qu'on va bouger
-			continue;// Si Oui, il y aura un impact!!
-
+		/*
+		// Doit vérifier uniquement quand le bot entre dans le grid
+		if (bot->stepCount >= 2)
+			if (bot->Bot_Impact(&wallGrid->wall[bot->onAWall.c][bot->onAWall.r]))	// // Vérification qu'un wall n'a pas été créé par dessus le bot qu'on va bouger
+			{
+				wallGrid->wall[bot->onAWall.c][bot->onAWall.r].Remove_Bot_On_Me();	// bot est pati!
+				continue;	// Si Oui, il y aura un impact!!
+			}
+*/
 		// Tu setup l'incrémenteur XY
 		start = bot->XY;		// Coord de départ
 		XY.Initialize_All(start, bot->dir);	// Inrémenteur de position
@@ -57,6 +65,8 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 		// Enregistrement du mouvement au début de la loop
 		bot->stepCount++;
 		bot->stepLeft--;
+		wallGrid->wall[bot->onAWall.c][bot->onAWall.r].Remove_Bot_On_Me();	// bot est pati!
+		bot->onAWall = {};	// no more!
 
 		if (!bot->fixedColor)	// pas couleur fixe
 			bot->Upd_Progression_Color();	// Change la couleur du bot quand il s'approche de sa sortie

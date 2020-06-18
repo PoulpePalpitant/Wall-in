@@ -19,14 +19,14 @@ void Lvl_1_Initializer()
 
 	// Pour l'initialisation d'un niveau, il faut mettre les cycles de spawn et de BOTmove en même temps
 	// et Activer le spawn et le bot move pour le cycle courant
-	gSpawnCycle = 1000;	//test
-	gCurrentSpawnCycle = 4500;		// Premier Spawn!!!
+	gSpawnCycle = 10000;	//test								// 10000 pour la vitesse du timer op, 1000 pour la vitesse de la fonction clock() que j'ai fabriqué
+	gCurrentSpawnCycle = 45000;		// Premier Spawn!!!
 	gNextSpawnCycle = gCurrentSpawnCycle + gSpawnCycle;
 	gSpawnThisCycle = false;
 	
 	
 	//test
-	gBotMoveCycle = 400;
+	gBotMoveCycle = 4000;
 	gCurrentBotMoveCycle = gCurrentSpawnCycle;					// On bouge les bots quand y va avoir des bots de spawné
 	gNextBotMoveCycle = gCurrentBotMoveCycle + gBotMoveCycle;
 	gMoveBotsThisCycle = true;

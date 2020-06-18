@@ -1,4 +1,7 @@
 
+#include <mutex>
+
+#include "../time/clock.h"
 #include "destroy_chain.h"
 
 
@@ -79,9 +82,13 @@ void DestroyChainOfWalls::Add_Children_To_List(Link* parent)
 
 void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 {
+	static std::mutex mu;
+
 	Link* toDeactivate, *parentLink;	// Le Link qui est connecté au premier Link à détruire
 	Wall* parentWall;					// Le mur à détruire entre deux Link
 	
+	mu.lock();
+	//gameClockTEST.Pause_Ticker_Clock();
 	// 2 choix pour détruire: L'adresse du Link ou sa crd dans le grd de links
 	if (link == NULL)
 		toDeactivate = &linkGrid->link[crd.c][crd.r]; // le premier de la liste
@@ -111,6 +118,12 @@ void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 		parentWall->Deactivate_Wall();		 // Désactive le mur				J'ai séparé deactivate wall et erase wall
 		parentWall->UI_Draw_Or_Erase_Wall(); // efface son mur on top		* alors tu draw, ou tu erase?
 	}
+	//gameClockTEST.Unpause_Ticker_Clock();
+
+	mu.unlock();
+
+	/* DRAW*/
+
 
 	//SI TOUT ÇA BUG EN TEMPS RÉEL, VOICI CE QUE TU DEVRA FAIRE
 	/*
@@ -126,4 +139,14 @@ void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 	ouf...
 
 	*/	
+}
+
+
+bool DestroyChainOfWalls::LameStaticFunction(bool, GrdCoord&, GrdCoord )
+{
+
+	int Fuckyou;
+
+	Fuckyou = 3;
+	return false;
 }

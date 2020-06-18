@@ -13,11 +13,11 @@ int gBotMoveCycleTot;							// Le nombre total de botmove cycle ayant u lieu
 
 void UPD_Bot_Move_Cycle()
 {
-	if (gameClockTEST.Get_Time() >= gNextBotMoveCycle)
+	if (/*gameClockTEST.Get_Time()*/gLvlTime >= gNextBotMoveCycle)
 	{
 		gMoveBotsThisCycle = true;
 		gCurrentBotMoveCycle = gNextBotMoveCycle;	// j'ai pt pas besoin de Current_Spawn_Cycle
-		gNextBotMoveCycle = gCurrentBotMoveCycle + gBotMoveCycle;
+		gNextBotMoveCycle += gBotMoveCycle/*+ gLvlTime - gNextBotMoveCycle*/;					// Compenserais pour un excès :O
 		gBotMoveCycleTot++;						// Le nombre de cycle de spawn depuis le début de la game
 	}
 }

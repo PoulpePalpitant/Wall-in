@@ -10,33 +10,20 @@ void Test_Animation(Colors one, Colors two);	// So pretty...
 
 void Detect_Input()
 {
+	if ((_kbhit()))
+		Validate_Input();		// Les actions du joueur se font ici
 
-
-	int input;
-
-
-
-	input = 0;
-
-
-		
-		
-		if ((_kbhit()))
-			Validate_Input();		// Les actions du joueur se font ici
-
-		while (_kbhit())	// tampon vidé
-			_getch();
+	while (_kbhit())	// tampon vidé
+		_getch();
 
 
 	//std::thread inputThread(Check_Input);	// pour l'instant, chaque input est threadé and thast how we do
 	//inputThread.join();
-	std::thread test(Test_Animation, RED, WHITE);
 
-	
-	
-	if (test.joinable())	// test de thread
-		test.join();
-		
+	//std::thread test(Test_Animation, RED, WHITE);
+	//if (test.joinable())	// test de thread
+	//	test.join();
+
 	//std::thread blastThread(&Blast::Blast_Shot, &blastP1, type, crd, keyDirection); // Thread tir de blast
 	//blastThread.join();	// On attend que le blast finis avant de détecter d'autres inputs
 
@@ -45,7 +32,7 @@ void Detect_Input()
 		Threader un blast
 		Tir du blast à partir d'une bordure
 		----Enregistrer les links et walls---- done
-	
+
 		Tir de blast sur les Links
 		--Wall Redirect--
 		--Player mouvement--
