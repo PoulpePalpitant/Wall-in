@@ -66,7 +66,7 @@ public:
 	LinkType Get_Type() { return type; }
 
 	void Dsp_Link();			// Affiche le Link
-	void Clr_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
+	void Clr_Link(float speed = 0);			// Clear le Link	ne pas utilisé si le link est vivant doe
 	
 	bool Activate_Link(LinkType &type, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
 	void Deactivate_Link();		// Désactive le Link

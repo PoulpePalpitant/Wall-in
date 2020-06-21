@@ -2,6 +2,7 @@
 
 #include "../UI/txtstyle.h"
 #include "../grid/grid.h"
+#include "../time/countdown_clock.h"
 
 enum PlayerState { DEAD, ALIVE, INVINCIBLE };		// Statut Héro 
 
@@ -21,13 +22,18 @@ private:
 	// POSITION
 	GrdCoord grdCrd = {0,0};						// On utilise le système de coordonnées des grids pour changer la position du joueur
 
+	// TIMEOUT
+	CDTimer timeout;			// Freeze les actions du player
+
 public:
 	// GETS
 	int Get_HP() { return hp; }					// La vie
 	char Get_Sym() { return sym; }				// Le symbole pour l'affichage
 	Colors Get_Clr() { return clr; }			// Couleur
 	GrdCoord Get_Grd_Coord() { return this->grdCrd; }	// Sa position dans le grid
-	PlayerState Get_State() { return state; }	// Le state du joueur
+	PlayerState Get_State() { return state; }			// Le state du joueur
+	bool Is_Timeout() { return timeout.Is_Running(); }	// Joueur en timeout
+	Coord Get_XY();										// Retrouva la crd du player dans la console
 
 	// SETS 
 	void Set_Position(GrdCoord newPos) { this->grdCrd = newPos; }			// Change la position du joueur sur le Grid
@@ -35,15 +41,17 @@ public:
 	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole du joueur
 	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur du joueur
 	void Set_Hp(int HP) { hp = HP; }								// Chane l'hp pour une valeur fixe
+	void Set_Timeout(int time);										// Freeze le joueur
 
 	// UPDATES
+	void Upd_Player_Timeout();
 	void Upd_Sym_From_Direction(Direction dir);							// Change le symbole du joueur lors d'un mouvement ou d'un tir dans une direction
 	void Upd_State();													// Ceci change le state du joueur quand il pred ou gagne du HP
 	void Upd_Color();													// Change la couleur du joueur quand il pred ou gagne de la vie
 	void Player_Lose_HP(int hpLost = 1);								// En général, le joueur perdra 1hp seulement
 	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
 
-	void Dis_Player_Sym();												// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
+	void Dis_Player_Sym(float speed = 0);									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
 // changer le symbole selon la direction du dernier move du player
 
 };

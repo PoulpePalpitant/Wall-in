@@ -27,7 +27,7 @@ void Level_1_Script()
 		if(gSpawnThisCycle)
 			Lvl_1_Spwn_Script();	// Détermine quel sera la prochaine wave de spawn
 		
-		Lvl_1_Event_Checker();	// Vérification de si y'a un event qui est trigger
+		//Lvl_1_Event_Listener();	// Vérification de si y'a un event qui est trigger
 		Do_Stuff_this_Cycle();	// Fais spawner les bots, et les bougent ensuite
 	}
 

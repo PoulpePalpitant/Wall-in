@@ -15,11 +15,11 @@ void Lvl_1_Spwn_Script()
 
 	
 	//gHorizontalBorder = true;
-	gVerticalBorder = true;
+	//gVerticalBorder = true;
 	switch (numSpawnWaves)
 	{
-	case 0:Add_Specific(LEFT, 1); break;
-	case 1:Add_Specific(LEFT, 1); break;
+	//case 0:Add_Spwns(40); break;
+	case 1: break;
 	case 2:Add_Specific(LEFT, 1);break;
 	case 3:Add_Specific(RIGHT, 1);break;
 	case 4:Add_Specific(RIGHT, 1);break;
@@ -29,7 +29,7 @@ void Lvl_1_Spwn_Script()
 	case 8:gBoxSide = RIGHT;break;
 	case 9:gBoxSide = RIGHT;break;
 
-
+	case 20:Add_Spwns(35); break;
 	}
 
 

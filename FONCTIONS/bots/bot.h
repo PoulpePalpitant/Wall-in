@@ -52,6 +52,8 @@ private:
 	C_D tillNxtWall;					// Donne le nombre actuel de Bot_move_cycle, de cycles de mouvement de Bot, avant que le Bot se retrouve sur la même position qu'un wall. Se renouvelle de la même manière.
 	GridIndexIncrementor nxtWallCrd;	// Donne la coordonnée en colonnes et lignes du prochain mur que le bot va percuter. Se renouvelle à chaque fois que le bot traverse un élément du wall grid sans crever
 	GrdCoord onAWall;		// Donne la coordonnée en colonnes et lignes du prochain mur que le bot va percuter. Se renouvelle à chaque fois que le bot traverse un élément du wall grid sans crever
+	SpawnWarning spwnWarning;			// Mon implantation lazy du warning qui arrive avant qu'un bot spawn
+
 
 	int stepCount = 0;		//	Le nombre de déplacement fait depuis le début de son éxistence.
 	int stepLeft;			//	Le nombre de déplacement pour atteindre l'autre decôté de la box, par rapport à sa position actuelle 
@@ -63,7 +65,6 @@ private:
 	void Init_Bot_Design(CustomBotStats* customBot = NULL);											// Le design du bot est initialisé( son symbole et sa couleur)
 	void Init_Dist_Btw_Walls();																	// Initialise btwWalls
 	void Find_First_Wall_Grd_Index(Direction indexBoxSide, int indexrow, GridIndexIncrementor& wallcrd);	// Trouver l'index [c][r] du premier wall que le bot va rencontrer
-	void Init_Spawn_Warning(Direction botDir, C_D warnCycles = SPWN_DLAY);						// to figure out
 
 public:		
 	// MÉTHODES D'ACCÈS GET
@@ -88,6 +89,9 @@ public:
 	static void UI_Draw_Bot(Bot* bot, Coord& nxtPos);	// draw le bot
 	static void UI_Erase_Bot(Bot* bot);	// l'efface
 	static void Animate_Bot(Bot* bot, Coord& nxtPos);	// efface et draw le bot
+	void UI_Dis_Warning(); //prout // Affiche le symbole du warning, et l'efface aussi. C'est en quelque sorte l'animation du spawn warning ici.
+
+
 
 	// INTÉRACTIONS
 	bool Is_Dead();		// vérifie si un bot est mort
@@ -103,7 +107,4 @@ public:
 	// INITALISATION DU BOT -  // Tous les définitions se retrouveront dans d'autres cpp
 	//friend Bot* Create_New_Bot(BotType type, GrdCoord& spGrdCrd, bool isBotCustomised);			// NOT A MEMBBER OF CLASS BOT!!!
 };
-
-
-
 

@@ -1,17 +1,19 @@
 
+#include "../UI/console_output/render_list.h"
 #include "spawnwarning.h"
+#include "bot.h"
 
 
-
-
-//// Sert à updater on est au combientième cycle de warning du bot
-//Cptr SpawnWarning::Chk_Spwn_Warning_Cycles()
-//{
-//	if (!nbWarnCycles)
-//		return nbWarnCycles;		// le warning est déjà a 0. Ça veut dire que le bot est déjà spawné, plus besoin de warning
-//	else
-//		return nbWarnCycles--;		// Décrémente le cycle de warning
-//}
+C_D SpawnWarning::Show_Spawn_Warning()
+{
+	if (nbWarnCycles)	// Si le nombre de de warning cycles est plus grand que zéro
+	{
+		Upd_Spwn_Warning_Color();
+		return	nbWarnCycles--;
+	}
+	else
+		return 0;	// Il , n'y aura pas de spawn warning à afficher
+}
 
 //  Change la couleur du warning pour stresser le joueur
 void SpawnWarning::Upd_Spwn_Warning_Color() {
@@ -23,10 +25,10 @@ void SpawnWarning::Upd_Spwn_Warning_Color() {
 			warnColor = Colors::LIGHT_RED;	// 3 cycle left
 }
 
-// Affiche le warning que le bot s'en vient ( clignotement, alterne entre effacement et symbole : >, ' ', >, ' ' 
-void SpawnWarning::UI_Dis_Warning() {
-	if (nbWarnCycles % 2 == 0)
-		std::cout << warnSym;
-	else
-		std::cout << TXT_CONST.SPACE;	// Efface le symbole du warning précédent
+void SpawnWarning::Init_Spawn_Warning(Direction botDir, C_D warnCycles)					// Initialise le warning. 
+{
+	this->warnSym = BOT_WRNG_DESIGN[botDir];
+	this->nbWarnCycles = warnCycles;
+	warnColor = Colors::WHITE;
 }
+

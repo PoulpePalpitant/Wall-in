@@ -221,8 +221,6 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 		parent->Dsp_Link();	// Draw le link Parent
 		wall->UI_Draw_Or_Erase_Wall();	// Draw Le mur!
 
-
-
 		wallCrd.Increment_Coord();	// Coord du prochain wall
 		numWalls--;	// and here we go again
 	}

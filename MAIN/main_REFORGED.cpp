@@ -25,10 +25,12 @@
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
 
 #include "../FONCTIONS/update_game/update_game.h"
+#include "../FONCTIONS/UI/console_output/render_list.h"
 #include "../FONCTIONS/inputs/detect_input.h"
 #include "../FONCTIONS/time/clock.h"
 #include "../FONCTIONS/time/timerOP.h"
 #include "../FONCTIONS/bots/botmeta.h"
+#include "../FONCTIONS/inputs/action_input.h"
 using namespace std;
 
 
@@ -47,58 +49,58 @@ int main()	// Le début!
 
 
 										// test the all grids
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// AFFICHE TOUS LES GRIDS 
-	maxC = gGrids.linkGrd.Get_Cols();
-	maxR = gGrids.linkGrd.Get_Rows();
-	UI = LinkSym::PARENT;
+	////------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//// AFFICHE TOUS LES GRIDS 
+	//maxC = gGrids.linkGrd.Get_Cols();
+	//maxR = gGrids.linkGrd.Get_Rows();
+	//UI = LinkSym::PARENT;
 
-	for (int i = 0; i < maxC; i++)	// Affiche Le Link grid
-	{
-		for (int j = 0; j < maxR; j++)
-		{
-			crd = gGrids.linkGrd.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
-		}
-	}
+	//for (int i = 0; i < maxC; i++)	// Affiche Le Link grid
+	//{
+	//	for (int j = 0; j < maxR; j++)
+	//	{
+	//		crd = gGrids.linkGrd.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
+	//	}
+	//}
 
-	maxC = gGrids.wallGrdHor.Get_Cols();
-	maxR = gGrids.wallGrdVer.Get_Cols();
+	//maxC = gGrids.wallGrdHor.Get_Cols();
+	//maxR = gGrids.wallGrdVer.Get_Cols();
 
-	for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
-	{
-		for (int j = 0; j < maxR; j++)
-		{
-			UI = gGrids.wallGrdHor.wall[i][j].Get_Sym();crd = gGrids.wallGrdHor.wall[i][j].Get_XY();
+	//for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
+	//{
+	//	for (int j = 0; j < maxR; j++)
+	//	{
+	//		UI = gGrids.wallGrdHor.wall[i][j].Get_Sym();crd = gGrids.wallGrdHor.wall[i][j].Get_XY();
 
-			UI_Dsp_Char(crd, UI, (Colors)j);
-
-
-		}
-	}
-
-	maxC = gGrids.wallGrdVer.Get_Cols();
-	maxR = gGrids.wallGrdVer.Get_Rows();
-
-	for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
-	{
-		for (int j = 0; j < maxR; j++)
-		{
-			UI = gGrids.wallGrdVer.wall[i][j].Get_Sym();crd = gGrids.wallGrdVer.wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI, (Colors)i);
-
-		}
-	}
-
-	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
-	{
-		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
-		{
-			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
-			UI_Dsp_String(crd, std::to_string(j), (Colors)j);	// Ceci pourrait être une fonction d'affichage
+	//		UI_Dsp_Char(crd, UI, (Colors)j);
 
 
-		}
-	}
+	//	}
+	//}
+
+	//maxC = gGrids.wallGrdVer.Get_Cols();
+	//maxR = gGrids.wallGrdVer.Get_Rows();
+
+	//for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
+	//{
+	//	for (int j = 0; j < maxR; j++)
+	//	{
+	//		UI = gGrids.wallGrdVer.wall[i][j].Get_Sym();crd = gGrids.wallGrdVer.wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI, (Colors)i);
+
+	//	}
+	//}
+
+	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	//{
+	//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+	//	{
+	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+	//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+	//		UI_Dsp_String(crd, std::to_string(j), (Colors)j);	// Ceci pourrait être une fonction d'affichage
+
+
+	//	}
+	//}
 
 	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
@@ -131,6 +133,20 @@ int main()	// Le début!
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// CLOCK TESTING
 	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Bots Alive");
 	Coord crd3 = { 59,1 };	// Update bot alive count
@@ -142,44 +158,44 @@ int main()	// Le début!
 	crd = { 13,1 };
 	LvlClock.Start_Clock();	// Start l'horologe en bakcground!
 
-
-
-
-	// La clock du dude    #include "timerOp"
-
 	bool isRunning = true;
 	float frameRate = 60.0f;// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
 	float fps = 1 / frameRate;
 
+	ConsoleRender::Add_String_To_Render_List("0123456789123456789", {13,2}, WHITE, 10000);	// Le temps actuel/
+	GameLoopClock::Reset_Timer();	// Premier reset
 
-	TimerOP* Timer = TimerOP::Set_Instance();
+
+
 
 	while (isRunning)	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
-		Timer->Tick();	// Delta time est en seconde!!!
-		//Timer->Reset_Timer();				// Durée entre End-Start
-		gLvlTime += Timer->Get_Delta_Time();	// Update du temps actuel
+		GameLoopClock::Tick();	// Delta time est en seconde!!!
+		GameLoopClock::UPD_Total_Time();	// Temps du niveau
 		
 
-		if (Timer->Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps			
-		Timer->Reset_Timer();	// Reset la frame!
+		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps			
+			GameLoopClock::Reset_Timer();	// Reset la frame!
 
-		Detect_Input();		// Détect les inputs mah dude0
-		Update_Game();		// Update le jeu mah dude
-		//// render stuff	// Fait tout les affichages
 
+			Detect_Input();				// Détect les inputs mah dude0
+			Update_Game();				// Update le jeu mah dude
+		
+			//ConsoleRender::Add_String_To_Render_List(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
+
+			//if (gAllBotMeta.alive > 10)
+			//	ConsoleRender::Add_String_To_Render_List(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie
+
+			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
 			//cout << 1 / Timer->Get_Delta_Time() << "\t \t";	// Le nombre de FRAMES en une seconde, soit le framerate : 60
 			// OU cout << gLvlTime << endl;		// Temps total écoulé
-		
-		UI_Dsp_String(crd, std::to_string(gLvlTime));	
-		if(gAllBotMeta.alive > 30)
-			UI_Dsp_String(crd3, std::to_string(gAllBotMeta.alive));	
-
 		}
+		
+		Update_Game_NOT_60FPS();		
+		ConsoleRender::Render();	// Fait tout les affichages
 	}
 
-	Timer->Release(); // Release da timer
 
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 		// GAME LOOP DES INTERNETS!
@@ -205,9 +221,6 @@ int main()	// Le début!
 		//	render();
 		//}
 
-
-		// POUR PASSER une référence dans un thread, tu es obliger d'utiliser		std::ref("mavariable")
-	//	Exemple fonctionel : std::thread destroyTHREAD(&DestroyChainOfWalls::LameStaticFunction, false, std::ref(fuck), swag);
 
 	//LOAD FILES
 

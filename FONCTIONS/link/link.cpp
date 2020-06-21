@@ -1,6 +1,6 @@
 
 #include "../grid/grid.h"
-#include "../UI/console_output/dsp_char.h"
+#include "../UI/console_output/render_list.h"
 #include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
 
 #include "link.h"
@@ -68,21 +68,21 @@ bool Link::Activate_Link(LinkType& type, Wall* child)
 
 void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 {
+	int children = this->numChild;
 	this->pParent = NULL;
-								// reset pointers
-	for (int i = 0; i < numChild; i++)	// reset pointers
+										// reset pointers
+	for (int i = 0; i < numChild; i++)	// reset pointers		// that is some odd for loop
 	{
 		this->pWalls[i] = NULL;	// reset pointers
-		numChild--;
+		children--;
 	}
 
+	numChild = children;	// Safety
 	state = LinkState::DEAD;
 
 	//if(type != LinkType::REGULAR)
 		/*do stuff*/
 
-	// Efface le Link
-	Clr_Link();
 }
 
 bool Link::Unbound_Wall_Child(Wall* child)
@@ -117,8 +117,10 @@ bool Link::Unbound_Wall_Child(Wall* child)
 		}
 		else
 			if (state == LinkState::ROOT)		// Si le root n'a plus de Child, il mourre
-				this->Deactivate_Link();
-
+			{
+				this->Deactivate_Link();				
+				Clr_Link();		// Efface le Link		// Pourrait être mis à pars
+			}
 		return true;		// success
 	}
 
@@ -130,10 +132,10 @@ bool Link::Unbound_Wall_Child(Wall* child)
 //UI
 void Link::Dsp_Link()						// Affiche le Link
 {
-	UI_Dsp_Char(this->coord, this->sym, this->clr);
+	ConsoleRender::Add_Char_To_Render_List(this->coord, this->sym, this->clr);
 }
 
-void Link::Clr_Link()						// Clear le Link
+void Link::Clr_Link(float speed)						// Clear le Link
 {
-	UI_Dsp_Char(this->coord, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List(this->coord, TXT_CONST.SPACE, WHITE, speed);
 }

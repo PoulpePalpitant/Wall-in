@@ -1,8 +1,6 @@
 
-//#include "botlist.h"						// J'ai décidé de ne pas utilisé des linked list pour gérer les bots
+#include "../UI/console_output/render_list.h"
 #include "../walls/walls.h"
-
-#include "../UI/console_output/dsp_char.h"
 #include "botmeta.h"
 
 #include "bot.h"
@@ -21,6 +19,7 @@ bool Bot::Is_Dead()											// vérifie si un bot est mort
 void Bot::Destroy_Bot()
 {
 	this->hp = 0;		// Remet le HP à 0. this boi is dead
+	ConsoleRender::Add_Char_To_Render_List(this->XY, TXT_CONST.SPACE, this->clr);		//Effacement!
 	gAllBotMeta.Bot_Died();	// One more :(
 }
 
@@ -45,6 +44,9 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Co
 	// INITIALISE LES STATS DU BOT
 	Init_Bot_Stats(customBot);						// Le type du Bot doit être initialisé d'abord
 
+	// Le warning de spawn du bot
+	this->spwnWarning.Init_Spawn_Warning(dir, SPWN_DLAY);		
+
 	// INITIALISE DISTANCE À PARCOURIR
 	Init_Step_Count();								// À besoin de la direction et de la vitesse du bot
 
@@ -55,6 +57,8 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Co
 	gAllBotMeta.New_Bot();		// +1 les mecs!
 	// Je crois qu'il serait pertinent de faire une nouvelle classe de bot uniquement si ses mouvements ou ses intéractions avec les autres objets du jeux sont différentes
 }
+
+
 // Change la couleur du BOT selon sa progression
 // ----------------------------------------------
 
@@ -108,9 +112,11 @@ bool Bot::Bot_Impact(Wall* wall)
 		deadBot = Bot::Take_Dmg(HP);		// Hey me too!
 	}
 
+	if (deadBot)
+		wall->Remove_Bot_On_Me();	// le bot est dead, remove it!
+
 	return deadBot;
 }
-
 
 // Classic Draw/ erase
 void Bot::Animate_Bot(Bot* bot, Coord& nxtPos)
@@ -121,12 +127,22 @@ void Bot::Animate_Bot(Bot* bot, Coord& nxtPos)
 
 void Bot::UI_Draw_Bot(Bot* bot, Coord& nxtPos)
 {
-	// Affichage du symbole du blast 
-	UI_Dsp_Char(nxtPos, bot->sym, bot->clr);
+	// Affichage du symbole du bot
+	ConsoleRender::Add_Char_To_Render_List(nxtPos, bot->sym, bot->clr);
 }
 
 void Bot::UI_Erase_Bot(Bot* bot)	// ERASE le bot
 {
 	// Efface le bot
-	UI_Dsp_Char(bot->XY, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List(bot->XY, TXT_CONST.SPACE);
 }
+
+/*/prout prout*/
+//¨CA pas d'affaire ici, mais bon
+void Bot::UI_Dis_Warning() {
+	if (this->spwnWarning.nbWarnCycles% 2 == 0)
+		ConsoleRender::Add_Char_To_Render_List(this->XY, this->spwnWarning.warnSym, this->spwnWarning.warnColor);	// Affiche le warning que le bot s'en vient ( clignotement, alterne entre effacement et symbole : >, ' ', >, ' '
+	else
+		ConsoleRender::Add_Char_To_Render_List(this->XY, TXT_CONST.SPACE);	// Efface le symbole du warning précédent
+}
+

@@ -1361,6 +1361,7 @@ void Chck_Event_trigger(Time Current_Time, int BOTSpwnedTOT)
 
 // VÉRIFIE SI DES CONDITIONS S'APPLIQUENT POUR STARTER UN EVENT
 //***********************************************************
+
 void LVL1_Events(Time Current_Time, int BOTSpwnedTOT)
 {
 	int Ev = LVLNb[0].EvTOT;						// Nombre d'event fait 

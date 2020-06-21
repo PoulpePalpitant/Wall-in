@@ -4,8 +4,9 @@
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
 #include "../math/math_stuff.h"
- #include "../walls/walls.h"
+#include "../walls/walls.h"
 #include "../link/link.h"
+#include "../time/countdown_clock.h"
 
 /*
 	Le blast ça va être la façon pour le joueur de détruire les bots. Quand le joueur blast, il tir un projectile d'une certaine longueur à partir de sa position de départ. Ce projectile va avancé jusqu'à ce qu'il 
@@ -29,6 +30,8 @@ extern const time_t DFLT_BLAST_SPD_HOR;
 
 class Blast
 {
+	friend void Change_Blast();	 // Testing blast types
+
 	protected:
 		friend class UI_MoveBlast;	// L'animation du blast 
 		friend class WallGrid;		// Accès pour enregistré des nouveaux murs
@@ -57,10 +60,11 @@ class Blast
 	CoordIncrementor frontXY;			// UI: Sert à uniquement à afficher chaque symbole de l'animation (dans une direction). Sert aussi à trimer la longueur du blast dans l'animation
 	CoordIncrementor tailXY;			// UI: Sert  à trimer la longueur du blast dans l'animation
 	Direction dir;						// Ça direction dans la consoles
+	CDTimer updateTimer;				// Permet de limiter la vitesse de l'update de la position du blast
 
-	// POST-BLAST
-	WallStrength strength;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
-	LinkType linkType;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
+	// POST-BLAST	/* temporaire
+	WallStrength strength = WallStrength::REGULAR;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
+	LinkType linkType = LinkType::REGULAR;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
 
 	// SETUP DU BLAST
 	void Setup_Blast_UI();					// Assigne l'apparence du blast
@@ -80,14 +84,16 @@ class Blast
 	bool Has_Reached_Limit();		// Vérifie si le blast à atteint la fin de son périple
 	bool Blast_Is_On_LinkGrid();	// Vérifie si la "tête" du projectile est sur une case du link Grid
 	void Reset_Countdown_Till_Nxt_Link() { movesTillNxtLink = btwLinks; }		// Reset le temps que ça va prendre pour rencontrer un autre Link
-	void Setup_Blast( GrdCoord &startPos, Direction &blastDir, const BlastType& type = DFLT_BLAST);	// Setup tout les paramètre du blast pour le tir
+	void Stop_Blast();	// stop le blast...... le grus
 
 	// POST-BLAST
 	int Nb_Of_Links_To_Activate();
 	int Nb_Of_Walls_Per_Blast();		// Calcul le nombre de walls à enregistrer après un blast.
 
 public:
-	void Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType &type= DFLT_BLAST);	// le tir du blast...
+	bool Is_Active() { return active; }	// is it dow?
+	void Setup_Blast( GrdCoord &startPos, Direction &blastDir/* const BlastType& type = DFLT_BLAST*/);	// Setup tout les paramètre du blast pour le tir
+	void UPD_Blast_Shot();	// le tir du blast...
 };
 
 // Les objets blasts :D

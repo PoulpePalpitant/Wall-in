@@ -1,6 +1,6 @@
 
 
-#include "../UI/console_output/dsp_char.h"
+#include "../UI/console_output/render_list.h"
 #include "../grid/grid.h"
 #include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
 
@@ -145,9 +145,7 @@ void Wall::UI_Draw_Or_Erase_Wall()
 
 	for (int i = 0; i < wallSize; i++)
 	{
-		UI_Dsp_Char(startPos.coord, (char)sym, color);
-		Sleep(15);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
-
+		ConsoleRender::Add_Char_To_Render_List(startPos.coord, (char)sym, color, 55);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
 		startPos.Increment_Coord();	// Prochaine case
 	}
 }

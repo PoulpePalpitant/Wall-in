@@ -1,6 +1,5 @@
 
-#include "clock.h"
-
+#include "timerOP.h"
 #include "../bots/botmove.h"
 #include "bot_move_cycle.h"
 

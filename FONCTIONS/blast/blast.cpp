@@ -14,7 +14,7 @@
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD_VER = 100000;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
+extern const time_t DFLT_BLAST_SPD_VER = 60;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
 extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER / 2;			
 
 // Les propriétés principales du Blast par défaut
@@ -31,10 +31,10 @@ extern Blast blastP2 = {};
 
 
 // INTIALISATION DES PROPRIÉTÉ DU BLAST
-void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir, const BlastType &type)
+void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir/* const BlastType &type*/)
 {
-	strength = type.strength;				// Force du blast. Affecte la puissance du wall qui sera créé
-	linkType = type.linkType;					// type de Link à créer
+	//strength = type.strength;				// Force du blast. Affecte la puissance du wall qui sera créé
+	//linkType = type.linkType;					// type de Link à créer
 	
 	//if (dir != newblastDir)					// aurait pu être nice, mais je dois vérifié à chaque fois si les valeurs max n'ont pas changé entre le blast précédent
 	//{
@@ -47,6 +47,11 @@ void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir, const Bla
 
 	Setup_Blast_UI();							// Son apparence futur
 	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
+	
+	updateTimer.Set_Cd_Duration((float)speed);			// Vitesse d'update. 1 = 1 seconde
+
+	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
+	active = true;						// Blast officiellement activé
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,6 +72,20 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 
 		color = Colors::WHITE;		// Couleur par défaut
 	}
+	
+	if (strength == WallStrength::STRONG)
+	{
+		switch (dir)		// Symboles par défaut
+		{
+		case UP:
+		case DOWN: sym = (int)WallSym::SYM_VER2; color = Colors::THIRTY; break;
+		case LEFT:
+		case RIGHT:sym = (int)WallSym::SYM_HOR2; color = Colors::BLUE; break;
+		}
+
+	}
+
+
 
 
 	// Autres types 
@@ -123,6 +142,8 @@ void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de 
 	case LEFT:case RIGHT:	
 		speed = (int)speedHor;	break;	// Blast horizontal est maintenant 2x plus rapide qu'avant		
 	}
+	
+
 }
 
 // SETUP: LA DIRECTION DU BLAST EN XY ET EN COORD DE GRIDS 
@@ -146,61 +167,80 @@ void Blast::Setup_Position_Incrementors(GrdCoord& startPos)	// Sa position
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 
-void Blast::Blast_Shot(GrdCoord startPos, Direction& blastDir, const BlastType& type)
+void Blast::UPD_Blast_Shot()
 {
-	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
-
-	Setup_Blast(startPos, blastDir, type);
-
-	// Si tu tir sur un link just enface, ça va juste faire un mur, no backtep amigo.
-
-	while (!Has_Reached_Limit())											// Tant que le blast n'a pas atteint la limite de la "box" du jeu
+	if (active)
 	{
-		if (Blast_Is_On_LinkGrid())											// Vérifie si le blast viens d'atteindre la position d'une case du grid
+		// Va avancer le blast à chaque fois que le countdown tombe à zéro
+		if (updateTimer.Get_Time_Left() <= 0)
 		{
-			if(nbSteps)							// Si le blast n'est pas sur sa première position de départ
-				grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
-			
-			if (linkGrid->Is_Link_Here(grdPos.index))		// Vérifie la présence d'un link 
+			if (!Has_Reached_Limit())											// Tant que le blast n'a pas atteint la limite de la "box" du jeu
 			{
-				if(nbSteps != 0)
-					UI_MoveBlast::Animate_Blast(this);			// Sert principalement à effacer la tail bien franchement 
-				break;		// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement 
+				if (Blast_Is_On_LinkGrid())											// Vérifie si le blast viens d'atteindre la position d'une case du grid
+				{
+					if (nbSteps)							// Si le blast n'est pas sur sa première position de départ
+						grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
+
+					if (linkGrid->Is_Link_Here(grdPos.index))			// Vérifie la présence d'un link 
+					{
+						Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
+						return;
+					}
+					// OPTIONAL:  Check si d'autres trucs, comme un joueur ou un item est ici
+
+					Reset_Countdown_Till_Nxt_Link();	// Reset le temps que ça va prendre avant le prochaine fois que le blast va être sur le grid de Links
+
+				}
+				else
+				{
+					// OPTIONAL: CHECK si d'autres trucs sont ici, comme un wall ou un bot
+
+					movesTillNxtLink--;	// Se rapproche du prochain Link!
+
+				}
+
+				// ANIMATION!!! sort of
+				UI_MoveBlast::Animate_Blast(this); // Bouge le blast!
+
+				// PROCHAINE position XY	
+				frontXY.Increment_Coord();	// (+/- 1 dans une direction X/Y)
+
+				// Prochain Nombre de steps total
+				nbSteps++;	// Un pas de plus! Mais pour le prochain?
 			}
-			// OPTIONAL:  Check si d'autres trucs, comme un joueur ou un item est ici
+			else
+			{
+				Stop_Blast();
+				return;
+			}
 
-			Reset_Countdown_Till_Nxt_Link();	// Reset le temps que ça va prendre avant le prochaine fois que le blast va être sur le grid de Links
-
+			updateTimer.Start_CountDown();
 		}
 		else
-		{
-			// OPTIONAL: CHECK si d'autres trucs sont ici, comme un wall ou un bot
+			updateTimer.Tick_Timer();
 
-			movesTillNxtLink--;	// Se rapproche du prochain Link!
-
-		}
-
-		// ANIMATION!!!
-		UI_MoveBlast::Animate_Blast(this); // Bouge le blast!
-		std::this_thread::sleep_for(std::chrono::microseconds(speed)); // Temps de pause entre chaque affichages		// speed * deltatime?
-
-
-		// PROCHAINE position XY	
-		frontXY.Increment_Coord();	// (+/- 1 dans une direction X/Y)
-
-		// Prochain Nombre de steps total
-		nbSteps++;	// Un pas de plus!Mais pour le prochain?
+		/* Fuck. La vitesse maximum c'est vraiement 1 case par frame, soit 60 frame par secondes. Si tu veux faire ça legit, faudrait que tu incrémente la POSITION avec Speed * Deltatime, à chaque frame. Mais là tu update la position de 1 case à chaque
+		frame, ce qui limite le déplacemente à 1 case par frame*/
 	}
-
-	P1.Upd_Sym_From_Direction(dir);	
-	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
-
-	gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés
 }
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 // LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!// LE//TIR//DU BLAST!!!
 
+
+void Blast::Stop_Blast()	// stop le blast...... le grus
+{
+	if (nbSteps != 0)
+		UI_MoveBlast::Erase_Blast_Tail(this); //Animate_Blast(this);			// Sert principalement à effacer la tail bien franchement 
+
+	// Après le blast!!
+	P1.Upd_Sym_From_Direction(dir);
+	gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés
+
+	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
+
+	active = false;	// Blast n'est plus actif
+}
 
 
 // CHECK: si le blast se trouve sur le link grid 

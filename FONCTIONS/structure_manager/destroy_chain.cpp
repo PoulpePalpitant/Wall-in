@@ -3,6 +3,7 @@
 
 #include "../time/clock.h"
 #include "destroy_chain.h"
+//#include "../player/player.h"
 
 
 // LE STACK PILE
@@ -82,13 +83,9 @@ void DestroyChainOfWalls::Add_Children_To_List(Link* parent)
 
 void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 {
-	static std::mutex mu;
-
 	Link* toDeactivate, *parentLink;	// Le Link qui est connecté au premier Link à détruire
 	Wall* parentWall;					// Le mur à détruire entre deux Link
-	
-	mu.lock();
-	//gameClockTEST.Pause_Ticker_Clock();
+
 	// 2 choix pour détruire: L'adresse du Link ou sa crd dans le grd de links
 	if (link == NULL)
 		toDeactivate = &linkGrid->link[crd.c][crd.r]; // le premier de la liste
@@ -117,31 +114,32 @@ void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 		toDeactivate->Deactivate_Link();	 // détruit le Link				Je ne'ai pas séparé deactivate Link et erase Link
 		parentWall->Deactivate_Wall();		 // Désactive le mur				J'ai séparé deactivate wall et erase wall
 		parentWall->UI_Draw_Or_Erase_Wall(); // efface son mur on top		* alors tu draw, ou tu erase?
+
+		toDeactivate ->Clr_Link(55);		// Efface le Link		// Pourrait être mis à pars
 	}
-	//gameClockTEST.Unpause_Ticker_Clock();
 
-	mu.unlock();
-
-	/* DRAW*/
-
-
-	//SI TOUT ÇA BUG EN TEMPS RÉEL, VOICI CE QUE TU DEVRA FAIRE
-	/*
-	- CHANGE TA LOGIQUE DE "STACK" POUR QUE LE "POP" RETIRE LE PREMIER ÉLÉMENT DE LA LISTE AU LIEU DU DERNIER
-	- MUTEX CETTE FONCTION DE DESTRUCTION 
-	- ENLEVER TOUT LES FONCTIONS ERASE DE CETTE FONCTION
-
-	- CRÉER UNE NOUVELLE FONCTION QUI VA PRENDRE LA "PILE" ET L'UTILISER UNIQUEMENT POUR "EFFACER"
-	- MUTEX CETTE FONCTION
-	- CRÉER UN GESTIONNAIRE DE PILE, QUI VA PERMETTRE DE CRÉER PLUSIEURS PILES DE "À EFFACER". ET QUI VA POUVOIR EFFACER LES PILES DÈS QU'ON A FINIS D'AFFICHER
-	- MUTEX CETTE FONCTION
-
-	ouf...
-
-	*/	
+	// Problème avec les animations dans ma renderlist: Je peux pas les canceller, et elles ne reflètent pas l'état immédiat du jeu. Ici, si le joueur décide de se déplacer sur 
+	// un link qui va être effacer, le joueur va être effacé
+	
 }
 
+// In the end, I said fuck threads...
 
+
+//SI TOUT ÇA BUG EN TEMPS RÉEL, VOICI CE QUE TU DEVRA FAIRE
+/*
+- CHANGE TA LOGIQUE DE "STACK" POUR QUE LE "POP" RETIRE LE PREMIER ÉLÉMENT DE LA LISTE AU LIEU DU DERNIER
+- MUTEX CETTE FONCTION DE DESTRUCTION
+- ENLEVER TOUT LES FONCTIONS ERASE DE CETTE FONCTION
+
+- CRÉER UNE NOUVELLE FONCTION QUI VA PRENDRE LA "PILE" ET L'UTILISER UNIQUEMENT POUR "EFFACER"
+- MUTEX CETTE FONCTION
+- CRÉER UN GESTIONNAIRE DE PILE, QUI VA PERMETTRE DE CRÉER PLUSIEURS PILES DE "À EFFACER". ET QUI VA POUVOIR EFFACER LES PILES DÈS QU'ON A FINIS D'AFFICHER
+- MUTEX CETTE FONCTION
+
+ouf...
+
+*/
 bool DestroyChainOfWalls::LameStaticFunction(bool, GrdCoord&, GrdCoord )
 {
 

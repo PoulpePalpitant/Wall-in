@@ -2,7 +2,7 @@
 
 #include "../coord.h"
 #include "../txtstyle.h"
-#include "../../time/clock.h"
+#include "../../time/countdown_clock.h"
 
 struct OutputData {
 
@@ -14,54 +14,46 @@ struct OutputData {
 
 struct RenderQueue {
 	OutputData* first = NULL;	// Le premier élément de la liste à afficher. Il sera le premier partie
-	OutputData* last = NULL;	// Le premier élément de la liste à afficher. Il sera le premier partie
-	int size;			// Nombre d'élémentsde la liste à afficher
+	OutputData* last = NULL;	// Le dernier élément de la liste à afficher. Il sera le dernier partie
+	int size = 0;			// Nombre d'élémentsde la liste à afficher
 };
 
-struct TimerQueue {
+struct AnimationQueue {
 	/* ID de la liste */
 	/* Timer!!! stuff*/
-	CDTimer delay;	// Entre chaque output dans cette liste
+	CDTimer timer;	// Entre chaque output dans cette liste
 	RenderQueue queue;
-	TimerQueue* nxtQueue = NULL;
+	AnimationQueue* nxtQueue = NULL;
 };
 
 
 // combine : sym,et clr ensemble si ça te tente
 
 
-
-
 class ConsoleRender
 {
-	static TimerQueue* first, *last;	// Listes contenants tout les output à faire sur une base de temps
+	static AnimationQueue* first, *last;// Listes contenants tout les output à faire sur une base de temps
+	static AnimationQueue* sameQueue;	// Permet d'ajouter tout les prochains éléments dans la même queue
 	static RenderQueue mainQueue;		// Liste principale. Elle est vidé à chaque render. C'est ta responsabilité de ne pas la overfill et causé du lags avec "cout"
-	static int leftToAdd;	// Ce truc va servir de compteur pour  déterminer quelle queue utiliser pour ajouter des charactères à render			
+	static bool addToSameQueue;			// Détermine quelle queue utiliser pour ajouter des charactères à render			
 
-
-	bool Is_Queue_Empty(const RenderQueue& queue);
-	bool Is_Queue_Full(const RenderQueue& queue);
-	void Add_New_Timer_Queue();		// Ajoute une nouvelle queue
+	static bool Is_Empty(const RenderQueue& queue);
+	static bool Is_Queue_Full(const RenderQueue& queue);
 	
-	OutputData* Pop_From_Queue(RenderQueue& queue);		// Retire un OutputData d'une queue 
-	void Push_To_Queue(Coord crd, char sym, Colors clr);// Ajoute un OutputData a la fin de la queue
+	static void Pop_From_Queue(RenderQueue& queue, OutputData& data);		// Retire un OutputData d'une queue 
 
-	void Add_To_Main_Queue(Coord crd, char sym, Colors clr);
-	void Add_To_Timer_Queue(Coord crd, char sym, Colors clr, float);
-	void Render_Main_Queue();				// Affiche tout les éléments présent dans la main queue
-	void Render_Timer_Queue();				// Affiche tout les élément qui doivent l'être selon les timer
+	static void Add_Animation_Queue(float speed);		// Ajoute une nouvelle queue
+	static void Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& queue);// Ajoute un OutputData a la fin de la queue
+	static void Add_To_Main_Queue(Coord crd, char sym, Colors clr);
+	static void Add_To_Animation_Queue(Coord crd, char sym, Colors clr, float);
+	static void Render_Main_Queue();				// Affiche tout les éléments présent dans la main queue
+	static void Render_Animation_Queue();				// Affiche tout les élément qui doivent l'être selon les timer
 
 
 public:
-	void Add_To_Render_List(Coord crd, char sym, Colors clr = WHITE, float speed = 0);
-	void Render();	// Output tout les charactères dans la console, selon les listes, et les timers de ces listes
-	
-	
-	
-	void Set_How_Much_To_Add(int amount) { leftToAdd = amount; }	// Tant que leftToAdd n'atteint pas 0. Tout les prochains charactères qui seront ajoutés seont ajouté dans la même timer list!!!
-	// Je dois néanmoins connaître le montant d'avance
-
-
-
-};
+	static void Add_String_To_Render_List(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0);
+	static void Add_Char_To_Render_List(Coord crd, char sym, Colors clr = WHITE, float speed = 0);	// Ajoute un charactère à afficher pour le prochain render
+	static void Stop_Queue();								// Stop l'ajout d'élément dans la queue d'animation actuelle
+	static void Render();	// Output tout les charactères dans la console, selon les listes, et les timers de ces listes
+};	
 
