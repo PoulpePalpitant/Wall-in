@@ -52,12 +52,12 @@ void Player::Upd_Color()
 }
 
 // Affiche le joueur		
-void Player::Dis_Player_Sym(float speed)
+void Player::Dis_Player_Sym()
 {
 	static Coord crd;
 	crd = Get_XY();	// Position XY
 	
-	ConsoleRender::Add_Char_To_Render_List(crd, sym, clr, speed); 	// display
+	ConsoleRender::Add_Char_To_Render_List(crd, sym, clr); 	// display
 }
 
 // Change le symbole du joueur lors d'un mouvement
@@ -68,7 +68,7 @@ void Player::Upd_Sym_From_Direction(Direction dir)
 
 void Player::Set_Timeout(int time)			// Freeze le joueur pour une durée de temps 
 {	
-	timeout.Set_Cd_Duration(time);				// Sert principalement pour lui montrer un queue visuel quand il ne peut pas se déplacer
+	timeout.Set_Cd_Duration((float)time);				// Sert principalement pour lui montrer un queue visuel quand il ne peut pas se déplacer
 	timeout.Start_CountDown();
 }
 

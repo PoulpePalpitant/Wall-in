@@ -2,6 +2,7 @@
 #include "../player/player.h"
 #include "../structure_manager/destroy_chain.h"
 #include "../bots/botlist.h"
+#include "../UI/console_output/render_list.h"
 
 #include "AllGrids.h"
 
@@ -84,9 +85,10 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	parent = child = NULL;
 	wall = impactedWall = NULL; wallGRID = NULL;	/*safety*/
 
-	linkCrd = blast->grdPos;	// positions des links dans le grid
+	linkCrd = blast->grdPos;	/* positions des links dans le grid*/			
 	wallGRID = Find_Wall_Grid_From_Direction(blast->dir);	// Le bon grid
 	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(linkCrd);	// Première Coord de Wall
+
 
 	// Le nombre de murs 
 	nbOfWalls = blast->Nb_Of_Walls_Per_Blast();		
@@ -165,6 +167,8 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);		// Première Coord de Wall
 	wallCrd.Increment_Coord();
 
+	ConsoleRender::Create_Queue(100);	// Début de l'animation
+
 	while (numWalls)
 	{
 		wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];
@@ -219,18 +223,20 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 
 		// On affiche juste le parent, car le child pourrait changer de state, et donc de symbole à la prochaine loop. On l'affichera à la fin seulement
 		parent->Dsp_Link();	// Draw le link Parent
-		wall->UI_Draw_Or_Erase_Wall();	// Draw Le mur!
+		wall->UI_Draw_Or_Erase_Wall(true);	// Draw Le mur!
 
 		wallCrd.Increment_Coord();	// Coord du prochain wall
 		numWalls--;	// and here we go again
 	}
 
-	if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link child
-		playerOnLink = true;							
+	ConsoleRender::Stop_Queue();	// fin de l'animation
 
-	// Si le joueur n'est pas sur le child Link 
-	if (!playerOnLink)
-		child->Dsp_Link();
+	//if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link child
+	//	playerOnLink = true;							
+
+	//// Si le joueur n'est pas sur le child Link	//sad
+	//if (!playerOnLink)
+	//	child->Dsp_Link();
 
 }
 

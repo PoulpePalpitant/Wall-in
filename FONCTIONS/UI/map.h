@@ -20,7 +20,13 @@ private:
 	Distance Get_Length() { return length; }
 	Distance Get_Height() { return height; }
 	Distance Get_Box_Limit(Direction boxSide) { return limit[boxSide]; }	// Cahcune des Bordures de la map
+
 	void Resize(LinkGrid& linkGrid);	// Resize selon la dimension du Grid principal(LinkGrid)
+
+public:
+	void UI_Draw_Map_Corners();			// Affiche des tit symboles pour montrer la dimension de la map
+	void UI_Erase_Map_Corners();		// efface les tits coins
+
 };
 
 extern Map map;	// Déclaration de la map. Sera définis ailleurs, à genre SpawnBorder

@@ -51,7 +51,7 @@ public:
 	void Player_Lose_HP(int hpLost = 1);								// En général, le joueur perdra 1hp seulement
 	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
 
-	void Dis_Player_Sym(float speed = 0);									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
+	void Dis_Player_Sym();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
 // changer le symbole selon la direction du dernier move du player
 
 };

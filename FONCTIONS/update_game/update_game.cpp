@@ -22,17 +22,11 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 {
 	Update_Player_Action();
 
-	if (!GameLoopClock::pause)
+	if (!GameLoopClock::pause)	// GAME_PAUSED
 	{
 		Peek_Lvl_Script();
-	
-		// On affiche le player à chaque frame because bozo stuff is going on here
-		//P1.Dis_Player_Sym();
+		Update_Events();			// Update tout ce qui se passe avec les events
 	}
-	// SI TU PAUSE
-	// t'arrête le render des animation queue
-	// tu arrête pleins d'autres affaires
-
 }
 
 
@@ -40,40 +34,27 @@ void Update_Game_NOT_60FPS()
 {
 	if (!GameLoopClock::pause)
 		blastP1.UPD_Blast_Shot();	// Pour l'instant.				Sinon, si tu veux limiter le framerate là-dessus, va falloir que tu avance la crd XY à chaque frame en faisant  speed*dt.
-
-	//Events_Handler();	// Update tout ce qui se passe avec les events
+		
 	P1.Upd_Player_Timeout();	// Si le joueur est en timeout, on update ça
 }
 
 // Fait une action selon l'input du joueur
 void Update_Player_Action()
 {
-
-	if (action == PAUSE)
-	{
-		GameLoopClock::pause = true;
-		ConsoleRender::Add_String_To_Render_List("Hey! You PAUSED the game!", { 30,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
-	}
-	if (action == UNPAUSE)
-	{
-		GameLoopClock::pause = false;
-		ConsoleRender::Add_String_To_Render_List("                         ", { 30,4 });			// Besoin d'un max screen size
-	}
-	if (action == CHANGE_BLAST)
-	{
-		Change_Blast();		// trying stuff
-	}
-
 	if (!GameLoopClock::pause)
 	{
-		if (action == MOVE)
+		switch (action)
 		{
-			if (!blastP1.Is_Active())	// Le joueur ne peut bouger durant un blast
-				Move_Player(P1, keyDirection);	// bouge le joueuruu!
-		}
+		case PAUSE:
+			GameLoopClock::pause = true;
+			ConsoleRender::Add_String_To_Render_List("Hey! You PAUSED the game!", { 30,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
+			break;
 
-		if (action == BLAST)	// le type de blast pourrait varier selon le niveau et le statut du joueur
-		{
+		case CHANGE_BLAST:
+			Change_Blast();		// trying stuff
+			break;
+
+		case BLAST:
 			if (!blastP1.Is_Active())
 			{
 				//static Blast* blast; 		blast = &blastP1;	// da blast
@@ -100,8 +81,22 @@ void Update_Player_Action()
 				if (!cancelBlast)
 					blastP1.Setup_Blast(grdCrd, keyDirection /*  TU DOIS METTRE UN BLAST TYPE ICI  */);
 			}
+			break;
+
+		case MOVE:
+			if (!blastP1.Is_Active())	// Le joueur ne peut bouger durant un blast
+				Move_Player(P1, keyDirection);	// bouge le joueuruu!
+			break;
+
 		}
 	}
+	else 
+		if (action == UNPAUSE)
+		{
+			GameLoopClock::pause = false;
+			ConsoleRender::Add_String_To_Render_List("                         ", { 30,4 });			// Besoin d'un max screen size
+		}
+
 	// Faut reset l'action
 	action = IDLE;
 }

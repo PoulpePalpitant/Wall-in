@@ -89,8 +89,14 @@ class Blast
 	// POST-BLAST
 	int Nb_Of_Links_To_Activate();
 	int Nb_Of_Walls_Per_Blast();		// Calcul le nombre de walls à enregistrer après un blast.
-
 public:
+	// GET UTILES
+	const CoordIncrementor* const Get_Front_XY() { const CoordIncrementor* const copy = &frontXY; return copy; }		// Retourne un pointeur constant vers l'adresse, pour pouvoir copier correctement l'axe, qui est en fait un pointeur vers une crd
+	Direction Get_Dir() { return dir; }
+	Distance Get_Distance_Travelled() { return nbSteps; }
+
+	// FONCTIONS PRINCIPALES 
+
 	bool Is_Active() { return active; }	// is it dow?
 	void Setup_Blast( GrdCoord &startPos, Direction &blastDir/* const BlastType& type = DFLT_BLAST*/);	// Setup tout les paramètre du blast pour le tir
 	void UPD_Blast_Shot();	// le tir du blast...

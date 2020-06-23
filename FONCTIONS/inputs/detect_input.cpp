@@ -13,10 +13,14 @@ void Detect_Input()
 	if ((_kbhit()))
 		Validate_Input();		// Les actions du joueur se font ici
 
+	Clear_Cache();
+}
+
+void Clear_Cache()	// Clear le tampon du getch pour mes inputs de base
+{
 	while (_kbhit())	// tampon vidé
 		_getch();
 }
-
 
 
 void Test_Animation(Colors one, Colors two);	// So pretty...

@@ -83,6 +83,6 @@ public:
 	}
 
 	void Take_Damage(int dmg);		// Dépend de la force du bot
-	void UI_Draw_Or_Erase_Wall();
+	void UI_Draw_Or_Erase_Wall(bool inAChain = false);	// Efface un mur
 };
 

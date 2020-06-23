@@ -3,6 +3,7 @@
 #include "../grid/AllGrids.h"
 #include "../animation/UI_move_blast.h"
 #include "../player/player.h"
+#include "../events/events.h"
 
 #include "blast.h"
 
@@ -80,7 +81,7 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 		case UP:
 		case DOWN: sym = (int)WallSym::SYM_VER2; color = Colors::THIRTY; break;
 		case LEFT:
-		case RIGHT:sym = (int)WallSym::SYM_HOR2; color = Colors::BLUE; break;
+		case RIGHT:sym = (int)WallSym::SYM_HOR2; color = Colors::WHITE; break;
 		}
 
 	}
@@ -255,8 +256,14 @@ bool Blast::Blast_Is_On_LinkGrid()
 // CHECK : si le blast à atteint la fin de son périple
 bool Blast::Has_Reached_Limit()		// Ça c'est la prochaine limite, c'est pas celle actuelle!
 {
-	return *grdPos.axis == grdLimit;	// Si la colonne, ou la row, sur lequel se trouve le blast est égal à la limite(soit la bordure de la box du terrain de jeu)
-}										// Si cela est vrai, le blast s'arrête maintenant
+	if (*grdPos.axis == grdLimit)
+	{
+		MessageQueue::Register(BLAST_REACHED_BORDER);	// Notification 
+		return true;			// Si la colonne, ou la row, sur lequel se trouve le blast est égal à la limite(soit la bordure de la box du terrain de jeu)
+	}							// Si cela est vrai, le blast s'arrête maintenant
+	else
+		return false;					
+}										
 
 
 // POST-BLAST

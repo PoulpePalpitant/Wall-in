@@ -3,6 +3,7 @@
 
 #include "../time/clock.h"
 #include "destroy_chain.h"
+#include "../UI/console_output/render_list.h"
 //#include "../player/player.h"
 
 
@@ -104,6 +105,8 @@ void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 		toDeactivate->Deactivate_Link();	 // Et on désactive
 	}
 
+	ConsoleRender::Create_Queue(100);	// Start l'animation de destruction
+
 	while (!empty())		// Tant qu'il reste des Links à détruire
 	{
 		pop(toDeactivate);	// Prend un élément da liste de Link à détruire
@@ -113,14 +116,14 @@ void DestroyChainOfWalls::Destroy_Chain_Of_Walls(GrdCoord crd, Link* link)
 		parentWall = toDeactivate->pParent;	 // trouve le mur parent
 		toDeactivate->Deactivate_Link();	 // détruit le Link				Je ne'ai pas séparé deactivate Link et erase Link
 		parentWall->Deactivate_Wall();		 // Désactive le mur				J'ai séparé deactivate wall et erase wall
-		parentWall->UI_Draw_Or_Erase_Wall(); // efface son mur on top		* alors tu draw, ou tu erase?
-
-		toDeactivate ->Clr_Link(55);		// Efface le Link		// Pourrait être mis à pars
+		parentWall->UI_Draw_Or_Erase_Wall(true); // efface son mur on top		* alors tu draw, ou tu erase?
+		toDeactivate ->Clr_Link();		// Efface le Link		// Pourrait être mis à pars
 	}
+	
+	ConsoleRender::Stop_Queue();		// Finis l'animation de destruction
 
 	// Problème avec les animations dans ma renderlist: Je peux pas les canceller, et elles ne reflètent pas l'état immédiat du jeu. Ici, si le joueur décide de se déplacer sur 
 	// un link qui va être effacer, le joueur va être effacé
-	
 }
 
 // In the end, I said fuck threads...

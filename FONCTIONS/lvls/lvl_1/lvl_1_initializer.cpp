@@ -4,9 +4,13 @@
 #include "../../player/player.h"
 #include "../../spawns/bots_to_spawn.h"
 #include "lvl_1_initializer.h"
+#include "../../time/timerOP.h"
+
 
 void Lvl_1_Initializer()
 {
+	gLvlTime = 0;		// Reset Le timer du niveau
+	
 	// DONT TOUCH	***********************************************************************************
 //**** WIN SIZE: 85/48			ou 713x807
 

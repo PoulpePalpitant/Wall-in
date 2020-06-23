@@ -162,11 +162,7 @@ int main()	// Le début!
 	float frameRate = 60.0f;// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
 	float fps = 1 / frameRate;
 
-	ConsoleRender::Add_String_To_Render_List("0123456789123456789", {13,2}, WHITE, 10000);	// Le temps actuel/
 	GameLoopClock::Reset_Timer();	// Premier reset
-
-
-
 
 	while (isRunning)	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
@@ -181,7 +177,7 @@ int main()	// Le début!
 			Detect_Input();				// Détect les inputs mah dude0
 			Update_Game();				// Update le jeu mah dude
 		
-			//ConsoleRender::Add_String_To_Render_List(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
+			ConsoleRender::Add_String_To_Render_List(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
 
 			//if (gAllBotMeta.alive > 10)
 			//	ConsoleRender::Add_String_To_Render_List(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie

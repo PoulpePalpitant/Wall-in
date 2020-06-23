@@ -135,7 +135,7 @@ void Link::Dsp_Link()						// Affiche le Link
 	ConsoleRender::Add_Char_To_Render_List(this->coord, this->sym, this->clr);
 }
 
-void Link::Clr_Link(float speed)						// Clear le Link
+void Link::Clr_Link( )						// Clear le Link
 {
-	ConsoleRender::Add_Char_To_Render_List(this->coord, TXT_CONST.SPACE, WHITE, speed);
+	ConsoleRender::Add_Char_To_Render_List(this->coord, TXT_CONST.SPACE, WHITE);
 }

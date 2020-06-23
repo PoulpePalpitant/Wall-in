@@ -105,7 +105,10 @@ bool Bot::Bot_Impact(Wall* wall)
 	HP = wall->Get_Hp();
 
 	if (wall->Get_Type() == WallType::CORRUPTED)
-		wall->UI_Draw_Or_Erase_Wall();		// Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
+	{
+		wall->UI_Draw_Or_Erase_Wall();  // Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
+
+	}
 	else
 	{
 		wall->Take_Damage(this->Get_Power()); // Taking dmg here!

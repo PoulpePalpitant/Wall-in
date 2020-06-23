@@ -2,4 +2,4 @@
 
 
 
-extern bool gLvlInitializer = true;			// Initialize les niveaux
+extern bool gLvlInitializer;			// Initialize les niveaux

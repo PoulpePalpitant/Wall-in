@@ -25,12 +25,13 @@ void Resize_All_Grids(AllGrids& grid, int col, int row)
 }
 
 
-void Resize_Grids_To_Level(AllGrids& grid, int lvl) {
+void Resize_Grids_To_Level(AllGrids& grid, int lvl) {	
 	
 	int col = 13, row = 15;	// dimension par défaut au premier niveau
 
 	switch (lvl)
 	{
+	case 0:	Create_All_Grids(grid, 2 ,2);	break;
 	case 1:	Create_All_Grids(grid, col, row);	break;
 	case 2:	Resize_All_Grids(grid, col, row);	break;
 	case 3:	Resize_All_Grids(grid, col, row);	break;

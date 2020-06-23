@@ -128,7 +128,7 @@ void Wall::Take_Damage(int dmg)
 
 
 // Affiche un Mur selon une direction
-void Wall::UI_Draw_Or_Erase_Wall()
+void Wall::UI_Draw_Or_Erase_Wall(bool inAChain)	// Si inAChain est activé, on gère pas la création des queues
 {
 	CoordIncrementor startPos;	// Position de départ
 	int wallSize;	// Dimension du mur
@@ -143,10 +143,15 @@ void Wall::UI_Draw_Or_Erase_Wall()
 	if (childPos == NEG)								//  x  ->   <-  x		x = startpos
 		*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
 
+	if(!inAChain)
+		ConsoleRender::Create_Queue(75);
+
 	for (int i = 0; i < wallSize; i++)
 	{
-		ConsoleRender::Add_Char_To_Render_List(startPos.coord, (char)sym, color, 55);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
+		ConsoleRender::Add_Char_To_Render_List(startPos.coord, (char)sym, color);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
 		startPos.Increment_Coord();	// Prochaine case
 	}
-}
 
+	if(!inAChain)
+		ConsoleRender::Stop_Queue();			// TU DOIS ABSOLUMENT STOP LA QUEUE QUAND TU UTILISE ^CA
+}

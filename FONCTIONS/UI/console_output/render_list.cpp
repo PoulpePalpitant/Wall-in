@@ -9,28 +9,30 @@
 
  AnimationQueue* ConsoleRender::first, *ConsoleRender::last;			// Listes contenants tout les output à faire sur une base de temps
  RenderQueue ConsoleRender::mainQueue;					// Liste principale. Elle est vidé à chaque render. C'est ta responsabilité de ne pas la overfill et causé du lags avec "cout"
- AnimationQueue* ConsoleRender::sameQueue;		// Permet d'ajouter des éléments dans la même queue d'animation
- bool ConsoleRender::addToSameQueue;			// Détermine quelle queue utiliser pour ajouter des charactères à render			
+ AnimationQueue* ConsoleRender::animationQueue;		// Permet d'ajouter des éléments dans la même queue d'animation
+ bool ConsoleRender::addToNewQueue;			// Détermine quelle queue utiliser pour ajouter des charactères à render			
 
  // Ajoute une nouvelle queue d'animation
-void ConsoleRender::Add_Animation_Queue(float speed)
+void ConsoleRender::Create_Queue(float speed, bool linear)
 {
 	if (last == NULL)	// Liste vide	
 		first = last = new AnimationQueue;	// Nouvelle queue	
 	else
 		last = last->nxtQueue = new AnimationQueue;	// Nouvelle queue
 
-	last->timer.Set_Cd_Duration(speed);	 // Set la durée du countdown, mais ne l'active pas tout de suite
+	last->timer.Set_Cd_Duration(speed);	 // Set la durée du countdown, mais L'ACTIVE TOUT DE SUITE BRAH
+	last->timer.Start_CountDown();	 // Set la durée du countdown, mais L'ACTIVE TOUT DE SUITE BRAH
 	
-	sameQueue = last;
-	addToSameQueue = true;		// Les prochains output d'animation seront ajouté dans cette queue
+	animationQueue = last;
+	animationQueue->isLinear = linear;	// Si l'animation est lineaire, ou pas
+	addToNewQueue = true;		// Les prochains output d'animation seront ajouté dans cette queue
 }		
 
 // On stop l'ajout de charactères dans cette queue(ne s'applique pas à la mainqueue)
 void ConsoleRender::Stop_Queue()
 {
-	addToSameQueue = false;	
-	sameQueue = NULL;
+	addToNewQueue = false;	
+	animationQueue = NULL;
 }
 
 void ConsoleRender::Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& queue)// Ajoute un OutputData a la fin de la queue
@@ -66,12 +68,12 @@ bool ConsoleRender::Is_Empty(const RenderQueue& queue) {
 		return false;
 }
 
-bool ConsoleRender::Is_Queue_Full(const RenderQueue& queue) {
-	if (queue.size == 1000)	// insert max queue size here
-		return true;
-	else
-		return false;
-}
+//bool ConsoleRender::Is_Queue_Full(const RenderQueue& queue) {
+//	if (queue.size == 1000)	// insert max queue size here
+//		return true;
+//	else
+//		return false;
+//}
 
 void ConsoleRender::Render_Main_Queue()				// Affiche tout les éléments présent dans la main queue durant une frame
 {
@@ -91,47 +93,32 @@ void ConsoleRender::Render_Main_Queue()				// Affiche tout les éléments présent 
 	}
 }
 
-void ConsoleRender::Add_To_Animation_Queue(Coord crd, char sym, Colors clr , float speed)
-{
-	if (!addToSameQueue)
-		Add_Animation_Queue(speed);	// Nouvelle queue
-	
-	Push_To_Queue(crd,  sym, clr, sameQueue->queue); // Ajoute un OutputData a la fin de la queue
-}
-
-// Ajoute un outputdata à la queue immédiate
-void ConsoleRender::Add_To_Main_Queue(Coord crd, char sym, Colors clr) 
-{
-	Push_To_Queue(crd, sym, clr, mainQueue); // Ajoute un OutputData a la fin de la queue
-}
-
 // Ajoute un charactère à afficher dans une des render queues
 // **********************************************************
 
-void ConsoleRender::Add_Char_To_Render_List(Coord crd, char sym, Colors clr, float speed)
+void ConsoleRender::Add_Char_To_Render_List(Coord crd, char sym, Colors clr)
 {
-	if (speed == 0)	// Aucune speed veut dire render immédiat
-	{
-		Add_To_Main_Queue(crd, sym, clr);			// ajouter dans le main render queue
-		
-		if (addToSameQueue)		// Safety: Stop toute animation queue quand tu ajoute un char dans la main queue
-			Stop_Queue();
-	}
+	if (addToNewQueue)	// Ajout dans une queue d'animation
+		Push_To_Queue(crd, sym, clr, animationQueue->queue); // Ajoute un OutputData a la fin de la queue
 	else
-		Add_To_Animation_Queue(crd, sym, clr, speed);	// Speed veut dire une animation overtime
+		Push_To_Queue(crd, sym, clr, mainQueue); // Ajoute un OutputData a la fin de la queue
+
 }
 void ConsoleRender::Add_String_To_Render_List(std::string text,Coord crd,  Colors clr , float speed)
 {
 	RenderQueue* toPush = NULL;
 	int size = (int)text.length();	// Assignation de la longueur de la string 	
 
-	if (speed > 0 && !addToSameQueue)	// assignation de la queue
+	if (speed > 0 )	// assignation de la queue
 	{
-		Add_Animation_Queue(speed);	
-		toPush = &sameQueue->queue; 
+		Create_Queue(speed);	
+		toPush = &animationQueue->queue; // Créer une nouvelle animation queue automatiquement
 	}
 	else
-		toPush = &mainQueue;
+		if(addToNewQueue)
+			toPush = &animationQueue->queue;	// Animation queue était déjà là
+		else
+			toPush = &mainQueue;	// Pas d'animation queue
 
 	//AFFICHE LA STRING EN VÉRIFIANT LA COULEUR À CHAQUE FOIS, ET EN REPOSITIONNANT DEUX FOIS LE CURSEUR >:(		(quand même mieux que d'avoir des erreurs d'affichage à cause des race conditions!!!!)
 	for (int loop = 0; loop < size; loop++)
@@ -140,7 +127,7 @@ void ConsoleRender::Add_String_To_Render_List(std::string text,Coord crd,  Color
 		crd.x++;										// Incrémente x pour le prochain charactère	
 	}
 
-	if(addToSameQueue)
+	if(addToNewQueue)
 		Stop_Queue();
 }
 
@@ -198,7 +185,9 @@ void ConsoleRender::Render_Animation_Queue()
 			}
 			else
 			{
-				toPop->timer.Start_CountDown();	// Prochain countdown
+				if(toPop->isLinear)
+					toPop->timer.Start_CountDown();	// Prochain countdown	// Pour l'animation d'une shot, en omet simplement de reset le countdown :)
+
 				prev = toPop;				// please repeat yourself
 				toPop = toPop->nxtQueue;	
 			}

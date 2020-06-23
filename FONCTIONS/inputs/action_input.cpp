@@ -4,3 +4,5 @@
 
 ActionType action = IDLE;
 Direction keyDirection = NONE;
+bool gChoiceTime = false;
+
