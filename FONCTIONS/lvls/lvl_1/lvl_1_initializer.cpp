@@ -1,11 +1,13 @@
 
+#include "lvl_1_initializer.h"
+
+#include "../../events/msg_dispatcher.h"
 #include "../../time/spawn_cycle.h"
 #include "../../time/bot_move_cycle.h"
 #include "../../player/player.h"
 #include "../../spawns/bots_to_spawn.h"
-#include "lvl_1_initializer.h"
 #include "../../time/timerOP.h"
-
+#include "../../grid/managegrids.h"
 
 void Lvl_1_Initializer()
 {
@@ -28,15 +30,19 @@ void Lvl_1_Initializer()
 	gNextSpawnCycle = gCurrentSpawnCycle + gSpawnCycle;
 	gSpawnThisCycle = false;
 	
-	
 	//test
-	gBotMoveCycle = 4000;
+	gBotMoveCycle = 400;
 	gCurrentBotMoveCycle = gCurrentSpawnCycle;					// On bouge les bots quand y va avoir des bots de spawné
 	gNextBotMoveCycle = gCurrentBotMoveCycle + gBotMoveCycle;
 	gMoveBotsThisCycle = true;
 
-
+	P1.Set_Position({ linkGrid->Get_Cols() / 2, 4 + linkGrid->Get_Rows() / 2 });
 	P1.Set_Hp(3);	// 3 de vie le gros
 
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
+	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
+
+	gLvlTime = 0;
+
+	MsgQueue::Register(LVL_INITIALIZED);	// It has to be done
 }

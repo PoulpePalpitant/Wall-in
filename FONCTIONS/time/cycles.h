@@ -8,5 +8,8 @@ struct cycles{	// Template de cycles
 	int gCycleTot;						// Le nombre total de cycle ayant u lieu
 };
 
-void UPD_Cycles();			// Update les cycles
+extern bool stopSpwCycle; 
+extern bool stopMoveCycle;
+
+void UPD_Bots_Cycles();			// Update les cycles
 void Do_Stuff_this_Cycle();

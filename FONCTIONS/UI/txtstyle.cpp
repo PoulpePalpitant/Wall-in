@@ -1,5 +1,7 @@
 
 #include "txtstyle.h"
+
+#include "../console/sweet_cmd_console.h"
 #include <Windows.h>
 
 
@@ -19,4 +21,11 @@ Colors Get_Current_Color()// Si on veut affiché quoi que ce soit, on utilise cec
 {
 	return gCurrentColor;
 	   
+}
+
+
+// Trouve la crd en x qui permettrait d'output un char au centre
+int Find_Ctr_X(int size)		
+{
+	return (gConWidth - size) / 2;
 }

@@ -21,7 +21,7 @@ namespace bots_to_spawn {
 	extern int gNumSpawnTOT;			// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
 	//extern Sp_CoordIn gCrdInterval;		// Donne un interval de coordonnée sur une bordure
 	
-	void Add_Spwns(int amount);		// 	// Ajoute des bots à spawner
+	void Add(int amount);		// 	// Ajoute des bots à spawner
 	bool Set_Interval(Direction border, int min, int max);	// Setup un interval de coordonnée pour 1 seule bordure
 	void Set_Randomness();									// Quand tu change boxside ou SpwNum, cela affecte le randomness, il faut donc changer ça... manuellement
 	void Reset_To_Default();								// Valeurs par défaut du prochain spawn

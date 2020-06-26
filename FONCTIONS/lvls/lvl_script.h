@@ -1,8 +1,7 @@
 #pragma once
 
 extern short gCurrentLevel;	// Le niveau actuel!!1
-extern short gCurrentSubLevel;	// Le sous-niveau actuel
-extern bool gInitializeLvl;	// si le niveau est initialisé
+extern short gCurrentStage;	// Le sous-niveau actuel
 
 
 

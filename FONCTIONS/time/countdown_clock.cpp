@@ -15,40 +15,42 @@
 bool CDTimer::Tick_Timer()	// Update le temps écoulé à partir de delta time
 {
 	if (this->isRunning)
-		this->timeLeft -= GameLoopClock::Get_Delta_Time();	// Réduit le countdown à partir de DeltaTime
+		this->timeLeft -= /*lag / framerate(ou MS_PER_UPDATE) * */ GameLoopClock::Get_Delta_Time();	// Réduit le countdown à partir de DeltaTime
 
 	if (this->timeLeft <= 0)
 	{
-		this->isRunning = false;	// Stop le timer
-		return false;
+		totalCD++;			// 1 cycle de fait de plus
+
+		if (cd.Count())		// Terminé le nombre de countdown à faire, ferme le timer
+		{
+			this->isRunning = false;	// Stop le timer
+			isFinished = true;
+			return false;
+		}
+		else
+			Restart_CountDown();
 	}
-	else return true;
+
+	return true;	// We still running
 }
 
-bool CDTimer::Tick_Timer_With_Speed(int speed)	// Update le temps écoulé à partir de delta time
-{
-	if (this->isRunning)
-		this->timeLeft -= (speed * GameLoopClock::Get_Delta_Time());	// Réduit le countdown à partir de DeltaTime
-
-	if (this->timeLeft <= 0)
-	{
-		this->isRunning = false;	// Stop le timer
-		return false;
-	}
-	else return true;
-}
-
-
-void CDTimer::Start_CountDown()	// Enclanche le temps. Conserve les données relié au temps écoulé
+void CDTimer::Start_CountDown(int nbCD)	// Enclanche le temps. Conserve les données relié au temps écoulé
 {
 	if (this->isRunning)	// était déjà en cours
 		return;
 	else
 		if (timeLeft <= 0 && cdDuration > 0)	// Le Countdown doit avoir une durée pour être starté
 		{
+			cd.Set(nbCD);			// Nombre de révolution à faire avant de stopper la clock
+
 			timeLeft = cdDuration;	// Reset le cooldown
 			this->isRunning = true;	// Et on reprend
+			isFinished = false;		// et on reprend
 		}	
+}
+void CDTimer::Restart_CountDown()						// Ré-Enclanche le timer
+{
+	timeLeft = cdDuration;	// Reset le cooldown
 }
 
 /* not used*/
@@ -75,9 +77,4 @@ void CDTimer::Dsp_Name(Coord crd, Colors clr, time_t time)			// Affiche le nom d
 {
 	UI_Dsp_String(crd, timerName, clr, time);		// Affiche le nom
 }
-
-
-
-
-
 

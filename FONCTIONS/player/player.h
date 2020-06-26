@@ -14,7 +14,7 @@ private:
 	// ATTRIBUTES
 	int hp = 3;								// La vie du joueur. : Le nombre de bots qui peuvent sortir de la bot avant qu'il soit dead
 	PlayerState state = PlayerState::ALIVE; //
-
+	bool canDoStuff = true;					// Freeze les inputs du joueur
 	// UI
 	Colors clr = Colors::LIGHT_GREEN;		// Sa couleur
 	char sym;								// Le symbole représentant le player
@@ -50,7 +50,9 @@ public:
 	void Upd_Color();													// Change la couleur du joueur quand il pred ou gagne de la vie
 	void Player_Lose_HP(int hpLost = 1);								// En général, le joueur perdra 1hp seulement
 	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
-
+	
+	// SPÉCIALE
+	void Spawn_Player(GrdCoord pos, bool speed);			// Vitesse rapide ou lente 
 	void Dis_Player_Sym();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
 // changer le symbole selon la direction du dernier move du player
 

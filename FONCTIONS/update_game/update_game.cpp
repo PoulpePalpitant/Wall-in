@@ -11,12 +11,13 @@
 #include "../UI/console_output/render_list.h"
 #include "../blast/change_blast.h"
 #include "../events/events.h"
-
+#include "../events/msg_dispatcher.h"
+#include "../time/cycles.h"
 
 #include "update_game.h"
 
 extern bool gIsRunning = true;		// le state du jeu
-
+static std::string pauseMsg = "Hey! You PAUSED the game!";
 
 void Update_Game()		// Update tout ce qui se passe dans le jeu
 {
@@ -24,14 +25,18 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 
 	if (!GameLoopClock::pause)	// GAME_PAUSED
 	{
-		Peek_Lvl_Script();
-		Update_Events();			// Update tout ce qui se passe avec les events
+		UPD_Bots_Cycles();		// Mouvement et spawn des bots
+		Peek_Lvl_Script();		// En ce moment, ça sert pas mal juste à peek le spawnscript...
+		Do_Stuff_this_Cycle();	// Bouge et spawn les bots
+		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
+		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 	}
 }
 
 
 void Update_Game_NOT_60FPS()
 {
+
 	if (!GameLoopClock::pause)
 		blastP1.UPD_Blast_Shot();	// Pour l'instant.				Sinon, si tu veux limiter le framerate là-dessus, va falloir que tu avance la crd XY à chaque frame en faisant  speed*dt.
 		
@@ -41,62 +46,64 @@ void Update_Game_NOT_60FPS()
 // Fait une action selon l'input du joueur
 void Update_Player_Action()
 {
-	if (!GameLoopClock::pause)
+	if (!gBlockInputs)
 	{
-		switch (action)
+		if (!GameLoopClock::pause)
 		{
-		case PAUSE:
-			GameLoopClock::pause = true;
-			ConsoleRender::Add_String_To_Render_List("Hey! You PAUSED the game!", { 30,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
-			break;
-
-		case CHANGE_BLAST:
-			Change_Blast();		// trying stuff
-			break;
-
-		case BLAST:
-			if (!blastP1.Is_Active())
+			switch (action)
 			{
-				//static Blast* blast; 		blast = &blastP1;	// da blast
+			case PAUSE:
+				GameLoopClock::pause = true;
+				ConsoleRender::Add_String_To_Render_List(pauseMsg, { Find_Ctr_X(sizeof(pauseMsg)) + 4,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
+				break;
 
-				static GrdCoord grdCrd;	// Position du joueur
-				grdCrd = P1.Get_Grd_Coord();
+			case CHANGE_BLAST:
+				Change_Blast();		// trying stuff
+				break;
 
-				static Link* link;	// Link se trouvant sur la position du joueur
-				link = &linkGrid->link[grdCrd.c][grdCrd.r];
-
-				bool cancelBlast = false;
-
-				// Action Spéciale: Un transfer
-				// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
-				if (link->Get_State() == LinkState::FREE && link->Get_Type() != LinkType::BLOCKER)// Un blocker empêche les transfer?
+			case BLAST:
+				if (!blastP1.Is_Active() && !gChoiceTime)
 				{
-					// Si on tir dans la même direction que son parent wall		
-					if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
-						cancelBlast = true; // rien va se passer
-					else
-						DestroyChainOfWalls::Destroy_Chain_Of_Walls(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+					//static Blast* blast; 		blast = &blastP1;	// da blast
+
+					static GrdCoord grdCrd;	// Position du joueur
+					grdCrd = P1.Get_Grd_Coord();
+
+					static Link* link;	// Link se trouvant sur la position du joueur
+					link = &linkGrid->link[grdCrd.c][grdCrd.r];
+
+					bool cancelBlast = false;
+
+					// Action Spéciale: Un transfer
+					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
+					if (link->Get_State() == LinkState::FREE && link->Get_Type() != LinkType::BLOCKER)// Un blocker empêche les transfer?
+					{
+						// Si on tir dans la même direction que son parent wall		
+						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
+							cancelBlast = true; // rien va se passer
+						else
+							DestroyChainOfWalls::Destroy_Chain_Of_Walls(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+					}
+
+					if (!cancelBlast)
+						blastP1.Setup_Blast(grdCrd, keyDirection /*  TU DOIS METTRE UN BLAST TYPE ICI  */);
 				}
+				break;
 
-				if (!cancelBlast)
-					blastP1.Setup_Blast(grdCrd, keyDirection /*  TU DOIS METTRE UN BLAST TYPE ICI  */);
+			case MOVE:
+				if (!blastP1.Is_Active() && !gChoiceTime)	// Le joueur ne peut bouger durant un blast
+					Move_Player(P1, keyDirection);	// bouge le joueuruu!
+				break;
+
 			}
-			break;
-
-		case MOVE:
-			if (!blastP1.Is_Active())	// Le joueur ne peut bouger durant un blast
-				Move_Player(P1, keyDirection);	// bouge le joueuruu!
-			break;
-
 		}
+		else
+			if (action == UNPAUSE)
+			{
+				GameLoopClock::pause = false;
+				ConsoleRender::Add_String_To_Render_List("                         ", { Find_Ctr_X(sizeof(pauseMsg)) + 4,4 });			// Besoin d'un max screen size
+			}
 	}
-	else 
-		if (action == UNPAUSE)
-		{
-			GameLoopClock::pause = false;
-			ConsoleRender::Add_String_To_Render_List("                         ", { 30,4 });			// Besoin d'un max screen size
-		}
-
 	// Faut reset l'action
 	action = IDLE;
 }

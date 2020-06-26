@@ -1,12 +1,6 @@
 
-//#include "../../time/cycles.h"
-//#include "../../time/spawn_cycle.h"
-
 #include "../../grid/managegrids.h"
-#include "../lvl_initializer.h"
-//#include "lvl_1_initializer.h"
 
-//#include "lvl_1_upd_events.h"
 #include "sub_lvl_1_script.h"
 
 void Sub_Lvl_1_Script()

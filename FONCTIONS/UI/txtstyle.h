@@ -36,9 +36,11 @@ enum Colors
 	FORTY = 40
 };
 
-
 extern Colors gCurrentColor;	// La couleur actuelle d'output dans la console. 
 
 
 Colors Get_Current_Color();// Si on veut affiché quoi que ce soit, on utilise ceci pour vérifier si on a besoin, oui ou non de changer la couleur de l'output de la console
 void Change_Color(int c);		// Permet de changer la couleur des prochains output de textes dans la console
+
+
+int Find_Ctr_X(int size = 0);		// Trouve la crd en x qui permettrait d'output un char au centre

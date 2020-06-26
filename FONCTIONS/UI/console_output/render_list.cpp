@@ -2,6 +2,7 @@
 
 
 #include "dsp_char.h"
+#include "dsp_string.h"
 #include "../../player/player.h"	// Uniquement pour empêcher f'afficher par dessus le joueur
 #include "../../time/timerOP.h"
 
@@ -96,7 +97,7 @@ void ConsoleRender::Render_Main_Queue()				// Affiche tout les éléments présent 
 // Ajoute un charactère à afficher dans une des render queues
 // **********************************************************
 
-void ConsoleRender::Add_Char_To_Render_List(Coord crd, char sym, Colors clr)
+void ConsoleRender::Add_Char_To_Render_List(Coord crd, unsigned char sym, Colors clr)
 {
 	if (addToNewQueue)	// Ajout dans une queue d'animation
 		Push_To_Queue(crd, sym, clr, animationQueue->queue); // Ajoute un OutputData a la fin de la queue
@@ -142,10 +143,10 @@ void ConsoleRender::Render_Animation_Queue()
 	OutputData toDraw = {};				// À draw
 	static Coord playerPos = {0,0}; // On veut pas afficher quoi que ce soit par dessus le joueur..... Le gros problème de ce système de queue
 
+	playerPos = P1.Get_XY();		
+	
 	while (toPop)	// tant que ta pas finis de traverser tout les listes
 	{	
-		playerPos = P1.Get_XY();		
-
 		if (toPop->timer.Get_Time_Left() <= 0)	// Le temps est écoulé, On affiche un élément de la queue!
 		{
 			Pop_From_Queue(toPop->queue, toDraw);	
@@ -215,5 +216,4 @@ void ConsoleRender::Render()	// Output tout les charactères dans la console, sel
 	
 	Stop_Queue();		/*Safety*/		// au cas où tu oublis de stop la queue à la fin d'un update
 }
-
 

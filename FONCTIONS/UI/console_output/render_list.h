@@ -52,9 +52,8 @@ class ConsoleRender
 
 public:
 	static void Add_String_To_Render_List(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0);
-	static void Add_Char_To_Render_List(Coord crd, char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render
+	static void Add_Char_To_Render_List(Coord crd, unsigned char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render
 	static void Create_Queue(float speed, bool linear = true);			// Créer une nouvelle Queue, tout les char suivant seront ajouté à celle-ci
 	static void Stop_Queue();											// Stop l'ajout d'élément dans la queue d'animation actuelle
 	static void Render();	// Output tout les charactères dans la console, selon les listes, et les timers de ces listes
 };	
-

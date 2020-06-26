@@ -8,6 +8,7 @@
 using Distance = int;	// Les distances
 
 struct Coord { int x; int y; };	// Coordonnée xy dans la console windows
+struct FCoord { float x; float y; };	// Coordonnée xy dans la console windows en float
 
 class CoordIncrementor {	// Pour une position XY mobile, qui se déplace sur un axe
 public:

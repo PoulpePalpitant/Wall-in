@@ -5,4 +5,5 @@
 ActionType action = IDLE;
 Direction keyDirection = NONE;
 bool gChoiceTime = false;
+bool gBlockInputs = false;
 

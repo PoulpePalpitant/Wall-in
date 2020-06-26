@@ -14,6 +14,9 @@ struct GrdCoord { int c; int r; };		//  Les grids du jeux seront tous navigué pa
 extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
 extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
 
+extern const int START_X_LVL2;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
+extern const int START_Y_LVL2;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
+
 extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre(Main Grid)
 extern const int DELTA_Y;	// Saut sur l'axe des Y d'une case à l'autre
 

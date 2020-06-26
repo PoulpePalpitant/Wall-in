@@ -13,7 +13,7 @@
 
 enum class BotType{ REGULAR, TOUGH, SUPERSONIC, GHOSTER };		// Le ghoster transforme tout murs qu'il touche en un mur indestructible par les bots. Comment le stop? : si tu pèse sur space sur un boute . : tous les walls de la chaine deviennent gold?
 
-const int MAX_NUM_BOTS = 35;		// Nombre de bot maximum dans la console
+const int MAX_NUM_BOTS = 60;		// Nombre de bot maximum dans la console
 
 const unsigned char BOT_DESIGN_1C[4]{ 202,185,203,204 };		// Le design du BOt à 1 charactère
 

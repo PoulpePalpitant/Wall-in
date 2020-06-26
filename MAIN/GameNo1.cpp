@@ -220,11 +220,6 @@ int main()
 		MoveWindow(console, ConsoleRect.left, ConsoleRect.top, 713, 807, TRUE);
 		MoveWindow(console, ConsoleRect.left, ConsoleRect.top, 713, 983, TRUE);
 		
-		
-		
-
-		//short conWidth = get_wColumn();
-
 		// CHANGE LE CURSEUR
 		// ********************************
 		HANDLE hout; //handle to the console			// What is a handle? who knows!?

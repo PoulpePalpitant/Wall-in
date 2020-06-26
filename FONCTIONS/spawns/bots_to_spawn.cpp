@@ -92,7 +92,7 @@ namespace bots_to_spawn {
 		 gAllSides = true;			// Spawn sur une bordure random
 		 type = BotType::REGULAR;	// I'll take a regular one please.
 
-		gNumSpawnTOT = 1;			// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
+		gNumSpawnTOT = 0;			// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle". Un cycle de spawn est consommé même si aucun bot n'est spawné
 		gAdditonnalSpawns = 0;		// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
 
 		gCrdInterval.active = false;// Donne un interval de coordonnée sur une bordure
@@ -113,7 +113,7 @@ namespace bots_to_spawn {
 
 	// Ajoute des bots à spawner
 	// -------------------------
-	void Add_Spwns(int amount)		// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
+	void Add(int amount)		// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
 	{
 		gNumSpawnTOT += amount;		
 	}

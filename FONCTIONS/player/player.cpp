@@ -85,7 +85,94 @@ void Player::Upd_Player_Timeout()
 
 Coord Player::Get_XY()										// Retrouva la crd du player dans la console
 {
-	return linkGrid->link[grdCrd.c][grdCrd.r].Get_XY();
+	if (linkGrid->Is_Inbound(grdCrd))
+		return linkGrid->link[grdCrd.c][grdCrd.r].Get_XY();
+	else
+		return { -1,-1 };	// Player n'est pas dans le grid
+}
+
+
+void Player::Spawn_Player(GrdCoord pos, bool speed)			// Vitesse rapide ou lente 
+{
+	P1.Set_Position(pos);
+
+	Coord crd = P1.Get_XY();
+
+	/* Pré-Spawn*/
+	ConsoleRender::Create_Queue(50);	// Draw
+	ConsoleRender::Add_Char_To_Render_List({crd.x - 3, crd.y}, 250, GRAY);
+	ConsoleRender::Add_Char_To_Render_List({crd.x + 3, crd.y}, 250, GRAY);
+	ConsoleRender::Add_Char_To_Render_List({crd.x, crd.y - 3}, 250, GRAY);
+	ConsoleRender::Add_Char_To_Render_List({crd.x, crd.y + 3}, 250, GRAY);
+	ConsoleRender::Stop_Queue();
+
+	ConsoleRender::Create_Queue(45);	// Draw
+	ConsoleRender::Add_Char_To_Render_List({ crd.x - 2, crd.y }, 196, WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x + 2, crd.y }, 196, WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y - 2 }, 179, WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y + 2 }, 179, WHITE);
+	ConsoleRender::Stop_Queue();
+
+	ConsoleRender::Create_Queue(45);	// Draw
+	ConsoleRender::Add_Char_To_Render_List({ crd.x - 1, crd.y }, 196, BRIGHT_WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x + 1, crd.y }, 196, BRIGHT_WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y - 1 }, 179, BRIGHT_WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y + 1 }, 179, BRIGHT_WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x - 3, crd.y }, TXT_CONST.SPACE);	// Erase
+	ConsoleRender::Add_Char_To_Render_List({ crd.x + 3, crd.y }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y - 3 }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y + 3 }, TXT_CONST.SPACE);
+	ConsoleRender::Stop_Queue();
+
+	ConsoleRender::Create_Queue(30);	// Draw
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 250, GRAY);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x - 2, crd.y }, TXT_CONST.SPACE);	// erase
+	ConsoleRender::Add_Char_To_Render_List({ crd.x + 2, crd.y }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y - 2 }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y + 2 }, TXT_CONST.SPACE);
+	ConsoleRender::Stop_Queue();		// Draw
+
+	ConsoleRender::Create_Queue(70);	// Draw
+	ConsoleRender::Add_Char_To_Render_List({ crd.x - 1, crd.y }, TXT_CONST.SPACE);	// ERASE
+	ConsoleRender::Add_Char_To_Render_List({ crd.x + 1, crd.y }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y - 1 }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y + 1 }, TXT_CONST.SPACE);
+	ConsoleRender::Stop_Queue();
+
+	ConsoleRender::Create_Queue(250);	// Draw
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 250, GRAY);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 250, GRAY);
+	ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 250, GRAY);
+	ConsoleRender::Stop_Queue();
+
+	Colors clr = GRAY;
+
+	// LE DÉFAUT DE CETTE MÉTHODE: NE PEUT PAS CRÉER DE PAUSE ENTRE LES ANIMATIONS!!!
+
+
+	if (speed == true)		// FAST
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			switch (i)
+			{
+			case 0:		case 1:		clr = GRAY; break;
+			case 2:		case 3:		clr = WHITE; break;
+			case 4:		case 5:		clr = BRIGHT_WHITE; break;
+			case 6:		case 7:
+			case 8:		case 9:		clr = LIGHT_GREEN;
+			}
+
+			ConsoleRender::Create_Queue(15);	// Draw
+			ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 191, clr);
+			ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 192, clr);
+			ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 217, clr);
+			ConsoleRender::Add_Char_To_Render_List({ crd.x, crd.y }, 218, clr);
+			ConsoleRender::Stop_Queue();
+		}
+	}
+
+
 
 }
 //

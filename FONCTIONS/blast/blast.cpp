@@ -3,7 +3,7 @@
 #include "../grid/AllGrids.h"
 #include "../animation/UI_move_blast.h"
 #include "../player/player.h"
-#include "../events/events.h"
+#include "../events/msg_dispatcher.h"
 
 #include "blast.h"
 
@@ -258,7 +258,7 @@ bool Blast::Has_Reached_Limit()		// Ça c'est la prochaine limite, c'est pas cell
 {
 	if (*grdPos.axis == grdLimit)
 	{
-		MessageQueue::Register(BLAST_REACHED_BORDER);	// Notification 
+		MsgQueue::Register(BLAST_REACHED_BORDER);	// Notification 
 		return true;			// Si la colonne, ou la row, sur lequel se trouve le blast est égal à la limite(soit la bordure de la box du terrain de jeu)
 	}							// Si cela est vrai, le blast s'arrête maintenant
 	else

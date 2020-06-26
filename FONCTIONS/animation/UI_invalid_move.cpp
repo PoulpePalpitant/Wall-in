@@ -3,6 +3,8 @@
 #include "../UI/console_output/render_list.h"
 #include "UI_invalid_move.h"
 
+// DEVRAIT ÊTRE UN EVENT
+
 
 void UI_Invalide_Move(Player& player, GrdCoord &grd)
 {

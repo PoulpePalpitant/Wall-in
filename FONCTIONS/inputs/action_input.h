@@ -7,3 +7,5 @@ enum ActionType { MOVE, BLAST, CHANGE_BLAST, PAUSE, UNPAUSE, TELEPORT, IDLE, ENT
 extern ActionType action;			
 extern Direction keyDirection;		
 extern bool gChoiceTime;		
+extern bool gBlockInputs;
+

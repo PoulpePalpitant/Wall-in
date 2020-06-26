@@ -1,9 +1,9 @@
 
 #include "ev_border_splash.h"
 
-#include "../../UI/map.h"
-#include "../../blast/blast.h"
-#include "../../UI/console_output/render_list.h"
+#include "../../../UI/map.h"
+#include "../../../blast/blast.h"
+#include "../../../UI/console_output/render_list.h"
 
 
 static CoordIncrementor startPos;

@@ -6,22 +6,22 @@
 
 
 
-void Ev_Hello()
-{
-	static EventInfo info;	// info.Generate_ID;
-
-	if (info.ignore)
-		return;
-
-	if (info.isActive)
-	{
-		return;		// Do stuff
-	}
-	else 
-	{
-
-		//	Check les conditions
-
-	}
-
-}
+//void Ev_Hello()
+//{
+//	static EventInfo info;	// info.Generate_ID;
+//
+//	if (info.ignore)
+//		return;
+//
+//	if (info.isActive)
+//	{
+//		return;		// Do stuff
+//	}
+//	else 
+//	{
+//
+//		//	Check les conditions
+//
+//	}
+//
+//}

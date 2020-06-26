@@ -3,8 +3,9 @@
 
 #include "../../events/events.h"
 
-extern EventInfo gDrawTitle;		// blurg
-extern EventInfo gEraseTitle;
 
-void Ev_Draw_Game_Title();
-void Ev_Erase_Game_Title();
+extern Event EV_DrawGameTitle;	// Déclaration
+extern Event EV_EraGameTitle;	// Décla
+
+void OBS_Draw_Game_Title();
+void OBS_Erase_Game_Title();

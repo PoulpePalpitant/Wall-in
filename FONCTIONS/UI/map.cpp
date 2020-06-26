@@ -25,8 +25,8 @@ void Map::Resize(LinkGrid& linkGrid)	// Resize les dimensions selon la nouvelle 
 
 void Map::UI_Draw_Map_Corners()
 {
-	ConsoleRender::Add_Char_To_Render_List({ limit[LEFT] -1, limit[UP] - 1}, (unsigned char)218,BRIGHT_WHITE	);	// Start une queue ici
-	ConsoleRender::Add_Char_To_Render_List({ limit[RIGHT] + 1, limit[UP] - 1 }, (unsigned char)191, BRIGHT_WHITE);
+	ConsoleRender::Add_Char_To_Render_List({ limit[LEFT] -1, limit[UP] - 1}, (unsigned char)218,BRIGHT_WHITE	);	// Start une queue ici.
+	ConsoleRender::Add_Char_To_Render_List({ limit[RIGHT] + 1, limit[UP] - 1 }, (unsigned char)191, BRIGHT_WHITE);								// -1 c'est pour créer une tit distance voyé!
 	ConsoleRender::Add_Char_To_Render_List({ limit[LEFT] -1,limit[DOWN] + 1}, (unsigned char)192, BRIGHT_WHITE);
 	ConsoleRender::Add_Char_To_Render_List({ limit[RIGHT] + 1, limit[DOWN] + 1 }, (unsigned char)217, BRIGHT_WHITE);
 }

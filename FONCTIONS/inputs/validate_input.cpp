@@ -5,7 +5,7 @@
 #include "action_input.h"
 #include "validate_input.h"
 #include "../time/timerOP.h"
-#include "../events/events.h"
+#include "../events/msg_dispatcher.h"
 
 void Validate_Input()
 {
@@ -41,7 +41,7 @@ void Validate_Input()
 	case 's':	keyDirection = DOWN; action = MOVE; break;
 	case 'd':	keyDirection = RIGHT;action = MOVE; break;
 	case 'q':	action = CHANGE_BLAST; break;
-	case 13: if (gChoiceTime) MessageQueue::Register(PRESSED_ENTER); action = ENTER; break;	// 13 = enter
+	case 13: if (gChoiceTime) MsgQueue::Register(PRESSED_ENTER); action = ENTER; break;	// 13 = enter
 	case ' ':	
 		if (!GameLoopClock::pause)
 			action = ActionType::PAUSE;

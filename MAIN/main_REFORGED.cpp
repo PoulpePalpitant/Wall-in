@@ -31,6 +31,9 @@
 #include "../FONCTIONS/time/timerOP.h"
 #include "../FONCTIONS/bots/botmeta.h"
 #include "../FONCTIONS/inputs/action_input.h"
+#include "../FONCTIONS/events/msg_dispatcher.h"
+#include "../FONCTIONS/console/sweet_cmd_console.h"
+
 using namespace std;
 
 
@@ -40,16 +43,18 @@ int main()	// Le début!
 {
 	// START STUFF LOOP
 	// ***************
-
+	Coord crd;
 	Initialize_Rng();
 
-	char UI; Coord crd;	int maxC, maxR;
 
-	Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
-
-
-										// test the all grids
+	// test the all grids
 	////------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//char UI; int maxC, maxR;
+
+	//Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
+
+
+
 	//// AFFICHE TOUS LES GRIDS 
 	//maxC = gGrids.linkGrd.Get_Cols();
 	//maxR = gGrids.linkGrd.Get_Rows();
@@ -132,18 +137,8 @@ int main()	// Le début!
 	///* test les spawns bot*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+	Setup_Console_Window();	// Titre et curseur
+	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 
 
 
@@ -152,15 +147,15 @@ int main()	// Le début!
 	Coord crd3 = { 59,1 };	// Update bot alive count
 
 	GameClock LvlClock;
-	LvlClock.clockName = "Swag Clock";
-	crd = { 0,1 };
-	LvlClock.Dsp_Name(crd);
+	LvlClock.clockName = "Swag Clock";crd = { 0,1 };LvlClock.Dsp_Name(crd);
 	crd = { 13,1 };
-	LvlClock.Start_Clock();	// Start l'horologe en bakcground!
+	LvlClock.Start_Clock();	// Start l'horloge 
 
 	bool isRunning = true;
 	float frameRate = 60.0f;// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
 	float fps = 1 / frameRate;
+	float lag = 0;
+	int MS_PER_UPDATE = 10;	// Rythme à laquelle je veais ttout update
 
 	GameLoopClock::Reset_Timer();	// Premier reset
 
@@ -169,23 +164,28 @@ int main()	// Le début!
 		GameLoopClock::Tick();	// Delta time est en seconde!!!
 		GameLoopClock::UPD_Total_Time();	// Temps du niveau
 		
+		lag += GameLoopClock::Get_Delta_Time();
+
 
 		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps			
-			GameLoopClock::Reset_Timer();	// Reset la frame!
 
-
-			Detect_Input();				// Détect les inputs mah dude0
+		Detect_Input();				// Détect les inputs mah dude0
+			/*
+			si ça dépasse le fps: lag = l'excédant
+			tu update une autre fois, mais AVEC la valeur de LAG à la place, pour rattraper
+			*/
 			Update_Game();				// Update le jeu mah dude
 		
 			ConsoleRender::Add_String_To_Render_List(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
 
-			//if (gAllBotMeta.alive > 10)
-			//	ConsoleRender::Add_String_To_Render_List(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie
+			if (gAllBotMeta.alive > 10)
+				ConsoleRender::Add_String_To_Render_List(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
 			//cout << 1 / Timer->Get_Delta_Time() << "\t \t";	// Le nombre de FRAMES en une seconde, soit le framerate : 60
 			// OU cout << gLvlTime << endl;		// Temps total écoulé
+			GameLoopClock::Reset_Timer();	// Reset la frame!
 		}
 		
 		Update_Game_NOT_60FPS();		
