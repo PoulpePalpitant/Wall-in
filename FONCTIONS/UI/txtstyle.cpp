@@ -24,7 +24,7 @@ Colors Get_Current_Color()// Si on veut affiché quoi que ce soit, on utilise cec
 }
 
 
-// Trouve la crd en x qui permettrait d'output un char au centre
+// Trouve la crd en x qui permettrait d'output une string au centre
 int Find_Ctr_X(int size)		
 {
 	return (gConWidth - size) / 2;

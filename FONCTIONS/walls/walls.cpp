@@ -148,7 +148,7 @@ void Wall::UI_Draw_Or_Erase_Wall(bool inAChain)	// Si inAChain est activé, on gè
 
 	for (int i = 0; i < wallSize; i++)
 	{
-		ConsoleRender::Add_Char_To_Render_List(startPos.coord, (char)sym, color);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
+		ConsoleRender::Add_Char(startPos.coord, (char)sym, color);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
 		startPos.Increment_Coord();	// Prochaine case
 	}
 

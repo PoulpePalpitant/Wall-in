@@ -15,6 +15,7 @@ public:
 	WallGrid wallGrdHor;
 	WallGrid wallGrdVer;
 
+	bool areCreated = false;
 	// Met tout ça à zéro
 	AllGrids() : wallGrdHor(HOR) , wallGrdVer(VER)	// axe des wallgrid
 	{

@@ -29,17 +29,14 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 		Peek_Lvl_Script();		// En ce moment, ça sert pas mal juste à peek le spawnscript...
 		Do_Stuff_this_Cycle();	// Bouge et spawn les bots
 		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
+		blastP1.UPD_Blast_Shot();		// Devrais être un event global	
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 	}
 }
 
 
-void Update_Game_NOT_60FPS()
+void Update_Game_NOT_60FPS()	// à Remove
 {
-
-	if (!GameLoopClock::pause)
-		blastP1.UPD_Blast_Shot();	// Pour l'instant.				Sinon, si tu veux limiter le framerate là-dessus, va falloir que tu avance la crd XY à chaque frame en faisant  speed*dt.
-		
 	P1.Upd_Player_Timeout();	// Si le joueur est en timeout, on update ça
 }
 
@@ -54,7 +51,7 @@ void Update_Player_Action()
 			{
 			case PAUSE:
 				GameLoopClock::pause = true;
-				ConsoleRender::Add_String_To_Render_List(pauseMsg, { Find_Ctr_X(sizeof(pauseMsg)) + 4,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
+				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) ,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
 				break;
 
 			case CHANGE_BLAST:
@@ -101,7 +98,7 @@ void Update_Player_Action()
 			if (action == UNPAUSE)
 			{
 				GameLoopClock::pause = false;
-				ConsoleRender::Add_String_To_Render_List("                         ", { Find_Ctr_X(sizeof(pauseMsg)) + 4,4 });			// Besoin d'un max screen size
+				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) ,4 });			// Besoin d'un max screen size
 			}
 	}
 	// Faut reset l'action

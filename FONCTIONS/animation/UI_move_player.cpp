@@ -19,7 +19,7 @@ void UI_Move_Player( Player& player,const GrdCoord &erase, const GrdCoord &draw)
 	if (linkGrid->link[erase.c][erase.r].Get_State() == LinkState::FREE)	// Quand le joueur se trouve sur un Link Free, il faut réafficher son symbol dès que le joueur ne s'y trouve plus
 		linkGrid->link[erase.c][erase.r].Dsp_Link();
 	else
-		ConsoleRender::Add_Char_To_Render_List(crdErase, TXT_CONST.SPACE);	// Erase
+		ConsoleRender::Add_Char(crdErase, TXT_CONST.SPACE);	// Erase
 
-	ConsoleRender::Add_Char_To_Render_List(crdDraw, player.Get_Sym(), player.Get_Clr());	// draw
+	ConsoleRender::Add_Char(crdDraw, player.Get_Sym(), player.Get_Clr());	// draw
 }

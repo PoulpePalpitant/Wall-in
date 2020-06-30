@@ -15,8 +15,9 @@
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD_VER = 60;			/*8000*/			// TEMPS DE PAUSE entre chaque affichage, en milliseconds			// Je pourrais agrandir la vitesse à l'horizontal!
-extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER / 2;			
+extern const time_t DFLT_BLAST_SPD_VER = 200000;					
+extern const time_t DFLT_BLAST_SPD_HOR = 200000;
+//extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER - DFLT_BLAST_SPD_VER / 4;// J'agrandis la vitesse à l'horizontal!			
 
 // Les propriétés principales du Blast par défaut
 extern const BlastType DFLT_BLAST =	{WallStrength::REGULAR, LinkType::REGULAR};
@@ -49,7 +50,7 @@ void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir/* const Bl
 	Setup_Blast_UI();							// Son apparence futur
 	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
 	
-	updateTimer.Set_Cd_Duration((float)speed);			// Vitesse d'update. 1 = 1 seconde
+	updateTimer.Start_Timer(speed, 1, true);	// Vitesse d'update. 
 
 	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
 	active = true;						// Blast officiellement activé
@@ -143,8 +144,6 @@ void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de 
 	case LEFT:case RIGHT:	
 		speed = (int)speedHor;	break;	// Blast horizontal est maintenant 2x plus rapide qu'avant		
 	}
-	
-
 }
 
 // SETUP: LA DIRECTION DU BLAST EN XY ET EN COORD DE GRIDS 
@@ -173,11 +172,12 @@ void Blast::UPD_Blast_Shot()
 	if (active)
 	{
 		// Va avancer le blast à chaque fois que le countdown tombe à zéro
-		if (updateTimer.Get_Time_Left() <= 0)
+		while (updateTimer.Tick())
 		{
+
 			if (!Has_Reached_Limit())											// Tant que le blast n'a pas atteint la limite de la "box" du jeu
 			{
-				if (Blast_Is_On_LinkGrid())											// Vérifie si le blast viens d'atteindre la position d'une case du grid
+				if (Blast_Is_On_LinkGrid())										// Vérifie si le blast viens d'atteindre la position d'une case du grid
 				{
 					if (nbSteps)							// Si le blast n'est pas sur sa première position de départ
 						grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
@@ -215,13 +215,7 @@ void Blast::UPD_Blast_Shot()
 				return;
 			}
 
-			updateTimer.Start_CountDown();
 		}
-		else
-			updateTimer.Tick_Timer();
-
-		/* Fuck. La vitesse maximum c'est vraiement 1 case par frame, soit 60 frame par secondes. Si tu veux faire ça legit, faudrait que tu incrémente la POSITION avec Speed * Deltatime, à chaque frame. Mais là tu update la position de 1 case à chaque
-		frame, ce qui limite le déplacemente à 1 case par frame*/
 	}
 }
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....

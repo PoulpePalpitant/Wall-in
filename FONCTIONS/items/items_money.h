@@ -1,0 +1,10 @@
+#pragma once
+
+#include "items.h"
+
+
+class Money : public Items
+{
+
+
+};

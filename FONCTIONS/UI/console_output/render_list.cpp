@@ -57,13 +57,13 @@ void ConsoleRender::Pop_From_Queue(RenderQueue& queue, OutputData& data)
 	toDelete = queue.first;
 	data = *toDelete;
 	
-	queue.first = queue.first->nxt;				// not sure here...
+	queue.first = queue.first->nxt;				// SI TU BUG ICI: TA ESSAYER D'AJOUTER UNE STRING VIDE "" OU NON-INITIALISÉ DANS UN RENDER 
 	delete toDelete;
 	queue.size--;	
 }
 
 bool ConsoleRender::Is_Empty(const RenderQueue& queue) {
-	if (queue.first == NULL)
+	if (queue.size == 0)
 		return true;
 	else
 		return false;
@@ -97,7 +97,7 @@ void ConsoleRender::Render_Main_Queue()				// Affiche tout les éléments présent 
 // Ajoute un charactère à afficher dans une des render queues
 // **********************************************************
 
-void ConsoleRender::Add_Char_To_Render_List(Coord crd, unsigned char sym, Colors clr)
+void ConsoleRender::Add_Char(Coord crd, unsigned char sym, Colors clr)
 {
 	if (addToNewQueue)	// Ajout dans une queue d'animation
 		Push_To_Queue(crd, sym, clr, animationQueue->queue); // Ajoute un OutputData a la fin de la queue
@@ -105,13 +105,17 @@ void ConsoleRender::Add_Char_To_Render_List(Coord crd, unsigned char sym, Colors
 		Push_To_Queue(crd, sym, clr, mainQueue); // Ajoute un OutputData a la fin de la queue
 
 }
-void ConsoleRender::Add_String_To_Render_List(std::string text,Coord crd,  Colors clr , float speed)
+void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , float speed, bool erase)
 {
+	if (text == "")
+		throw "Pas de string vide dans mon salon";
+
 	RenderQueue* toPush = NULL;
 	int size = (int)text.length();	// Assignation de la longueur de la string 	
 
 	if (speed > 0 )	// assignation de la queue
 	{
+		Stop_Queue();	// safety
 		Create_Queue(speed);	
 		toPush = &animationQueue->queue; // Créer une nouvelle animation queue automatiquement
 	}
@@ -121,15 +125,20 @@ void ConsoleRender::Add_String_To_Render_List(std::string text,Coord crd,  Color
 		else
 			toPush = &mainQueue;	// Pas d'animation queue
 
-	//AFFICHE LA STRING EN VÉRIFIANT LA COULEUR À CHAQUE FOIS, ET EN REPOSITIONNANT DEUX FOIS LE CURSEUR >:(		(quand même mieux que d'avoir des erreurs d'affichage à cause des race conditions!!!!)
-	for (int loop = 0; loop < size; loop++)
+	if (erase)
 	{
-		Push_To_Queue(crd, text[loop], clr, *toPush);
-		crd.x++;										// Incrémente x pour le prochain charactère	
+		for (int loop = 0; loop < size; loop++)
+		{
+			Push_To_Queue(crd,TXT_CONST.SPACE, clr, *toPush);
+			crd.x++;										// Incrémente x pour le prochain charactère	
+		}
 	}
-
-	if(addToNewQueue)
-		Stop_Queue();
+	else
+		for (int loop = 0; loop < size; loop++)
+		{
+			Push_To_Queue(crd, text[loop], clr, *toPush);
+			crd.x++;										// Incrémente x pour le prochain charactère	
+		}
 }
 
 
@@ -157,6 +166,7 @@ void ConsoleRender::Render_Animation_Queue()
 			// Delete la queue si elle est vide				Garbo
 			if (Is_Empty(toPop->queue))
 			{
+
 				if (toPop == first && toPop == last)
 				{
 					delete toPop;	// Delete la queue actuelle

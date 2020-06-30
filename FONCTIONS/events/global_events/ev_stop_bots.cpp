@@ -4,9 +4,9 @@
 #include "../../time/cycles.h"
 
 // Wow, 3 events in one place!!
-static Event Ev_StopBotCycles(Ev_Stop_Bot_Cycles);
-static Event Ev_StopBotMove(Ev_Stop_Bot_Move);
-static Event Ev_StopBotSpawn(Ev_Stop_Bot_Spawn);
+static Event ev_StopBotCycles(Ev_Stop_Bot_Cycles);
+static Event ev_StopBotMove(Ev_Stop_Bot_Move);
+static Event ev_StopBotSpawn(Ev_Stop_Bot_Spawn);
 
 
 

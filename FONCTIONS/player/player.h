@@ -15,6 +15,7 @@ private:
 	int hp = 3;								// La vie du joueur. : Le nombre de bots qui peuvent sortir de la bot avant qu'il soit dead
 	PlayerState state = PlayerState::ALIVE; //
 	bool canDoStuff = true;					// Freeze les inputs du joueur
+	bool isOnGrid = true;					// Pt que le joueur peut s'aventurer à l'extérieur du grid?
 	// UI
 	Colors clr = Colors::LIGHT_GREEN;		// Sa couleur
 	char sym;								// Le symbole représentant le player
@@ -27,6 +28,7 @@ private:
 
 public:
 	// GETS
+	int Get_On_Grid() { return isOnGrid; }					
 	int Get_HP() { return hp; }					// La vie
 	char Get_Sym() { return sym; }				// Le symbole pour l'affichage
 	Colors Get_Clr() { return clr; }			// Couleur
@@ -36,6 +38,7 @@ public:
 	Coord Get_XY();										// Retrouva la crd du player dans la console
 
 	// SETS 
+	bool Set_On_Grid();												// 
 	void Set_Position(GrdCoord newPos) { this->grdCrd = newPos; }			// Change la position du joueur sur le Grid
 	void Set_State(PlayerState newState) { state = newState; }		// Permet de détruire le joueur:  Le réssuciter : Ou le Rendre invincible
 	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole du joueur
@@ -52,7 +55,6 @@ public:
 	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
 	
 	// SPÉCIALE
-	void Spawn_Player(GrdCoord pos, bool speed);			// Vitesse rapide ou lente 
 	void Dis_Player_Sym();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
 // changer le symbole selon la direction du dernier move du player
 

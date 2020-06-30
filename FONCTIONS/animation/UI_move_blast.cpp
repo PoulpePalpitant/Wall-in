@@ -31,7 +31,7 @@ void UI_MoveBlast::Animate_Blast(Blast* blast) // voir paragraph
 void UI_MoveBlast::Move_Blast_Head_Forward(Blast* blast)	// DISPLAY: la tête du blast
 {
 	// Affichage du symbole du blast 
-	ConsoleRender::Add_Char_To_Render_List(blast->frontXY.coord, blast->sym, blast->color);
+	ConsoleRender::Add_Char(blast->frontXY.coord, blast->sym, blast->color);
 }
 
 bool UI_MoveBlast::Chk_Max_Blast_Length(Blast* blast)	// CHECK: Si le blast à atteint sa taille max
@@ -42,7 +42,7 @@ bool UI_MoveBlast::Chk_Max_Blast_Length(Blast* blast)	// CHECK: Si le blast à at
 void UI_MoveBlast::Erase_Blast_Tail(Blast* blast)	// ERASE: la queue du blast, si le blast à parcouru une distance >= que sa taille max
 {
 	// Efface la tail!
-	ConsoleRender::Add_Char_To_Render_List(blast->tailXY.coord, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char(blast->tailXY.coord, TXT_CONST.SPACE);
 
 	// Incrémentation da la prochaine position XY
 	blast->tailXY.Increment_Coord();

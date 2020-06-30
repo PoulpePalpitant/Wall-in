@@ -26,12 +26,14 @@ enum MsgType
 	
 	/* Game stuff*/
 	, WAITING_TIME
+	, PAUSE_GAME
+	, UNPAUSE_GAME
 
 	/*Level Stuff*/
 	, PLS_INTIALIZE_LVL
 	, STAGE_ADVANCE			// Passe au prochain stage dans le niveau
 	, LVL_INITIALIZED
-	, FINAL_ATTACK
+	, FINAL_PUSH
 	, LVL_ENDED
 	, VICTORY
 	, DEFEAT
@@ -40,10 +42,11 @@ enum MsgType
 	, ITEM_PICKUP
 	, ITEM_DESTROYED
 	, ITEM_SPAWNED
-	, SPECIAL_ITEM_SPAWNED
+	, SPAWN_SPECIAL_ITEM
 
 	/* Player Stuff*/
 	, SPAWN_PLAYER
+	, PLAYER_SPAWNED
 	, LOCK_PLAYER		// Player ne peut plus rien faire, its cutscene time!
 	, FREE_PLAYER		// CUTSCENE TERMINÉ, player peux bouger
 	, IS_A_DOUCHE
@@ -51,6 +54,7 @@ enum MsgType
 	, BUMPED_BORDER		// Essayer de bouger en dehors du grid
 	, TOUCHED_ENNEMY
 	, P1_LOST_HP
+	, PLAYER_DEAD
 
 	/* Ennemy Stuff*/
 	, ENNEMY_KILLED

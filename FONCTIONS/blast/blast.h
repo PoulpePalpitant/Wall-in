@@ -7,7 +7,7 @@
 #include "../walls/walls.h"
 #include "../link/link.h"
 #include "../time/countdown_clock.h"
-
+#include "../time/movement_timer.h"
 /*
 	Le blast ça va être la façon pour le joueur de détruire les bots. Quand le joueur blast, il tir un projectile d'une certaine longueur à partir de sa position de départ. Ce projectile va avancé jusqu'à ce qu'il 
 	atteigne un obstacle. Quand le projectile s'arrête, il laisse un mur que les bots ne peuvent franchir. Si un bot fonce dedans, le mur est détruit
@@ -60,7 +60,7 @@ class Blast
 	CoordIncrementor frontXY;			// UI: Sert à uniquement à afficher chaque symbole de l'animation (dans une direction). Sert aussi à trimer la longueur du blast dans l'animation
 	CoordIncrementor tailXY;			// UI: Sert  à trimer la longueur du blast dans l'animation
 	Direction dir;						// Ça direction dans la consoles
-	CDTimer updateTimer;				// Permet de limiter la vitesse de l'update de la position du blast
+	MovementTimer updateTimer;				// Permet de limiter la vitesse de l'update de la position du blast
 
 	// POST-BLAST	/* temporaire
 	WallStrength strength = WallStrength::REGULAR;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif

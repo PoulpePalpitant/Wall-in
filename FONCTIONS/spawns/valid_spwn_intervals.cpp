@@ -13,7 +13,7 @@
  Interval* ValidSpwnIntervals::prev;		// 1 Seul Itérateur, pointe vers un élément précédant			
  int ValidSpwnIntervals::bannedSpwn[4];	// Permet de vérifier le nombre de spawn exclut sur une bordure
  bool ValidSpwnIntervals::borderIsFull[4];// La bordure ne contient aucun spawn de disponible
- bool ValidSpwnIntervals::allPrimeEmpty;	// Tout les listes primaires sont vides
+ bool ValidSpwnIntervals::allPrimeEmpty = true;	// Tout les listes primaires sont vides
  bool ValidSpwnIntervals::isPriority;	// Détermine si on bannis un spawn qui est présent dans la liste prioritaire
 
  /* OUECH*/
@@ -400,8 +400,7 @@ int ValidSpwnIntervals::Pick_Valid_Spawn(int border, bool random, int spwNum)	//
 		if (Is_Secondary_List_Full(border))	// Safety
 			return -1;						// La bordure sélectionné ne contient aucun spawn de disponible durant ce cycle
 		else
-			if (Is_Secondary_List_Empty(border))	// La liste n'avait pas été initialisé
-				Set_First_Interval(border);
+			Set_First_Interval(border); // La liste avait-elle  été initialisé?
 
 			list = &scndary;		// autre liste
 	}

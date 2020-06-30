@@ -11,6 +11,7 @@ void Create_All_Grids(AllGrids& grid, int col, int row)
 	grid.wallGrdHor.Create(grid.linkGrd);	// Initialisation du grid des Walls horizontaux
 	grid.wallGrdVer.Create(grid.linkGrd);	// Initialisation du grid des Walls verticaux
 	grid.spawnGrd.Create(grid.linkGrd);	// Initialisation du Grid de bordures de spawns Up down Left Right
+	grid.areCreated = true;
 }
 
 // Resize les grids
@@ -28,18 +29,22 @@ void Resize_All_Grids(AllGrids& grid, int col, int row)
 
 void Resize_Grids_To_Level(AllGrids& grid, int lvl) {	
 	
-	int col = 13, row = 15;	// dimension par défaut au premier niveau
+	int col = 14, row = 15;	// dimension par défaut au premier niveau
 
 	switch (lvl)
 	{
-	case 0:	Create_All_Grids(grid, col, row);	break;		// UNE SEULE CRÉATION
-	case 1:	Resize_All_Grids(grid, col, row);	break;
-	case 2:	Resize_All_Grids(grid, col, row);	break;
-	case 3:	Resize_All_Grids(grid, col, row);	break;
-	case 4:	Resize_All_Grids(grid, col, row);	break;
-	case 5:	Resize_All_Grids(grid, col, row);	break;
-	case 6:	Resize_All_Grids(grid, col, row);	break;
-	case 7:	Resize_All_Grids(grid, col, row);	break;
+	case 0:	col = 14, row = 15;	break;		
+	case 1:	col = 13, row = 15;	break;
+	case 2:	col = 14, row = 15;	break;
+	case 3:	col = 14, row = 15;	break;
+	case 4:	col = 14, row = 15;	break;
+	case 5:	col = 14, row = 15;	break;
+	case 6:	col = 14, row = 15;	break;
+	case 7:	col = 14, row = 15;	break;
 	}
 	
+	if (grid.areCreated)
+		Resize_All_Grids(grid, col, row); // UNE SEULE CRÉATION
+	else
+		Create_All_Grids(grid, col, row);
 }

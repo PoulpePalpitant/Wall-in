@@ -19,6 +19,16 @@
 #include "global_events/ev_stop_bots.h"
 #include "global_events/ev_start_bots.h"
 #include "global_events/ev_block_inputs.h"
+#include "global_events/ev_spwn_player.h"
+#include "global_events/ev_final_push.h"
+
+
+
+
+
+
+
+
 
 // GLOBAL
 
@@ -86,17 +96,35 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 {
 	switch (gCurrentMsg)
 	{
+		/* Level */
+
 	case BLAST_REACHED_BORDER:
-		Ev_Border_Splash(); break; 		// fait un tit splash
-		// Envoie du msg BLAST_REACHED_BORDER dans le module MENU.
-		// Le module menu ajoute le message à sa queue d'update Si un event est trigger
+		Ev_Border_Splash();		// fait un tit splash
+		break; 		
+
+	case FINAL_PUSH: 
+		Ev_Final_Push(); // Msg que la dernière attaque s'en vient
+		break;
+
 	case PRESSED_ENTER: break;
 
 		//Ev_Flash_Map_Corners();	// Fait flaser les coins de la map pendant un bref instant, si le joueur tir sur un mur
 
 		/* Player*/
-	case LOCK_PLAYER: Ev_Block_Inputs(true);
-	case FREE_PLAYER: Ev_Block_Inputs(false);
+	case LOCK_PLAYER: 
+		Ev_Block_Inputs(true);
+		break;
+
+	case FREE_PLAYER: 
+		Ev_Block_Inputs(false);
+		break;
+
+	case SPAWN_PLAYER:	
+		Ev_Spawn_Player();		// Cinématique d'apparition du joueur
+		break;
+
+	case PLAYER_SPAWNED:
+		break;
 
 		/* BOTS */
 	case STOP_BOTS:			Ev_Stop_Bot_Cycles(); break;
@@ -106,7 +134,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case START_BOT_MOVE:	Ev_Start_Bot_Move();break;
 	case START_BOT_SPAWNS:	Ev_Start_Bot_Spawn();break;
 
-	case BUMPED_BORDER: Ev_Draw_Map_Borders_1(); break;
+	case BUMPED_BORDER: Ev_Dr_Map_Borders_1(); break;
 		// Tout les events qui sont trigger par ça  
 	}
 

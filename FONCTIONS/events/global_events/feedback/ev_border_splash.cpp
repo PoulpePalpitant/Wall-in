@@ -19,52 +19,53 @@ static void Horizontal_Splash()
 	static unsigned char tear = 250;
 	static unsigned char end = '.';
 
-	ConsoleRender::Add_Char_To_Render_List(startPos.coord,botLine);		//	_
+	ConsoleRender::Add_Char(startPos.coord,botLine);		//	_
 
 
 	ConsoleRender::Create_Queue(100, false);	// draw
-	left.x-=2;		ConsoleRender::Add_Char_To_Render_List(left,botLine );
-	right.x+=2;		ConsoleRender::Add_Char_To_Render_List(right,botLine);	// _ _ _
+	left.x-=2;		ConsoleRender::Add_Char(left,botLine );
+	right.x+=2;		ConsoleRender::Add_Char(right,botLine);	// _ _ _
 	ConsoleRender::Stop_Queue();
 
 	ConsoleRender::Create_Queue(200, false);	// draw
-	ConsoleRender::Add_Char_To_Render_List(startPos.coord, tear);			// Modifie le milieu
-	left.x--;		ConsoleRender::Add_Char_To_Render_List(left, botLine);
-	right.x++;		ConsoleRender::Add_Char_To_Render_List(right, botLine);;		//	__ . __
+	ConsoleRender::Add_Char(startPos.coord, tear);			// Modifie le milieu
+	left.x--;		ConsoleRender::Add_Char(left, botLine);
+	right.x++;		ConsoleRender::Add_Char(right, botLine);;		//	__ . __
 	ConsoleRender::Stop_Queue();
 
 	ConsoleRender::Create_Queue(300, false);	
-	ConsoleRender::Add_Char_To_Render_List({ startPos.coord.x - 3, startPos.coord.y }, TXT_CONST.SPACE);		//  __ _ . _ __ 
-	ConsoleRender::Add_Char_To_Render_List({ startPos.coord.x + 3, startPos.coord.y }, TXT_CONST.SPACE);
-	left.x--;		ConsoleRender::Add_Char_To_Render_List( left, botLine);		// draw
-	right.x++;		ConsoleRender::Add_Char_To_Render_List(right, botLine);
-	left.x--;		ConsoleRender::Add_Char_To_Render_List(left, botLine);
-	right.x++;		ConsoleRender::Add_Char_To_Render_List(right, botLine);
+	ConsoleRender::Add_Char({ startPos.coord.x - 3, startPos.coord.y }, TXT_CONST.SPACE);		//  __ _ . _ __ 
+	ConsoleRender::Add_Char({ startPos.coord.x + 3, startPos.coord.y }, TXT_CONST.SPACE);
+	left.x--;		ConsoleRender::Add_Char( left, botLine);		// draw
+	right.x++;		ConsoleRender::Add_Char(right, botLine);
+	left.x--;		ConsoleRender::Add_Char(left, botLine);
+	right.x++;		ConsoleRender::Add_Char(right, botLine);
 	ConsoleRender::Stop_Queue();
 
 	ConsoleRender::Create_Queue(500, false);
-	ConsoleRender::Add_Char_To_Render_List(startPos.coord, TXT_CONST.SPACE);	// erase	
-	ConsoleRender::Add_Char_To_Render_List({ startPos.coord.x - 2, startPos.coord.y }, TXT_CONST.SPACE);		// _ __       __ _
-	ConsoleRender::Add_Char_To_Render_List({ startPos.coord.x + 2, startPos.coord.y }, TXT_CONST.SPACE);
-	left.x -= 2;		ConsoleRender::Add_Char_To_Render_List(left, botLine, GRAY);
-	right.x +=2;		ConsoleRender::Add_Char_To_Render_List(right, botLine, GRAY);
+	ConsoleRender::Add_Char(startPos.coord, TXT_CONST.SPACE);	// erase	
+	ConsoleRender::Add_Char({ startPos.coord.x - 2, startPos.coord.y }, TXT_CONST.SPACE);		// _ __       __ _
+	ConsoleRender::Add_Char({ startPos.coord.x + 2, startPos.coord.y }, TXT_CONST.SPACE);
+	left.x -= 2;		ConsoleRender::Add_Char(left, botLine, GRAY);
+	right.x +=2;		ConsoleRender::Add_Char(right, botLine, GRAY);
 	ConsoleRender::Stop_Queue();
 
 	ConsoleRender::Create_Queue(900, false);		// erase
-	ConsoleRender::Add_Char_To_Render_List({ left.x + 2,left.y }, TXT_CONST.SPACE);								// .             .
-	ConsoleRender::Add_Char_To_Render_List({ right.x - 2, right.y }, TXT_CONST.SPACE);
-	ConsoleRender::Add_Char_To_Render_List({ left.x + 3,left.y }, TXT_CONST.SPACE);
-	ConsoleRender::Add_Char_To_Render_List({ right.x - 3, right.y }, TXT_CONST.SPACE);
-	ConsoleRender::Add_Char_To_Render_List(left, tear, GRAY);
-	ConsoleRender::Add_Char_To_Render_List(right, tear, GRAY);
+	ConsoleRender::Add_Char({ left.x + 2,left.y }, TXT_CONST.SPACE);								// .             .
+	ConsoleRender::Add_Char({ right.x - 2, right.y }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char({ left.x + 3,left.y }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char({ right.x - 3, right.y }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char(left, tear, GRAY);
+	ConsoleRender::Add_Char(right, tear, GRAY);
 	ConsoleRender::Stop_Queue();
 
 	ConsoleRender::Create_Queue(1200, false);		// erase
-	ConsoleRender::Add_Char_To_Render_List(left, TXT_CONST.SPACE);
-	ConsoleRender::Add_Char_To_Render_List(right, TXT_CONST.SPACE);					// 
+	ConsoleRender::Add_Char(left, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char(right, TXT_CONST.SPACE);					// 
 	ConsoleRender::Stop_Queue();
 
 }
+
 static void Vertical_Splash()
 {
 
@@ -76,44 +77,44 @@ static void Vertical_Splash()
 	static Coord crd; crd = startPos.coord;	// Position centrale
 	static int x; x = crd.x;				// ne changera pas
 
-	ConsoleRender::Add_Char_To_Render_List(crd, line);		//			|																	// style #1
+	ConsoleRender::Add_Char(crd, line);		//			|																	// style #1
 
 	ConsoleRender::Create_Queue(100, false);			// draw																		  // 																	.	    .	    .	    
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 1 }, line);	//																  // #1		#2		#3  	#4		   .			 #2	|	  #3 |	  #4	#5	|	#6		#7
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 1 }, line);	//																  //	|						|	#6							  	 	|				
+	ConsoleRender::Add_Char({ x,crd.y - 1 }, line);	//																  // #1		#2		#3  	#4		   .			 #2	|	  #3 |	  #4	#5	|	#6		#7
+	ConsoleRender::Add_Char({ x,crd.y + 1 }, line);	//																  //	|						|	#6							  	 	|				
 	ConsoleRender::Stop_Queue();																									  //	|		|	 	|							|	|	 	 |							
 																																	  //	|		.													  	.		.				
 	ConsoleRender::Create_Queue(200, false);	// draw																				  //			|		 		 						|	  	 |							
-	ConsoleRender::Add_Char_To_Render_List(crd, tear);			// Modifie le milieu								    			  //				 			 							  	 		|				
+	ConsoleRender::Add_Char(crd, tear);			// Modifie le milieu								    			  //				 			 							  	 		|				
 	//ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 3 }, line);																  //					|									  	 |				|		
 	//ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 3 }, line);																  //				 													.		.		.
 	ConsoleRender::Stop_Queue();																									  //				 			|		
 																																	  //									.
 	ConsoleRender::Create_Queue(300, false);																						  //							
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 1 }, TXT_CONST.SPACE);		// efface													
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 1 }, TXT_CONST.SPACE);	
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 2 }, line);	// draw										
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 2 }, line);																															
-	ConsoleRender::Add_Char_To_Render_List(crd, TXT_CONST.SPACE);	// Modifie le milieu
+	ConsoleRender::Add_Char({ x,crd.y - 1 }, TXT_CONST.SPACE);		// efface													
+	ConsoleRender::Add_Char({ x,crd.y + 1 }, TXT_CONST.SPACE);	
+	ConsoleRender::Add_Char({ x,crd.y - 2 }, line);	// draw										
+	ConsoleRender::Add_Char({ x,crd.y + 2 }, line);																															
+	ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// Modifie le milieu
 	ConsoleRender::Stop_Queue(); 																								
 																																									
 	ConsoleRender::Create_Queue(500, false);																														
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 2 },  TXT_CONST.SPACE);	// erase																							
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 2 },  TXT_CONST.SPACE);	
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 3 }, line, GRAY); // draw
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 3 }, line, GRAY);
+	ConsoleRender::Add_Char({ x,crd.y - 2 },  TXT_CONST.SPACE);	// erase																							
+	ConsoleRender::Add_Char({ x,crd.y + 2 },  TXT_CONST.SPACE);	
+	ConsoleRender::Add_Char({ x,crd.y - 3 }, line, GRAY); // draw
+	ConsoleRender::Add_Char({ x,crd.y + 3 }, line, GRAY);
 	ConsoleRender::Stop_Queue();																								
 										
 	ConsoleRender::Create_Queue(800, false);							
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 3 }, TXT_CONST.SPACE);
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 3 }, TXT_CONST.SPACE);
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 4 }, tear, GRAY);
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 4 }, tear, GRAY);
+	ConsoleRender::Add_Char({ x,crd.y - 3 }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char({ x,crd.y + 3 }, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char({ x,crd.y - 4 }, tear, GRAY);
+	ConsoleRender::Add_Char({ x,crd.y + 4 }, tear, GRAY);
 	ConsoleRender::Stop_Queue();
 		
 	ConsoleRender::Create_Queue(1200, false);		// erase																	
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y - 4 }, TXT_CONST.SPACE);													
-	ConsoleRender::Add_Char_To_Render_List({ x,crd.y + 4 }, TXT_CONST.SPACE);													
+	ConsoleRender::Add_Char({ x,crd.y - 4 }, TXT_CONST.SPACE);													
+	ConsoleRender::Add_Char({ x,crd.y + 4 }, TXT_CONST.SPACE);													
 	ConsoleRender::Stop_Queue();																								
 																																	  
 }

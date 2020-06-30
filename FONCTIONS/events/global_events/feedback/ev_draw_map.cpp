@@ -11,13 +11,13 @@
 
 
 // Affiche les bordures TOP BOT, Ensuite LEFT RIGHT
-void Ev_Draw_Map_Borders_1()
+void Ev_Dr_Map_Borders_1()
 {
-	if (!Ev_DrawMap1.Is_Ignored())
-		if (!Ev_DrawMap1.Is_Active())
+	if (!ev_DrawMap1.Is_Ignored())
+		if (!ev_DrawMap1.Is_Active())
 		{
 			if (P1.Get_XY().x == map.Get_Box_Limit(RIGHT))	// Dès que le joueur touche à la bordure droite, on affiche ça		
-				Ev_DrawMap1.Activate();		
+				ev_DrawMap1.Activate();		
 		}
 		else
 		{
@@ -42,19 +42,19 @@ void Ev_Draw_Map_Borders_1()
 
 			for (int i = crd.x; i <= right; i++)
 			{
-				ConsoleRender::Add_Char_To_Render_List(crd, 196, BRIGHT_WHITE);
+				ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
 				crd.x++;
 			}
-			ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
+			ConsoleRender::Add_Char(crd, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
 
 			// BORDURE RIGHT-> coin up vers down
 
 			for (int i = ++crd.y; i <= down; i++)
 			{
-				ConsoleRender::Add_Char_To_Render_List(crd, 179, BRIGHT_WHITE);
+				ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
 				crd.y++;
 			}
-			ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
+			ConsoleRender::Add_Char(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
 			ConsoleRender::Stop_Queue();
 
 			// BORDURE BOT	-> coin droit vers la gauche
@@ -63,19 +63,19 @@ void Ev_Draw_Map_Borders_1()
 
 			for (int i = crd.x; i >= left; i--)
 			{
-				ConsoleRender::Add_Char_To_Render_List(crd, 196, BRIGHT_WHITE);
+				ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
 				crd.x--;
 			}
-			ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
+			ConsoleRender::Add_Char(crd, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
 
 			// BORDURE left-> coin geauche-bas vers up
 
 			for (int i = --crd.y; i >= up; i--)
 			{
-				ConsoleRender::Add_Char_To_Render_List(crd, 179, BRIGHT_WHITE);
+				ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
 				crd.y--;
 			}
-			ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
+			ConsoleRender::Add_Char(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
 			ConsoleRender::Stop_Queue();
 
 
@@ -85,8 +85,8 @@ void Ev_Draw_Map_Borders_1()
 				MsgQueue::Register(STAGE_ADVANCE);	// INDEED
 			}
 
-			Ev_DrawMap1.Deactivate();	// Finis
-			Ev_DrawMap1.Ignore();
+			ev_DrawMap1.Deactivate();	// Finis
+			ev_DrawMap1.Ignore();
 		}
 }
 
@@ -94,7 +94,7 @@ void OBS_Erase_Map_Borders_1() {} // soon
 
 
 
- Event Ev_DrawMap1(Ev_Draw_Map_Borders_1);	// das event
+ Event ev_DrawMap1(Ev_Dr_Map_Borders_1);	// das event
 
 
 //

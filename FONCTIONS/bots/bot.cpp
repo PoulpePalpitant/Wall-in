@@ -19,7 +19,7 @@ bool Bot::Is_Dead()											// vérifie si un bot est mort
 void Bot::Destroy_Bot()
 {
 	this->hp = 0;		// Remet le HP à 0. this boi is dead
-	ConsoleRender::Add_Char_To_Render_List(this->XY, TXT_CONST.SPACE, this->clr);		//Effacement!
+	ConsoleRender::Add_Char(this->XY, TXT_CONST.SPACE, this->clr);		//Effacement!
 	gAllBotMeta.Bot_Died();	// One more :(
 }
 
@@ -131,21 +131,21 @@ void Bot::Animate_Bot(Bot* bot, Coord& nxtPos)
 void Bot::UI_Draw_Bot(Bot* bot, Coord& nxtPos)
 {
 	// Affichage du symbole du bot
-	ConsoleRender::Add_Char_To_Render_List(nxtPos, bot->sym, bot->clr);
+	ConsoleRender::Add_Char(nxtPos, bot->sym, bot->clr);
 }
 
 void Bot::UI_Erase_Bot(Bot* bot)	// ERASE le bot
 {
 	// Efface le bot
-	ConsoleRender::Add_Char_To_Render_List(bot->XY, TXT_CONST.SPACE);
+	ConsoleRender::Add_Char(bot->XY, TXT_CONST.SPACE);
 }
 
 /*/prout prout*/
 //¨CA pas d'affaire ici, mais bon
 void Bot::UI_Dis_Warning() {
 	if (this->spwnWarning.nbWarnCycles% 2 == 0)
-		ConsoleRender::Add_Char_To_Render_List(this->XY, this->spwnWarning.warnSym, this->spwnWarning.warnColor);	// Affiche le warning que le bot s'en vient ( clignotement, alterne entre effacement et symbole : >, ' ', >, ' '
+		ConsoleRender::Add_Char(this->XY, this->spwnWarning.warnSym, this->spwnWarning.warnColor);	// Affiche le warning que le bot s'en vient ( clignotement, alterne entre effacement et symbole : >, ' ', >, ' '
 	else
-		ConsoleRender::Add_Char_To_Render_List(this->XY, TXT_CONST.SPACE);	// Efface le symbole du warning précédent
+		ConsoleRender::Add_Char(this->XY, TXT_CONST.SPACE);	// Efface le symbole du warning précédent
 }
 

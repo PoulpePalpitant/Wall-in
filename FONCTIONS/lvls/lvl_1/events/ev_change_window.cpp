@@ -8,7 +8,7 @@
 void OBS_Change_Window()
 {
 
-	EV_ChangeWindow.Activate();
+	ev_ChangeWindow.Activate();
 
 }
 
@@ -20,4 +20,4 @@ static void EV_Change_Window()	// da event
 }
 
 
-Event EV_ChangeWindow(EV_Change_Window);
+Event ev_ChangeWindow(EV_Change_Window);

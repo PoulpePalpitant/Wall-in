@@ -132,10 +132,10 @@ bool Link::Unbound_Wall_Child(Wall* child)
 //UI
 void Link::Dsp_Link()						// Affiche le Link
 {
-	ConsoleRender::Add_Char_To_Render_List(this->coord, this->sym, this->clr);
+	ConsoleRender::Add_Char(this->coord, this->sym, this->clr);
 }
 
 void Link::Clr_Link( )						// Clear le Link
 {
-	ConsoleRender::Add_Char_To_Render_List(this->coord, TXT_CONST.SPACE, WHITE);
+	ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);
 }

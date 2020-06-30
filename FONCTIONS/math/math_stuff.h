@@ -36,5 +36,6 @@ public:
 			return false;
 	}
 
+	void Add_1() { counter++; }
 	int Get_Count() { return counter; };
 };

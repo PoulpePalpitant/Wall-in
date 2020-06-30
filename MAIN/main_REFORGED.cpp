@@ -51,7 +51,7 @@ int main()	// Le début!
 	////------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//char UI; int maxC, maxR;
 
-	//Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
+	Resize_Grids_To_Level(gGrids, 1);	// Woorks ^^
 
 
 
@@ -95,17 +95,17 @@ int main()	// Le début!
 	//	}
 	//}
 
-	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
-	//{
-	//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
-	//	{
-	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-	//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
-	//		UI_Dsp_String(crd, std::to_string(j), (Colors)j);	// Ceci pourrait être une fonction d'affichage
+	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	{
+		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+		{
+			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+			ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
 
 
-	//	}
-	//}
+		}
+	}
 
 	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
@@ -139,7 +139,7 @@ int main()	// Le début!
 
 	Setup_Console_Window();	// Titre et curseur
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
-
+	Set_Dflt_WND();			// Dimension de la window mon gars
 
 
 	// CLOCK TESTING
@@ -176,10 +176,10 @@ int main()	// Le début!
 			*/
 			Update_Game();				// Update le jeu mah dude
 		
-			ConsoleRender::Add_String_To_Render_List(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
+			ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
 
 			if (gAllBotMeta.alive > 10)
-				ConsoleRender::Add_String_To_Render_List(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie
+				ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 

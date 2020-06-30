@@ -18,11 +18,11 @@ void UI_Draw_Map_Borders_1()
 
 	for (int i = crd.x; i < length; i++)
 	{
-		ConsoleRender::Add_Char_To_Render_List(crd, 179, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
 		crd.x++;
 	}
 
-	ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
 	ConsoleRender::Stop_Queue();
 
 
@@ -32,10 +32,10 @@ void UI_Draw_Map_Borders_1()
 
 	for (int i = crd.x; i < length; i++)
 	{
-		ConsoleRender::Add_Char_To_Render_List(crd, 179, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
 		crd.x--;
 	}
-	ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
 	ConsoleRender::Stop_Queue();
 
 
@@ -45,10 +45,10 @@ void UI_Draw_Map_Borders_1()
 
 	for (int i = crd.x; i < height; i++)
 	{
-		ConsoleRender::Add_Char_To_Render_List(crd, 196, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
 		crd.y--;
 	}
-	ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
 	ConsoleRender::Stop_Queue();
 
 
@@ -58,10 +58,10 @@ void UI_Draw_Map_Borders_1()
 
 	for (int i = crd.x; i < height; i++)
 	{
-		ConsoleRender::Add_Char_To_Render_List(crd, 196, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
 		crd.y--;
 	}
-	ConsoleRender::Add_Char_To_Render_List(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
 	ConsoleRender::Stop_Queue();
 }
 

@@ -25,24 +25,32 @@ void Lvl_1_Initializer()
 
 	// Pour l'initialisation d'un niveau, il faut mettre les cycles de spawn et de BOTmove en même temps
 	// et Activer le spawn et le bot move pour le cycle courant
-	gSpawnCycle = 10000;	//test								// 10000 pour la vitesse du timer op, 1000 pour la vitesse de la fonction clock() que j'ai fabriqué
-	gCurrentSpawnCycle = 20000;		// Premier Spawn!!!
-	gNextSpawnCycle = gCurrentSpawnCycle + gSpawnCycle;
-	gSpawnThisCycle = false;
+	gSpwBotTimer.Start_Timer(500 , 1 , true);
+	//gCurrentSpawnCycle = 20000;		// Premier Spawn!!!
+	//gNextSpawnCycle = gCurrentSpawnCycle + gSpawnCycle;
+	//gSpawnThisCycle = true;
 	
 	//test
-	gBotMoveCycle = 400;
-	gCurrentBotMoveCycle = gCurrentSpawnCycle;					// On bouge les bots quand y va avoir des bots de spawné
-	gNextBotMoveCycle = gCurrentBotMoveCycle + gBotMoveCycle;
-	gMoveBotsThisCycle = true;
+	gBotMoveTimer.Start_Timer(8000, 1, true);
+	//gBotMoveCycle = 400;
+	//gCurrentBotMoveCycle = gCurrentSpawnCycle;					// On bouge les bots quand y va avoir des bots de spawné
+	//gNextBotMoveCycle = gCurrentBotMoveCycle + gBotMoveCycle;
+	//gMoveBotsThisCycle = true;
 
-	P1.Set_Position({ linkGrid->Get_Cols() / 2, 4 + linkGrid->Get_Rows() / 2 });
-	P1.Set_Hp(3);	// 3 de vie le gros
-
-	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
-
+	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
+	
+	P1.Set_Position({ linkGrid->Get_Cols() / 2, 7 + linkGrid->Get_Rows() / 2 });
+	
+	if (!P1.Set_On_Grid())		// Doit être sur le grid pour le niveau
+		throw "player pas sur le grid";
+	
+	P1.Set_Hp(3);	// 3 de vie le gros
+	
 	gLvlTime = 0;
 
-	MsgQueue::Register(LVL_INITIALIZED);	// It has to be done
+	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
+	MsgQueue::Register(SPAWN_PLAYER);	// It has to be done
+	MsgQueue::Register(LOCK_PLAYER);	// It has to be done
+	
 }

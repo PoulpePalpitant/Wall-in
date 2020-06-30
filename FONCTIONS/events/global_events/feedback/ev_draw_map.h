@@ -2,9 +2,9 @@
 
 #include "../../events.h"
 
-extern Event Ev_DrawMap1;
+extern Event ev_DrawMap1;
 
-void Ev_Draw_Map_Borders_1();
+void Ev_Dr_Map_Borders_1();
 void OBS_Erase_Map_Borders_1();
 
 //// Affiche le joueur
