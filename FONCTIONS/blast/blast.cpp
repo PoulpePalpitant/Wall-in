@@ -15,8 +15,8 @@
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD_VER = 200000;					
-extern const time_t DFLT_BLAST_SPD_HOR = 200000;
+extern const time_t DFLT_BLAST_SPD_VER = 100000;					
+extern const time_t DFLT_BLAST_SPD_HOR = 100000;
 //extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER - DFLT_BLAST_SPD_VER / 4;// J'agrandis la vitesse à l'horizontal!			
 
 // Les propriétés principales du Blast par défaut
@@ -185,7 +185,7 @@ void Blast::UPD_Blast_Shot()
 					if (linkGrid->Is_Link_Here(grdPos.index))			// Vérifie la présence d'un link 
 					{
 						Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
-						return;
+						continue;
 					}
 					// OPTIONAL:  Check si d'autres trucs, comme un joueur ou un item est ici
 
@@ -212,7 +212,7 @@ void Blast::UPD_Blast_Shot()
 			else
 			{
 				Stop_Blast();
-				return;
+				continue;
 			}
 
 		}
@@ -235,6 +235,7 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
 
 	active = false;	// Blast n'est plus actif
+	updateTimer.Stop();
 }
 
 

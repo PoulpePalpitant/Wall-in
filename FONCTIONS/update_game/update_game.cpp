@@ -13,7 +13,7 @@
 #include "../events/events.h"
 #include "../events/msg_dispatcher.h"
 #include "../time/cycles.h"
-
+#include "../walls/wall_drawer.h"
 #include "update_game.h"
 
 extern bool gIsRunning = true;		// le state du jeu
@@ -29,7 +29,10 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 		Peek_Lvl_Script();		// En ce moment, ça sert pas mal juste à peek le spawnscript...
 		Do_Stuff_this_Cycle();	// Bouge et spawn les bots
 		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
+
 		blastP1.UPD_Blast_Shot();		// Devrais être un event global	
+		DrawWalls::Draw_Them_Walls();	// draw les putains de walls
+		DestroyChainOfWalls::Update_Destruction();
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 	}
 }
@@ -79,7 +82,7 @@ void Update_Player_Action()
 						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
 							cancelBlast = true; // rien va se passer
 						else
-							DestroyChainOfWalls::Destroy_Chain_Of_Walls(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+							DestroyChainOfWalls::Add_Chain_To_Destroy(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
 					}
 
 					if (!cancelBlast)

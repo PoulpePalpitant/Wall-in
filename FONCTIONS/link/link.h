@@ -62,7 +62,10 @@ private:
 	void Set_LinkXY(int col, int row);					// Initialise position X et Y du Link dans la console par rapport à sa position col et row dans son Grid (ne jamais utilisé directement, seul son grid devrait faire ça)
 public:
 	Coord Get_XY() { return coord; }				// Retrouve les Coord XY du Link 
-	LinkState Get_State() { return this->state; }	// Donne l'état du Link pour savoir si il existe
+	LinkState Get_State()
+	{
+		return this->state;
+	}	// Donne l'état du Link pour savoir si il existe
 	LinkType Get_Type() { return type; }
 
 	void Dsp_Link();			// Affiche le Link

@@ -38,18 +38,18 @@ void Wall::Set_Wall_UI(WallStrength newStrgt)
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
 	case WallStrength::WEAK:	
-		color = Colors::GRAY;				// La couleur est grise
+		clr = Colors::GRAY;				// La couleur est grise
 		//if (axis == HOR)
 		//	sym = WallSym::SYM_HOR;		// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
 		//else
 		//	sym = WallSym::SYM_VER;
 		break;
 	case WallStrength::STRONG: 
-		color = Colors::LIGHT_YELLOW;				
+		clr = Colors::LIGHT_YELLOW;				
 		break;
 
 	case WallStrength::BIGSTRONGWOW:
-		color = Colors::LIGHT_AQUA;
+		clr = Colors::LIGHT_AQUA;
 		break;
 	}
 }
@@ -80,7 +80,7 @@ void Wall::Set_Default_Wall_UI()
 		sym = WallSym::SYM_VER;
 
 	// Changement de la couleur par défaut
-	color = Colors::WHITE;
+	clr = Colors::WHITE;
 }
 
 // Dimension de chacun des walls
@@ -101,6 +101,13 @@ void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
 	Set_Strength(newStrgt);			// La nouvelle force du mur
 	Set_Wall_UI(newStrgt);			// Update l'UI si le nouv type est différent que le précédent.
+
+	//drawer.timer.Stop();		// STOP l'effacement du mur si il vient juste d'être détruit
+	Set_Drawer(false, true);
+
+
+//	if (drawer.timer.Is_On()) // STOP l'effacement du mur si il vient juste d'être détruit
+	//	Set_Drawer(false, true);
 }
 
 bool Wall::Is_Activated()
@@ -117,17 +124,51 @@ void Wall::Take_Damage(int dmg)
 	this->hp -= dmg;
 
 	if (hp <= 0)
-		DestroyChainOfWalls::Destroy_Chain_Of_Walls({}, this->pChild);	// Détruit la chaîne de mur bueno
+		DestroyChainOfWalls::Add_Chain_To_Destroy({}, this->pChild);	// Détruit la chaîne de mur bueno
 	else
 	{
 		strgt = (WallStrength)hp;		// Change la force du wall
 		this->Set_Wall_UI(strgt);		// Change l'apparance du wall
-		this->UI_Draw_Or_Erase_Wall();	// Redraw
+		
+		Set_Drawer(); //this->UI_Draw_Or_Erase_Wall();	// Redraw
 	}
 }
 
 
-// Affiche un Mur selon une direction
+
+void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gère pas la création des queues
+{
+	CoordIncrementor startPos;	// Position de départ
+	int wallSize;	// Dimension du mur
+
+	// Initialisation de l'incrémenteur
+	startPos.Initialize_Axis(axis);
+	startPos.polar = childPos;
+	startPos.coord = XY;
+
+	wallSize = Get_Wall_Size(axis);
+
+	if (childPos == NEG)								//  x  ->   <-  x		x = startpos
+		*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
+
+	// Timer is set boyos
+	if (erase)
+		drawer.sym = TXT_CONST.SPACE;	// we erase
+	else
+		drawer.sym = (char)sym;	// we draw
+
+	drawer.clr = clr;
+	drawer.xy = startPos;
+
+	if(instant)
+		drawer.timer.Start_Timer(0, wallSize);
+	else
+		drawer.timer.Start_Timer(WALL_DRAW_SPEED, wallSize);
+
+	DrawWalls::Add(&drawer); // adding that shit
+}
+
+
 void Wall::UI_Draw_Or_Erase_Wall(bool inAChain)	// Si inAChain est activé, on gère pas la création des queues
 {
 	CoordIncrementor startPos;	// Position de départ
@@ -148,7 +189,7 @@ void Wall::UI_Draw_Or_Erase_Wall(bool inAChain)	// Si inAChain est activé, on gè
 
 	for (int i = 0; i < wallSize; i++)
 	{
-		ConsoleRender::Add_Char(startPos.coord, (char)sym, color);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
+		ConsoleRender::Add_Char(startPos.coord, (char)sym, clr);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
 		startPos.Increment_Coord();	// Prochaine case
 	}
 

@@ -33,6 +33,6 @@ public:
 	}
 };
 
-bool Is_Equal(Coord crd1, Coord crd2);				// Vérification d'une égalité entre deux coordonnées XY
+bool Are_Equal(Coord crd1, Coord crd2);				// Vérification d'une égalité entre deux coordonnées XY
 void Equal_Coordinates(Coord &from, Coord to);					// Créer une égalité entre deux coordonnées XY
 

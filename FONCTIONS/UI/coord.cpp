@@ -5,7 +5,7 @@
 #include "direction.h"
 
 // Permet de comparer deux points ensemble. Si les deux ne sont pas égals, return false
-bool Is_Equal(Coord crd1, Coord crd2)
+bool Are_Equal(Coord crd1, Coord crd2)
 {
 	if (crd1.x == crd2.x)
 	{

@@ -4,6 +4,7 @@
 #include "../UI/txtstyle.h"
 #include "../UI/axis.h"
 #include "../bots/bot.h"
+#include "wall_drawer.h"
 
 extern const int WALL_SIZE_X;	// Le nombre de case qui composent chaque wall horizontale
 extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall verticale
@@ -28,11 +29,12 @@ class Wall {
 	friend class StructureManager;
 
 private:
+	WallDrawer drawer;						// Responsable de l'affichage du wall
 	Coord XY = {};							// Coordxy
 	WallStrength strgt = WallStrength::REGULAR;		// Type et force de résistance au bots du mur (dépend des propirétés du tir du joueur)
 	WallType type = WallType::REGULAR;
 	WallState state = WallState::DEAD;		// Si le wall existe visuellement sur l'UI (que le joueur peut le voir)
-	Colors color = Colors::WHITE;			// Colors is great. Par défaut se sera Blanc doe
+	Colors clr = Colors::WHITE;			// Colors is great. Par défaut se sera Blanc doe
 	WallSym sym;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
 	Axis axis;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
 	int hp;									// La force du wall
@@ -62,7 +64,7 @@ public:
 	char Get_Sym() { return (char)this->sym; }		// Accès au Symbole du Mur
 	Axis Get_Axis() { return axis; }				// Axe du wall
 	Coord Get_XY() { return this->XY; }				// Retrouve les Coord XY du Wall 
-	Colors Get_Clr() { return color; }				// La couleur
+	Colors Get_Clr() { return clr; }				// La couleur
 	int Get_Wall_Size(Axis axis);					// La longueur du wall
 	int Get_Bot_On_Me() { return botOnMe; }			// Le bot se trouvant sur le wall
 
@@ -75,14 +77,15 @@ public:
 
 	// Détruit un Wall. Se produit surtout quand un bot rentre dedans
 	void Deactivate_Wall() {
-
+		
 		state = WallState::DEAD;		// REMARQUE: On reset pas toutes les valeurs, c'est pour sauver de l'énergie un peu. On a juste besoin de savoir qu'il est dead au final quand on fais des checkup
 		pParent = pChild = NULL;
 		sym = WallSym::DEAD;	//UI
-		color = WHITE;			//UI
+		clr = WHITE;			//UI
 	}
 
 	void Take_Damage(int dmg);		// Dépend de la force du bot
+	void Set_Drawer(bool erase = false, bool instant = false);									// Préparation pour l'affichage ou l'effaçage
 	void UI_Draw_Or_Erase_Wall(bool inAChain = false);	// Efface un mur
 };
 

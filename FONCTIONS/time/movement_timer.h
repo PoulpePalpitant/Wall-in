@@ -12,7 +12,7 @@ private:
 	float cdDuration = 0.f;			// Le durée maximale du timer en millisecondes.	par défaut 0 secondes
 	
 	Countdown cd;					// Le nmbre de moves à faire avant de terminer un mouvement
-	int movesThisFrame;				// Nombre de fois que le timer à reset durant une frame(quand la vitesse est très rapide, il faut tick plusieurs fois)
+	int movesThisFrame = 0;	// old way			// Nombre de fois que le timer à reset durant une frame(quand la vitesse est très rapide, il faut tick plusieurs fois)
 	int spd = 0 ;					// Vitesse 
 
 	bool tickedThisFrame = false;	// MÉTHODE #2 // We ticked this frame
@@ -32,10 +32,10 @@ public:
 	
 	void Add_Count(int times) { timeLeft += times * cdDuration; }	// Ajoute du temps
 	void Start_Timer(int speed, int numMove = 1, bool inf = false); //Set la durée de base du CountDown.
-	void End_Moving() { timeLeft = 0; moving = false; infinite = false; }	// Finis abruptement le temps de CountDown
+	void Stop() { timeLeft = 0; moving = false; tickedThisFrame = false; infinite = false; }	// Finis abruptement le temps de CountDown
 	void Pause_Move() { moving = false; }	// Pause le temps
 	int Get_Moves_Left() { return cd.Get_Count(); }	
-	bool Is_Moving() { return moving; }		// Check si le timer est en train de countdown
+	bool Is_On() { return moving; }		// Check si le timer est en train de countdown
 	float Get_Time_Left() { return timeLeft; }	// Get le temps qui reste avant la fin du CountDown
 
 	// Doit être absolument utilisé avec un while

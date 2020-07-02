@@ -116,7 +116,7 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 		nbOfWalls--;
 	}
 
-	if (!(Is_Equal(P1.Get_Grd_Coord(), linkCrd.index)))	// Si le joueur n'est PAS sur le dernier Link child
+	if (!(Are_Equal(P1.Get_Grd_Coord(), linkCrd.index)))	// Si le joueur n'est PAS sur le dernier Link child
 		child->Dsp_Link();	// affiche le child
 
 	if(impactedWall)
@@ -181,7 +181,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 			if (state > LinkState::FREE)								//Le parent doit être au maximum free pour activer un link
 				return;
 
-			if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent, WE STOP
+			if (Are_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent, WE STOP
 				return;
 
 		}
@@ -223,7 +223,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 
 		// On affiche juste le parent, car le child pourrait changer de state, et donc de symbole à la prochaine loop. On l'affichera à la fin seulement
 		parent->Dsp_Link();	// Draw le link Parent
-		wall->UI_Draw_Or_Erase_Wall(true);	// Draw Le mur!
+		wall->Set_Drawer(); // wall->UI_Draw_Or_Erase_Wall(true);	// Draw Le mur!
 
 		wallCrd.Increment_Coord();	// Coord du prochain wall
 		numWalls--;	// and here we go again

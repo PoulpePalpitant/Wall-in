@@ -11,7 +11,6 @@ static Event ev_SpawnPlayer(Ev_Spawn_Player, 10);
 static CDTimer timer;	// Pour délay l'event and shit
 static Coord crd;
 
-
 void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 {
 

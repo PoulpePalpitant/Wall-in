@@ -19,8 +19,6 @@ struct RenderQueue {
 };
 
 struct AnimationQueue {
-	/* ID de la liste */
-	/* Timer!!! stuff*/
 	CDTimer timer;	// Entre chaque output dans cette liste
 	RenderQueue queue;
 	AnimationQueue* nxtQueue = NULL;
@@ -39,21 +37,14 @@ class ConsoleRender
 	static bool addToNewQueue;			// Détermine quelle queue utiliser pour ajouter des charactères à render			
 
 	static bool Is_Empty(const RenderQueue& queue);
-	//static bool Is_Queue_Full(const RenderQueue& queue);
-	
 	static void Pop_From_Queue(RenderQueue& queue, OutputData& data);		// Retire un OutputData d'une queue 
-
 	static void Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& queue);// Ajoute un OutputData a la fin de la queue
 	static void Render_Main_Queue();				// Affiche tout les éléments présent dans la main queue
 	static void Render_Animation_Queue();				// Affiche tout les élément qui doivent l'être selon les timer
-	//static void Add_To_Main_Queue(Coord crd, char sym, Colors clr);
-	//static void Add_To_Animation_Queue(Coord crd, char sym, Colors clr);
-
 
 public:
 	static void Add_String(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0, bool erase = false);
 	static void Add_Char(Coord crd, unsigned char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render
-	//static void Add_Emptyness(Coord crd, int length = 1, float speed = 0);
 	static void Create_Queue(float speed, bool linear = true);			// Créer une nouvelle Queue, tout les char suivant seront ajouté à celle-ci
 	static void Stop_Queue();											// Stop l'ajout d'élément dans la queue d'animation actuelle
 	static void Render();	// Output tout les charactères dans la console, selon les listes, et les timers de ces listes

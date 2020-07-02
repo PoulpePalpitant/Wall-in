@@ -38,7 +38,7 @@ public:
 };
 
 void Equal_Coordinates(GrdCoord& from, GrdCoord to);		// Permet d'égaliser deux valeurs de coordonnées de grid [col][row]
-bool Is_Equal(const GrdCoord &crd1, const GrdCoord &crd2);						// Vérification d'une égalité entre deux coordonnées de grid
+bool Are_Equal(const GrdCoord &crd1, const GrdCoord &crd2);						// Vérification d'une égalité entre deux coordonnées de grid
 
 
 

@@ -18,7 +18,7 @@ void MovementTimer::katch_Up()
 			katch_Up();	
 		else
 			if (cd.Count())		// Nombre de moves Max terminé					
-				End_Moving();	// Stop le mouvement		
+				Stop();	// Stop le mouvement		
 			else
 				katch_Up();
 		return;			
@@ -88,7 +88,7 @@ bool MovementTimer::Update_Timer()
 			return true;	// We move
 		else
 			if (cd.Count())		// Nombre de moves Max terminé					
-				End_Moving();	// Stop le mouvement		
+				Stop();	// Stop le mouvement		
 
 		return true; // We move
 	}

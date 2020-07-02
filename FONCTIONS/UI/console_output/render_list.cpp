@@ -160,7 +160,7 @@ void ConsoleRender::Render_Animation_Queue()
 		{
 			Pop_From_Queue(toPop->queue, toDraw);	
 
-			if(!Is_Equal(toDraw.crd, playerPos))
+			if(!Are_Equal(toDraw.crd, playerPos))
 				UI_Dsp_Char(toDraw.crd, toDraw.symbol, toDraw.clr);	// Affiche du symbole dans la console
 
 			// Delete la queue si elle est vide				Garbo

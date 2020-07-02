@@ -95,7 +95,7 @@ void Equal_Coordinates(GrdCoord& from, GrdCoord to)
 }
 
 // Permet de comparer deux points ensemble. Si les deux ne sont pas égals, return false
-bool Is_Equal(const GrdCoord &crd1, const GrdCoord &crd2)
+bool Are_Equal(const GrdCoord &crd1, const GrdCoord &crd2)
 {
 	if (crd1.c == crd2.c)
 	{

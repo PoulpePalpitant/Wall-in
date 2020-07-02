@@ -38,4 +38,5 @@ public:
 
 	void Add_1() { counter++; }
 	int Get_Count() { return counter; };
+	void Stop_Count() { counter = 0; };
 };

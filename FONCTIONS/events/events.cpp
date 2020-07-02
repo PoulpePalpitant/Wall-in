@@ -49,7 +49,7 @@ bool Event::Stop_If_No_More_Steps()
 // Avance l'event d'un stade. Surtout bon pour de l'animation en ce moment. Mais peut aussi être utilisé pour créer un peu de délay entre les choses
 void Event::Advance(int speed, int numMove)
 {
-	if (!delay.Is_Moving()) // Si ya pu aucun moves à faire,
+	if (!delay.Is_On()) // Si ya pu aucun moves à faire,
 	{
 		curSteps++;	// Avance d'un Step 
 
@@ -66,6 +66,6 @@ void Event::Start(int speed, int numMove )			// Start l'event!	blob blob
 
 void Event::Cancel()									// Termine abruptement l'event 
 {
-	delay.End_Moving();		// stahpping it
+	delay.Stop();		// stahpping it
 	Deactivate();			// We deactivate!!!
 }

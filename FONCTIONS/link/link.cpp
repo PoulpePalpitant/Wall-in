@@ -3,6 +3,7 @@
 #include "../UI/console_output/render_list.h"
 #include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
 
+#include "../player/player.h"
 #include "link.h"
 
 
@@ -137,5 +138,6 @@ void Link::Dsp_Link()						// Affiche le Link
 
 void Link::Clr_Link( )						// Clear le Link
 {
-	ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);
+	if(!Are_Equal(P1.Get_XY(), Get_XY()))
+		ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);	// Efface pas le player!!
 }

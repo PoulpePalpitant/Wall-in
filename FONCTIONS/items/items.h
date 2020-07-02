@@ -23,53 +23,75 @@
 
 class ItemMeta
 {
+private:
+	static ItemMeta AllMeta;
+
 public:
 	int total;		// Le nombre d'items spawné
 	int current;	// Le nombre d'item dans la box en ce moment
 	int pickup;		// Le nombre d'item pickup
 	int missed;		// Le nombre d'item pas pickup
 
-	void Item_Spawned() { this->current++; this->total++; }
-	void Item_Picked_Up() { this->current--; this->pickup++; }
-	void Item_Disappeared() { this->current--; this->missed++; }
+	void Item_Spawned() {
+		this->current++; this->total++; 
+		AllMeta.current++; AllMeta.total++;
+	}
+	void Item_Picked_Up() {
+		this->current--;AllMeta.current--;
+		this->pickup++;
+		AllMeta.pickup++;
+	}
+	void Item_Disappeared() { 
+	this->current--;
+	AllMeta.current--; 
+	this->missed++; 
+	AllMeta.missed++;
+	}
 };
 
 
 class Items {
 
 private:
-	static Countdown nextSpawn;	// À quand le prochain
-	static ItemMeta AllMeta;
+	Countdown nextSpawn;	// À quand le prochain dans ce groupe
 
 	// UI
 	Colors clr = Colors::LIGHT_GREEN;		// Sa couleur
 	char sym;								// Le symbole le représentant 
 
 	// POSITION
-	GrdCoord grdCrd;						// On utilise le système de coordonnées des grids pour changer la position du joueur
+	GrdCoord grdCrd;						// On utilise le système de coordonnées des grids pour changer faire apparâitre les items
 
 	// DURÉE
 	Countdown despawn;						// si le countdown finis, l'item despawn
+	int max;								// quantité max d'item de ce type en vie
 
-	ItemMeta meta;	// info sur les items
+	ItemMeta meta;	// info sur le groupe d'items
 
+	// SETS
+	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole 
+	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur 
+	void Set_Position(GrdCoord newPos) { grdCrd = newPos; }			// Change sa position sur le Grid
+	
+	// UI
+	void Despawn_Warning();	// Flash and disappear
+	void Spawn_Animation();
+	
+
+	bool Find_Spawn_Location();
 public:
 	// GETS
 	char Get_Sym() { return sym; }				// Le symbole pour l'affichage
 	GrdCoord Get_Grd_Coord() { return grdCrd; }	// Sa position dans le grid
 
-	// SETS
-	void Set_Position(GrdCoord newPos) { grdCrd = newPos; }			// Change sa position sur le Grid
-	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole 
-	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur 
-
 	// UPDATES
-	static void Spawn(GrdCoord);				// À spawné
-	static void Pickup(GrdCoord);				// Joueur l'a pickup
-	static void Got_Shot(GrdCoord);			// C'est fait tiré par un blast
+	void Spawn(GrdCoord);				// À spawné
+	void Pickup(GrdCoord);				// Joueur l'a pickup
+	void Got_Shot(GrdCoord);			// C'est fait tiré par un blast
+	static void Update_Items();			// Update les items du jeu
+	static bool Is_Item_Here(GrdCoord crd);		// Hitbox de l'item
 
-	// UI
-	void Despawn_Warning();	// Flash and disappear
+
 };
 
 
