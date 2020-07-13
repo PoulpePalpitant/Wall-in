@@ -3,6 +3,7 @@
 #include "../UI/console_output/render_list.h"
 #include "../grid/grid.h"
 #include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
+#include "../events/msg_dispatcher.h"
 
 #include "walls.h"
 
@@ -37,7 +38,7 @@ void Wall::Set_Wall_UI(WallStrength newStrgt)
 	case WallStrength::REGULAR:
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
-	case WallStrength::WEAK:	
+	case WallStrength::NONE:	
 		clr = Colors::GRAY;				// La couleur est grise
 		//if (axis == HOR)
 		//	sym = WallSym::SYM_HOR;		// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
@@ -58,16 +59,20 @@ void Wall::Set_Strength(WallStrength newStrgt)
 {
 	if (StructureManager::Is_Link_Corrupted(pParent))// Le parent corrompu change le Wall en weak pour l'instant
 	{
-		type = WallType::CORRUPTED;
-		strgt = WallStrength::WEAK;
+		strgt = WallStrength::NONE;
 		hp = (int)strgt;
 	}
 	else
-	{
-		type = WallType::REGULAR;		// optimize this please, (dont change if it's the same)
-		strgt = newStrgt;
-		hp = int(strgt);
-	}
+		if (pParent->Get_Modifier() == BUFFER)
+		{
+			strgt = WallStrength::STRONG;
+			hp = int(strgt);
+		}
+		else
+		{
+			strgt = newStrgt;
+			hp = int(strgt);
+		}
 }
 
 // RESET L'APPARENCE DU WALL À SES VALEURS PAR DÉFAUTS
@@ -80,7 +85,7 @@ void Wall::Set_Default_Wall_UI()
 		sym = WallSym::SYM_VER;
 
 	// Changement de la couleur par défaut
-	clr = Colors::WHITE;
+	clr = Colors::BRIGHT_WHITE;
 }
 
 // Dimension de chacun des walls
@@ -105,10 +110,17 @@ void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 	//drawer.timer.Stop();		// STOP l'effacement du mur si il vient juste d'être détruit
 	Set_Drawer(false, true);
 
-
-//	if (drawer.timer.Is_On()) // STOP l'effacement du mur si il vient juste d'être détruit
-	//	Set_Drawer(false, true);
+	MsgQueue::Register(WALL_ACTIVATED);
 }
+void Wall::Deactivate_Wall()
+{
+	state = WallState::DEAD;		// REMARQUE: On reset pas toutes les valeurs, c'est pour sauver de l'énergie un peu. On a juste besoin de savoir qu'il est dead au final quand on fais des checkup
+	pParent = pChild = NULL;
+	sym = WallSym::DEAD;	//UI
+	clr = WHITE;			//UI
+	MsgQueue::Register(WALL_DEACTIVATED);	//we did
+}
+
 
 bool Wall::Is_Activated()
 {
@@ -124,7 +136,7 @@ void Wall::Take_Damage(int dmg)
 	this->hp -= dmg;
 
 	if (hp <= 0)
-		DestroyChainOfWalls::Add_Chain_To_Destroy({}, this->pChild);	// Détruit la chaîne de mur bueno
+		ListsOfChainToModify::Add_Chain_To_Modify({}, this->pChild);	// Détruit la chaîne de mur bueno
 	else
 	{
 		strgt = (WallStrength)hp;		// Change la force du wall

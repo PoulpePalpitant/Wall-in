@@ -8,6 +8,8 @@
 #include "../link/link.h"
 #include "../time/countdown_clock.h"
 #include "../time/movement_timer.h"
+#include "../global_types/global_types.h"
+
 /*
 	Le blast ça va être la façon pour le joueur de détruire les bots. Quand le joueur blast, il tir un projectile d'une certaine longueur à partir de sa position de départ. Ce projectile va avancé jusqu'à ce qu'il 
 	atteigne un obstacle. Quand le projectile s'arrête, il laisse un mur que les bots ne peuvent franchir. Si un bot fonce dedans, le mur est détruit
@@ -16,7 +18,7 @@
 struct BlastType						
 {
 	WallStrength strength;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
-	LinkType linkType;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
+	Modifier mod;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
 };							// Change les propriétés du blast
 
 extern const BlastType DFLT_BLAST;				// Les propriétés principales du Blast par défaut
@@ -60,18 +62,18 @@ class Blast
 	CoordIncrementor frontXY;			// UI: Sert à uniquement à afficher chaque symbole de l'animation (dans une direction). Sert aussi à trimer la longueur du blast dans l'animation
 	CoordIncrementor tailXY;			// UI: Sert  à trimer la longueur du blast dans l'animation
 	Direction dir;						// Ça direction dans la consoles
-	MovementTimer updateTimer;				// Permet de limiter la vitesse de l'update de la position du blast
+	SpeedTimer updateTimer;				// Permet de limiter la vitesse de l'update de la position du blast
 
 	// POST-BLAST	/* temporaire
-	WallStrength strength = WallStrength::REGULAR;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
-	LinkType linkType = LinkType::REGULAR;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
+	WallStrength strength = WallStrength::REGULAR;	// obselete: force du blast
+	Modifier modifier;		// Produit un effet unique quand le blast s'arrête, notamment sur les links et les walls
 
 	// SETUP DU BLAST
 	void Setup_Blast_UI();					// Assigne l'apparence du blast
 	void Setup_Grid_Limit();								// Calcul la limite ou le blast va devoir s'arrêter
 	void Setup_Position_Incrementors(GrdCoord &startPos);	// Sa position 
 	void Setup_Dist_Btw_Links();								// Setup la distance qui va séparer chaque élément du Link Grid que le blast va parcourir
-	void Setup_Length();					// Ajuste la longueur du blast qui sera tiré
+	void Setup_Length();										// Ajuste la longueur du blast qui sera tiré
 	void Setup_Speed();											// La vitesse d'affichage du blast(temps de pause entre chaque)
 
 	// CHANGEMENT DES PROPRIÉTÉS DE BASES
@@ -94,12 +96,16 @@ public:
 	const CoordIncrementor* const Get_Front_XY() { const CoordIncrementor* const copy = &frontXY; return copy; }		// Retourne un pointeur constant vers l'adresse, pour pouvoir copier correctement l'axe, qui est en fait un pointeur vers une crd
 	Direction Get_Dir() { return dir; }
 	Distance Get_Distance_Travelled() { return nbSteps; }
+	Modifier Get_Modifier() { return modifier; }
 
 	// FONCTIONS PRINCIPALES 
 
+	bool Is_Player_Shooting_Border(Direction dir);			// Si le joueur est collé sur une bordure, et tir dessus, le blast fail
 	bool Is_Active() { return active; }	// is it dow?
 	void Setup_Blast( GrdCoord &startPos, Direction &blastDir/* const BlastType& type = DFLT_BLAST*/);	// Setup tout les paramètre du blast pour le tir
+	void Setup_Modifier(Modifier mod);							// Le modifier du blast, voir global_types.h
 	void UPD_Blast_Shot();	// le tir du blast...
+
 };
 
 // Les objets blasts :D

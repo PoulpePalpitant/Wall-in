@@ -31,8 +31,13 @@ public:
 	
 	void Activate_Walls_And_Links_From_Blast(Blast* blast);	// record tout les walls et links après un blast
 	// Créer manuellement une chaîne de murs et de Links dans une direction
-	void Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength = WallStrength::REGULAR, LinkType type = LinkType::REGULAR);
-};
+	void Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength = WallStrength::REGULAR, Modifier mod = Modifier::REGULAR);
+
+	bool Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastMod, bool &eraseBlast);
+
+	void Corrupt_All_Children();
+	void Buff_All_Child_Walls();
+}; 
 
 // VARIABLEs GLOBALEs
 

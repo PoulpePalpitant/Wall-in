@@ -9,7 +9,7 @@ extern time_t gCurrentSpawnCycle;	// Le spawn cycle actuel
 extern time_t gNextSpawnCycle;		// Le prochain spawn cycle
 extern int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
 
-extern MovementTimer gSpwBotTimer;
+extern SpeedTimer gSpwBotTimer;
 
 
 

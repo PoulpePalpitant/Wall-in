@@ -3,7 +3,7 @@
 #include "items.h"
 
 
-class Money : public Items
+class Money : public Item
 {
 
 

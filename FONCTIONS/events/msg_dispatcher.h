@@ -38,6 +38,21 @@ enum MsgType
 	, VICTORY
 	, DEFEAT
 
+	/* UI stuff */
+	, SHOW_HEALTH
+	, HIDE_HEALTH
+	, SHOW_MOD_QUEUE
+	, HIDE_NEXT_QUEUE
+
+	/* grid stuff */
+	, GRIDS_RESIZED
+
+	/* Walls and Links stuff*/
+	, LINK_ACTIVATED
+	, LINK_DEACTIVATED
+	, WALL_ACTIVATED
+	, WALL_DEACTIVATED
+
 	/* Items */
 	, ITEM_PICKUP
 	, ITEM_DESTROYED
@@ -83,7 +98,7 @@ enum MsgType
 
 
 // CONST
-const int MSG_QUEUE_SIZE = 20;	// Maximum de message par cycle
+const int MSG_QUEUE_SIZE = 40;	// Maximum de message par cycle
 
 // GLOBAL
 extern MsgType gCurrentMsg;		// Prend un msg qui sera interprété par les event Listeners

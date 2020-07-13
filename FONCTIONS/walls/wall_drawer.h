@@ -12,7 +12,7 @@ struct WallDrawer
 	CoordIncrementor xy;
 	char sym;
 	Colors clr;
-	MovementTimer timer;
+	SpeedTimer timer;
 
 	WallDrawer* nxt = NULL;
 };

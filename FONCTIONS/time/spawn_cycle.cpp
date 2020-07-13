@@ -8,7 +8,7 @@
 bool gSpawnThisCycle;
 int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
 
-MovementTimer gSpwBotTimer;
+SpeedTimer gSpwBotTimer;
 
 
 void UPD_Spawn_Cycle()			// Refresh Timer des spawns

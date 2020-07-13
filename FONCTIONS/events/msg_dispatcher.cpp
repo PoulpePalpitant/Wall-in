@@ -21,9 +21,9 @@
 #include "global_events/ev_block_inputs.h"
 #include "global_events/ev_spwn_player.h"
 #include "global_events/ev_final_push.h"
-
-
-
+#include "global_events/ev_resize_from_grids.h"
+#include "../items/item_spw_drawer.h"			// spawner les items
+#include "../blast/mod_queue_animator.h"
 
 
 
@@ -109,8 +109,41 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case PRESSED_ENTER: break;
 
 		//Ev_Flash_Map_Corners();	// Fait flaser les coins de la map pendant un bref instant, si le joueur tir sur un mur
+		
+		/* GRIDS*/
+	case GRIDS_RESIZED: 
+		Ev_Resize_From_Grids();
+		break;
 
-		/* Player*/
+	case LINK_ACTIVATED:
+		break;
+
+	case LINK_DEACTIVATED:
+		break;
+
+	case WALL_ACTIVATED:
+		break;
+
+	case WALL_DEACTIVATED:
+		break;
+		
+		/* UI */
+	case SHOW_HEALTH:break;
+	case HIDE_HEALTH:break;
+	
+	case SHOW_MOD_QUEUE:
+		DrawModifierQueue::Show_Queue_UI();
+		break;
+
+	case HIDE_NEXT_QUEUE:
+		DrawModifierQueue::Hide_Queue_UI();
+		break;
+
+
+
+
+
+		/* PLAYER*/
 	case LOCK_PLAYER: 
 		Ev_Block_Inputs(true);
 		break;
@@ -125,7 +158,11 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 	case PLAYER_SPAWNED:
 		break;
+		/* ITEMS */
 
+	case ITEM_SPAWNED: 
+		//Draw_Item_Spawn();
+		break;
 		/* BOTS */
 	case STOP_BOTS:			Ev_Stop_Bot_Cycles(); break;
 	case STOP_BOT_MOVE:		Ev_Stop_Bot_Move();break;

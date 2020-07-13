@@ -46,11 +46,14 @@ bool ValidSpwnIntervals::Is_Secondary_List_Empty(int border)
 void ValidSpwnIntervals::Modify_Min(Interval* intval, int newMin)// Modifie le min
 {
 	intval->min = newMin;	// Augmente la borne de min 
+	
+	// Si tu crash, c'est que ta pas fait ça :  Destroy_Null_Interval(intval);
 }
 
 void ValidSpwnIntervals::Modify_Max(Interval* intval, int newMax) // MODIFIE LE MAX
 {
 	intval->max = newMax;	// Réduit la borne de max 
+	// Si tu crash, c'est que ta pas fait ça :  Destroy_Null_Interval(intval);
 }
 
 bool ValidSpwnIntervals::Are_Primary_Lists_Empty()			// Vérification de ça

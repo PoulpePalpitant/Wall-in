@@ -2,4 +2,4 @@
 
 #include "../player/player.h"
 
-void UI_Invalide_Move(Player& player, GrdCoord& grd);
+void UI_Invalide_Action();

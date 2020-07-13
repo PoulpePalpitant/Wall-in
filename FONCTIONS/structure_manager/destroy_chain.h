@@ -4,6 +4,12 @@
 #include "../grid/AllGrids.h"
 #include "../time/movement_timer.h"
 
+// Les trois actions possibles pour la gestion des chaines de murs
+enum ModifyChain
+{
+	DESTROY, BUFF, CORRUPT
+};
+
 // Une item du stack de link à détruire
 struct LinkToDestroy
 {
@@ -17,18 +23,19 @@ struct Chain // une pile d'item chainés
 	int count = 0;	// don't need
 };
 
-class Chain_To_Destroy
+class ChainToModify
 {
-	friend class DestroyChainOfWalls;
+	friend class ListsOfChainToModify;
 
-	MovementTimer timer;	// Vitesse à laquelle on détruit les murs
+	SpeedTimer timer;	// Vitesse à laquelle on détruit les murs
 	
 	Chain chain;
 	Link* toDeactivate = NULL;
 	Link *toErase = NULL;	// Le Link à désactiver actuellement, et son parent
+	ModifyChain modifyChain;	// L'action qui sera faite sur les éléments de la chaîne
 
 	Wall* parentWall;					// Le mur à détruire entre deux Link
-	Chain_To_Destroy* nxt = NULL;
+	ChainToModify* nxt = NULL;
 	
 
 
@@ -38,21 +45,27 @@ class Chain_To_Destroy
 };
 
 
-class DestroyChainOfWalls {
+class ListsOfChainToModify {
 	friend class StructureManager;
 private:
-	static Chain_To_Destroy* start;
-	static Chain_To_Destroy* end;
+	static ChainToModify* start;
+	static ChainToModify* end;
 
 
-	//static void Add_Children_To_List(Link* parent);
-	static void Add_Children_To_List(Chain_To_Destroy* chain, Link* parent);
-	static void Delete_Parents(Chain_To_Destroy* chain);
-	static void Remove_Chain(Chain_To_Destroy* &toRemove, Chain_To_Destroy* &prev);
+	static void Add_Children_To_List(ChainToModify* chain, Link* parent);
+
+	static void Modify_Element(ChainToModify* chain);	// Détruit un élément de la chaîne
+	
+	static void Select_Modification(ChainToModify* chain, Link* parent);
+	static void Delete_Parents(ChainToModify* chain);	// Détruit un élément de la chaîne
+	static void Corrupt(ChainToModify* chain);			// Change le modifier de u link en Corrupted, et de ce fait, le wall aussi
+	static void Buff_Walls(ChainToModify* chain);		// Buff les walls 
+
+	static void Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev);
 public:
 	// Détruit la chaine de link et de mur dépendant d'un Link
-	static void Update_Destruction();
-	static void Add_Chain_To_Destroy(GrdCoord crd = {}, Link* link = NULL);
+	static void Update_Chain_Modification();
+	static void Add_Chain_To_Modify(GrdCoord crd = {}, Link* link = NULL, bool excludeParent = false);
 };
 
 

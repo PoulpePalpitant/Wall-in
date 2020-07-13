@@ -11,7 +11,7 @@
 // DEF DES STATICS
 
 Event* Event::eventsID[MAX_NUM_EVENTS] = {};	// TOUT LES EVENTS
-FixedQueue<int>Event::toUpdate(MAX_NUM_EVENTS);	// Initialisation, une fois, de la queue d'event actifs à updater 
+FixedList<int>Event::toUpdate(MAX_NUM_EVENTS);	// Initialisation, une fois, de la queue d'event actifs à updater 
 int Event::total;	// Nombre d'events dans le jeu
 
 void Event::Activate()

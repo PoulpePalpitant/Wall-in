@@ -67,8 +67,8 @@ void WallGrid::Adapt_To_LinkGrid_Size(int& col, int& row, LinkGrid& linkGrid)
 								
 bool WallGrid::Is_Wall_here(GrdCoord crd)		// WHERE IS WALL? I CAN'T FIND IT!
 {
-	if (!Is_Inbound(crd))	// Doit tjrs vérifier si la crd est INBOUND	
-		return -1;
+	if (!Is_Inbound(crd))	// 
+		throw "Doit tjrs vérifier si la crd est INBOUND	";
 
 	if (this->wall[crd.c][crd.r].Get_State() == WallState::DEAD)										// Si le link sur ce grid est Dead, aussi bien dire qu'il n'y en a pas
 		return false;	// Wall here is DEAD

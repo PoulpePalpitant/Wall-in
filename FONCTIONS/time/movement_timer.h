@@ -5,7 +5,7 @@
 #include "../math/math_stuff.h"
 #include <string>
 
-class MovementTimer {	// Timer qui me permet de bouger des affaires dans mon jeu
+class SpeedTimer {	// Timer qui me permet de bouger des affaires dans mon jeu
 private:
 	bool moving = false;			// Pause le countdown
 	bool infinite = false;			// Le timer va se reset à l'infini!
@@ -33,9 +33,10 @@ public:
 	void Add_Count(int times) { timeLeft += times * cdDuration; }	// Ajoute du temps
 	void Start_Timer(int speed, int numMove = 1, bool inf = false); //Set la durée de base du CountDown.
 	void Stop() { timeLeft = 0; moving = false; tickedThisFrame = false; infinite = false; }	// Finis abruptement le temps de CountDown
-	void Pause_Move() { moving = false; }	// Pause le temps
-	int Get_Moves_Left() { return cd.Get_Count(); }	
+	void Pause() { moving = false; }	// Pause le temps
+	void Resume() { moving = true; }	// Pause le temps
 	bool Is_On() { return moving; }		// Check si le timer est en train de countdown
+	int Get_Moves_Left() { return cd.Get_Count(); }	
 	float Get_Time_Left() { return timeLeft; }	// Get le temps qui reste avant la fin du CountDown
 
 	// Doit être absolument utilisé avec un while

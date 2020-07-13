@@ -10,8 +10,8 @@ extern const int WALL_SIZE_X;	// Le nombre de case qui composent chaque wall hor
 extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall verticale
 
 //	LES TYPES DE MURS												// Par défaut, les tirs du joueur font des murs normal
-enum class WallType { REGULAR, CORRUPTED, INVINCIBLE};
-enum class WallStrength { WEAK, REGULAR, STRONG, BIGSTRONGWOW};
+//enum class WallType { REGULAR, CORRUPTED, INVINCIBLE};
+enum class WallStrength { NONE, REGULAR, STRONG, BIGSTRONGWOW};		//
 enum class WallState { DEAD, EXISTS, ETERNAL, SAD};					// Je reviendrais customize ça quand je serais plus avancé
 enum class WallSym {DEAD, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_VER = 179, SYM_VER2= 186};				// Le symbole d'un seul wall, horizontal et vertical
 
@@ -25,16 +25,15 @@ class Link;	// Les Walls sont relié au links
 
 class Wall {
 	friend class WallGrid;		// WallGrid va initialiser cette bouze
-	friend class DestroyChainOfWalls;
+	friend class ListsOfChainToModify;
 	friend class StructureManager;
 
 private:
 	WallDrawer drawer;						// Responsable de l'affichage du wall
 	Coord XY = {};							// Coordxy
 	WallStrength strgt = WallStrength::REGULAR;		// Type et force de résistance au bots du mur (dépend des propirétés du tir du joueur)
-	WallType type = WallType::REGULAR;
 	WallState state = WallState::DEAD;		// Si le wall existe visuellement sur l'UI (que le joueur peut le voir)
-	Colors clr = Colors::WHITE;			// Colors is great. Par défaut se sera Blanc doe
+	Colors clr = Colors::BRIGHT_WHITE;			// Colors is great. Par défaut se sera Blanc doe
 	WallSym sym;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
 	Axis axis;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
 	int hp;									// La force du wall
@@ -58,7 +57,7 @@ private:
 
 public:
 	WallState Get_State() { return this->state; }
-	WallType Get_Type() { return type; }					// Type de wall
+	Modifier Get_Parent_Modifier() { return pParent->Get_Modifier(); }					// Type de wall
 	WallStrength Get_Strgt() { return this->strgt; }		// Type et force de résistance du mur face aux impacts des bots
 	int Get_Hp() { return hp; }
 	char Get_Sym() { return (char)this->sym; }		// Accès au Symbole du Mur
@@ -76,13 +75,7 @@ public:
 	void Remove_Bot_On_Me() { botOnMe = -1; }		// Le bot est pati :)
 
 	// Détruit un Wall. Se produit surtout quand un bot rentre dedans
-	void Deactivate_Wall() {
-		
-		state = WallState::DEAD;		// REMARQUE: On reset pas toutes les valeurs, c'est pour sauver de l'énergie un peu. On a juste besoin de savoir qu'il est dead au final quand on fais des checkup
-		pParent = pChild = NULL;
-		sym = WallSym::DEAD;	//UI
-		clr = WHITE;			//UI
-	}
+	void Deactivate_Wall();
 
 	void Take_Damage(int dmg);		// Dépend de la force du bot
 	void Set_Drawer(bool erase = false, bool instant = false);									// Préparation pour l'affichage ou l'effaçage

@@ -1,445 +1,516 @@
 #include "intervals.h"
 
-
+#include <cstdlib>
 #include "../UI/direction.h"
 
-/* Variables static */
+namespace Intervals {
 
-int Intervals::maxVer;	// Donne le max sur les bordures verticaux
-int Intervals::maxHor;	// Donne le max sur les bordures horizontaux	
-IntervalList Intervals::primary;	// La liste contentant tout les intervalles de spawns prioritaires
-Interval* Intervals::prev;		// 1 Seul Itérateur, pointe vers un élément précédant			
-int Intervals::bannedSpwn[4];	// Permet de vérifier le nombre de spawn exclut sur une bordure
-bool Intervals::borderIsFull[4];// La bordure ne contient aucun spawn de disponible
-bool Intervals::allPrimeEmpty = true;	// Tout les listes primaires sont vides
-bool Intervals::isPriority;	// Détermine si on bannis un spawn qui est présent dans la liste prioritaire
-
-/* OUECH*/
-
-// Bordure d'intervalles pleine
-// ---------------------------
-bool Intervals::Is_Secondary_List_Full(int border)
-{
-	if (border == LEFT || border == RIGHT)
-		return bannedSpwn[border] == maxVer;	// bordure verticale	;|
-	else
-		return bannedSpwn[border] == maxHor;	// Le compte à atteint le max?
-}
-bool Intervals::Is_Border_Full(int border)			// La bordure n'a plus aucun intervalle de disponible
-{
-	if (Is_Secondary_List_Full(border))
-		if (primary.start[border] == NULL)
-		{
-			borderIsFull[border] = true;
+	bool IntervalList::Is_Empty()	// Liste est vide?
+	{
+		if (count)
+			return false;
+		else
 			return true;
-		}
-
-	return false;
-}
-// Bordure d'intervalle vide
-// -------------------------
-bool Intervals::Is_Secondary_List_Empty(int border)
-{
-	return scndary.start[border] == NULL && bannedSpwn[border] == 0;	// La liste d'intervalle est vide
-}
-
-void Intervals::Modify_Min(Interval* intval, int newMin)// Modifie le min
-{
-	intval->min = newMin;	// Augmente la borne de min 
-}
-
-void Intervals::Modify_Max(Interval* intval, int newMax) // MODIFIE LE MAX
-{
-	intval->max = newMax;	// Réduit la borne de max 
-}
-
-bool Intervals::Are_Primary_Lists_Empty()			// Vérification de ça
-{
-	int arethey = 0;	// they are!
-
-	for (int border = 0; border < 4; border++)
-	{
-		if (primary.numIntervals[border] == 0)
-			arethey++;
 	}
 
-	if (arethey == 4)
-		return true;
-	else
-		return false;
-}
-
-// Delete un intervalle quand il est vide
-// --------------------------------------
-
-void Intervals::Destroy_Empty_Interval(IntervalList& list, Interval* intval, int border)
-{
-	list.numIntervals[border]--;	// -1 intervalle
-
-	if (intval == list.start[border] && intval == list.end[border])	// 1 élément dans la liste
+	void IntervalList::Empty_List()															// Enlève tout les données de la liste
 	{
-		delete intval;									// on le delete
-
-		list.start[border] = list.end[border] = NULL;	// bonne pratique
-
-		if (isPriority)	// POURRAIT ÊTRE POTENTIELLEMENT ÉRRONÉ
-			allPrimeEmpty = Are_Primary_Lists_Empty();	// Les listes prioritaires sont maintenant vides!
-	}
-	else
-	{
-		if (intval == list.start[border])	// Delete le début
+		Interval* it = start;
+	
+		while (it = start)
 		{
-			list.start[border] = list.start[border]->nxt;
-
-
-		}
-		else
-			if (intval == list.end[border])	// end isnt recorded!!!
-			{
-				list.end[border] = prev;
-				prev->nxt = NULL;
-			}
-			else
-				if (prev)	// Redirection des pointeurs
-					prev->nxt = intval->nxt;
-
-		delete intval;	// Delete l'élément de la liste
-	}
-}
-
-Interval* Intervals::Find_Interval(int border, int spwNum, IntervalList*& theList)			// Trouve un interval à l'aide d'une coord
-{
-	static Interval* it; it = NULL;	// Fais des static cuz i dont know if it really helps
-	static IntervalList* list;
-	static bool found; found = false;
-
-	prev = NULL;	// À chaque fois qu'on cherche un nouvel item, on va reset le previous* ptr
-
-	for (size_t i = 0; i < 2; i++)	// Faut vérifier les deux listes malheureusement. Puisque primary élimine des éléments de secondary
-	{
-		if (i % 2 == 0)
-			list = &scndary;	// Vérifie la liste secondaire en premier
-		else
-			list = &primary;	// ensuite la primaire
-
-		it = list->start[border];	// Premier élément de la liste
-		while (it)	// liste non-vide
-		{
-			if (it->min <= spwNum)
-				if (it->max > spwNum)
-				{
-					found = true;
-					break;					// La crd est dans cet interval	     intrv >= min      intrv < max 
-				}
-
-			prev = it;			// previous
-			it = it->nxt;	// Passe au prochain
-		}
-
-		if (found)
-			break;
-	}
-
-	if (it)
-		theList = list;		// Faut rapporter la bonne liste après :( mais pas la modifier si on a rien trouvé. i know its dumbo
-
-	return it;		// Pourrait être NULL si liste vide, --=-=ou si valeure trop grande ou erronée!!!!-=-=-
-}
-void Intervals::Initialize_Valid_Spawn_List()							// DOIT ÊTRE FAIT À CHAQUE DÉBUT DE NIVEAU!	
-{
-	for (int border = 0; border < 4; border++)
-	{
-		Set_First_Interval(border);			// Premier Intervalle	
-	}
-}
-// // Set le premier interval, soit de "0 à Max Number of Spawn on border"
-// ----------------------------------------------------------------------------
-Interval* Intervals::Set_First_Interval(int border)
-{
-	if (Is_Secondary_List_Empty(border))
-	{
-		scndary.start[border] = scndary.end[border] = new Interval;	// Nouvel intervalle
-
-		scndary.start[border]->min = 0;	// Minimum
-
-		// Assigne le max selon la longueur de la bordure
-		if (border == LEFT || border == RIGHT)
-			scndary.start[border]->max = maxVer;
-		else
-			scndary.start[border]->max = maxHor;
-
-		scndary.numIntervals[border] = 1;	// 1 intervalle !
-
-		scndary.end[border]->nxt = NULL;	// bonne pratique
-		return scndary.start[border];
-	}
-	else
-		return NULL;	// Y'an avait déjà 1 ici. Il faut vider D'abord!!
-}
-
-Interval* Intervals::Create_New_Interval(IntervalList& list, int border, int min, int max)
-{
-	static Interval* newIntval; newIntval = NULL;	// Fais des static cuz i dont know if it really helps
-
-	newIntval = new Interval;	// Nouvel Intervalle
-	newIntval->min = min;
-	newIntval->max = max;
-	newIntval->nxt = NULL;
-
-	if (prev)	// Non début de list (NULL)
-	{
-		prev = prev->nxt = newIntval;	// Reset le prev pointeur ici?
-	}
-
-	list.numIntervals[border]++;	// 1 de plus les amis!
-
-	return newIntval;	// doit être passé à la bonne liste!!!!!!
-}
-
-// Ajoute un intervalle prioritaire dans la liste 
-bool Intervals::Add_Primary_Interval(int border, int min, int max)	// SIDENOTE: Pour chaque Bordure, 1 seule intervalle pourra être fournis lors d'un cycle de spawn
-{																				// cette intervalle pourra être divisé au fur et à mesure, mais il sera interdit de l'agrandir
-	if (primary.start[border] != NULL)	// Si la liste est vide
-		return false;		// Il est Interdit d'ajouter un Nouvel Intervalle!!!!!
-
-	primary.start[border] = primary.end[border] = Create_New_Interval(primary, border, min, max);	// Derp
-	Exclude_Primary_Interval(border, min, max);				// Exlut tout les spawns dans l'intervalle primaires, de la liste des intervalles secondaires
-
-	allPrimeEmpty = false;		// Les listes primaires ne sont pas tous vides
-
-	return true;
-}
-
-// Ajoute un intervalle de spawn invalide à la liste secondaire
-bool Intervals::Exclude_Primary_Interval(int border, int min, int max)		// SIDENOTE: L'exclusion se fait toujours sur une liste à 1 intervalle 0 à max. Cuz I said So!
-{
-	if (!Is_Secondary_List_Empty(border))	// dafuck, y'avais déjà quek chose icitte!
-		return false;
-
-	int scndaryMax = scndary.start[border]->max;	// backup du max original
-	int scndaryMin = scndary.start[border]->min;	// backup du min original
-
-	if (min == scndaryMin || scndaryMax == max)	// Exclusion de l'intervalle au complet
-		Destroy_Empty_Interval(scndary, scndary.start[border], border);// On doit détruire l'intervalle
-	else
-	{
-		if (min == scndaryMin)	// Exclut tout les valeurs primaire à gauche
-			scndary.start[border]->min = max + 1;
-		else
-			if (max == scndaryMax)	// Exclut tout les valeurs primaires à droite
-				scndary.start[border]->max = min;
-			else
-			{
-				// Sinon on doit spliter l'intervalle en deux en excluant les valeurs primaires
-				scndary.start[border]->max = min;	//	INTERVALLE #1
-				prev = scndary.start[border];		// setup le précédant
-				Create_New_Interval(scndary, border, max + 1, scndaryMax);			// INTERVALLE #2
-			}
-	}
-
-	//bannedSpwn[border] = max - min;		// Update le nombre de spawn bannis  NO!
-
-	return true;	// worked
-}
-
-// Modifie un intervalle
-void Intervals::Remove_Spawn_From_List(IntervalList& list, Interval* intval, int border, int bannedCrd)
-{
-	int max = intval->max;	// backup du max original
-	int min = intval->min;	// backup du min original
-
-	if (max - min == 1)	// Si on a intervalle de 1
-	{
-		if (min == bannedCrd || bannedCrd == max)		 // Et qu'on doit réduire une des deux extrémités
-			Destroy_Empty_Interval(list, intval, border);// On doit détruire l'intervalle
-	}
-	else
-	{
-		if (min == bannedCrd)	// On peut juste exclure le min 
-			Modify_Min(intval, bannedCrd + 1);
-		else
-			if (bannedCrd == max - 1)	// On peut juste modifier le max
-				Modify_Max(intval, bannedCrd);
-			else
-				Split_Interval_In_Two(list, border, intval, bannedCrd);	// Sinon on split l'intervalle en deux. Ceci en créer un nouvel qui sera placé juste avant			
-	}
-
-}
-
-// Split un intervalle en ajoutant une nouvelle valeur à exclure
-// ----------------------------------------------------------------------------
-void Intervals::Split_Interval_In_Two(IntervalList& list, int border, Interval*& intval, int bannedCrd)	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
-{
-	static Interval* interval_1; interval_1 = NULL;	// Fais des static cuz i dont know if it really helps
-
-	// INTERVALLE #1			
-	interval_1 = Create_New_Interval(list, border, intval->min, bannedCrd);	// Créer un nouvel intervalle précédant 
-
-	if (intval == list.start[border])		// Devient le nouveau start
-		list.start[border] = interval_1;
-
-	interval_1->nxt = intval;	// Re-Pointeursiation
-
-	// INTERVALLE #2
-	Modify_Min(intval, bannedCrd + 1);	// Réduit l'intervalle originale
-}
-
-// Chaque bordure est reset à son intervalle de base par défaut: 0 à max
-void Intervals::Reset_Secondary_List()
-{
-	static Interval* it; it = NULL;	// Fais des static cuz i dont know if it really helps
-
-	for (int i = 0; i < 4; i++)	// 4 = nombre de borders
-	{
-		if (bannedSpwn[i] == 0)	// Aucun spawn n'est bannis, l'intervalle de base est déjà setté
-			continue;
-
-		if (!Is_Secondary_List_Full(i))		// Tout les coord sont bannies. Il'n'y a donc aucun intervalle de disponible dans la liste
-		{
-			it = scndary.start[i];
-
-			while (it)	// Liste non vide
-			{
-				prev = it;
-				it = it->nxt;
-				delete prev;	// Vide la liste
-			}
-
-			scndary.start[i] = NULL;	// ?
-			prev = it = NULL;	// Bonne pratique
-		}
-
-		bannedSpwn[i] = 0;			// !in this order pls!
-		borderIsFull[i] = false;	// ahhhhh
-		Set_First_Interval(i);		// Set un intervalle de départ: 0 à max
-	}
-}
-
-void Intervals::Empty_Primary_List()	// Ces listes doivent être vidé à la fin des spawns
-{
-	static Interval* it; it = NULL;	// Fais des static cuz i dont know if it really helps
-
-	for (int i = 0; i < 4; i++)	// 4 bordures
-	{
-		while (it = primary.start[i])	// Liste pas vide
-		{
-			primary.start[i] = it->nxt;
+			start = start->nxt;
 			delete it;
 		}
 
-		primary.numIntervals[i] = 0;	// Plus d'intervalle ici!
-		primary.end[i] = {};	// Bonne pratique
+		start = end = NULL;	// safety
+		count = 0;			// pu rien
 	}
 
-	allPrimeEmpty = true;		// Les listes primaires sont vides
-}
+	void IntervalList::Reset_List()
+	{
+		Empty_List();	// vide
+		Set_First_Interval(); // qekchose
+	}
 
-Interval* Intervals::Pick_Random_Interval(const IntervalList& list, int border)	// Prend un interval random parmis la liste figurant sur une bordure
-{
-	static Interval* it; it = NULL;	// Fais des static cuz i dont know if it really helps
-	int rdmIntervalle;
+	// INITIALIZATION
+	bool IntervalList::Set_First_Interval()		// Set le premier interval, soit de min à max
+	{
+		if (start)
+			return false;			// t'avais pas vidé la liste avant
 
-	rdmIntervalle = rand() % list.numIntervals[border];		//  Prend 1 intervalle parmis le total présent dans la liste
+		start = end = new Interval;
 
-	it = list.start[border];	// Début de la liste, Intervalle numéro 1!
+		start->min = dfltMin;
+		start->max = dfltMax;
 
-	if (list.numIntervals[border] != 1)				// % 1 donne toujours 1.		% > 1  peut donner 0		(par définition, un intervalle de zéro n'existe pas)
-		for (int i = 0; i < rdmIntervalle; i++)
+		count = 1;
+
+		return true;
+	}
+
+	// Première intialisation
+	void IntervalList::Initialize_List(int min, int max)				// intialize une lsite
+	{
+		Set_Dflt_Interval(min, max);
+		Set_First_Interval();
+	}
+
+	// TROUVE UNE VALEUR DISPONIBLE
+	// ----------------------------
+
+	bool IntervalList::Search_Value(int value)			// trouve une valeur					PREVIOUS POINTERS EST TRÈS AGAÇANT
+	{
+		Interval* it = start;
+
+		if (it->min <= value || end->max < value)	// On skip la recherche au complet si aucun élément de la liste n'a cette valeur
+			return false;
+
+		while (it)
 		{
-			prev = it;		// voilà!!
-			it = it->nxt;
+			if (Is_Value_Within(it, value))
+				return true;	// it's here
+			else
+				it = it->nxt;
 		}
 
-	return it;	// L'Intervalle !
-}
-int Intervals::Pick_Rdm_Spwn_From_Interval(Interval* intval)	// Génère la coordonnée de spawn!
-{
-	int rdmSpwn, numSpwns;
-
-	if (intval->min == 1)
-		rdmSpwn = intval->min;	// Assurément
-	else
-	{
-		numSpwns = intval->max - intval->min;			// le nombre de spawn présent dans l'intervalle
-		rdmSpwn = rand() % numSpwns + intval->min;		//  Un spawn random parmis cet intervalle!!!
+		return false;	// it Ain't here
 	}
 
-	return rdmSpwn; // Le spawn !
-}
+	bool IntervalList::Pick(int& value, bool rdmValue)	// On trouve un intervalle qui ensuite trouve un spawn disponible
+	{
+		Interval* intval = NULL, * prevIter = NULL;
+		bool found = false;
 
-int Intervals::Pick_Primary_Border()	// Prend une bordure contenant une liste primaire
-{
-	if (allPrimeEmpty == true)		// Les listes primaires sont vides brahé
-		return -1;
-	else
-		for (int border = 0; border < 4; border++)
+		// SI TU VEUX PRENDRE UNE AUTRE VALEUR AU HASARD AU CAS OÙ CELLE-CI N'EST PAS TROUVÉ
+		//if(!rdmValue)
+		//	rdmValue = Pick_Value(prevIter, intval, value);	// vrai si trouvé
+				// SI TU VEUX PRENDRE UNE AUTRE VALEUR AU HASARD AU CAS OÙ CELLE-CI N'EST PAS TROUVÉ
+
+		if (!rdmValue)
+			found = Pick_Value(prevIter, intval, value);	// vrai si trouvé
+
+		if (rdmValue)
 		{
-			if (primary.start[border] != NULL)
-				return border;
+			intval = Pick_Random_Interval(prevIter);
+			value = Pick_Random_Value(intval);
+			found = true;
 		}
 
-	return -1;	// failed somewhere
-}
-// Trouve un spawn disponible sur une bordure prédéterminé
-int Intervals::Pick_Valid_Spawn(int border, bool random, int spwNum)	// On trouve un intervalle qui ensuite trouve un spawn
-{
-	static Interval* it; prev = it = NULL;	// Fais des static cuz i dont know if it really helps						// J'ai blocké longtemps parce que prev n'avait pas été ré-initialisé à NULL
-	static IntervalList* list;		// La liste dans laquelle on va piger un spawn
-	static int spawn;																									 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
-																														 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
-	// Trouve la bonne liste si le spawn qu'on choisit est random														 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
-	if (primary.start[border] != NULL)	// On va prendre une coord là dedans mah dude									 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
-	{																													 // BONNE PRATIQUE	 BONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUEBONNE PRATIQUE
-		list = &primary;	// Liste prioritaire
-		isPriority = true;
+		if (found)
+			Exclude_Value_From_Interval(prevIter, intval, value);	// Élimine l'élément de l'intervalle
+
+		return found;	// retourne si on a trouvé ce qu'on cherchait								
 	}
-	else
+
+
+	int IntervalList::Pick_Random_Value(Interval* intval)	// On trouve une valeure dans un intervalle 
 	{
-		if (Is_Secondary_List_Full(border))	// Safety
-			return -1;						// La bordure sélectionné ne contient aucun spawn de disponible durant ce cycle
+		int value, length;
+
+		length = intval->max - intval->min;			//	le nombre de spawn présent dans l'intervalle
+		value = rand() % length + intval->min;
+
+		return value; // Extraction Complete!
+	}
+
+	Interval* IntervalList::Pick_Random_Interval(Interval*& previous)// On trouve un intervalle qui ensuite trouve un spawn disponible
+	{
+		Interval* intval;	// L'intervalle
+		int intvalNum;		// Le combientième intervalle de la liste
+
+		intvalNum = rand() % count;		//  Prend 1 # d'intervalle parmis le total présent dans la liste
+		intval = start;					// Début de la liste, Intervalle numéro 1!
+
+		if (count != 1)				// % 1 donne toujours 1.		% > 1  peut donner 0		(par définition, un intervalle de zéro n'existe pas)
+			for (int i = 0; i < intvalNum; i++)
+			{
+				previous = intval;			// voilà!!
+				intval = intval->nxt;
+			}
+
+		return intval;	// L'Intervalle !
+	}
+
+	// PREND UNE VALEUR NON-ALÉATOIREMENT
+	// ----------------------------------
+
+	bool IntervalList::Pick_Value(Interval*& previous, Interval*& intval, int& value)
+	{
+		static bool found; found = false;
+
+		intval = previous = NULL;	// À chaque fois qu'on cherche un nouvel item, on va reset le previous* ptr
+		intval = start;				// Premier élément de la liste
+
+		while (intval)	// liste non-vide
+		{
+			if (intval->min <= value)
+				if (intval->max > value)
+				{
+					found = true;	// La donnée est dans cet interval	     intrv >= min      intrv < max 
+					break;
+				}
+
+			previous = intval;		// previous
+			intval = intval->nxt;	// Passe au prochain
+		}
+
+		if (found)
+			return true;
 		else
-			Set_First_Interval(border); // La liste avait-elle  été initialisé?
-
-		list = &scndary;		// autre liste
+			return false;
 	}
 
-	if (!random)	// Trouvons le spawn!
+	// INFORMATION SUR LES LISTES
+	// --------------------------
+
+	bool IntervalList::Is_Mono_Interval(Interval* intval)	// Si l'intervalle , ne  contient qu'une seule valeur
 	{
-		spawn = spwNum;
-		it = Find_Interval(border, spwNum, list);		// Trouve l'intervalle contenant le spawn. Change la liste pour que ça correspond à celle contenant l'intervalle
-		if (!it)			// Si le spawn n'est pas dans un intervalle 
-			random = true;	// On va spawner quelque chose de random sur la même bordure à la place
+		if (intval->max - intval->min == 1)	// Si on a intervalle de 1
+			return true;
+		else
+			return false;
 	}
-
-	if (random)		// Trouvons un spawn disponible, un peu randomly :)
+	bool IntervalList::Is_Value_Within(Interval* intval, int value)		// Si l'interval est nul(devra être delete)
 	{
-		it = Pick_Random_Interval(*list, border);		// Prend 1 intervalle random parmis cette liste!!!
-		spawn = Pick_Rdm_Spwn_From_Interval(it);		// Prend un spawn Random parmis cette intervalle
+		if (intval->min <= value && intval->max > value)		// La valeur Max est exclut implicitement
+			return true;
+		else
+			return false;
+	}
+	bool IntervalList::Is_Interval_Null(Interval* intval)		// Si l'interval est nul(devra être delete) ?????????????????????????
+	{
+		if (intval->min == intval->max)
+			return true;
+		else
+			return false;
+	}
+	bool IntervalList::Can_Be_Reduced_By_1(Interval* intval, int value)				// Si l'interval devient null , si réduit
+	{
+		if (Is_Mono_Interval(intval) && Equals_Min(intval, value))		// Réduire l'intervalle le détruirait
+			return false;
+		else
+			return true;
+	}
+	bool IntervalList::Equals_Min(Interval* intval, int value)			// Valeur est égal au minimum
+	{
+		if (intval->min == value)
+			return true;
+		else
+			return false;
+	}
+	bool IntervalList::Equals_Max_Minus_1(Interval* intval, int value)	// Valeur est égal au max - 1
+	{
+		if (intval->max - 1 == value)
+			return true;
+		else
+			return false;
 	}
 
-	Remove_Spawn_From_List(*list, it, border, spawn);	// Modifie l'intervalle pour exclure le spawn sélectionné par les DieuX
+	// RETIRE UNE VALEUR D'UN INTERVALLE
+	// ---------------------------------
 
-	//if (list == &scndary)			// Le nombre de spawn bannis par un prioritaire n'a pas besoin d'être enregistré, puisque c'est déjà fait au début
-	bannedSpwn[border]++;		// + 1 au nombre de spawn exclut dans l'intervalle de cette bordure de spawn bot  
+	void IntervalList::Find_And_Remove_Value(int value)	// Retire une valeur d'un intervalle. Mais doit d'abord le trouver
+	{
+		Interval* intval = start, * prev = NULL;
 
-	Is_Border_Full(border);	// Bordure pleine?
+		if (!count)	// yo stais vide
+			return;
 
-	return spawn;	// we got it
+		if (end->max <= value || start->min > value)	// On skip la recherche au complet si aucun élément de la liste à une valeur suffisament élevée
+			return;
+
+		while (intval)
+		{
+			if (Is_Value_Within(intval, value))
+				break;	// it's here
+			else
+			{
+				prev = intval;
+				intval = intval->nxt;
+			}
+		}
+
+		if (intval)	// n'a pas atteint end->nxt = null
+			Exclude_Value_From_Interval(prev, intval, value);
+	}
+
+
+	void IntervalList::Exclude_Value_From_Interval(Interval*& previous, Interval*& intval, int value)
+	{
+		if (!Can_Be_Reduced_By_1(intval, value))	// Si on a intervalle de 1  // Et qu'on doit réduire une des deux extrémités		
+			Destroy_Interval(previous, intval);// On doit détruire l'intervalle	
+		else
+		{
+			if (Equals_Min(intval, value))	// On peut juste exclure le min 
+				Modify_Min(intval, value + 1);
+			else
+				if (Equals_Max_Minus_1(intval, value))	// On peut juste modifier le max
+					Modify_Max(intval, value);
+				else
+					Split_At_Value(previous, intval, value);	// Sinon on split l'intervalle en deux. Ceci en créer un nouvel qui sera placé juste avant			
+		}
+	}
+
+	void IntervalList::Modify_Min(Interval*& intval, int newMin)	// Augmente le min de 1
+	{
+		intval->min = newMin;	// Augmente la borne de min 	
+	}
+	void IntervalList::Modify_Max(Interval*& intval, int newMax)	// Réduit le Max de 1
+	{
+		intval->max = newMax;	// Réduit la borne de max 
+	}
+
+	// Delete un intervalle quand il est vide
+	// --------------------------------------
+
+	void IntervalList::Destroy_Interval(Interval*& previous, Interval*& intval)
+	{
+		if (intval == start && intval == end)	// 1 élément dans la liste
+		{
+			delete intval;		// on le delete
+			intval = start = end = NULL;	// bonne pratique
+		}
+		else
+		{
+			if (intval == start)	// Delete le début
+			{
+				start = start->nxt;
+				delete intval;
+				intval = start;	// Égal au prochain
+			}
+			else
+				if (intval == end)	// end isnt recorded!!!
+				{
+					end = previous;
+					delete intval;	// Delete l'élément de la liste
+
+					intval = previous->nxt = NULL;
+				}
+				else
+					if (previous)	// Redirection des pointeurs
+					{
+						previous->nxt = intval->nxt;
+						delete intval;	// Delete l'élément de la liste
+
+						intval = previous->nxt;	// Passe au prochain
+					}
+		}
+
+		count--;	// -1 intervalle
+
+	}
+
+	// SPLIT UN INTERVALLE EN DEUX
+	// ---------------------------
+
+	void IntervalList::Split_At_Value(Interval*& previous, Interval*& intval, int newMax)	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
+	{
+		int oldMax = intval->max;
+
+		// INTERVALLE #1			
+		Modify_Max(intval, newMax);	// Réduit l'intervalle originale
+
+		// INTERVALLE #2
+		Create_Interval(intval, newMax + 1, oldMax);	// Créer un nouvel intervalle suivant 
+	}
+
+	void IntervalList::Exclude_Interval_From_Interval(Interval*& previous, Interval*& intval, int newMax, int newMin)	// Créer un gap dans un intervalle avec un intervalle
+	{
+		if (newMax < intval->min || newMin < intval->max)	//	[old min, newmax,	[newMin, oldMax[
+			throw "you fucked up";
+
+		if (Equals_Min(intval, newMax) && newMin >= intval->max - 1)		// Exclut l'intervalle au complet
+		{
+			Destroy_Interval(previous, intval);
+			return;
+		}
+
+		if (intval->min < newMax && newMin >= intval->max - 1)	// ne détruit pas, change le max
+		{
+			Modify_Max(intval, newMax);
+			return;
+		}
+
+		if (Equals_Min(intval, newMax) && newMin < intval->max - 1)	// ne détrutit pas, change le min
+		{
+			Modify_Min(intval, newMin + 1);	// En excluant la valeur min
+			return;
+		}
+
+		Modify_Max(intval, newMax);
+		Create_Interval(previous, newMin + 1, intval->max);	// Créer un nouvel intervalle suivant 
+	}
+
+	// CRÉER UN NOUVEL INTERVALLE!!
+	// ----------------------------
+
+	Interval* IntervalList::Create_Interval(Interval*& previous, int min, int max)
+	{
+		static Interval* newIntval; newIntval = NULL;	// Fais des static cuz i dont know if it really helps
+
+		newIntval = new Interval;	// Nouvel Intervalle
+		newIntval->min = min;
+		newIntval->max = max;
+		newIntval->nxt = NULL;
+
+		if (!count)	// Début et fin
+			start = end = newIntval;
+		else
+			if (previous->nxt == NULL)
+				end = end->nxt = newIntval;
+			else
+				if (previous == NULL)
+					start = newIntval;
+				else
+				{
+					newIntval->nxt = previous->nxt;
+					previous->nxt = newIntval;
+				}
+
+		count++;	// 1 de plus les amis!
+		return newIntval;
+	}
+
+	void IntervalList::Add_Interval_On_Top(int min, int max)					// Ajoute un intervalle de valeurs qui va combiner toute celle qui contiendrait l'une de ses valeur
+	{
+		Interval* first = NULL;
+		Interval* last = NULL;
+		Interval* next = NULL;
+		Interval* prev = NULL;
+		int intvLeft;		// Nombre d'intervalle restant à chequer
+		bool foundMin = false;		// Trouvé un intervalle contenant la valeur minimale
+		int newMax = max;
+
+		first = start;
+
+		for (intvLeft = count; intvLeft > 0; intvLeft--)		// Le nombre d'éléments restants							//	Prend tout les intervalles qui contiennent l'intervalle à ajouter, et les combinent
+		{																													//	ex: [1, 3[	[10 ,14[	min = -1
+			if (first->min <= min)		// Trouvé!																			//		[5, 6[	[-4 , 0[	max = 10
+			{																												//		Prend l'Intervalle contenant la valeur Min ex: -4																															//
+				if (max <= first->max)	// l'intervalle était déjà contenu au complet dans l'intervalle first				//		Delete les intervalles qui contiennet pas le premier
+					return;																									//		Modify_Max(first, 14);
+
+				foundMin = true;			
+				intvLeft--;      //		Prend le plus grand Max: 14
+				break;			// Trouvé, we out
+			}
+			else
+			{
+				prev = first;
+				first = first->nxt;
+			}
+		}
+		//----------------------------------------------------------------------------------------
+
+		if (foundMin)
+			last = first->nxt; // cherchons si un intervalle contient la valeur max		
+		else
+		{
+			prev = NULL;	// Si tu trouve pas le min, tu dois quand même trouver le max		
+			last = start;
+			intvLeft = count;	// reset le counter
+		}
+
+		for (int i = intvLeft; i > 0; i--)		// Le nombre d'éléments restants
+		{
+			if (max <= last->max)
+			{
+				newMax = last->max;		// Le max fut trouvé
+				Destroy_Interval(prev, last);
+				break;
+			}
+
+			next = last->nxt;
+			Destroy_Interval(prev, last);	// // Delete Tout les intervalles ne contenant pas le min et étant plus petit que le max
+		}
+
+		if (foundMin)	// Si tu trouve pas le min, tu dois quand même trouver le max
+			Modify_Max(first, newMax);	// Agrandi le premier intervalle trouvé, pour qu'il contienne le nouvel intervalle
+		else
+			Create_Interval(prev, min, max);	// From scratch. On va créer l'intervalle 
+	}
+
+	void IntervalList::Exclude_Interval_From_List(int min, int max)						// Retire un intervalle de valeurs de la liste
+	{
+		Interval* first = NULL;
+		Interval* last = NULL;																									// Pour REMOVE un intervalle:  prendre tout les intervalles qui contiennent l'intervalle à enlever, et les deletes
+		Interval* next = NULL;																									// ex: [1, 3[	[10 ,14[	min = -1
+		Interval* prev = NULL;																									// 	[5, 6[	[-4 , 0[	max = 10
+		int intvLeft;				// Nombre d'intervalle restant à checker													//
+		bool foundMin = false;		// Trouvé un intervalle contenant la valeur minimale										// 	Si aucun Intervalle: SKIP. else
+																																//		Prend l'intervalle contenant la min(-1): [-4 , 0[	(si y'en a un) Ajuste l'intervalle min en lui assisgnant min(-1) comme nouveau max: Modify_Max(min)
+		if (!count)  // Si aucun Intervalle: SKIP																				// 		Prend l'intervalle contenant le max(10): [10 ,14[	(si y'en a un) Ajuste l'intervalle max en lui assisgnant max(14) comme nouveau min: Modify_Min(max)
+			return;																												//
+																																//	Delete TOUT les autres intervalles se trouvant entre ces deux intervalles
+		first = start; // début de listeS																						  
+
+		for (intvLeft = count; intvLeft > 0; intvLeft--)		// Le nombre d'éléments restants		
+		{
+			if (first->min <= min)
+			{
+				if (max <= first->max)			// l'intervalle était contenu au complet dans un seul intervalle, on le modifie pour y exclure les valeurs
+				{
+					Exclude_Interval_From_Interval(prev, first, min, max);
+					return;
+				}
+
+				foundMin = true;				//	Prend le plus grand Max: 14
+				intvLeft--;						// Réduit de 1 le nombre à checker la fin
+				break;
+			}
+			else
+			{
+				prev = first;
+				first = first->nxt;	// passse au prochain
+			}
+		}
+
+		//----------------------------------------------------------------------------------------
+
+		// La valeur minimal fut trouvé dans un intervalle. Maintenant on vérifie si des valeurs de la liste se trouve entre le min et le max
+
+		if (foundMin)
+		{
+			// Si l'intervalle contenant la valeur min est trop petit pour être réduit, on le détruit
+			if (Equals_Min(first, min))
+			{
+				Destroy_Interval(prev, first);	// prev
+
+				if (intvLeft)		// Si il restait des éléments à checker
+					last = first;	//(first devient le next, i know, its confusing :/)		// MIGHT NOT NEED TO PASS BY REF IN THE END
+			}
+			else
+			{
+				Modify_Max(first, min);	// Réduit son maximum
+				last = first->nxt; // cherchons si un intervalle contient la valeur max
+			}
+		}
+		else
+		{
+			prev = NULL;	// Si tu trouve pas le min, tu dois quand même trouver le max		
+			last = start;
+			intvLeft = count;	// reset le counter
+		}
+
+		for (int i = intvLeft; i > 0; i--)		// Le nombre d'éléments restants
+		{
+			if (max <= last->max)
+			{
+				// Le max fut trouvé!
+				// Si l'intervalle serait réduit à un intervalle null par le nouveau min
+				if (max >= last->max - 1)
+					Destroy_Interval(prev, last);
+				else
+					Modify_Min(last, max + 1);	// Réduit son minimum, en excluant la valeur minimal elle même
+				break;	// we done here
+			}
+			else
+			{
+				next = last->nxt;
+				Destroy_Interval(prev, last);	// // Delete Tout les intervalles trouvés
+			}
+		}
+
+	}
 }
-
-
-// bingo bango
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,7 +7,7 @@
 #include "movement_timer.h"
 
 
-void MovementTimer::katch_Up()
+void SpeedTimer::katch_Up()
 {
 	if (this->timeLeft <= 0)
 	{
@@ -26,7 +26,7 @@ void MovementTimer::katch_Up()
 }
 
 // Set la durée de base du CountDown. Quand le count down se termine, 1 mouvement peut être fait
-void MovementTimer::Start_Timer(int speed, int numMove, bool inf)		// Speed est en millisecondes
+void SpeedTimer::Start_Timer(int speed, int numMove, bool inf)		// Speed est en millisecondes
 {
 	if (speed == 0)
 		timeLeft = cdDuration = 0;	// Finis instantannément
@@ -48,7 +48,7 @@ void MovementTimer::Start_Timer(int speed, int numMove, bool inf)		// Speed est 
 	moving = true;
 }
 
-bool MovementTimer::Updates_Left()  // Dans un while, fait les updates que ta de besoin selon le le nombre de moves durant une frame
+bool SpeedTimer::Updates_Left()  // Dans un while, fait les updates que ta de besoin selon le le nombre de moves durant une frame
 {
 	if (movesThisFrame)
 		return movesThisFrame--;
@@ -56,7 +56,7 @@ bool MovementTimer::Updates_Left()  // Dans un while, fait les updates que ta de
 		return false;
 }	
 
-bool MovementTimer::OLD_Tick()	// Update le temps écoulé à partir de delta time
+bool SpeedTimer::OLD_Tick()	// Update le temps écoulé à partir de delta time
 {
 	if (this->moving)
 		this->timeLeft -= (spd * GameLoopClock::Get_Delta_Time());	// Réduit le countdown à partir de DeltaTime
@@ -78,7 +78,7 @@ bool MovementTimer::OLD_Tick()	// Update le temps écoulé à partir de delta time
 // Permet d'utiliser un seul while
 // Difficile à débugger, et pas évident ce que ça fait
 
-bool MovementTimer::Update_Timer()
+bool SpeedTimer::Update_Timer()
 {
 	if (this->timeLeft <= 0)
 	{
@@ -96,7 +96,7 @@ bool MovementTimer::Update_Timer()
 	return false;
 }
 
-bool MovementTimer::Catchup_Needed()				// Katchup le timer si le temps écoulé durant une frame dépassait le countdown
+bool SpeedTimer::Catchup_Needed()				// Katchup le timer si le temps écoulé durant une frame dépassait le countdown
 {
 	if (Update_Timer())
 		return true;
@@ -108,7 +108,7 @@ bool MovementTimer::Catchup_Needed()				// Katchup le timer si le temps écoulé d
 }
 
 
-bool MovementTimer::Tick()	// Update le temps écoulé à partir de delta time
+bool SpeedTimer::Tick()	// Update le temps écoulé à partir de delta time
 {
 	if (this->moving)
 	{

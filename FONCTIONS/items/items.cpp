@@ -3,78 +3,34 @@
 
 #include "../player/player.h"
 
+ItemMeta Item::meta = {};	// info sur le groupe d'items
 
-// Trouve une coord valide pour spawner un item
+							/*
+	LES SPAWNS DISPONIBLES SONT LESQUELLES?
 
-bool Items::Find_Spawn_Location()
-{
-	GrdCoord plyer = P1.Get_Grd_Coord();
-	GrdCoord itemCrd = {};
+	L'intervalle manager fonctionne comme suit:
+	Chaque liste représente une colonne du linkgrid :											instance[3] = colonne #3 dans le grid;
+	Chaque valeurs présentes dans les intervalles de ces listes sont des row du Linkgrid:		instance[colonne].start.min	= 2(row);
+	Ne pas oublier que la valeur max de chaque intervalles est tjrs ingorés
+	Donc pour accéder à une coord :	
 
-	// THE RANDOM WAY
+	instance[5].start -> Start est un intervalle. Il contient une valeur min et max	: tout les valeurs >= à min et < max sont les rows disponibles
+	instance[5].start.min = 2(row)		-> crd{5,2}
+*/
 
-	// Génère 1 donnée au hasard
-	// Vérifie si chacune des conditions sont présentes
-	// Sinon recommence
-
-	// Peut reprendre la même donnée.
-	// Si les conditions augmentent, ça prend de plus en plus de temps
-	// Si les conditions diminuent, ça prend de moins en moins de temps
-	// Si aucune conditions sont valides, ça crash
-
-	// TAKE NO CHANCES
-
-	// Élimine tout de suite les données qui sont pas valides
-	// Choisis une au hasard dans celle qui restes
-
-	// Même vitesse, peut importe le nombre de conditions. 
-	// Est très rapide quand les conditions sont grandes, mais bcp plus lentes quand aucune conditions sont présentes
-	// Prend du temps valider chacunes des conditions
-	// Si utilisé en rafale, peut gagner bcp de temps
-
-	// PAR ÉLIMINATION
-
-	// Génère 1 donnée au hasard
-	// Vérifie si chacune des conditions sont présentes
-	// Sinon, la donnée invalide est ajouté à une liste
-	// Et recommence
-
-	// Ne Peut pas reprendre la même donnée.
-	// Plus les conditions augmentent, plus ça va prendre du temps, mais sera plus rapide que LA RANDOM WAY
-	// Si les conditions diminuent, ça prend de moins en moins de temps
-	// Ne crash pas si aucunes conditions sont valides
-
-	// ÉLIMINATION ET REGROUPEMENT 
-	
-	// Élimine une certaine partie des données qui ne sont pas valides
-	// Génère 1 donnée au hasard en excluant ces données
-	// Vérifie si le reste des conditions sont présentes
-	// Sinon, ajoute l'élément dans une listes
-	// Recommence
-
-	// Mix entre PAR ÉLIMINATION et TAKE NO CHANCES, cette façont est un peux plus flexible
-	// Selon la quantité d'élément qui sont exclus, peut avoir une vitesse stable
-	// Peut être rapide quand ya rien
-	// Peut être un peu plus rapide que TAKE NO CHANCES quand on atteint 50% de conditions invalides?
-	// Tout dépend de la capacité à regrouper des exclusions
-
-
-
-
-
-	// CONDITION #1
-
-	// Liste 1: Exclut la colonne
-	// Liste 2 exclut la proximité
-	// Liste 3 exlut les autres items
-
-	// Liste 4 Exclut tout les autres invalidés par les Links
-
-	// CONDITION #2
-	// CONDITION #3
-	// CONDITION #42
-	// CONDITION #5
-	// CONDITION #16
-
-	return true;
-}
+//
+//void Item::Set_UI()
+//{
+//	switch (itemType)
+//	{
+//	case ItemType::REGULAR:			  break;
+//	case ItemType::BUFFER:		sym = 254;	clr = LIGHT_GREEN;		  break;
+//	case ItemType::BLOCKER:		sym = 158; 	clr = LIGHT_RED;		  break;
+//	case ItemType::CORRUPTED:	sym = 207;	clr = LIGHT_RED;		break;
+//	case ItemType::COLOR_A:		sym = 176;	clr = LIGHT_YELLOW;	  break;
+//	case ItemType::COLOR_B: 	sym = 176;	clr = LIGHT_AQUA;	break;
+//	case ItemType::BLIND_COLOR:	sym = 176;	clr = BRIGHT_WHITE;	  break;
+//	case ItemType::HEALTH:		sym = '0';	clr = LIGHT_GREEN;	  break;
+//	}
+//}
+//

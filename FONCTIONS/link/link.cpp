@@ -2,10 +2,12 @@
 #include "../grid/grid.h"
 #include "../UI/console_output/render_list.h"
 #include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
-
+#include "../events/msg_dispatcher.h"
 #include "../player/player.h"
 #include "link.h"
 
+
+LinkMeta Link::meta = {};	// metton
 
 // La position x et y du Link dans la console, par rapport à son propre LinkGrid
 void Link::Set_LinkXY(int col, int row)
@@ -28,42 +30,80 @@ void Link::Set_State(Wall* child )	// Assigne le state
 // Change la couleur et le symbole selon le Type et le State du Link
 void Link::Set_UI()						
 {
-	switch (this->type)
+	switch (this->modifier)
 	{
-	case LinkType::REGULAR: 
-	case LinkType::ETERNAL:
-	case LinkType::CORRUPTED:	// BREAK!
-	case LinkType::CHASER:
-	case LinkType::BLOCKER:
+	case Modifier::REGULAR:
+		clr = WHITE;	//default bitch
 		if (state == LinkState::ROOT)
 			sym = (char)LinkSym::ROOT;
 		if (state == LinkState::BOUND)
 			sym = (char)LinkSym::PARENT;
 		if (state == LinkState::FREE)
+		{
 			sym = (char)LinkSym::CHILD;	// BREAK!
+			clr = GRAY;
+		}
+		break;
+	case BUFFER:
+		sym = 254;	
+		clr = LIGHT_GREEN;		 
+		break;
+
+	case Modifier::BLOCKER:
+		sym = 158; 	
+		clr = LIGHT_RED;
+		break;
+	case Modifier::CORRUPTER:
+		sym = 207;
+		clr = LIGHT_RED;
+		break;
 	}
-	clr = WHITE;	//default bitch
+
 }
 
-// Active un Link et le relie à un Child
-bool Link::Activate_Link(LinkType& type, Wall* child)
+bool Link::Set_Modifier_To_Bounded_Link(Modifier mod)	// Assigne un nouveau
 {
-	//static bool drawLink; drawLink = false;
+	if (Get_State() == LinkState::FREE)
+	{
+		return false;
+	}
+	else
+	{
+		modifier = mod;
+		return true;
+	}
 
-	this->type = type;	// Son nouveau type	(certaines conversions seront impossible dans le futur)				// Set_Type(type)
+}
+void Link::Convert_Modifier(Modifier mod)		// Convertit le modifier d'un link. Si le link était free, on affiche son symbole de modifier, ce faisant, il devient impassable pour le joueur
+{
+	modifier = mod;
+	Set_UI();	// affichage
+	Dsp_Link();	// Réaffiche le sym 
+}
+
+void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier
+{
+	if(pParent != NULL)
+		if (pParent->Get_Parent_Modifier() == CORRUPTER)
+			mod = CORRUPTER;
+}
+// Active un Link et le relie à un Child
+bool Link::Activate_Link(Modifier& mod, Wall* child)
+{
+	// INTÉRACTIONS
+	Corruption_Inheritance(mod);
 
 	if (this->state == LinkState::DEAD || this->state == LinkState::FREE)		// error brah, le link était pas libre ou DEAD
 	{
 		Set_State(child);				// Set le state selon le fait qu'il a un child ou non, ou si ya pas de parent
-		//drawLink = true;				// Affiche toujours le Link quand son state change
 	}
 
 	StructureManager::Bond_Link_To_Child(this, child);	// assigne les pointeurs parent/enfant
-	Set_UI();						// affichage
+	Set_Modifier_To_Bounded_Link(mod);					// Si le link est free, il ne peut avoir de modifier encore. Il pourra néanmoins être convertit par un blast plus tard
+	Set_UI();											// affichage
 
-	//if (drawLink)
-		//Dsp_Link();		//	Draw Le Link nécessite de vérifier si le joueur si trouve avant! Alors que pour chaque blast, je veux pas faire ça.
-
+	meta.Add();
+	MsgQueue::Register(LINK_ACTIVATED);
 	return true;
 }
 
@@ -80,10 +120,12 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 
 	numChild = children;	// Safety
 	state = LinkState::DEAD;
-
+	modifier = REGULAR;	// faut bien reset ça
 	//if(type != LinkType::REGULAR)
 		/*do stuff*/
 
+	meta.Remove();
+	MsgQueue::Register(LINK_DEACTIVATED); // we did
 }
 
 bool Link::Unbound_Wall_Child(Wall* child)

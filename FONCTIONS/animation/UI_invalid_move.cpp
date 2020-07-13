@@ -6,14 +6,14 @@
 // DEVRAIT ÊTRE UN EVENT
 
 
-void UI_Invalide_Move(Player& player, GrdCoord &grd)
+void UI_Invalide_Action()
 {
-	Coord crd = linkGrid->link[grd.c][grd.r].Get_XY();	// Position XY , // unstatic 
-	char sym = player.Get_Sym();
+	Coord crd = P1.Get_XY();	// Position XY , // unstatic 
+	char sym = P1.Get_Sym();
 
 	ConsoleRender::Add_Char(crd, sym, LIGHT_PURPLE);		// Premier affichage est tjrs instantanné!	// Le player va flash pendant une fraction de seconde pour montrer qu'il ne peut se déplacer
 	
 	// Faudrait time_out le joueur un ti peu pour lui montrer qui peut pas se déplacer là
-	player.Set_Timeout(300);
+	P1.Set_Timeout(300);
 	
 }

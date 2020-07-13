@@ -99,8 +99,8 @@ void Resize_To_Game_Map()	// redimensionne la fenêtre de console. Faut faire ça 
 	//double right = charRatio * (map.Get_Box_Limit(RIGHT) + (map.Get_Box_Limit(LEFT) * 2));		// Longueur en pixel selon la longueur de la map + 1 espace de chaque côté
 	//double bot = charRatio * (map.Get_Height() + (map.Get_Box_Limit(UP) * 2));		// hauteur de de console selon la hauteur
 
-	SetWindowPos(GAME_WND, HWND_TOP, 0, 0, right, bot, SWP_NOMOVE | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu
-	SetWindowPos(GAME_WND, HWND_TOP, 0, 0, right, bot, SWP_NOREDRAW | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu
+	SetWindowPos(GAME_WND, HWND_TOP, 0, 0, (int)right, (int)bot, SWP_NOMOVE | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu
+	SetWindowPos(GAME_WND, HWND_TOP, 0, 0, (int)right, (int)bot, SWP_NOREDRAW | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu
 	Upd_Console_Size();
 	Center_WND();
 }

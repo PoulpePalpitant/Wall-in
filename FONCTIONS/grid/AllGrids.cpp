@@ -81,48 +81,64 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	static GridIndexIncrementor wallCrd;	// crd du wall
 	static GridIndexIncrementor linkCrd;	// Coord de chaque Link à afficher
 	bool playerOnLink = false;				// N'affiche pas le link child si le player se trouve dessus
+	static bool eraseBlast;			// Ne créer aucun wall. Se produit quand des modifiers se combinent ensemble
+
+	// activate walls?
+	// ou juste convert link?
 
 	parent = child = NULL;
 	wall = impactedWall = NULL; wallGRID = NULL;	/*safety*/
 
 	linkCrd = blast->grdPos;	/* positions des links dans le grid*/			
+	parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// Le parent
 	wallGRID = Find_Wall_Grid_From_Direction(blast->dir);	// Le bon grid
 	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(linkCrd);	// Première Coord de Wall
 
+	// Doit d'abord déterminé si le blast ne fait que convertir un link sans créer de wall, ou si il se smash dans un blocker
 
-	// Le nombre de murs 
-	nbOfWalls = blast->Nb_Of_Walls_Per_Blast();		
+	 Deal_With_Modifier_Combinations(blast->grdPos.index, blast->modifier, eraseBlast);
 
-	while (nbOfWalls)
+	if (eraseBlast)	// Aucun mur ne sera créé. Un link est probablement convertit, mais on créer rien d'autre
 	{
-		wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];	// Le wall
-		parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// Le parent
-		linkCrd.Decrement_Coord();	// Crd du child
-		child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// le child
-		
-		parent->Activate_Link(blast->linkType, wall);		// Active le Link, et le lie à son child
-		wall->Activate_Wall(blast->strength, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
-		
-		// WE won't STOP, si un bot est sur un mur qu'on veut créer
-		if (wall->Get_Bot_On_Me() != -1)	// Si y'avait un bot sur le wall qu'on vient de créer, on VA détruire les deux
-			impactedWall = wall;
-
-		if(nbOfWalls == 1)
-			child->Activate_Link(blast->linkType);				// On active le Child qu'une fois, car il n'y en a qu'un seul
-		
-		parent->Dsp_Link();	// Draw le link Parent
-
-		wallCrd.Decrement_Coord();	// prochaine coord de wall
-		nbOfWalls--;
+		// Erase whole blast
+		return;
+		// void Wall::Set_Drawer(bool erase, bool instant
+		//parent->Set_Modifier(blast->modifier);
 	}
+	else
+	{
+		// Le nombre de murs 
+		nbOfWalls = blast->Nb_Of_Walls_Per_Blast();
 
-	if (!(Are_Equal(P1.Get_Grd_Coord(), linkCrd.index)))	// Si le joueur n'est PAS sur le dernier Link child
-		child->Dsp_Link();	// affiche le child
+		while (nbOfWalls)
+		{
+			wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];	// Le wall
+			parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// Le parent
+			linkCrd.Decrement_Coord();	// Crd du child
+			child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// le child
 
-	if(impactedWall)
-		botList.bot[impactedWall->Get_Bot_On_Me()].Bot_Impact(impactedWall);	// Im pact. Un mur fut créer par dessus un bot
+			parent->Activate_Link(blast->modifier, wall);		// Active le Link, et le lie à son child
+			wall->Activate_Wall(blast->strength, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
 
+			// WE won't STOP, si un bot est sur un mur qu'on veut créer
+			if (wall->Get_Bot_On_Me() != -1)	// Si y'avait un bot sur le wall qu'on vient de créer, on VA détruire les deux
+				impactedWall = wall;
 
+			if (nbOfWalls == 1)
+				child->Activate_Link(blast->modifier);				// On active le Child qu'une fois, car il n'y en a qu'un seul
+
+			parent->Dsp_Link();	// Draw le link Parent
+
+			wallCrd.Decrement_Coord();	// prochaine coord de wall
+			nbOfWalls--;
+		}
+
+		if (!(Are_Equal(P1.Get_Grd_Coord(), linkCrd.index)))	// Si le joueur n'est PAS sur le dernier Link child
+			child->Dsp_Link();	// affiche le child
+
+		if (impactedWall)
+			botList.bot[impactedWall->Get_Bot_On_Me()].Bot_Impact(impactedWall);	// Im pact. Un mur fut créer par dessus un bot
+	}
 }
 
 
@@ -149,7 +165,7 @@ static GridIndexIncrementor Find_First_Wall_Crd(const WallGrid &grid, const GrdC
 }
 
 // Créer manuellement une chaîne de murs et de Links dans une direction
-void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, LinkType type)	
+void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type)
 {
 	static Wall* wall;						// Wall à activer
 	static Link* child, * parent;			// Link à activer et son child
@@ -240,3 +256,113 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 
 }
 
+bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastMod, bool& eraseBlast)
+{
+	Link* link = &linkGrid->link[linkCrd.c][linkCrd.r];
+	Modifier linkMod = link->Get_Modifier();
+	LinkState linkState = link->Get_State();
+	eraseBlast = false;	// majority
+	
+	if (linkState != LinkState::DEAD)
+	{
+		switch (blastMod)
+		{
+		case REGULAR:		
+			if (linkMod == BLOCKER)
+				eraseBlast = true;
+			break;
+
+		case BUFFER:
+			if (linkMod == BUFFER)
+			{
+				// Buff all parrents
+				break;
+			}
+
+			if (linkMod == REGULAR)
+			{
+				Buff_All_Child_Walls();
+				eraseBlast = true;
+			}
+
+			if (linkMod == BLOCKER)
+				eraseBlast = true;	// Un buffer se fait détruire par blocker
+			break;
+
+		case BLOCKER:
+			if (linkMod == BLOCKER) // faudrait créer un autre wall avec un blocker sinon? lol
+			{
+				// Parent destruction
+			}
+			else
+			{
+				link->Convert_Modifier(blastMod);	// Convertit en blocker
+				ListsOfChainToModify::Add_Chain_To_Modify(linkCrd, link, true);	// Détruit la whole chaine
+				eraseBlast = true;
+			}
+
+			break;
+
+		case CORRUPTER:
+			if (linkMod == BLOCKER || linkMod == BUFFER) // CONVERT: Convertit en corrupter, sans appliquer d'autres effets
+			{
+				link->Convert_Modifier(blastMod);	// Convertit en corrupter
+				eraseBlast = true;
+			}else
+				if (linkMod == CORRUPTER)
+				{
+					// Convertit les parents?
+				}
+				else
+					if (linkMod == REGULAR)
+					{
+						Corrupt_All_Children();
+						eraseBlast = true;
+					}
+			break;
+
+		case COLOR_A:
+			if (linkMod == COLOR_B)
+				eraseBlast = true;
+			break;/* Destroy rest of blast*/
+
+		case COLOR_B:
+			if (linkMod == COLOR_A)
+				eraseBlast = true;
+			break;/* Destroy rest of blast*/
+
+
+			//  YO, quAND TU TIR SUR LE MÊME TYPE, LE FREE LINK AU BOUTE EST AUTOMATIQUEMENT CONVERTIT
+
+			// OU
+
+			// L'EFFET SE PROPAGE AU PARENTS AUSSI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		}
+	}
+	else
+	{
+		/* Par défault, tout les autres modifiers vont créer des murs quand il atteigned la bordure. Ya juste le blocker qui va faire un tit 'x'*/
+		if (blastMod == BLOCKER)
+		{
+			link->Convert_Modifier(blastMod);	// créer un tit blocker tout seul sur la bordure
+			eraseBlast = true;
+		}
+
+	}
+	return true;
+}
+
+
+void AllGrids::Corrupt_All_Children()
+{
+
+	// peut-t'elle convertir un blocker????
+
+}
+void AllGrids::Buff_All_Child_Walls()
+{
+
+// si un link est corrupt, n'ajoute pas ses childs walls dans la liste à buffer
+
+}

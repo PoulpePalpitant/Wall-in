@@ -7,8 +7,8 @@
 #include "../walls/wall_drawer.h"
 //#include "../player/player.h"
 
-Chain_To_Destroy* DestroyChainOfWalls::start = NULL;
-Chain_To_Destroy* DestroyChainOfWalls::end = NULL;
+ChainToModify* ListsOfChainToModify::start = NULL;
+ChainToModify* ListsOfChainToModify::end = NULL;
 
 
 //
@@ -146,12 +146,12 @@ Chain_To_Destroy* DestroyChainOfWalls::end = NULL;
 // Fonctions publiques du module stack
 // -----------------------------------
 
-bool Chain_To_Destroy::empty()
+bool ChainToModify::empty()
 {
 	return chain.top == NULL;		// Si le top est vide ou plein
 }
 
-void Chain_To_Destroy::push(Link* link)
+void ChainToModify::push(Link* link)
 {
 	LinkToDestroy* top = new LinkToDestroy;
 	chain.count++;
@@ -162,7 +162,7 @@ void Chain_To_Destroy::push(Link* link)
 	chain.top->link = link;
 }
 
-bool Chain_To_Destroy::pop(Link*& data)	// Détruit l'item sur le dessus, mais conserve la donnée en référence
+bool ChainToModify::pop(Link*& data)	// Détruit l'item sur le dessus, mais conserve la donnée en référence
 {
 	data = NULL;
 
@@ -196,7 +196,7 @@ bool Chain_To_Destroy::pop(Link*& data)	// Détruit l'item sur le dessus, mais co
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DestroyChainOfWalls::Add_Children_To_List(Chain_To_Destroy* chain, Link* parent)
+void ListsOfChainToModify::Add_Children_To_List(ChainToModify* chain, Link* parent)
 {
 	int numChild;					// Nombre de child à ajouter à la liste de destruction
 
@@ -213,15 +213,15 @@ void DestroyChainOfWalls::Add_Children_To_List(Chain_To_Destroy* chain, Link* pa
 // Wall and Link destruction
 // *************************
 
-void DestroyChainOfWalls::Add_Chain_To_Destroy(GrdCoord crd, Link* link)
+void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool excludeParent )
 {
-	Chain_To_Destroy* it;	// itérateur
+	ChainToModify* it;	// itérateur
 
 	// NOUVELLE CHAIN À DESTROY
 	if (start == NULL)
-		it = start = end = new Chain_To_Destroy;
+		it = start = end = new ChainToModify;
 	else
-		it = end = end->nxt = new Chain_To_Destroy;
+		it = end = end->nxt = new ChainToModify;
 	
 	Link * parentLink;	// Le Link qui est connecté au premier Link à détruire
 
@@ -231,26 +231,33 @@ void DestroyChainOfWalls::Add_Chain_To_Destroy(GrdCoord crd, Link* link)
 	else
 		it->toDeactivate = link;	// le premier de la liste
 
-	if (it->toDeactivate->state != LinkState::ROOT)	// un root n'a pas de parent
+	if (excludeParent)
 	{
-		it->parentWall = it->toDeactivate->pParent;	// Le wall connectant le parent au link à détruire
-		parentLink = it->parentWall->pParent;	// Le parentLink du link à détruire
-		parentLink->Unbound_Wall_Child(it->parentWall);// On retire le lien unissant le parent Link au wall			ici, on retire 1child de la liste du Link qui était le parent de la chaîne de destruction		
-		it->push(it->toDeactivate); // Ceci sera le premier élément de la liste à détruire
-	}
-	else {	// Si le premier Link est une Root
 		Add_Children_To_List(it, it->toDeactivate);	 // Ajoute tout de suite ses enfants
-		it->toDeactivate->Deactivate_Link();	 // Et on désactive tout de suite 
+		// ET C'EST tout, on ne détruit pas le link
 	}
-
+	else
+	{
+		if (it->toDeactivate->state != LinkState::ROOT)	// un root n'a pas de parent
+		{
+			it->parentWall = it->toDeactivate->pParent;	// Le wall connectant le parent au link à détruire
+			parentLink = it->parentWall->pParent;	// Le parentLink du link à détruire
+			parentLink->Unbound_Wall_Child(it->parentWall);// On retire le lien unissant le parent Link au wall			ici, on retire 1child de la liste du Link qui était le parent de la chaîne de destruction		
+			it->push(it->toDeactivate); // Ceci sera le premier élément de la liste à détruire
+		}
+		else {	// Si le premier Link est une Root
+			Add_Children_To_List(it, it->toDeactivate);	 // Ajoute tout de suite ses enfants
+			it->toDeactivate->Deactivate_Link();	 // Et on désactive tout de suite 
+		}
+	}
 	it->pop(it->toDeactivate);	// TESTY
-	Delete_Parents(it);
+	Modify_Element(it);
 
 	it->toDeactivate = NULL;
  }
 
 
-void DestroyChainOfWalls::Remove_Chain(Chain_To_Destroy* &toRemove, Chain_To_Destroy* &prev)
+void ListsOfChainToModify::Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev)
 {
 	if (toRemove == start && toRemove == end)
 	{
@@ -280,7 +287,7 @@ void DestroyChainOfWalls::Remove_Chain(Chain_To_Destroy* &toRemove, Chain_To_Des
 			}
 }
 
-void DestroyChainOfWalls::Delete_Parents(Chain_To_Destroy* chain)
+void ListsOfChainToModify::Modify_Element(ChainToModify* chain)
 {
 	Add_Children_To_List(chain, chain->toDeactivate);	 // Ajoute les enfants du Link à la liste de destruction
 
@@ -303,10 +310,10 @@ void DestroyChainOfWalls::Delete_Parents(Chain_To_Destroy* chain)
 	Notes sur la destruction: Il semblerait que le joueur va pouvoir  tirer sur des Links faisant partie d'une chaîne qui est en train d'être détruite
 */
 
-void DestroyChainOfWalls::Update_Destruction()
+void ListsOfChainToModify::Update_Chain_Modification()
 {
-	static Chain_To_Destroy* it;
-	static Chain_To_Destroy* prev;
+	static ChainToModify* it;
+	static ChainToModify* prev;
 	
 	prev = NULL;
 	it = start;
@@ -341,7 +348,7 @@ void DestroyChainOfWalls::Update_Destruction()
 			else
 				while (it->timer.Tick())
 				{
-					Delete_Parents(it);
+					Modify_Element(it);
 				}
 		}
 		

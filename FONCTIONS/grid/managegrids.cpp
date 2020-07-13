@@ -1,7 +1,7 @@
 
 #include "../UI/map.h"
 #include "managegrids.h"
-
+#include "../events/msg_dispatcher.h"
 
 // Génère les Grids pour la première fois
 void Create_All_Grids(AllGrids& grid, int col, int row)
@@ -22,8 +22,6 @@ void Resize_All_Grids(AllGrids& grid, int col, int row)
 	grid.wallGrdHor.Resize(grid.linkGrd);	// Ré-Initialisation du grid des Walls horizontaux		c'était à "create" avant, dois vérifier si je faisais une memory leak
 	grid.wallGrdVer.Resize(grid.linkGrd);	// Ré-Initialisation du grid des Walls verticaux
 	grid.spawnGrd.Resize(grid.linkGrd);	// Ré-Initialisation du Grid de bordures de spawns Up down Left Right
-
-	// Resize Window to map?
 }
 
 
@@ -47,4 +45,6 @@ void Resize_Grids_To_Level(AllGrids& grid, int lvl) {
 		Resize_All_Grids(grid, col, row); // UNE SEULE CRÉATION
 	else
 		Create_All_Grids(grid, col, row);
+
+	MsgQueue::Register(GRIDS_RESIZED);
 }

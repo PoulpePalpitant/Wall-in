@@ -14,6 +14,11 @@
 #include "../events/msg_dispatcher.h"
 #include "../time/cycles.h"
 #include "../walls/wall_drawer.h"
+#include "../items/item_spw_drawer.h"
+#include "../items/item_spawner.h"
+#include "../blast/mod_queue_animator.h"
+#include "../animation/UI_invalid_move.h"
+
 #include "update_game.h"
 
 extern bool gIsRunning = true;		// le state du jeu
@@ -25,14 +30,21 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 
 	if (!GameLoopClock::pause)	// GAME_PAUSED
 	{
-		UPD_Bots_Cycles();		// Mouvement et spawn des bots
+		blastP1.UPD_Blast_Shot();		// Devrais être un event global	
+
+		UPD_Cycles_Stuff();		// Mouvement et spawn des bots
 		Peek_Lvl_Script();		// En ce moment, ça sert pas mal juste à peek le spawnscript...
 		Do_Stuff_this_Cycle();	// Bouge et spawn les bots
 		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
 
-		blastP1.UPD_Blast_Shot();		// Devrais être un event global	
-		DrawWalls::Draw_Them_Walls();	// draw les putains de walls
-		DestroyChainOfWalls::Update_Destruction();
+		ItemSpawner::UPD_Item_Spawn_Timers();
+		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent
+		DrawWalls::Draw_Them_Walls();			// draw les putains de walls
+		// draw la putain de modifier queue
+		// draw les putins de link qui se font modifiers
+		ListsOfChainToModify::Update_Chain_Modification();
+		DrawModifierQueue::Update_Modifier_Queue();
+
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 	}
 }
@@ -76,17 +88,25 @@ void Update_Player_Action()
 
 					// Action Spéciale: Un transfer
 					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
-					if (link->Get_State() == LinkState::FREE && link->Get_Type() != LinkType::BLOCKER)// Un blocker empêche les transfer?
+					if (link->Get_State() == LinkState::FREE)
 					{
 						// Si on tir dans la même direction que son parent wall		
 						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
 							cancelBlast = true; // rien va se passer
 						else
-							DestroyChainOfWalls::Add_Chain_To_Destroy(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+
+						// SI LE LINK EST D'UN CERTAIN DTYPE, LE BLAST modifier DEVRAIT PRENDRE SA PROPRIÉTÉ!
 					}
 
+					if (blastP1.Is_Player_Shooting_Border(keyDirection))
+						cancelBlast = true; // rien va se passer
+
 					if (!cancelBlast)
-						blastP1.Setup_Blast(grdCrd, keyDirection /*  TU DOIS METTRE UN BLAST TYPE ICI  */);
+					{
+						blastP1.Setup_Blast(grdCrd, keyDirection);
+						UI_Invalide_Action();
+					}
 				}
 				break;
 

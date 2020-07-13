@@ -42,7 +42,7 @@ void StructureManager::Bond_Wall_To_Adjacent_Links(Wall* wall, Link* parent, Lin
 // Vérifie si le Link parent est Corrompue
 bool StructureManager::Is_Link_Corrupted(Link* parent)
 {
-	if (parent->Get_Type() == LinkType::CORRUPTED)
+	if (parent->Get_Modifier() == Modifier::CORRUPTER)
 		return true;
 	else
 		return false;

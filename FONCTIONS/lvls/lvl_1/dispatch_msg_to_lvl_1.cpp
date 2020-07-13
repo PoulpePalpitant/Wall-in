@@ -33,7 +33,9 @@ void Dispatch_Msg_To_Lvl_1()
 	//	OBS_Change_Window();
 		break;		// Test le changement de window
 
-	case STAGE_ADVANCE:break;	// fack
+	case STAGE_ADVANCE:
+		MsgQueue::Register(START_BOTS);				// Here they come baby
+		break;	// fack
 
 	case WAITING_TIME:
 		break;
@@ -44,7 +46,7 @@ void Dispatch_Msg_To_Lvl_1()
 
 	case PLAYER_SPAWNED: 
 		Ev_Dr_Wasd();							// Affiche les touches clavier du mouvement
-		MsgQueue::Register(FINAL_PUSH);
+		//MsgQueue::Register(FINAL_PUSH);
 		break;
 
 		/* Items*/
@@ -53,7 +55,7 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 
 	case SPAWN_SPECIAL_ITEM: 
-		Ev_Spawn_Life();			// Si tu trigger un event qui était déjà actif ici, ça va faire deux updates en 1 seul cycle! -	BAD -
+		Ev_Spawn_Mysterious_Item();			// Si tu trigger un event qui était déjà actif ici, ça va faire deux updates en 1 seul cycle! -	BAD -
 		break;
 
 		/*Bots*/

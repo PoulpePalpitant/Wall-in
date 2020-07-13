@@ -11,5 +11,7 @@ struct cycles{	// Template de cycles
 extern bool stopSpwCycle; 
 extern bool stopMoveCycle;
 
-void UPD_Bots_Cycles();			// Update les cycles
+void UPD_Cycles_Stuff();			// Update les cycles des bots
+
+
 void Do_Stuff_this_Cycle();

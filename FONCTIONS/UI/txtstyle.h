@@ -11,6 +11,7 @@ struct TextConstant
 	const char SPACE = ' ';
 	const char PARENTHESIS_OPEN = '(';
 	const char PARENTHESIS_CLOSE = ')';
+	const unsigned char VER_BAR = '|';
 	const std::string EMPTY = "";		// EMPTY c'est le 'string' rebel
 };
 

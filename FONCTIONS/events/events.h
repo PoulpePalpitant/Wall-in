@@ -30,8 +30,8 @@ class Event
 	void Handle_It() { this->Handler(); }		// Fait l'event :)
 
 public:
-	static FixedQueue<int> toUpdate;		// La queue de tout les events actifs À UPDATER
-	MovementTimer delay;					// Permet de créer un délay entre chaque étapes de l'event
+	static FixedList<int> toUpdate;		// La queue de tout les events actifs À UPDATER
+	SpeedTimer delay;					// Permet de créer un délay entre chaque étapes de l'event
 
 	bool Is_Active()	{ return isActive;  }
 	void Activate();

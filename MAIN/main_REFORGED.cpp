@@ -20,6 +20,10 @@
 #include "../FONCTIONS/spawns/spawn_bot.h"
 #include "../FONCTIONS/spawns/bots_to_spawn.h"
 #include "../FONCTIONS/spawns/valid_spwn_intervals.h"
+#include "../FONCTIONS/math/manage_interval.h"
+
+#include "../FONCTIONS/time/spawn_cycle.h"
+
 
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
@@ -33,6 +37,8 @@
 #include "../FONCTIONS/inputs/action_input.h"
 #include "../FONCTIONS/events/msg_dispatcher.h"
 #include "../FONCTIONS/console/sweet_cmd_console.h"
+
+#include "../FONCTIONS/game/initialize_game.h"
 
 using namespace std;
 
@@ -107,44 +113,46 @@ int main()	// Le début!
 		}
 	}
 
+	Intervals::ManageIntervalLists itemSpwLocations(linkGrid->Get_Cols(), 0, linkGrid->Get_Rows());
+	itemSpwLocations.Empty_List(4);	// Vide la colonne #4
+	itemSpwLocations.Add_Interval_On_Top(2, -7, 12);
+	itemSpwLocations.Exclude_Interval_From_List(5, -7, 12);
+	itemSpwLocations.Remove_Value(7, 3);
+	int col = 0, row = 0;	itemSpwLocations.Pick_From_Lists(col, row, true, false, Intervals::RDM_ALL);
+
+	itemSpwLocations.Resize(linkGrid->Get_Cols(), 0, 2);
+
+	while (!itemSpwLocations.Is_All_Empty())	// breaking time
+	{
+		itemSpwLocations.Pick_From_Lists(col, row, true, true, Intervals::RDM_ALL);
+	}
+
+	itemSpwLocations.Reset_All_Lists();
+	itemSpwLocations.~ManageIntervalLists();
+
+	Intervals::ManageIntervalLists* itemSpwLocations2 = new Intervals::ManageIntervalLists(linkGrid->Get_Cols(), 0, linkGrid->Get_Rows());
+
 	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
 
-	///* test les spawns bot*/
-	//ValidSpwnIntervals::Initialize_Valid_Spawn_List();	// Doit Initialiser les listes d'ABORD!
 
-	///* Attributs généraux testé*/
-	////bots_to_spawn::gBoxSide = LEFT;		// ça essaie de spawn à gauche 
+	/* test manual wall creation*/
 
-	//bots_to_spawn::Reset_To_Default();
-	//bots_to_spawn::Add_Spwns(0);
-	//bots_to_spawn::Set_Interval(DOWN, 5, 10);
-	//bots_to_spawn::Add_Specific(DOWN, 9);
-	//bots_to_spawn::gVerticalBorder = true;
+	//gGrids.Activate_Chain_Of_Walls({ 8,6 }, LEFT, 5);
+	//gGrids.Activate_Chain_Of_Walls({ 6,5 }, UP, 6);
+	//gGrids.Activate_Chain_Of_Walls({ 6,7 }, DOWN, 6);
 
-	//bots_to_spawn::Set_Randomness();Spawn_Bots();bots_to_spawn::Reset_To_Default();
-	//
-	//
-	//BotMove::Move_Bots();	// we show where they are
-	//bots_to_spawn::Add_Spwns(300);	// repeat, pour vérifier si sa block
-	//bots_to_spawn::Set_Interval(LEFT, 3, 100);	// interval trop grand, il ne sera même pas considéré mon vieux :)
-	//gCustomBot.is = true;		
-	//gCustomBot.health = 100;		// thats strongk!
-	//bots_to_spawn::Set_Randomness();Spawn_Bots();bots_to_spawn::Reset_To_Default();
-
-
-	//BotMove::Move_Bots();	// we show where they are
-	///* test les spawns bot*/
+	/* test manual wall creation*/
 
 
 	Setup_Console_Window();	// Titre et curseur
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Set_Dflt_WND();			// Dimension de la window mon gars
-
+	Initialize_Game();		// Initialize une bunch de crap
 
 	// CLOCK TESTING
-	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Bots Alive");
-	Coord crd3 = { 59,1 };	// Update bot alive count
+	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Spawn Waves: ");
+	Coord crd3 = { 61,1 };	// Update bot alive count
 
 	GameClock LvlClock;
 	LvlClock.clockName = "Swag Clock";crd = { 0,1 };LvlClock.Dsp_Name(crd);
@@ -156,6 +164,7 @@ int main()	// Le début!
 	float fps = 1 / frameRate;
 	float lag = 0;
 	int MS_PER_UPDATE = 10;	// Rythme à laquelle je veais ttout update
+	int loops = 0;
 
 	GameLoopClock::Reset_Timer();	// Premier reset
 
@@ -177,9 +186,12 @@ int main()	// Le début!
 			Update_Game();				// Update le jeu mah dude
 		
 			ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
-
-			if (gAllBotMeta.alive > 10)
-				ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), crd3 );	// Nombre de bot en vie
+			//if (++loops == 60)
+			//{
+			//	ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de bot en vie
+			//	loops = 0;
+			//}
+			ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de bot en vie
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 

@@ -4,6 +4,8 @@
 #include "../animation/UI_move_blast.h"
 #include "../player/player.h"
 #include "../events/msg_dispatcher.h"
+#include "../items/item_list.h"
+#include "blast_modifier_queue.h"
 
 #include "blast.h"
 
@@ -16,11 +18,11 @@
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
 extern const time_t DFLT_BLAST_SPD_VER = 100000;					
-extern const time_t DFLT_BLAST_SPD_HOR = 100000;
+extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER * 2;
 //extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER - DFLT_BLAST_SPD_VER / 4;// J'agrandis la vitesse à l'horizontal!			
 
 // Les propriétés principales du Blast par défaut
-extern const BlastType DFLT_BLAST =	{WallStrength::REGULAR, LinkType::REGULAR};
+extern const BlastType DFLT_BLAST =	{WallStrength::REGULAR, Modifier::REGULAR};
 
 // PEW PEW!!
 
@@ -46,7 +48,8 @@ void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir/* const Bl
 		Setup_Speed();								// Sa vitesse
 		Setup_Dist_Btw_Links();						// La distance entre chacune des colisions sur le grid de links
 	//}			
-
+								
+	BlastModifierQueue::Consume_Next_Modifier();	// Faut que le blast franchis une distance pour consommer un modifier
 	Setup_Blast_UI();							// Son apparence futur
 	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
 	
@@ -161,6 +164,35 @@ void Blast::Setup_Position_Incrementors(GrdCoord& startPos)	// Sa position
 	tailXY.Initialize_Axis(dir);				// Initialise l'incrémenteur de d'Axe de position XY
 	tailXY.coord = frontXY.coord;					// Head and tail commence avec le même XY
 }
+
+
+void Blast::Setup_Modifier(Modifier mod)										// Le modifier du blast, voir global_types.h
+{
+	modifier = mod;
+}
+
+
+
+
+bool Blast::Is_Player_Shooting_Border(Direction dir)			// Si le joueur est collé sur une bordure, et tir dessus, le blast fail
+{
+	GrdCoord crd = P1.Get_Grd_Coord();
+
+	if (crd.r == linkGrid->Get_Rows() - 1 && dir == DOWN)
+		return true;
+
+	if (crd.c == linkGrid->Get_Cols() - 1 && dir == RIGHT)
+		return true;
+
+	if (crd.r == 0 && dir == UP)
+		return true;
+
+	if (crd.c == 0 && dir == LEFT)
+		return true;
+	
+	return false;
+}
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....
@@ -174,20 +206,23 @@ void Blast::UPD_Blast_Shot()
 		// Va avancer le blast à chaque fois que le countdown tombe à zéro
 		while (updateTimer.Tick())
 		{
-
 			if (!Has_Reached_Limit())											// Tant que le blast n'a pas atteint la limite de la "box" du jeu
 			{
 				if (Blast_Is_On_LinkGrid())										// Vérifie si le blast viens d'atteindre la position d'une case du grid
 				{
-					if (nbSteps)							// Si le blast n'est pas sur sa première position de départ
+					if (nbSteps)					// Si le blast n'est pas sur sa première position de départ
+					{
 						grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
+						ItemsOnGrid::Pickup_Item_Here(grdPos.index);	// Grab that item, by SHOOTING IT!
+
+
+					}
 
 					if (linkGrid->Is_Link_Here(grdPos.index))			// Vérifie la présence d'un link 
 					{
 						Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
 						continue;
 					}
-					// OPTIONAL:  Check si d'autres trucs, comme un joueur ou un item est ici
 
 					Reset_Countdown_Till_Nxt_Link();	// Reset le temps que ça va prendre avant le prochaine fois que le blast va être sur le grid de Links
 
@@ -216,6 +251,9 @@ void Blast::UPD_Blast_Shot()
 			}
 
 		}
+
+
+
 	}
 }
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....
@@ -230,13 +268,15 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 
 	// Après le blast!!
 	P1.Upd_Sym_From_Direction(dir);
-	gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés
+
+	gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
 
 	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
 
 	active = false;	// Blast n'est plus actif
 	updateTimer.Stop();
 }
+
 
 
 // CHECK: si le blast se trouve sur le link grid 
