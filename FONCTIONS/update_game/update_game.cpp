@@ -18,6 +18,7 @@
 #include "../items/item_spawner.h"
 #include "../blast/mod_queue_animator.h"
 #include "../animation/UI_invalid_move.h"
+#include "../choice/choice_time.h"
 
 #include "update_game.h"
 
@@ -40,8 +41,6 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 		ItemSpawner::UPD_Item_Spawn_Timers();
 		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent
 		DrawWalls::Draw_Them_Walls();			// draw les putains de walls
-		// draw la putain de modifier queue
-		// draw les putins de link qui se font modifiers
 		ListsOfChainToModify::Update_Chain_Modification();
 		DrawModifierQueue::Update_Modifier_Queue();
 
@@ -66,7 +65,7 @@ void Update_Player_Action()
 			{
 			case PAUSE:
 				GameLoopClock::pause = true;
-				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) ,4 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
+				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
 				break;
 
 			case CHANGE_BLAST:
@@ -74,7 +73,7 @@ void Update_Player_Action()
 				break;
 
 			case BLAST:
-				if (!blastP1.Is_Active() && !gChoiceTime)
+				if (!blastP1.Is_Active() && !ChoiceTime::Is_Choice_Time())
 				{
 					//static Blast* blast; 		blast = &blastP1;	// da blast
 
@@ -100,12 +99,14 @@ void Update_Player_Action()
 					}
 
 					if (blastP1.Is_Player_Shooting_Border(keyDirection))
+					{
+						UI_Invalide_Action();
 						cancelBlast = true; // rien va se passer
+					}
 
 					if (!cancelBlast)
 					{
 						blastP1.Setup_Blast(grdCrd, keyDirection);
-						UI_Invalide_Action();
 					}
 				}
 				break;
@@ -121,7 +122,7 @@ void Update_Player_Action()
 			if (action == UNPAUSE)
 			{
 				GameLoopClock::pause = false;
-				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) ,4 });			// Besoin d'un max screen size
+				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			// Besoin d'un max screen size
 			}
 	}
 	// Faut reset l'action

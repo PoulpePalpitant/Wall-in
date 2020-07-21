@@ -3,7 +3,7 @@
 #include "../structure_manager/destroy_chain.h"
 #include "../bots/botlist.h"
 #include "../UI/console_output/render_list.h"
-
+#include "../animation/UI_move_blast.h"
 #include "AllGrids.h"
 
 
@@ -72,7 +72,7 @@ GrdCoord AllGrids::Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir)
 // Activation d'éléments sur les grids:
 // ***********************************
 
-void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
+bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 {
 	int nbOfWalls;	// Nombre de mur à activer
 	static Wall* wall, *impactedWall;		// Wall à activer		/  Un wall est créer par dessus un bot, il faut donc détruire ce wall
@@ -101,9 +101,7 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	if (eraseBlast)	// Aucun mur ne sera créé. Un link est probablement convertit, mais on créer rien d'autre
 	{
 		// Erase whole blast
-		return;
-		// void Wall::Set_Drawer(bool erase, bool instant
-		//parent->Set_Modifier(blast->modifier);
+		UI_MoveBlast::Setup_Blast_Eraser(blast);
 	}
 	else
 	{
@@ -139,6 +137,8 @@ void AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 		if (impactedWall)
 			botList.bot[impactedWall->Get_Bot_On_Me()].Bot_Impact(impactedWall);	// Im pact. Un mur fut créer par dessus un bot
 	}
+
+	return eraseBlast;	// Détermine si on doit attendre d'erase le avant de désactivé le blast
 }
 
 
@@ -275,14 +275,17 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 		case BUFFER:
 			if (linkMod == BUFFER)
 			{
-				// Buff all parrents
-				break;
+				/* behaviour à déterminer*/	break;
 			}
 
 			if (linkMod == REGULAR)
 			{
-				Buff_All_Child_Walls();
-				eraseBlast = true;
+				if (link->Get_Num_Child())	// pas de chaîne à buff sans child
+				{
+					link->Convert_Modifier(BUFFER);	// convertit le link en buffer
+					ListsOfChainToModify::Add_Chain_To_Modify(linkCrd, link, false, BUFF);	// BUFF tou les childs walls aà partir du Link
+					eraseBlast = true;
+				}
 			}
 
 			if (linkMod == BLOCKER)
@@ -297,7 +300,9 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 			else
 			{
 				link->Convert_Modifier(blastMod);	// Convertit en blocker
-				ListsOfChainToModify::Add_Chain_To_Modify(linkCrd, link, true);	// Détruit la whole chaine
+
+				if(link->Get_Num_Child())	// pas de chaîne à détruire si ya pas de child
+					ListsOfChainToModify::Add_Chain_To_Modify(linkCrd, link, true);	// Détruit la whole chaine
 				eraseBlast = true;
 			}
 
@@ -316,8 +321,13 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 				else
 					if (linkMod == REGULAR)
 					{
-						Corrupt_All_Children();
-						eraseBlast = true;
+						
+						if (link->Get_Num_Child())	// pas de chaîne à convertir sans child
+						{
+							link->Convert_Modifier(CORRUPTER);	// convertit le link en corrupter
+							ListsOfChainToModify::Add_Chain_To_Modify(linkCrd, link, false, CORRUPT);	// BUFF tou les childs walls aà partir du Link
+							eraseBlast = true;
+						}
 					}
 			break;
 
@@ -345,13 +355,15 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 		/* Par défault, tout les autres modifiers vont créer des murs quand il atteigned la bordure. Ya juste le blocker qui va faire un tit 'x'*/
 		if (blastMod == BLOCKER)
 		{
-			link->Convert_Modifier(blastMod);	// créer un tit blocker tout seul sur la bordure
+			link->Activate_Link(blastMod);		// créer le link tu seul
+ 			link->Convert_Modifier(BLOCKER);	// ensuite le convertit
 			eraseBlast = true;
 		}
 
 	}
 	return true;
 }
+
 
 
 void AllGrids::Corrupt_All_Children()

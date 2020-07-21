@@ -4,6 +4,7 @@
 #include "../UI/console(v1.9).h"
 #include "../UI/txtstyle.h"
 #include "player.h"
+#include "../blast/blast_modifier_queue.h"
 #include "../UI/console_output/render_list.h"
 
 extern Player P1 = {};		// Un joueur! 
@@ -14,7 +15,7 @@ void Player::Player_Lose_HP(int hpLost )
 {
 	hp -= hpLost;
 	Upd_State();
-	Upd_Color();
+	//Upd_Color();
 	//update heart
 }	
 
@@ -23,7 +24,7 @@ void Player::Player_Gains_HP(int hpGain)
 {
 	hp += hpGain; 
 	Upd_State();	// Change le state du joueur
-	Upd_Color();	// Change sa couleur
+	//Upd_Color();	// Change sa couleur
 	//update heart
 
 }
@@ -40,12 +41,21 @@ void Player::Upd_State()
 // Change la couleur du joueur quand il pred ou gagne de la vie
 void Player::Upd_Color()													
 {
-	switch (hp)
+	static int tempMod;
+
+	if (!BlastModifierQueue::queue.Get_Nth_Element(1, tempMod))	// Prend le premier élément.
+		tempMod = 0;	// si vide, tempmod est égal à regular
+
+	switch ((Modifier)tempMod)
 	{
-	case 4:clr = Colors::LIGHT_AQUA; break;		// LE MAX, TU COMMENCE PAS UNE GAME AVEC ÇA
-	case 3:clr = Colors::LIGHT_GREEN; break;	// Standard: Commence chaque lvl avec ça
-	case 2:clr = Colors::LIGHT_YELLOW; break;	// Tension Rises!
-	case 1:clr = Colors::LIGHT_RED; break;		// Dernière chance
+	case REGULAR: clr = WHITE;				  break;
+	case BUFFER: clr = LIGHT_GREEN;			  break;
+	case BLOCKER: clr = LIGHT_RED;			  break;
+	case CORRUPTER: clr = LIGHT_PURPLE;		  break;
+	case COLOR_A: clr = LIGHT_YELLOW;		  break;
+	case COLOR_B: clr = LIGHT_AQUA;			  break;
+	case BLIND_COLOR: clr = LIGHT_AQUA;		  break;
+
 	}
 
 	Dis_Player_Sym(); // Display le joueur si on update sa couleur booda
@@ -95,118 +105,3 @@ bool Player::Set_On_Grid()												//
 {
 	return (isOnGrid = linkGrid->Is_Inbound(grdCrd));
 }
-
-
-//
-//
-//void UPD_Hero_Heart()
-//{
-//	std::string Layer[4] = {};			// Chacune des lignes possibles représentant le coeur
-//	Coord crd;					// Coordonnée de départ pour afficher le coeur
-//	crd.y = map.Get_Box_Limit(DOWN) + 2;
-//
-//
-//	// Si le hp change, je doit changer 
-//
-//	switch (P1.Get_HP())
-//	{
-//	case 4:
-//		Layer[0] = "	 \     /";
-//		Layer[1] = "    - (*Y*)	-";
-//		Layer[2] = ". + / _`v'_ \ + .";
-//		break;
-//	case 3:
-//		Layer[0] = "        ";
-//		Layer[1] = "     ( Y*)  ";
-//		Layer[2] = "      `v'   ";
-//		crd.x = 39;
-//		break;
-//	case 2:
-//		Layer[1] = "     ( Y    ";" ( Y/  ";" (X X)  ";
-//		Layer[2] = "      `v    ";"  /v  ";	"  'X  ";
-//		crd.x = 39;
-//		break;
-//	case 1:
-//		Layer[0] = "   ";
-//		Layer[1] = " ( X )";
-//		Layer[2] = " _`v'  ";
-//		Layer[3] = "'       ";
-//		crd.x = 38;
-//		break;
-//	case 0:
-//		break;
-//	}
-//
-//	UI_AF_Hero_Heart(crd, Layer, hero.clr);		// Affiche le coeur!
-//}
-//// Affiche la vie du joueur sous la forme d'un coeur
-//// -------------------------------------------------
-//
-//
-//void UI_AF_Hero_Heart(Coord crd, string Layer[], Colors clr)
-//{
-//	CDTimer animation;
-//	Coord crd;
-//	int keyFrame, finalStage;	// Va définir chaque stage de l'animation qu'on est en train de faire
-//	bool isActive;
-//
-//	if (isActive)
-//	{
-//		if (keyFrame == 0)
-//		{
-//			animation.Set_Cd_Duration(20);
-//			animation.Start_CountDown();
-//		}
-//
-//
-//		if (animation.Get_Time_Left <= 0)
-//		{
-//
-//			switch (keyFrame)
-//			{
-//			case 0:
-//				animation.Set_Cd_Duration(20);
-//				crd = { 39,map.Get_Box_Limit(DOWN) + 2 };
-//
-//				crd.y++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.y++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.x++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.x++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.x++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.x++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.y++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				crd.y++;	ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//			case 1:
-//				animation.Set_Cd_Duration(20);
-//				crd = { 39,map.Get_Box_Limit(DOWN) + 2 };
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//				ConsoleRender::Add_Char_To_Render_List(crd, '(');
-//
-//
-//
-//
-//
-//			case 5: isActive = false;
-//			}
-//		}
-//
-//		animation.Start_CountDown();
-//
-//		else
-//			animation.Tick_Timer();
-//
-//}
-//	// Animation et subanimation
-//
-//	// con.X / 2 Mettre des choses centré!!! >:(
-//	for (size_t i = 0; i < 3; i++)
-//	{
-//		UI_Aff_String(crd.X, crd.Y + i, Layer[i], 0, clr);
-//	}
-//}

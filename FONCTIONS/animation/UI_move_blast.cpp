@@ -5,9 +5,12 @@
 #include "../UI/console(v1.9).h"
 #include "../UI/txtstyle.h"
 #include "../UI/console_output/render_list.h"
-
+#include "../grid/AllGrids.h"
 
 #include "UI_move_blast.h"
+
+SpeedTimer UI_MoveBlast::eraserTimer;	// Erase le reste d'un blast qui à fail	
+
 
 // L'animation va se faire dans cette ordre:
 
@@ -47,4 +50,51 @@ void UI_MoveBlast::Erase_Blast_Tail(Blast* blast)	// ERASE: la queue du blast, s
 	// Incrémentation da la prochaine position XY
 	blast->tailXY.Increment_Coord();
 
+}
+void UI_MoveBlast::Setup_Blast_Eraser(Blast* blast)
+{
+	int length = blast->length;
+	
+	if (blast->nbSteps < blast->length)
+		length = blast->nbSteps;
+
+
+	//// Voici un dumb fix
+	//if (blast->Has_Reached_Limit())	// résoud un bug d'affichage quand tu tir sur la bordure avec juste un tit blocker: Le prob d'affichage semble être lié au fait que quand
+	//{
+	//	length--;		// tu reach la bordure, d'increment 1 dernière fois le frontXY et la tailXY, il faut donc décaler de 1 pour pas effacer le link
+
+	//	//if(linkGrid->Is_Link_Here(blast->grdPos.index))	// et si tu reach la bordure et que tu atteint un blocker aussi, faut reculer encore plus. 
+	//		//length--;
+
+	//}
+
+	eraserTimer.Start_Timer(blast->speed, length - 1);	// un timer qui va effacer toute la longueur du blast. le - 2 c'est pour pas effacer l'extremité
+	
+	// temp bad
+	//eraserTimer.Start_Timer(blast->speed, 0, true);
+}
+ 
+// Quand le blast ne créer pas de mur, il faut l'effacer au complet
+void UI_MoveBlast::Erase_Whole_Blast(Blast* blast){
+	
+	while (eraserTimer.Tick())
+	{	
+		//// temp bad: Remove after tests
+		//if (Are_Equal(blast->frontXY.coord, blast->tailXY.coord)) 
+		//{
+		//	eraserTimer.Stop();
+		//	break;
+		//} 
+		Erase_Blast_Tail(blast);
+
+		//ConsoleRender::Add_Char(blast->tailXY.coord, TXT_CONST.SPACE);
+		//blast->tailXY.Increment_Coord(); // Incrémentation da la prochaine position XY
+		
+
+	}
+	
+	// Godd final
+	if (!eraserTimer.Is_On())
+		blast->active = false;
 }

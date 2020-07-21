@@ -29,7 +29,7 @@ public:
 	GrdCoord Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir);		// Trouve un wall qui possède la même position qu'un Link avec la direction
 	GrdCoord Convert_LinkCrd_To_WallCrd(const GridIndexIncrementor &linkCrd);	// Trouve un wall qui possède la même position qu'un Link avec la polarisation et l'axe
 	
-	void Activate_Walls_And_Links_From_Blast(Blast* blast);	// record tout les walls et links après un blast
+	bool Activate_Walls_And_Links_From_Blast(Blast* blast);	// record tout les walls et links après un blast
 	// Créer manuellement une chaîne de murs et de Links dans une direction
 	void Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength = WallStrength::REGULAR, Modifier mod = Modifier::REGULAR);
 

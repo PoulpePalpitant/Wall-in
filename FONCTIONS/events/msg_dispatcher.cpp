@@ -99,14 +99,21 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		/* Level */
 
 	case BLAST_REACHED_BORDER:
-		Ev_Border_Splash();		// fait un tit splash
+		if(!gBorderShown)
+			Ev_Border_Splash();		// fait un tit splash
 		break; 		
 
 	case FINAL_PUSH: 
 		Ev_Final_Push(); // Msg que la dernière attaque s'en vient
 		break;
 
-	case PRESSED_ENTER: break;
+	case PRESSED_ENTER: 
+		lastKey = KeyPressed::ENTER;
+		break;
+
+	case STAGE_ADVANCE:
+		gCurrentStage++;	// Passe au prochain stage
+		break;
 
 		//Ev_Flash_Map_Corners();	// Fait flaser les coins de la map pendant un bref instant, si le joueur tir sur un mur
 		
@@ -171,7 +178,27 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case START_BOT_MOVE:	Ev_Start_Bot_Move();break;
 	case START_BOT_SPAWNS:	Ev_Start_Bot_Spawn();break;
 
-	case BUMPED_BORDER: Ev_Dr_Map_Borders_1(); break;
+	case BUMPED_BORDER: 
+		//Ev_Dr_Map_Borders_1();
+		break;
+
+		/* Clavier*/
+
+	case BLOCK_ALL_INPUTS:
+		gBlockInputs = true;
+		break;
+
+	case UNBLOCK_ALL_INPUTS: 
+		gBlockInputs = false;
+		break;
+
+	case ACTIVATE_BLAST:
+		gBlockBlast = false;
+		break;
+
+	case DEACTIVATE_BLAST:
+		gBlockBlast = true;
+		break;
 		// Tout les events qui sont trigger par ça  
 	}
 

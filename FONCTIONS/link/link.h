@@ -56,11 +56,11 @@ private:
 
 	Coord coord;						// Coord xy du Link dans la console
 	LinkState state = LinkState::DEAD;	// L'état du Link. Le joueur peut seulement se déplacer dessus si il est FREE.						
-	Modifier modifier;						// type du link																						
+	Modifier modifier = REGULAR;						// type du link																						
 																																			
 	// UI																																							  //		 o	4 max		3max
 	Colors clr = Colors::WHITE;			// Couleur du Link. Par défaut c'est white																					  //		 |				
-	char sym = 250;						// Symbole représentant le Link, varie selon le nombre de child et du parent												  //		 |
+	unsigned char sym = 250;						// Symbole représentant le Link, varie selon le nombre de child et du parent												  //		 |
 	void Set_UI();						// Change la couleur et le symbole selon le Type et le State du Link														  //	  o--#--o	  o--#--o	
 																																									  //		 |			 |
 																																									  //		 |			 |
@@ -78,17 +78,21 @@ public:
 	void Corruption_Inheritance(Modifier& mod);			//  le modifier
 	void Convert_Modifier(Modifier mod);
 
+	int Get_Num_Child() { return numChild; }		// À noter qu'un Link Root peut avoir aucun child, il est donc plus sécuritaire d'utiliser cette fonction pour vérifier ce fait
 	Coord Get_XY() { return coord; }				// Retrouve les Coord XY du Link 
-	LinkState Get_State(){return this->state;	}	// Donne l'état du Link pour savoir si il existe	
+	LinkState Get_State(){
+		return this->state;
+	}	// Donne l'état du Link pour savoir si il existe	
 	Modifier Get_Modifier() { return modifier; }
-	bool Set_Modifier_To_Bounded_Link(Modifier mod);// Assigne le state 
+	bool Set_First_Modifier(Modifier mod);// Assigne le state 
 
 	void Dsp_Link();			// Affiche le Link
 	void Clr_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
 	
 	bool Activate_Link(Modifier & mod, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
 	void Deactivate_Link();		// Désactive le Link
-	bool Unbound_Wall_Child(Wall* child);					// 
+	bool Unbound_Wall_Child(Wall* child);		// change le state/détruit de le link si il n'a plus de child
+	void Unbound_All_Child();					// 
 };
 
 

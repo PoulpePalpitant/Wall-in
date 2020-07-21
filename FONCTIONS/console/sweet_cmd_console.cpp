@@ -20,7 +20,7 @@ void Upd_Console_Size()
 {
 	GetConsoleScreenBufferInfo(h, &csbi);
 	gConWidth = csbi.srWindow.Right;					// Nouvelle Largeur
-	gConHeight= csbi.srWindow.Bottom;					// Nouvelle Longueur
+	gConHeight= csbi.srWindow.Bottom;					// Nouvelle HauteurS
 }
 
 void Setup_Console_Window()

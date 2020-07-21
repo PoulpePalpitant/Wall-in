@@ -42,7 +42,9 @@ public:
 	void Remove_Ignore() { ignore = false; }
 	
 	/* Event à Multi Étapes*/				// TRÈS OPTIONNEL
-	int Get_Current_Step() { return curSteps; }	// Le nombre de stade fait
+	int Get_Current_Step() { return curSteps; }		// Le nombre de stade fait
+	void Go_To_Next_Step() { curSteps++; }			// Fait juste avancer d'un step
+	void Go_To_X_Step(int step) { curSteps = step; }// Sorte de Goto D:
 	bool Stop_If_No_More_Steps();					// Plus rien à updater, on désactive
 	void Advance(int speed, int numMove = 1);		// Avance l'event d'un stade
 	void Start(int speed, int numMove = 1);			// Start l'event!
@@ -95,23 +97,23 @@ static Event Ev_EventObject(EV_Event_Method , 2); // Def //
 
 void EV_Event_Method()
 {
-	if (!Ev_EventObject.Is_Active())
+	if (!ev_EventObject.Is_Active())
 	{
 		// initialisation
 
-		Ev_EventObject.Activate();
-		Ev_EventObject.Start(0);
+		ev_EventObject.Activate();
+		ev_EventObject.Start(0);
 	}
 	else
-		if (Ev_EventObject.delay.Move_Tick())
+		if (ev_EventObject.delay.Tick())
 		{
-			switch (Ev_EventObject.Get_Current_Step())
+			switch (ev_EventObject.Get_Current_Step())
 			{
 				case 1:// do event stuff
-				Ev_EventObject.Advance(0);
+				ev_EventObject.Advance(0);
 				break;
 				case 2:// do event stuff
-				Ev_EventObject.Advance(0);
+				ev_EventObject.Advance(0);
 				break;
 				// maybe trigger a message here
 			}

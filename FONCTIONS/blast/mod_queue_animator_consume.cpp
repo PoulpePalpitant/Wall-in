@@ -22,18 +22,13 @@ namespace DrawModifierQueue {
 		updated = 0;
 		toUpdate = consume.total;
 
-		if (toUpdate == 2)
-			toUpdate;
-
 		for (int index = 0; updated < toUpdate; index++)
 		{
 			if (!consume.Is_Active(index))
 				continue;	// passe au suivant
 
-			if (index > 3)
-				continue;
-
 			draw = &consume.drawer[index];
+			updated++;	// updated
 
 			while (draw->timer.Tick())
 			{
@@ -75,7 +70,6 @@ namespace DrawModifierQueue {
 					break;
 				}
 			}
-			updated++;	// updated
 
 		}
 

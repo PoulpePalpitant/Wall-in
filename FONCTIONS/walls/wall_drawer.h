@@ -24,6 +24,7 @@ class DrawWalls
 	static void Remove(WallDrawer* &prev, WallDrawer* &toRemove);
 public:
 	static void Draw_Them_Walls();
+	static bool Find_And_Draw_Wall(WallDrawer& drawer);	// trouve un mur dans la liste et termine l'affichage
 	static void Add(WallDrawer* data);
 };
 

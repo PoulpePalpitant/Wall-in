@@ -100,9 +100,9 @@ namespace DrawModifierQueue {
 	bool DrawerQueue::Is_Active(int index)
 	{
 		if (index > MAX_QUEUE_SIZE - 1)
-			throw " brah tahts too far";
-
-		 return drawer[index].active; 
+			return false;//throw " brah tahts too far";
+		else
+			 return drawer[index].active; 
 	}
 
 	void DrawerQueue::Remove(int index)	// On delete rien au final
@@ -116,22 +116,28 @@ namespace DrawModifierQueue {
 			drawer[index].cancel = true;
 		
 	}
-	bool DrawerQueue::Add_To_Next(Modifier modifier)	// Ajoute un item à draw
+	bool DrawerQueue::Add_To_Next_Available(Modifier modifier)	// Ajoute un item à draw
 	{
 		static Drawer tempDrawer = {};
 
 		if (total < MAX_QUEUE_SIZE)
 		{
-			Set_Char_From_Mod(modifier, tempDrawer.sym, tempDrawer.clr);
-			tempDrawer.timer.Start_Timer(0);		// First step de l'animation
-			tempDrawer.active = true;	// se fait à chaque fois pour rien
+			for (int index = 0; index < MAX_QUEUE_SIZE; index++)
+			{
+				if (drawer[index].active == false)
+				{
+					Set_Char_From_Mod(modifier, tempDrawer.sym, tempDrawer.clr);
+					tempDrawer.timer.Start_Timer(0);		// First step de l'animation
+					tempDrawer.active = true;	// se fait à chaque fois pour rien
 
-			drawer[total] = tempDrawer;
-			total++;
-			return true;
+					drawer[index] = tempDrawer;
+					total++;
+					return true;
+				}
+			}
 		}
-		else
-			return false;
+		
+		return false;
 
 	}
 

@@ -40,6 +40,32 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 		end = end->nxt = data;
 	
 }
+ bool DrawWalls::Find_And_Draw_Wall(WallDrawer& drawer)
+{
+	 if (start == NULL) return false;	// Liste vide
+
+	 static WallDrawer* it;
+	 static WallDrawer* prev;
+	
+	 it = start;
+	 prev = NULL;
+
+	 while (it)
+	 {
+		 if (it == &drawer)
+		 {
+			 for (int i = it->timer.Get_Moves_Left(); i > 0; i--)
+			 {
+				 ConsoleRender::Add_Char(it->xy.coord, it->sym, it->clr);
+				 it->xy.Increment_Coord();
+			 } 
+			 Remove(prev, it);
+			 return true;
+		 }
+	 }
+
+	 return false;
+}
 
 void DrawWalls::Draw_Them_Walls()		
 {

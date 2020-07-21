@@ -15,7 +15,7 @@
 	C'est pourquoi, chaque tir horizontal va créer 2 murs aux lieux d'un seul.
 */
 
-extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X * 2 + 1;	// Le +1 c'est pour afficher l'extrémité du blast
+extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
 extern const time_t DFLT_BLAST_SPD_VER = 100000;					
 extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER * 2;
@@ -83,7 +83,7 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 		switch (dir)		// Symboles par défaut
 		{
 		case UP:
-		case DOWN: sym = (int)WallSym::SYM_VER2; color = Colors::THIRTY; break;
+		case DOWN: sym = (int)WallSym::SYM_VER2; color = Colors::WHITE; break;
 		case LEFT:
 		case RIGHT:sym = (int)WallSym::SYM_HOR2; color = Colors::WHITE; break;
 		}
@@ -203,6 +203,12 @@ void Blast::UPD_Blast_Shot()
 {
 	if (active)
 	{
+		if (UI_MoveBlast::eraserTimer.Is_On())	// efface le blast seulement si aucun mur ne seront créés
+		{
+  			UI_MoveBlast::Erase_Whole_Blast(this);	// Va continuer d'effacer le blast avant de le réactiver
+			return;
+		}
+
 		// Va avancer le blast à chaque fois que le countdown tombe à zéro
 		while (updateTimer.Tick())
 		{
@@ -215,15 +221,12 @@ void Blast::UPD_Blast_Shot()
 						grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
 						ItemsOnGrid::Pickup_Item_Here(grdPos.index);	// Grab that item, by SHOOTING IT!
 
-
+						if (linkGrid->Is_Link_Here(grdPos.index))			// Vérifie la présence d'un link 
+						{
+							Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
+							continue;
+						}
 					}
-
-					if (linkGrid->Is_Link_Here(grdPos.index))			// Vérifie la présence d'un link 
-					{
-						Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
-						continue;
-					}
-
 					Reset_Countdown_Till_Nxt_Link();	// Reset le temps que ça va prendre avant le prochaine fois que le blast va être sur le grid de Links
 
 				}
@@ -246,14 +249,14 @@ void Blast::UPD_Blast_Shot()
 			}
 			else
 			{
+				length--;	// Ceci est un dumb fix pour l'affichage/ résoud un bug d'affichage quand tu tir sur la bordure avec juste un tit blocker, ça effac¸ait trop loin
+				nbSteps--;	// vraiment dumb
+
 				Stop_Blast();
 				continue;
 			}
 
 		}
-
-
-
 	}
 }
 // PEWWWWPEWWPEWPEWPEWPEWPEPWEPWPEPWEPWPEPWEPWPEWPEWPEEEEEEEEEEEEEEEEEEEEEEEEEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!....
@@ -263,17 +266,14 @@ void Blast::UPD_Blast_Shot()
 
 void Blast::Stop_Blast()	// stop le blast...... le grus
 {
-	if (nbSteps != 0)
-		UI_MoveBlast::Erase_Blast_Tail(this); //Animate_Blast(this);			// Sert principalement à effacer la tail bien franchement 
+	UI_MoveBlast::Erase_Blast_Tail(this); 	// Sert principalement à effacer la tail bien franchement 
 
 	// Après le blast!!
 	P1.Upd_Sym_From_Direction(dir);
-
-	gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
-
 	P1.Dis_Player_Sym();				// Faut réafficher le joueur après le tir
 
-	active = false;	// Blast n'est plus actif
+	// Le Blast peut resté actif si il ne créé pas de mur. Il faut attendre que ses char soit effacés
+	active = gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
 	updateTimer.Stop();
 }
 

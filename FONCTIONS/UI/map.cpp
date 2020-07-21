@@ -4,6 +4,7 @@
 
 extern const Distance GAP_BTW_GRID = 2;	// Les Spawns se retrouvent 1 case plus loin que le grid de Links
 
+extern bool gBorderShown = false;		// Les bordures de la map sont visibles
 
 extern Map map = {};	// Définition de la class map iciitttttttttteeeeee
 

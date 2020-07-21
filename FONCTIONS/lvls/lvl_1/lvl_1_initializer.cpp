@@ -19,9 +19,9 @@ void Lvl_1_Initializer()
 	gSpwBotTimer.Start_Timer(500 , 1 , true);
 	gBotMoveTimer.Start_Timer(8000, 1, true);
 	
-	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 100, 0);
-	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 100, 50);
-	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 100, 0);
+	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 1000, 0);
+	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 1000, 50);
+	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 1000, 0);
 
 
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
@@ -36,5 +36,7 @@ void Lvl_1_Initializer()
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
 	MsgQueue::Register(SPAWN_PLAYER);	// It has to be done
 	MsgQueue::Register(LOCK_PLAYER);	// It has to be done
+
+	//MsgQueue::Register(START_BOTS);	// It has to be done
 	
 }

@@ -29,7 +29,7 @@ void SpeedTimer::katch_Up()
 void SpeedTimer::Start_Timer(int speed, int numMove, bool inf)		// Speed est en millisecondes
 {
 	if (speed == 0)
-		timeLeft = cdDuration = 0;	// Finis instantannément
+		timeLeft = cdDuration = (speed * GameLoopClock::Get_Delta_Time());	// Finis instantannément			TEST
 	else
 		timeLeft = cdDuration = 1000;	// DEFAULT.		1000ms = 1seconde
 

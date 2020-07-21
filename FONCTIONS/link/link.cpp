@@ -34,8 +34,7 @@ void Link::Set_UI()
 	{
 	case Modifier::REGULAR:
 		clr = WHITE;	//default bitch
-		if (state == LinkState::ROOT)
-			sym = (char)LinkSym::ROOT;
+
 		if (state == LinkState::BOUND)
 			sym = (char)LinkSym::PARENT;
 		if (state == LinkState::FREE)
@@ -45,34 +44,42 @@ void Link::Set_UI()
 		}
 		break;
 	case BUFFER:
-		sym = 254;	
-		clr = LIGHT_GREEN;		 
+		sym = 254;		
+		clr = LIGHT_GREEN;
 		break;
 
 	case Modifier::BLOCKER:
-		sym = 158; 	
-		clr = LIGHT_RED;
+		sym = 158;
+		/*if (state == LinkState::ROOT)
+			clr = BG_WH_LIGHT_RED;
+		else*/
+			clr = LIGHT_RED;
 		break;
+
 	case Modifier::CORRUPTER:
 		sym = 207;
-		clr = LIGHT_RED;
+	/*	if (state == LinkState::ROOT)
+			clr = BG_WH_LIGHT_PURPLE;
+		else*/
+			clr = LIGHT_PURPLE;
 		break;
 	}
 
+	if (state == LinkState::ROOT)
+		sym = (char)LinkSym::ROOT;
 }
 
-bool Link::Set_Modifier_To_Bounded_Link(Modifier mod)	// Assigne un nouveau
+bool Link::Set_First_Modifier(Modifier mod)		// Ne convertit pas le modifier si celui déjà existant est REGULAR
 {
-	if (Get_State() == LinkState::FREE)
-	{
-		return false;
-	}
-	else
+	if (Get_State() != LinkState::FREE && modifier == REGULAR)	// shame.		dont' edit, it makes sense
 	{
 		modifier = mod;
 		return true;
 	}
-
+	else
+		return false;
+	
+	
 }
 void Link::Convert_Modifier(Modifier mod)		// Convertit le modifier d'un link. Si le link était free, on affiche son symbole de modifier, ce faisant, il devient impassable pour le joueur
 {
@@ -91,7 +98,8 @@ void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier
 bool Link::Activate_Link(Modifier& mod, Wall* child)
 {
 	// INTÉRACTIONS
-	Corruption_Inheritance(mod);
+	if (modifier == REGULAR)
+		Corruption_Inheritance(mod);
 
 	if (this->state == LinkState::DEAD || this->state == LinkState::FREE)		// error brah, le link était pas libre ou DEAD
 	{
@@ -99,7 +107,8 @@ bool Link::Activate_Link(Modifier& mod, Wall* child)
 	}
 
 	StructureManager::Bond_Link_To_Child(this, child);	// assigne les pointeurs parent/enfant
-	Set_Modifier_To_Bounded_Link(mod);					// Si le link est free, il ne peut avoir de modifier encore. Il pourra néanmoins être convertit par un blast plus tard
+	Set_First_Modifier(mod);		// Si le link est free, il ne peut avoir autre modifier que le REGULAR. Il pourra être convertit par un blast plus tard . Why?, parce que je veut qu'un buffer puisse
+								// transformer le child d'un corrupter? Et que les child des corrupter soit toujours Regular pour que ce soit claire que le joueur peut uniquement bouger sur des tits points
 	Set_UI();											// affichage
 
 	meta.Add();
@@ -111,7 +120,7 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 {
 	int children = this->numChild;
 	this->pParent = NULL;
-										// reset pointers
+										// reset pointers 
 	for (int i = 0; i < numChild; i++)	// reset pointers		// that is some odd for loop
 	{
 		this->pWalls[i] = NULL;	// reset pointers
@@ -127,6 +136,15 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 	meta.Remove();
 	MsgQueue::Register(LINK_DEACTIVATED); // we did
 }
+
+void Link::Unbound_All_Child()	// Retire tout les child du link. et n'update pas le state
+{
+	numChild = 0;
+	
+	for (size_t i = 0; i < 4; i++)
+		pWalls[i] = NULL;
+}
+
 
 bool Link::Unbound_Wall_Child(Wall* child)
 {

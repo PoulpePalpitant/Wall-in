@@ -23,9 +23,11 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 {
 	if (!ev_Dr_Wasd.Is_Active())
 	{
-		crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, 24 };
+		MsgQueue::Register(FREE_PLAYER);
+
+		crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2};
 		ev_Dr_Wasd.Activate();
-		ev_Dr_Wasd.Start(600);	// 1000 / 2 = 500.		2 secondes
+		ev_Dr_Wasd.Start(400/*600*/);	// 1000 / 2 = 500.		2 secondes
 	}
 	else
 	{
@@ -42,7 +44,6 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 				ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, 50);	// x -3, y + 2
 				ev_Dr_Wasd.Advance(0);	// finito
 
-				MsgQueue::Register(FREE_PLAYER);
 				MsgQueue::Register(SPAWN_SPECIAL_ITEM);	// Spawn la vie
 				break;
 			}

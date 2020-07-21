@@ -9,6 +9,7 @@
 // La map est l'air du jeu. La dimension de celle-ci est donnée en x et y et dépend de la dimension du grid prinicpal(LinkGrid). Sert principalement pour l'affichage
 
 extern const Distance GAP_BTW_GRID;	// La distance qui sépare l'air du jeu définis par les Limit de la map des spawns
+extern bool gBorderShown;
 
 class Map
 {

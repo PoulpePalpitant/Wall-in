@@ -6,7 +6,15 @@
 #include "bot.h"
 
 extern CustomBotStats gCustomBot = {};	// Permet de faire des bots customs 
-extern bool gIsBotCustom = false;
+
+void Reset_Custom_Bot()
+{
+	gCustomBot.clr = WHITE;
+	gCustomBot.health = 1;
+	gCustomBot.warningDelay = SPWN_DLAY;
+	gCustomBot.fixedColor = false;
+	gCustomBot.is = false;
+}
 
 bool Bot::Is_Dead()											// vérifie si un bot est mort
 {
@@ -27,11 +35,14 @@ void Bot::Destroy_Bot()
 // Création d'un bot
 void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Construit en utilisant d'autre fonctions
 {
-	static CustomBotStats* customBot;	customBot = NULL;
+	static CustomBotStats customBot;	customBot.is = false;
 
 	// Le bot qui va suivre est customized
 	if (isBotCustomised)
-		customBot = &gCustomBot;		// Je pourrais mettre ce test dans chacune des fonctions suivantes aussi
+	{
+		customBot = gCustomBot;		// Je pourrais mettre ce test dans chacune des fonctions suivantes aussi
+		Reset_Custom_Bot();				/// for now, on reset le custom bot à chaque fois
+	}
 
 	this->type = type;	// Le type de bot est initialisé
 
@@ -45,7 +56,10 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Co
 	Init_Bot_Stats(customBot);						// Le type du Bot doit être initialisé d'abord
 
 	// Le warning de spawn du bot
-	this->spwnWarning.Init_Spawn_Warning(dir, SPWN_DLAY);		
+	if(customBot.is)
+		this->spwnWarning.Init_Spawn_Warning(dir, customBot.warningDelay);
+	else
+		this->spwnWarning.Init_Spawn_Warning(dir, SPWN_DLAY);
 
 	// INITIALISE DISTANCE À PARCOURIR
 	Init_Step_Count();								// À besoin de la direction et de la vitesse du bot
@@ -55,6 +69,7 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Co
 	tillNxtWall = GAP_BTW_GRID - 1;
 
 	gAllBotMeta.New_Bot();		// +1 les mecs!
+
 	// Je crois qu'il serait pertinent de faire une nouvelle classe de bot uniquement si ses mouvements ou ses intéractions avec les autres objets du jeux sont différentes
 }
 
@@ -104,9 +119,7 @@ bool Bot::Bot_Impact(Wall* wall)
 	int HP;	// l'hp du wall, AVANT l'impact
 	HP = wall->Get_Hp();
 
-	if (wall->Get_Strgt() == WallStrength::NONE)	
-		wall->Set_Drawer(); // wall->UI_Draw_Or_Erase_Wall();  // Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
-	else
+	if (wall->Get_Strgt() != WallStrength::NONE) // Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
 	{
 		wall->Take_Damage(this->Get_Power()); // Taking dmg here!
 		deadBot = Bot::Take_Dmg(HP);		// Hey me too!

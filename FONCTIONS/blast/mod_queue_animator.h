@@ -36,7 +36,7 @@ namespace DrawModifierQueue {
 		void Cancel();					// Stop l'animation de l'item sur cette position
 		void Remove(int index);
 		bool Add_To_Index(Modifier modifier, int index);	// Ajoute un item à draw
-		bool Add_To_Next(Modifier modifier);	// Ajoute un item à draw
+		bool Add_To_Next_Available(Modifier modifier);	// Ajoute un item à draw
 		bool Is_Active(int index);
 	};
 

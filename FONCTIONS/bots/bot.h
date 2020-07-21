@@ -20,10 +20,14 @@ const unsigned char BOT_DESIGN_1C[4]{ 202,185,203,204 };		// Le design du BOt à 
 struct CustomBotStats
 {
 //	bool NoWarning;					// La possibilité de ne pas afficher de warning	, fait un niveau là dessu à la place
-	int health;	int speed;			// Stats custom
-	bool is;						// Permet de vérifier si on initialise un Bot custom.. devrait pt être dans la fct spawn. plus loin dans le futur
-
+	int health = 1;					// Stats custom
+	Colors clr = WHITE;
+	bool fixedColor = false;
+	int warningDelay = SPWN_DLAY;
+	bool is = false;						// Permet de vérifier si on initialise un Bot custom.. devrait pt être dans la fct spawn. plus loin dans le futur
 };
+
+void Reset_Custom_Bot();	// reset le custom bot
 
 // Si tu veux spécifier des stats custom pour plus qu'un bot, tu va devoir faire des tableaux mon gars
 extern CustomBotStats gCustomBot;	// Permet de faire des bots customs 
@@ -43,7 +47,7 @@ private:
 	// STATS
 	int hp ;								// La puissance d'un bot, soit le nombre de mur reégulier qu'il peut traverser avant d'être détruit. si égal à zéro, le bot est DEAD
 	int speed ;								// Le nombre de case de déplacement par cycle.   Si tu veux faire de quoi de plus custom, faudrait que tu abandonne les movecycle global, et que tu en assigne un à chaque bot(meh)
-	BotType type = BotType::REGULAR;			// Son type ? Ne contient pas vraiement d'information, sert pas mal juste pour l'initialisation du Bot, meh
+	BotType type = BotType::REGULAR;		// Son type ? Ne contient pas vraiement d'information, sert pas mal juste pour l'initialisation du Bot, meh
 
 	// DÉPLACEMENTS/Position
 	Direction dir;						// Ça direction de déplacement
@@ -61,8 +65,8 @@ private:
 
 	void Init_Bot_Coord_Stuff(SpwCrd& spGrdCrd);												// Le design du bot est initialisé( son symbole et sa couleur)
 	void Init_Step_Count();																		// La distance qu'il doit parcourir and shit
-	void Init_Bot_Stats(CustomBotStats* customBot = NULL);											//  Initialise health and speed : Le type du Bot doit être initialisé d'abord.
-	void Init_Bot_Design(CustomBotStats* customBot = NULL);											// Le design du bot est initialisé( son symbole et sa couleur)
+	void Init_Bot_Stats(CustomBotStats& customBot);											//  Initialise health and speed : Le type du Bot doit être initialisé d'abord.
+	void Init_Bot_Design(CustomBotStats& customBot);											// Le design du bot est initialisé( son symbole et sa couleur)
 	void Init_Dist_Btw_Walls();																	// Initialise btwWalls
 	void Find_First_Wall_Grd_Index(Direction indexBoxSide, int indexrow, GridIndexIncrementor& wallcrd);	// Trouver l'index [c][r] du premier wall que le bot va rencontrer
 

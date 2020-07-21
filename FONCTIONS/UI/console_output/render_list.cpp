@@ -139,6 +139,9 @@ void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , float s
 			Push_To_Queue(crd, text[loop], clr, *toPush);
 			crd.x++;										// Incrémente x pour le prochain charactère	
 		}
+
+	Stop_Queue();	// safety
+
 }
 
 

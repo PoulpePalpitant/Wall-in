@@ -5,7 +5,7 @@
 // INITIALISE LES STATS DU BOT
 // ---------------------------
 
-void Bot::Init_Bot_Stats(CustomBotStats* customBot)											// Le type du Bot doit être initialisé d'abord
+void Bot::Init_Bot_Stats(CustomBotStats& customBot)											// Le type du Bot doit être initialisé d'abord
 {
 	switch (type)		// Le type du nouveau bot
 	{

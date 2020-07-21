@@ -87,6 +87,8 @@ enum MsgType
 	, WALL_TRANSFER
 	, BLAST_HIT_ITEM
 	, BULLETS_DEPLETED
+	, ACTIVATE_BLAST	// Empêche le joueur de tirer
+	, DEACTIVATE_BLAST	// Empêche le joueur de tirer
 
 	/* Window stuff*/
 	, CHANGE_WINSIZE	// Nécessiter de changer la window
@@ -94,6 +96,9 @@ enum MsgType
 	/* Clavier*/
 	, PRESSED_ENTER		/* Le joueur à pesé sur enter, pour faire un choix */
 	, SELECTED_SOMETHING
+	, PRESSED_KEY
+	, BLOCK_ALL_INPUTS
+	, UNBLOCK_ALL_INPUTS
 };
 
 

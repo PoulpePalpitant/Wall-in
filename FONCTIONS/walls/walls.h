@@ -13,7 +13,7 @@ extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall ver
 //enum class WallType { REGULAR, CORRUPTED, INVINCIBLE};
 enum class WallStrength { NONE, REGULAR, STRONG, BIGSTRONGWOW};		//
 enum class WallState { DEAD, EXISTS, ETERNAL, SAD};					// Je reviendrais customize ça quand je serais plus avancé
-enum class WallSym {DEAD, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_VER = 179, SYM_VER2= 186};				// Le symbole d'un seul wall, horizontal et vertical
+enum class WallSym {DEAD, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_HOR3 = 240,  SYM_VER = 179, SYM_VER2= 186, SYM_VER3 = 221};				// Le symbole d'un seul wall, horizontal et vertical
 
 // Les walls pourraient avoir deux propriétés; 1 pour chacun des deux Links qui les cadrent
 
@@ -51,9 +51,9 @@ private:
 	void Set_Axis(Axis gridAxis) { axis = gridAxis; }		// Ceci est fait à l'initialisation du Wallgrid, et ne devrait jamais changer!!!
 
 	void Set_Default_Wall_UI();						// On reset l'apparance du mur à ses valeurs par défaut
-	void Set_Wall_UI(WallStrength newType);				// On change l'apparance du mur selon son type!
+	void Set_Wall_UI();				// On change l'apparance du mur selon son type!
 	void Set_State(WallState newState) { state = newState; }
-	void Set_Strength(WallStrength strgt);
+	void Set_Strength_From_Parent(WallStrength strgt = WallStrength::REGULAR);
 
 public:
 	WallState Get_State() { return this->state; }
@@ -72,7 +72,7 @@ public:
 	bool Is_Activated();		
 
 	void Add_Bot_On_Me(int botIndex) { botOnMe = botIndex; }	// Un bot se trouve sur le wall 
-	void Remove_Bot_On_Me() { botOnMe = -1; }		// Le bot est pati :)
+	void Remove_Bot_On_Me();
 
 	// Détruit un Wall. Se produit surtout quand un bot rentre dedans
 	void Deactivate_Wall();

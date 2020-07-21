@@ -9,15 +9,21 @@
 #include "ev_draw_map.h"
 //#include "../../../animation/UI_draw_map.h"
 
+#include "../../../lvls/lvl_1/msg_events/ev_waking_up.h"
+
+static Event ev_DrawMap1(Ev_Dr_Map_Borders_1);	// das event
 
 // Affiche les bordures TOP BOT, Ensuite LEFT RIGHT
 void Ev_Dr_Map_Borders_1()
-{
+ {
 	if (!ev_DrawMap1.Is_Ignored())
 		if (!ev_DrawMap1.Is_Active())
 		{
 			if (P1.Get_XY().x == map.Get_Box_Limit(RIGHT))	// Dès que le joueur touche à la bordure droite, on affiche ça		
-				ev_DrawMap1.Activate();		
+			{
+				ev_DrawMap1.Activate();
+				clrscr();	// fuck that screen
+			}
 		}
 		else
 		{
@@ -38,7 +44,7 @@ void Ev_Dr_Map_Borders_1()
 
 			// BORDURE TOP	-> coin gauche vers la droite
 			crd = { left, up - 1 };
-			ConsoleRender::Create_Queue(150);
+			//ConsoleRender::Create_Queue(150);
 
 			for (int i = crd.x; i <= right; i++)
 			{
@@ -55,10 +61,10 @@ void Ev_Dr_Map_Borders_1()
 				crd.y++;
 			}
 			ConsoleRender::Add_Char(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
-			ConsoleRender::Stop_Queue();
+			//::Stop_Queue();
 
 			// BORDURE BOT	-> coin droit vers la gauche
-			ConsoleRender::Create_Queue(150);
+			//ConsoleRender::Create_Queue(150);
 			crd = { right , down + 1 };
 
 			for (int i = crd.x; i >= left; i--)
@@ -76,25 +82,74 @@ void Ev_Dr_Map_Borders_1()
 				crd.y--;
 			}
 			ConsoleRender::Add_Char(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
-			ConsoleRender::Stop_Queue();
-
-
-			if (gCurrentLevel == 1)
-			{
-				gCurrentStage++;	// Passe au prochain stage
-				MsgQueue::Register(STAGE_ADVANCE);	// INDEED
-			}
+		//	ConsoleRender::Stop_Queue();
 
 			ev_DrawMap1.Deactivate();	// Finis
 			ev_DrawMap1.Ignore();
 		}
+
+	gBorderShown = true;	// we see them borders now
 }
 
-void OBS_Erase_Map_Borders_1() {} // soon
+void Erase_Map_Borders_1(int speed)
+{
+	static Coord crd;// crdBot, crdLeft, crdRight;	// oh yeah
+			/* Les limites*/
+	int right = map.Get_Box_Limit(RIGHT);
+	int up = map.Get_Box_Limit(UP);
+	int left = map.Get_Box_Limit(LEFT);
+	int down = map.Get_Box_Limit(DOWN);
+
+	if (speed)
+		ConsoleRender::Create_Queue(speed);
+	
+	// BORDURE TOP	-> coin gauche vers la droite
+	crd = { left, up - 1 };
+
+	for (int i = crd.x; i <= right; i++)
+	{
+		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
+		crd.x++;
+	}
+	ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// TOP-RIGHT CORNER
+
+	// BORDURE RIGHT-> coin up vers down
+
+	for (int i = ++crd.y; i <= down; i++)
+	{
+		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
+		crd.y++;
+	}
+	ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// BOT-RIGHT CORNER
+
+	// BORDURE BOT	-> coin droit vers la gauche
+
+	crd = { right , down + 1 };
+
+	for (int i = crd.x; i >= left; i--)
+	{
+		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
+		crd.x--;
+	}
+	ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// BOT-LEFT CORNER
+
+	// BORDURE left-> coin geauche-bas vers up
+
+	for (int i = --crd.y; i >= up; i--)
+	{
+		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
+		crd.y--;
+	}
+	ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// TOP-LEFT CORNER
+
+	if (speed)
+		ConsoleRender::Stop_Queue();
+
+	gBorderShown = false;
+} // soon
 
 
 
- Event ev_DrawMap1(Ev_Dr_Map_Borders_1);	// das event
 
 
 //

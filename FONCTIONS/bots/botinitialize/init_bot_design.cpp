@@ -4,16 +4,21 @@
 // INITIALISATION DU DESIGN DU BOT
 // -------------------------------
 
-void Bot::Init_Bot_Design(CustomBotStats* customBot)
+void Bot::Init_Bot_Design(CustomBotStats& customBot)
 {
 	// Initialisation du "design" du bot( de son symbole )
 	this->sym = BOT_DESIGN_1C[dir];
 
-	// la couleur change selon son type
-	switch (type)
+	if (customBot.is)
 	{
-	case BotType::REGULAR: clr = WHITE; break;
-
-
+		clr = customBot.clr;
+		fixedColor = customBot.fixedColor;
+	}
+	else
+	{
+		switch (type)
+		{
+		case BotType::REGULAR: clr = WHITE; break;
+		}
 	}
 }

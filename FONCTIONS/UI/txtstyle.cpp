@@ -8,7 +8,11 @@
 TextConstant TXT_CONST;	// Symboles constants et souvant utilisés pour l'affichage
 
 extern Colors gCurrentColor = WHITE;	// La couleur actuelle d'output dans la console. 
+Colors gBossClr = LIGHT_RED;
+Colors gJerClr = LIGHT_YELLOW;
 
+const unsigned short TXT_SPD_DR = 200; // vitesse de défilement du texte par défaut
+const unsigned short TXT_SPD_ER = 50; // vitesse d'éffacement du texte par défaut
 
 // Changer la couleur
 void Change_Color(int c) {
@@ -28,4 +32,48 @@ Colors Get_Current_Color()// Si on veut affiché quoi que ce soit, on utilise cec
 int Find_Ctr_X(int size)		
 {
 	return (gConWidth - size) / 2;
+}
+/* Voici mes efforts pour uniformiser l'emplacement des crd dans le jeu pour afficher du texte*/
+
+// Le texte en HAUt ava être centré, et sur les lignes 3,4 et 5
+Coord Up_Txt_1(std::string txt)	// Pour afficher du texte en Haut
+{
+	return { Find_Ctr_X((int)std::size(txt)), 3 };
+}	
+
+Coord Up_Txt_2(std::string txt) 
+{
+	return { Find_Ctr_X((int)std::size(txt)), 4 };
+}	
+
+Coord Up_Txt_3(std::string txt)// Pour afficher du texte en Haut sur la 2e ligne
+{
+	return { Find_Ctr_X((int)std::size(txt)),5 };
+}
+
+// Le text à côté du coeur
+Coord Heart_Txt_Crd(int line)
+{
+	if(line < 10)
+		return { (gConWidth / 2) + 15, (gConHeight - 10) + line };
+	else
+		return { 0,0 };	// hehe
+
+}
+
+Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplacement du personnage du boss
+{
+	if(line < 4)
+		return { (gConWidth - 30) - ((int)std::size(txt) / 2), 12 + line }; // au trois quart à droite
+	else
+		return { 0,0 };	// hehe
+
+}
+Coord Jerry_Txt_Crd(std::string txt, int line)	// Affiche du texte à l'emplacement du personnage de Jimmy
+{
+	if (line < 3)
+		return { (gConWidth - 35) - ((int)std::size(txt) / 2), 8 + line }; // au trois quart à droite
+	else
+		return { 0,0 };	// hehe
+
 }

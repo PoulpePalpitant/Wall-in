@@ -71,4 +71,3 @@ void CoordIncrementor::Initialize_Axis(Axis ax)
 	}
 
 }
-

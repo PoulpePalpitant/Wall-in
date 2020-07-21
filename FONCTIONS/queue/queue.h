@@ -151,7 +151,7 @@ T RingBufferQueue<T>::Extract()			// Prend le premier élément de la liste; First
 
 
 
-// // // // FIXED QUEUE
+// // // // FIXED LIST
 
 template <typename T>
 bool FixedList<typename T>::Unregister()	// retire le message de la queue

@@ -16,12 +16,12 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 
 	if (!ev_SpawnPlayer.Is_Active())
 	{
-		MsgQueue::Register(PLAYER_SPAWNED);
+		//MsgQueue::Register(PLAYER_SPAWNED);
 
 		// initialisation
 		crd = P1.Get_XY();	// Le player doit être setté sur le grid avant de le spawn
 		ev_SpawnPlayer.Activate();
-		ev_SpawnPlayer.Start(0);
+		ev_SpawnPlayer.Start(330);
 	}
 	else
 		while (ev_SpawnPlayer.delay.Tick())
@@ -101,7 +101,7 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 				ConsoleRender::Add_Char(crd, 197, LIGHT_GREEN);
 				ev_SpawnPlayer.Advance(0);
 
-				//MsgQueue::Register(PLAYER_SPAWNED);
+				MsgQueue::Register(PLAYER_SPAWNED);
 				break;
 			}
 		}

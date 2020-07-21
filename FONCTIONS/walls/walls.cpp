@@ -4,7 +4,6 @@
 #include "../grid/grid.h"
 #include "../structure_manager/structure_manager.h"	// Pour gérer relation entre Link et walls
 #include "../events/msg_dispatcher.h"
-
 #include "walls.h"
 
 extern const int WALL_SIZE_X =  DELTA_X - 1;	// Le nombre de case qui composent chaque wall horizontale
@@ -25,37 +24,45 @@ void Wall::Set_XY(int col, int row, Axis axis)
 	}
 }
 
-// ON CHANGE L'APPARANCE DU MUR SELON SON TYPE!
-void Wall::Set_Wall_UI(WallStrength newStrgt)									
+// ON CHANGE L'APPARANCE DU MUR SELON SA FORCE ET LE MODIFIER DE SON PARENT!
+void Wall::Set_Wall_UI()									
 {
 
 	// On change rien si le nouveau type est le même que le précédent
 	//if (strgt == newType)		// Doit être updaté
 		//return;
 
-	switch (newStrgt)
+	switch (strgt)
 	{
 	case WallStrength::REGULAR:
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
 	case WallStrength::NONE:	
 		clr = Colors::GRAY;				// La couleur est grise
-		//if (axis == HOR)
-		//	sym = WallSym::SYM_HOR;		// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
-		//else
-		//	sym = WallSym::SYM_VER;
+		if (axis == HOR)
+			sym = WallSym::SYM_HOR3;		// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
+		else
+			sym = WallSym::SYM_VER3;
 		break;
+
 	case WallStrength::STRONG: 
-		clr = Colors::LIGHT_YELLOW;				
+		if (axis == HOR)
+			sym = WallSym::SYM_HOR2;	// DEUX GROSSES LIGNES
+		else
+			sym = WallSym::SYM_VER2;
+		clr = Colors::BRIGHT_WHITE;				
 		break;
 
 	case WallStrength::BIGSTRONGWOW:
 		clr = Colors::LIGHT_AQUA;
 		break;
 	}
+
+	//Set_Drawer(false, true);	// Réaffiche le mur
+
 }
 
-void Wall::Set_Strength(WallStrength newStrgt)
+void Wall::Set_Strength_From_Parent(WallStrength newStrgt)
 {
 	if (StructureManager::Is_Link_Corrupted(pParent))// Le parent corrompu change le Wall en weak pour l'instant
 	{
@@ -73,6 +80,8 @@ void Wall::Set_Strength(WallStrength newStrgt)
 			strgt = newStrgt;
 			hp = int(strgt);
 		}
+
+	Set_Wall_UI();
 }
 
 // RESET L'APPARENCE DU WALL À SES VALEURS PAR DÉFAUTS
@@ -104,10 +113,12 @@ void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 	childPos = plr;					// La position de son child dans la console
 
 	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
-	Set_Strength(newStrgt);			// La nouvelle force du mur
-	Set_Wall_UI(newStrgt);			// Update l'UI si le nouv type est différent que le précédent.
+	Set_Strength_From_Parent(newStrgt);		// La nouvelle force du mur
 
 	//drawer.timer.Stop();		// STOP l'effacement du mur si il vient juste d'être détruit
+	if (drawer.timer.Is_On())
+		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur 
+
 	Set_Drawer(false, true);
 
 	MsgQueue::Register(WALL_ACTIVATED);
@@ -121,7 +132,13 @@ void Wall::Deactivate_Wall()
 	MsgQueue::Register(WALL_DEACTIVATED);	//we did
 }
 
+void Wall::Remove_Bot_On_Me()
+{
+	botOnMe = -1; 	// Le bot est pati :)
 
+	if (strgt == WallStrength::NONE)
+		Set_Drawer();				// Réaffiche le mur
+}
 bool Wall::Is_Activated()
 {
 	if (this->state == WallState::DEAD)
@@ -139,10 +156,9 @@ void Wall::Take_Damage(int dmg)
 		ListsOfChainToModify::Add_Chain_To_Modify({}, this->pChild);	// Détruit la chaîne de mur bueno
 	else
 	{
-		strgt = (WallStrength)hp;		// Change la force du wall
-		this->Set_Wall_UI(strgt);		// Change l'apparance du wall
-		
-		Set_Drawer(); //this->UI_Draw_Or_Erase_Wall();	// Redraw
+		strgt = ((WallStrength)hp);	// change la force. et aussi l'apparence automatiquement.
+		Set_Wall_UI();
+		Set_Drawer(); //this->UI_Draw_Or_Erase_Wall();	// Il faut Redraw manuellement
 	}
 }
 
