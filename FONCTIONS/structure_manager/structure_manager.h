@@ -1,7 +1,7 @@
 
 #include "../link/link.h"
 #include "../walls/walls.h"
-#include "destroy_chain.h"
+#include "modify_chain.h"
 
 
 class StructureManager {	

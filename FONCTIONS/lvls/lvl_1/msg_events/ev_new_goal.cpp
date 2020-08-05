@@ -43,6 +43,7 @@ void Ev_Dr_New_Goal()			// Accueil Le joueur quand il sort de son répit
 				//Ev_Dot_Chase_Adventure_1();	// Starting an adventure :)
 				Ev_Adventure_Here();			// Seek an adventure
 				MsgQueue::Register(FREE_PLAYER);
+				MsgQueue::Register(STAGE_ADVANCE);
 
 				ev_Dr_NewGoal.Advance(0);	// finito
 				break;

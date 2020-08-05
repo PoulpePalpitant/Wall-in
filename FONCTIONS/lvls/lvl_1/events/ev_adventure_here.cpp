@@ -17,7 +17,7 @@ void Ev_Adventure_Here()// Trace un chemin vers une fausse porte de sortie
 {
 	if (!ev_AdventureHere.Is_Active())
 	{
-		dotChase = { 5, 6 };		// Premier Dot
+		dotChase = { 2, 6 };		// Premier Dot
 		ConsoleRender::Add_Char(linkGrid->link[dotChase.c][dotChase.r].Get_XY(), 250);
 		ev_AdventureHere.Activate();
 		ev_AdventureHere.Start(600);
@@ -38,7 +38,7 @@ void Ev_Adventure_Here()// Trace un chemin vers une fausse porte de sortie
 					XY.x += DELTA_X;
 					ev_AdventureHere.delay.Stop();	// Stop le infinite check
 					ev_AdventureHere.Go_To_Next_Step();
-					ev_AdventureHere.delay.Start_Timer(6000, 7);	// Stop le infinite check
+					ev_AdventureHere.delay.Start_Timer(7500, 7);	// Stop le infinite check
 
 				}
 			}

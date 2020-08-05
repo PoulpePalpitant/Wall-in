@@ -18,10 +18,12 @@
 #include "msg_events/ev_wasd.h"
 #include "msg_events/ev_waking_up.h"
 #include "msg_events/ev_arr_keys.h"
+#include "msg_events/ev_day_1.h"
 
 #include "../../events/global_events/feedback/ev_draw_map.h"
 
 #include "../../player/player.h"	// don't...
+#include "../../grid/AllGrids.h"
 
 // C'EST ICI QUE ÇA SE PASSE
 void Dispatch_Msg_To_Lvl_1()
@@ -40,8 +42,10 @@ void Dispatch_Msg_To_Lvl_1()
 		break;		// Test le changement de window
 
 	case STAGE_ADVANCE:
-		if(gCurrentStage == 3)
-			//start level
+		if (gCurrentStage == 3)
+		{
+			Ev_Dr_Day_1();
+		}
 
 		//MsgQueue::Register(START_BOTS);	stage 3, après le tuto?			// Here they come baby
 		break;	// fack
@@ -54,13 +58,17 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 
 	case PLAYER_SPAWNED: 
-		Ev_Dr_Wasd();							// Affiche les touches clavier du mouvement
+		if(gCurrentStage == 0)
+			Ev_Dr_Wasd();							// Affiche les touches clavier du mouvement
 		break;
 
 	case BUMPED_BORDER:
-		if (gCurrentLevel == 1 && gCurrentStage == 0)
-			Ev_Bot_Tutorial();
-			//Ev_Wake_Up();		// Le joueur se fait wakeup
+		if (gCurrentLevel == 1 && gCurrentStage == 1)
+		{
+			if(P1.Get_Grd_Coord().c == linkGrid->Get_Cols() - 1)
+				Ev_Wake_Up();		// Le joueur se fait wakeup
+			//Ev_Bot_Tutorial();
+		}
 		break;
 		/* Items*/
 	case ITEM_PICKUP:

@@ -9,6 +9,8 @@ HWND GAME_WND = GetConsoleWindow();		// La fenêtre du jeu
 RECT rect; // Dimension de la fenêtre
 int gConWidth;
 int gConHeight;
+int gTotalRes;
+
 double charRatio;	// Le ratio pixel par character? Bref, utile pour redimensionner à partir d'un nombre de case!
 
 // Local stuff
@@ -21,6 +23,7 @@ void Upd_Console_Size()
 	GetConsoleScreenBufferInfo(h, &csbi);
 	gConWidth = csbi.srWindow.Right;					// Nouvelle Largeur
 	gConHeight= csbi.srWindow.Bottom;					// Nouvelle HauteurS
+	gTotalRes = gConHeight * gConWidth;					// Nombre de charactères dans la console
 }
 
 void Setup_Console_Window()

@@ -8,8 +8,9 @@
 
 #include "lvl_1/sub_lvl_1_script.h"
 
-short gCurrentLevel = 1;	// Le niveau actuel!!1
+short gCurrentLevel = 0;	// Le niveau actuel!!1
 short gCurrentStage = 0;	// Chaque niveau peut avoir plusieurs stages
+bool gSkipStory = false;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
 
 void Peek_Lvl_Script()
 {

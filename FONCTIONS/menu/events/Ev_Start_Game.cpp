@@ -9,7 +9,7 @@
 
 void Ev_Start_Game()		// On comprend ici que tout les autres events du niveau seront ignoré durant ce cyclsi on change le currentLevel
 {
-	gCurrentLevel = 1;
+	//gCurrentLevel = 1;
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Nxt Level
 	ev_startGame.Deactivate();	// Désactive l'event		DOIT RETIRER CETTE EVENT DE LA LISTE, OH YEAH	
 }

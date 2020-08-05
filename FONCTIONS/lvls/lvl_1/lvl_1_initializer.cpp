@@ -10,11 +10,25 @@
 #include "../../grid/managegrids.h"
 #include "../../items/item_spawner.h"
 #include "../lvl_script.h"
+#include "events/ev_bot_tutorial.h"
+#include "msg_events/ev_day_1.h"
 
 void Lvl_1_Initializer()
 {
 	gLvlTime = 0;		// Reset Le timer du niveau
-	gCurrentStage = 0;	// stage 1 baby
+
+	if (gSkipStory)
+	{
+		Ev_Dr_Day_1();
+
+		//gCurrentStage = 1;	// Skip tout les tutorials
+		//Ev_Bot_Tutorial();	// start tuto avec jerry
+	}
+	else
+	{
+		gCurrentStage = 0;
+		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
+	}
 
 	gSpwBotTimer.Start_Timer(500 , 1 , true);
 	gBotMoveTimer.Start_Timer(8000, 1, true);
@@ -34,9 +48,7 @@ void Lvl_1_Initializer()
 		throw "player pas sur le grid";
 	
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
-	MsgQueue::Register(SPAWN_PLAYER);	// It has to be done
-	MsgQueue::Register(LOCK_PLAYER);	// It has to be done
-
+	MsgQueue::Register(DEACTIVATE_BLAST);	// It has to be done
 	//MsgQueue::Register(START_BOTS);	// It has to be done
 	
 }

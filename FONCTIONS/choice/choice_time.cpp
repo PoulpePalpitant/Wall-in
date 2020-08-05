@@ -15,6 +15,7 @@ bool ChoiceTime::choiceTime = false;
 unsigned short ChoiceTime::numChoices;	// nb de choix actuel
 Choice ChoiceTime::selected;		// Le choix actuellement sélectionné par le joueur
 std::string ChoiceTime::choiceMade;	// Le choix fait lors du choice time précédant
+ bool ChoiceTime::enterDrawn = false;
 
 // Pure static stuff
 static Coord XY;	// pour draw
@@ -56,7 +57,6 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
  
  void ChoiceTime::Erase_Choice(int index)	// Efface un choix
  {
-
 	 crd = choiceList[index].crd; 
 	 XY = linkGrid->link[crd.c][crd.r].Get_XY();	// XY
 	 
@@ -82,14 +82,15 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
  {
 	 XY.x = Find_Ctr_X((int)enter.size());
 	 XY.y = gConHeight - 15;
-	 ConsoleRender::Add_String(enter, XY, GRAY, 150); // affiche ce titre
-
+	 ConsoleRender::Add_String(enter, XY, GRAY, 90); // affiche ce titre
+	 enterDrawn = true;
  }
  void ChoiceTime::Erase_Press_Enter()
  {
 	 XY.x = Find_Ctr_X((int)enter.size());
 	 XY.y = gConHeight - 15;
-	 ConsoleRender::Add_String(enter, XY, WHITE, 150, true); // Efface ce titre
+	 ConsoleRender::Add_String(enter, XY, WHITE, 90, true); // Efface ce titre
+	 enterDrawn = false;
  }
 
 
@@ -114,15 +115,20 @@ bool ChoiceTime::Select_If_Player_On()			// Player fait une sélection
 	{
 		if (Are_Equal(choiceList[i].crd, crd))	// found the choice
 		{
+			if (!enterDrawn)
+				Draw_Press_Enter();				// Avertit le joueur, sur comment y peut sélect
+
 			selected = choiceList[i];
 			Draw_Names(i, LIGHT_YELLOW);	// HighLight en jaune
-			Draw_Press_Enter();				// Avertit le joueur, sur comment y peut sélect
-
 			return true;
 		}
 	}
 
+	if(enterDrawn)
+		Erase_Press_Enter();	
+
 	return false;
+
 }
 
 bool ChoiceTime::Unselect_If_Player_Off()		// Retire la sélection. Le player n'est plus sur un choix
@@ -136,8 +142,6 @@ bool ChoiceTime::Unselect_If_Player_Off()		// Retire la sélection. Le player n'e
 			int index = Find_Selected();
 			Draw_Choice(index);				// Retire l'highlight de couleur sur le nom. Réaffiche le tit point
 			selected = {};	// pu de sélection
-			Erase_Press_Enter();
-
 			return true;
 		}
 	}

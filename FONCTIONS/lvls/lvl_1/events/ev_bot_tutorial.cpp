@@ -16,6 +16,7 @@
 #include "../../../bots/botmeta.h"
 #include "../../../time/bot_move_cycle.h"
 #include "../../../player/player.h"
+#include "../../../structure_manager/modify_chain.h"
 
 static Event ev_BotTutorial(Ev_Bot_Tutorial, 29);
 
@@ -38,7 +39,7 @@ static GrdCoord choiceCrd;
 
 static std::string _1 = "Alright Then, Let's Get You Started";
 static std::string _2 = "Step #1";
-static std::string _3 = "Shoot A Wall";
+static std::string _3 = "Build A Wall";
 static std::string _4 = "Step #2";
 static std::string _5 = "Let Them Smash Into It";
 static std::string _6 = "It's As Simple As That!";
@@ -52,14 +53,21 @@ static std::string _9 =  "Will Help Us With The Demonstration";
  */
 static std::string _10 = "Get Ready";
 static std::string _11 = "Jerry It's Your Turn Now";
-static std::string _12 = "You Got This Jerry!";
+static std::string _12 = "(You Got This Jerry!)";
 static std::string _13 = "Okay, Here I Come!";
-static std::string _14 = "Ow.";
+static std::string _14 = "...";
 static std::string _15 = "(Don't let Jerry Reach The Border)";
-static std::string _16 = "Hey Nice Job Jerry!";
-static std::string _17 = "Really? Did I Do Good?";
-static std::string sorry = "I'm Sorry, But I Can Let You Continue";
-static std::string stop = "Until You ATLEAST Manage To Stop Jerry";
+static std::string _16 = "Nice Work! You Stopped Jerry!";
+static std::string _17 = "Actually, This Might Have Been";
+static std::string _18 = "A Little Too Easy";
+static std::string _19 = "Let's Bring The Difficulty Up A Notch";
+static std::string _20 = "Jerry, You Know What To Do...";
+static std::string _22 = "Yes, Mam!";
+//static std::string _20 = "There You Go! I Think You Are All Set";
+//static std::string _20 = "If You Need More Practice";
+//static std::string _20 = "Just Ask Jerry";
+static std::string sorry = "I'm Sorry, But I Can't Let You Continue";
+static std::string stop = "Until You Stop Mah Boi Jerry";
 
 
 // CHOICE STUFF
@@ -67,11 +75,20 @@ static std::string automatic = "This Is An Automatic Performance Review for:";
 static std::string jerry = "Jerry SoreBottom";
 static std::string prfom = "How Would You Rate Jerry's Performance Today?";
 
-static std::string doubt = "Really? Did, Did I Do Good?";
+static std::string doubt = "How, Was I, Did I Do Good?";
 static std::string rate = "Rate Jerry's Performance";
 static std::string choiceMade;
-//static std::string rview[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 " };
-static std::string rview[] = { "Bad", "2", "3", "4", "5", "6", "7", "8", "9", "Okay"};
+static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 " };
+static std::string answer[] =
+{ 
+	"You Didn't Seem Honest Enough. Jerry Seems Disappointed",
+	"Jerry Doesn't Seem Satisfied By Your Answer",
+	"Jerry Appreciates Your FeedBack. Even Though You Have Hurt His Feelings", 
+	"Jerry Appreciates Your FeedBack. Even Though It was Just A MeaningLess Number",
+	"Jerry Appreciates Your FeedBack. Even Though Your Opinion Means Very Little To Him"
+};
+static std::string tempAnswer;
+
 
 void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 {
@@ -173,7 +190,10 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 14:
 				ConsoleRender::Add_String(_15, {38 , 4}, GRAY, TXT_SPD_DR);
 				ConsoleRender::Add_String(_11, Boss_Txt_Crd(_11, 1), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(300);
+				Set_Flashy_Border(LEFT);
+				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
+
+				ev_BotTutorial.Advance(200);
 				break;
 
 			case 15:
@@ -181,7 +201,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				gCustomBot.is = true;
 				gCustomBot.clr = LIGHT_GREEN;
 				gCustomBot.warningDelay = 20;
-				Spawn_A_Bot(RIGHT, 5);			// spawn Jerrry!
+				Spawn_A_Bot(RIGHT, 6);			// spawn Jerrry!
 				gBotMoveTimer.Start_Timer(4000, 1, true);	// vitesse de déplacement de Jerry
 
 				ConsoleRender::Add_String(_13, Jerry_Txt_Crd(_13), gJerClr, TXT_SPD_DR);
@@ -191,7 +211,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 16:
 				ConsoleRender::Add_String(_13, Jerry_Txt_Crd(_13), gJerClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 1), GRAY, TXT_SPD_DR);
+				//ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 1), GRAY, TXT_SPD_DR);
 				ev_BotTutorial.Advance(0);
 				ev_BotTutorial.delay.Start_Timer(5000,1, true);
 				break;
@@ -202,7 +222,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 					if (P1.Get_HP() == 3)	// Si le joueur à péter Jerry
 					{
 						ConsoleRender::Add_String(_14, Jerry_Txt_Crd(_14, 1), gJerClr, TXT_SPD_DR);	// Jerry à finis d'avancer
-						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 1), GRAY, TXT_SPD_ER, true);
+						//ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 1), GRAY, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(_15, { 38 , 4 }, GRAY, TXT_SPD_ER, true);
@@ -212,7 +232,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 					}
 					else
 					{
-						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 1), GRAY, TXT_SPD_ER, true);
+						//ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 1), GRAY, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_DR);
 						ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_DR);
 						ev_BotTutorial.delay.Stop();
@@ -224,9 +244,9 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 0:
-				Ev_Dr_Heart_3();			// Tu ne peux mourir ici
+				P1.Player_Gains_HP();					// redonne de la vie
 				ev_BotTutorial.delay.Start_Timer(600);
-				ev_BotTutorial.Go_To_X_Step(16);
+				ev_BotTutorial.Go_To_X_Step(15);
 				break;
 
 			case 18:
@@ -245,39 +265,73 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 21:
-				// Efface tout les Murs et Les Links
-
+				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links
+				ev_BotTutorial.Advance(1500);
+				break;
+			
+			case 22:				
 				ConsoleRender::Add_String(doubt, Jerry_Txt_Crd(doubt), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16), gBossClr, TXT_SPD_ER, true);
-				
+
+				// Coord tu titre du choix
+				XY.x = Find_Ctr_X((int)rate.size() / 2) - 5;
+				XY.y = linkGrid->link[6][4].Get_XY().y + 4;
+				ConsoleRender::Add_String(rate, XY, GRAY, TXT_SPD_DR);
+
 				// Début d'un choix pour le joueur
-				choiceCrd = { 1, 7 };
+				choiceCrd = { 0, 8 };
 
 				for (int i = 0; i < 10; i++)		// Le joueur doit "Rater" la performance de Jerry!
 				{
-					choiceCrd.c++;
-					ChoiceTime::Add_Choice(rview[i], TXT_CONST.EMPTY, { 3,7 });
+					
+					if (i == 0)
+					{
+						ChoiceTime::Add_Choice(recom[i], "(Bad)", choiceCrd);
+						choiceCrd.c += 2;
+					}
+					else
+						if (i == 9)
+						{
+							choiceCrd.c++;
+							ChoiceTime::Add_Choice(recom[i], "(Okay)", choiceCrd);
+						}
+						else
+						{
+							ChoiceTime::Add_Choice(recom[i], TXT_CONST.EMPTY, choiceCrd);
+							choiceCrd.c++;
+						}
 				}
 
 				ev_BotTutorial.Advance(0);
 				ev_BotTutorial.delay.Start_Timer(2000, 1, true);	// infinite check here
 				break;
 
-			case 22:
-				if (!ChoiceTime::Is_Choice_Time())
-				{
-					ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_ER, true);
-					ev_BotTutorial.delay.Stop();
-					ev_BotTutorial.Advance(500);
-				}
-				break;
+			//case 23:
+			//	if (!ChoiceTime::Is_Choice_Time())
+			//	{
+			//		ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_ER, true);
+					//ConsoleRender::Add_String(rate, XY, GRAY, TXT_SPD_ER, true);
 
-			case 23:
-				choiceMade = ChoiceTime::Get_Choice_Made();
+			//		ev_BotTutorial.delay.Stop();
+			//		ev_BotTutorial.Advance(400);
+			//	}
+			//	break;
 
-				if (choiceMade == "1")
-					ev_BotTutorial.Advance(500);
-				break;
+			//case 24:
+			//	choiceMade = ChoiceTime::Get_Choice_Made();
+
+			//	for (int i = 0; i < 10; i++)
+			//	{
+			//		if (choiceMade == rview[i])
+			//		{
+			//			//tempAnswer = answer[i];
+			//			break;
+			//		}
+			//	}
+
+			//	ConsoleRender::Add_String(tempAnswer, Jerry_Txt_Crd(tempAnswer), GRAY, 260);
+			//	ev_BotTutorial.Advance(500);
+			//	break;
 			}
 
 

@@ -9,5 +9,7 @@ bool gChoiceTime = false;
 bool gBlockInputs = false;
 bool gTypeTime = false;
 bool gBlockBlast = true;
+bool gMenuInputs = true;
+int gMenuKey = 0;
 
 

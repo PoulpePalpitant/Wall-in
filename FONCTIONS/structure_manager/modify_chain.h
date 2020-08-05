@@ -64,7 +64,7 @@ private:
 	static void Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev);
 public:
 	// Détruit la chaine de link et de mur dépendant d'un Link
-	void Annihilate_All_Links();	// Efface tout les murs et les links sur tout les grids
+	static void Annihilate_All_Links();	// Efface tout les murs et les links sur tout les grids
 	static void Update_Chain_Modification();
 	static void Add_Chain_To_Modify(GrdCoord crd = {}, Link* link = NULL, bool excludeParent = false, ModifyChain theModif = DESTROY);
 };

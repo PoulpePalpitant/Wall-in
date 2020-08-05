@@ -2,7 +2,7 @@
 #include <mutex>
 
 #include "../time/clock.h"
-#include "destroy_chain.h"
+#include "modify_chain.h"
 #include "../UI/console_output/render_list.h"
 #include "../walls/wall_drawer.h"
 //#include "../player/player.h"
@@ -425,12 +425,20 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 	int col = linkGrid->Get_Cols();
 	int row = linkGrid->Get_Rows();
 
-	for (int c = 0; c < col - 1; c++)
+	for (int c = 0; c < col ; c++)
 	{
-		for (int r = 0; r < row - 1; r++)
+		for (int r = 0; r < row ; r++)
 		{
+			/* Ceci est un dumb fix rapide, car un glitch visuel fait en sorte que certains root Link ne sont pas effacé*/
+			if (linkGrid->link[c][r].Get_State() == LinkState::ROOT)
+			{
+				linkGrid->link[c][r].Clr_Link();
+			}
+
 			if(linkGrid->link[c][r].Get_State() != LinkState::DEAD)
 				Add_Chain_To_Modify({ c,r });
+
+
 		}
 	}
 }

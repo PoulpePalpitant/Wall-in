@@ -1,6 +1,6 @@
 
 #include "../player/player.h"
-#include "../structure_manager/destroy_chain.h"
+#include "../structure_manager/modify_chain.h"
 #include "../bots/botlist.h"
 #include "../UI/console_output/render_list.h"
 #include "../animation/UI_move_blast.h"

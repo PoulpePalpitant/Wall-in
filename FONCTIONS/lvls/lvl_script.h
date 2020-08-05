@@ -2,6 +2,7 @@
 
 extern short gCurrentLevel;	// Le niveau actuel!!1
 extern short gCurrentStage;	// Le sous-niveau actuel
+extern bool gSkipStory;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
 
 
 

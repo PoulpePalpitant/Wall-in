@@ -9,6 +9,7 @@ struct TextConstant
 	const char MINUS = '-';
 	const char PLUS = '+';
 	const char SPACE = ' ';
+	const unsigned char SPACE_FILL = 219;
 	const char PARENTHESIS_OPEN = '(';
 	const char PARENTHESIS_CLOSE = ')';
 	const unsigned char VER_BAR = '|';
@@ -18,8 +19,36 @@ struct TextConstant
 	const std::string DOTDOTDOT = ". . .";
 	const unsigned char DOT = 250;
 };
-
 extern TextConstant TXT_CONST;
+
+
+const int STANDARD_ASCII_SIZE = 6;
+
+//struct TextArt
+//{
+//
+//
+//	const std::string DAY_1_V2[STANDARD_ASCII_SIZE] = {
+//
+//" ____             ___   _                _____    _____                 __     _   ",
+//"|    \ ___ _ _   |_  | |_|              |  _  |  |   | |___ _ _ _    __|  |___| |_ ",
+//"|  |  | .'| | |   _| |_ _               |     |  | | | | -_| | | |  |  |  | . | . |",
+//"|____/|__,|_  |  |_____|_|              |__|__|  |_|___|___|_____|  |_____|___|___|",
+//"          |___|                                                                    "
+//	};
+//
+//	const std::string DAY_1_V2[STANDARD_ASCII_SIZE] = {
+//
+//"    ____                 ___                 ___       _   __                    __      __   ",
+//"   / __ \____ ___  __   <  /                /   |     / | / /__ _      __       / /___  / /_  ",
+//"  / / / / __ `/ / / /   / (_)              / /| |    /  |/ / _ \ | /| / /  __  / / __ \/ __ \ ",
+//" / /_/ / /_/ / /_/ /   / /                / ___ |   / /|  /  __/ |/ |/ /  / /_/ / /_/ / /_/ / ",
+//"/_____/\__,_/\__, /   /_(_)              /_/  |_|  /_/ |_/\___/|__/|__/   \____/\____/_.___/  ",
+//"            /____/                                                                            "
+//		};
+//};
+//
+//TextArt txtArt;
 
 // Des couleurs
 enum Colors

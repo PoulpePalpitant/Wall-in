@@ -88,7 +88,7 @@ public:
 
 
 
-/* TEMPLATE POUR UN EVENT : CPP  */ //EVENTS AT THE BOTTOM, GET USED TO IT
+/* TEMPLATE POUR UN EVENT : CPP  */ 
 //////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*///////*/*/*/*/
 
 
@@ -105,7 +105,7 @@ void EV_Event_Method()
 		ev_EventObject.Start(0);
 	}
 	else
-		if (ev_EventObject.delay.Tick())
+		while (ev_EventObject.delay.Tick())
 		{
 			switch (ev_EventObject.Get_Current_Step())
 			{

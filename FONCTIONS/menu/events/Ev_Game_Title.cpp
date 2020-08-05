@@ -4,6 +4,7 @@
 #include "../../UI/output_position.h"
 #include "Ev_Game_Title.h"
 
+static std::string skip = "Select Level";
 
 static void Ev_Dr_Game_Title()
 {
@@ -25,7 +26,8 @@ static void Ev_Dr_Game_Title()
 	ConsoleRender::Add_String("          W:::::W         W:::::W       a:::::aaaa::::::a  l::::::ll::::::l    I::::::::In::::n    n::::n",{x,y}, WHITE);y++;
 	ConsoleRender::Add_String("           W:::W           W:::W         a::::::::::aa:::a l::::::ll::::::l    I::::::::In::::n    n::::n",{x,y}, WHITE);            
 		
-	ConsoleRender::Add_String("Start", { Find_Ctr_X(sizeof("Start")) ,38 }, BRIGHT_WHITE);
+	//ConsoleRender::Add_String("Start", { Find_Ctr_X(sizeof("Start")) ,38 }, BRIGHT_WHITE);
+	//ConsoleRender::Add_String("", { Find_Ctr_X(sizeof("Start")) ,38 }, BRIGHT_WHITE);
 
 	//	//	//	//	//	//	//	//	//	//	//	
 	//	//	//	//	//	//	//	//	//	//	//
@@ -65,7 +67,7 @@ static void Ev_Er_Game_Title()
 	ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 20);y++;
 	ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN,11);
 
-	ConsoleRender::Add_String("     ", { Find_Ctr_X(sizeof("Start")),38 }, BRIGHT_WHITE, 20);	// le piton start aussi est effacé
+	//ConsoleRender::Add_String("     ", { Find_Ctr_X(sizeof("Start")),38 }, BRIGHT_WHITE, 20);	// le piton start aussi est effacé
 
 	// On Unregister l'event, pour ne plus updater
 	EV_Er_GameTitle.Deactivate();

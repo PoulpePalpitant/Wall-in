@@ -7,6 +7,7 @@ extern RECT rect;
 
 extern int gConWidth;
 extern int gConHeight;
+extern int gTotalRes;
 
 void Change_Typography();
 void Shake_That_Window();

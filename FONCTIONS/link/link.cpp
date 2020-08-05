@@ -198,6 +198,8 @@ void Link::Dsp_Link()						// Affiche le Link
 
 void Link::Clr_Link( )						// Clear le Link
 {
-	if(!Are_Equal(P1.Get_XY(), Get_XY()))
+	if (!Are_Equal(P1.Get_XY(), Get_XY()))
 		ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);	// Efface pas le player!!
+	else
+		return;
 }

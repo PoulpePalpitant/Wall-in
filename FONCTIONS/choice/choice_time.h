@@ -10,7 +10,7 @@
 
 */
 
- int const MAX_CHOICES = 4;	// nb de choix max
+ int const MAX_CHOICES = 10;	// nb de choix max
 
 struct Choice
 {
@@ -22,6 +22,7 @@ struct Choice
 
 class ChoiceTime
 {
+	static bool enterDrawn;
 	static Choice choiceList[MAX_CHOICES];	// liste des choix
 	static bool choiceTime;				// it is
 	static unsigned short numChoices;	// nb de choix actuel
