@@ -8,6 +8,7 @@ bool gMoveBotsThisCycle;	// On bouge les bots durant ce cycle
 int gBotMoveCycleTot;		// Le nombre total de botmove cycle ayant u lieu
 
 SpeedTimer gBotMoveTimer;	// Pour l'instant, les bots bougent tous à la même vitesse, et sur le même rythme
+int prevMovSPeed;
 
 void UPD_Bot_Move_Cycle()
 {

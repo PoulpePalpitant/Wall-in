@@ -24,6 +24,7 @@
 #include "global_events/ev_resize_from_grids.h"
 #include "../items/item_spw_drawer.h"			// spawner les items
 #include "../blast/mod_queue_animator.h"
+#include "../spawns/ev_spawn_Jerry.h"
 
 
 
@@ -177,7 +178,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case START_BOTS:		Ev_Start_Bot_Cycles	();break;
 	case START_BOT_MOVE:	Ev_Start_Bot_Move();break;
 	case START_BOT_SPAWNS:	Ev_Start_Bot_Spawn();break;
-
+	case JERRY_DIED:		Update_Dead_Jerrys(); break;
 	case BUMPED_BORDER: 
 		//Ev_Dr_Map_Borders_1();
 		break;

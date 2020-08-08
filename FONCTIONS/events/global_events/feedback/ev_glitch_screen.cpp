@@ -1,5 +1,5 @@
 
-#include "ev_fill_map.h"
+#include "ev_glitch_screen.h"
 
 #include "../../../UI/console_output/render_list.h"
 #include "../../../console/sweet_cmd_console.h"
@@ -10,8 +10,8 @@
 #include "../../../events/global_events/feedback/ev_draw_map.h"
 
 static int numChars; // Nombre de char pour fill l'écran
-static Event ev_FillMap(Ev_Fill_Map, 8);	// l'event
 
+static Event ev_GlitchScreen(Ev_Glitch_Screen, 2);	// l'event
 static Coord crd;	// random crd
 static Intervals::ManageIntervalLists charToFill(0, 0, 0);	// Liste de tout les charactères de la console qui n'ont pas été remplis 
 
@@ -36,71 +36,52 @@ static void Set_Screen_Filler()
 		charToFill.Remove_Value_Everywhere(col);
 }
 
-static void Fill_Screen_Randomly(bool erase = false)
+static void Fill_Screen_Randomly(int amount)
 {
-	charToFill.Pick_From_Lists(crd.x, crd.y, true, true, Intervals::RDM_ALL);	// pogne une coord random
-
-	if (erase)
-		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// blakc
-	else
-		//ConsoleRender::Add_Char(crd, TXT_CONST.SPACE_FILL);	// pour l'instant c'est blanc
+	static Colors clr;
+	for (int i = 0; i < amount; i++)
+	{
+		//switch (i % 7)
+		//{
+		//case 0:	clr = WHITE; break;
+		//case 1:	clr = GRAY; break;
+		//case 2:	clr = RED; break;
+		//case 3:	clr = LIGHT_RED; break;
+		//case 4:	clr = LIGHT_RED; break;
+		//case 5:	clr = YELLOW; break;
+		//case 6:	clr = LIGHT_YELLOW; break;
+		//}
+		charToFill.Pick_From_Lists(crd.x, crd.y, true, true, Intervals::RDM_ALL);	// pogne une coord random
 		ConsoleRender::Add_Char(crd, COOL_CHARS[rand() % NUM_COOL_CHARS], GRAY);
-
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void Ev_Fill_Map()			//  Fill la map de charactère cools, delete ensuite tout 
+void Ev_Glitch_Screen()			//  Remplis la screen de char cool pendant un bref instant
 {
-	if (!ev_FillMap.Is_Active())
+	if (!ev_GlitchScreen.Is_Active())
 	{
-		numChars = (map.Get_Length()) * (map.Get_Height());	// nombre de char à fill
-		ev_FillMap.Activate();
-		ev_FillMap.Start(200);
+		charToFill.Resize(gConWidth, 0, gConHeight);
+		Set_Screen_Filler();
+		ev_GlitchScreen.Activate();
+		ev_GlitchScreen.Start(0);
 	}
 	else
 	{
-		while (ev_FillMap.delay.Tick())
+		while (ev_GlitchScreen.delay.Tick())
 		{
-			switch (ev_FillMap.Get_Current_Step())
+			switch (ev_GlitchScreen.Get_Current_Step())
 			{
 			case 1:
-				Set_Screen_Filler();	// test le screen fill
-				ev_FillMap.Advance(50000000, numChars);
+				Fill_Screen_Randomly(map.Get_Length() * map.Get_Height());	// nombre de char à fill);		// Fait glitché l'écran rapidement
+				ev_GlitchScreen.Advance(0);
+				break;
 
 			case 2:
-				Fill_Screen_Randomly();	// Remplis la console d'un charactère blanc à la fois
-				ev_FillMap.Advance(2000);
-				break;
-
-			case 3:
-				Just_Dr_Map_Borders();
-				ev_FillMap.Advance(1000);
-				break;
-
-			case 4:
-				// Pause Pour afficher Le titre
-				Set_Screen_Filler();
-				ev_FillMap.Advance(300);
-				break;
-
-			case 5:
-				ev_FillMap.Advance(10000000, numChars * 2);
-				break;
-
-			case 6:
-				Fill_Screen_Randomly(true);	// Efface le fill
-				ev_FillMap.Advance(10000);
-				break;
-
-			case 7:
-				clrscr();					// Efface les borders
-				ev_FillMap.Advance(300);
-				break;
-
-			case 8:
-				ev_FillMap.Advance(0);
+				clrscr();					// Clear l'écran au grand complet
+				ev_GlitchScreen.Advance(0);	// Tu vas devoir réaffiché tout ce qui était affiché avant cette fonction
 				break;
 			}
 		}

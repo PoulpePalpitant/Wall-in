@@ -183,7 +183,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);		// Première Coord de Wall
 	wallCrd.Increment_Coord();
 
-	ConsoleRender::Create_Queue(100);	// Début de l'animation
+	//ConsoleRender::Create_Queue(100);	// Début de l'animation
 
 	while (numWalls)
 	{
@@ -194,8 +194,8 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 			parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];
 			state = parent->Get_State();
 
-			if (state > LinkState::FREE)								//Le parent doit être au maximum free pour activer un link
-				return;
+			//if (state > LinkState::FREE)								//Le parent doit être au maximum free pour activer un link
+			//	return;
 
 			if (Are_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent, WE STOP
 				return;
@@ -234,7 +234,10 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 		wall->Activate_Wall(strength, child, wallCrd.polar);	// active wall
 		
 		if (numWalls == 1)
+		{
 			child->Activate_Link(type);				// On active le Child qu'une fois, car il n'y en a qu'un seul 
+			child->Dsp_Link();
+		}
 
 
 		// On affiche juste le parent, car le child pourrait changer de state, et donc de symbole à la prochaine loop. On l'affichera à la fin seulement
@@ -245,7 +248,7 @@ void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWa
 		numWalls--;	// and here we go again
 	}
 
-	ConsoleRender::Stop_Queue();	// fin de l'animation
+	//ConsoleRender::Stop_Queue();	// fin de l'animation
 
 	//if (Is_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link child
 	//	playerOnLink = true;							

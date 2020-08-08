@@ -2,7 +2,8 @@
 #include "../UI/console_output/render_list.h"
 #include "../walls/walls.h"
 #include "botmeta.h"
-
+#include "../spawns/ev_spawn_Jerry.h"
+#include "../events/msg_dispatcher.h"
 #include "bot.h"
 
 extern CustomBotStats gCustomBot = {};	// Permet de faire des bots customs 
@@ -27,8 +28,12 @@ bool Bot::Is_Dead()											// vérifie si un bot est mort
 void Bot::Destroy_Bot()
 {
 	this->hp = 0;		// Remet le HP à 0. this boi is dead
+	
 	ConsoleRender::Add_Char(this->XY, TXT_CONST.SPACE, this->clr);		//Effacement!
 	gAllBotMeta.Bot_Died();	// One more :(
+	
+	if (jerryTime)
+		MsgQueue::Register(JERRY_DIED);	// pooR Jerry
 }
 
 

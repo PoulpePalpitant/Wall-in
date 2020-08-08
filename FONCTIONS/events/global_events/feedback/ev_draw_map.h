@@ -8,7 +8,7 @@ void Ev_Dr_Map_Borders_1();		// Affiche instantannément
 void Erase_Map_Borders_1(int speed = 0);		// Efface instantanément, ou avec une vitesse
 void Just_Dr_Map_Borders();
 
-void Set_Flashy_Border(Direction border);
+void Set_Flashy_Border(Direction border, int numFlash = 11);
 void Ev_Flash_Map_Border();		 // Fait flasher une bordure
 
 

@@ -11,11 +11,6 @@
 #include "../../../events/global_events/feedback/ev_fill_map.h"
 #include "../../../events/global_events/ev_lvl_start_warning.h"
 
-const int NUM_COOL_CHARS = 23;
-const int NUM_RECT_CHARS = 7;
-const int COOL_CHARS[NUM_COOL_CHARS] = {170,193,196,197,194,191,192,195,213,217,218,201,204,200,203,206,205,202,187,186,240,238,242};
-const int RECT_CHARS[NUM_RECT_CHARS] = { 176,178,177,220,219,223,254 };
-
 static int numChars;
 static Event ev_Dr_Day1(Ev_Dr_Day_1, 8);	// l'event
 
@@ -80,51 +75,7 @@ const std::string T_JOB[STANDARD_ASCII_SIZE] =	// Le titre principal
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void Set_Screen_Filler()
-{
-	charToFill.Resize(gConWidth, 0, gConHeight);
 
-	// Fill uniquement la box maintenant
-
-	// Exclut côté gauche
-	for (int row = 0; row < map.Get_Box_Limit(LEFT); row++)	
-		charToFill.Empty_List(row);
-	// Exclut côté droit
-	for (int row = map.Get_Box_Limit(RIGHT) + 1; row < gConWidth; row++)
-		charToFill.Empty_List(row);
-	// Exclut côté up
-	for (int col = 0; col < map.Get_Box_Limit(UP) ; col++)
-		charToFill.Remove_Value_Everywhere(col);
-	// Exclut côté droit
-	for (int col = map.Get_Box_Limit(DOWN) + 1; col < gConHeight; col++)
-		charToFill.Remove_Value_Everywhere(col);
-
-
-	
-
-	//charToFill.Resize(map.Get_Box_Limit(RIGHT) - map.Get_Box_Limit(LEFT), 0, map.Get_Box_Limit(DOWN));
-	//charToFill.Empty_List(0);
-	//charToFill.Empty_List(1);
-	//charToFill.Empty_List(2);
-	//charToFill.Empty_List(gConWidth - 1);
-	//charToFill.Empty_List(gConWidth - 2 );
-	//charToFill.Empty_List(gConWidth - 3 );
-	//charToFill.Remove_Value_Everywhere(0);
-	//charToFill.Remove_Value_Everywhere(1);
-	//charToFill.Remove_Value_Everywhere(2);
-}
-
-static void Fill_Screen_Randomly(bool erase = false)
-{
-	charToFill.Pick_From_Lists(crd.x, crd.y, true, true, Intervals::RDM_ALL);	// pogne une coord random
-
-	if(erase)
-		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// blakc
-	else	
-		//ConsoleRender::Add_Char(crd, TXT_CONST.SPACE_FILL);	// pour l'instant c'est blanc
-		ConsoleRender::Add_Char(crd, COOL_CHARS[rand() % NUM_COOL_CHARS], GRAY);
-
-}
 
 //static void Dr_Or_Er_Day_1(bool erase = false)		// Cette version fait flasher le titre
 //{
@@ -206,8 +157,8 @@ void Ev_Dr_Day_1()			//  Message d'avertissement que les bots s'en viennent et q
 		numChars = (map.Get_Length()) * (map.Get_Height());	// nombre de char à fill
 		ori = { (Find_Ctr_X((int)std::size(T_DAY_1[0]))), (gConHeight / 2) - 15 };
 		ori_2 = { (Find_Ctr_X((int)std::size(T_JOB[0]))), ori.y + 10};
-		//Dr_Or_Er_Day_1();
 		
+		MsgQueue::Register(LOCK_PLAYER);
 		Ev_Fill_Map();	// fill la map
 		ev_Dr_Day1.Activate();
 		ev_Dr_Day1.Start(150);	

@@ -10,6 +10,7 @@ extern time_t gNextBotMoveCycle;	// Le prochain BotMove cycle
 extern int gBotMoveCycleTot;							// Le nombre total de botmove cycle ayant u lieu
 	
 extern SpeedTimer gBotMoveTimer;
+extern int prevMovSPeed;			// la vitesse de déplacement précédente des bots. à rétablir une fois qu'on a finis avec un Jerry
 
 void UPD_Bot_Move_Cycle();		// Vérifie si on bouge les bots durant ce cycle
 bool Move_Bots_This_Cycle();	// Bouge les bots

@@ -14,6 +14,7 @@
 static Event ev_DrawMap1(Ev_Dr_Map_Borders_1);	// das event
 static Event ev_FlashMapBorder(Ev_Flash_Map_Border, 1);	// das event
 static Direction brderToFlash;
+static int numOfFlash;
 
 static Coord instXY;// crdBot, crdLeft, crdRight;	// oh yeah
 
@@ -152,10 +153,13 @@ void Erase_Map_Borders_1(int speed)
 
 
 
-void Set_Flashy_Border(Direction border)
+void Set_Flashy_Border(Direction border, int numFlash)
 {
-	if(!ev_FlashMapBorder.Is_Active())
+	if (!ev_FlashMapBorder.Is_Active())
+	{
 		brderToFlash = border;
+		numOfFlash = numFlash;
+	}
 }
 
 
@@ -216,7 +220,7 @@ void Ev_Flash_Map_Border()		 // Affiche instantannément
 	if (!ev_FlashMapBorder.Is_Active())
 	{
 		ev_FlashMapBorder.Activate();
-		ev_FlashMapBorder.Start(2000, 11);	// Met un nombre impair si tu veux que ça disparaisse
+		ev_FlashMapBorder.Start(2000, numOfFlash);	// Met un nombre impair si tu veux que ça disparaisse
 	}
 	else
 		while (ev_FlashMapBorder.delay.Tick())

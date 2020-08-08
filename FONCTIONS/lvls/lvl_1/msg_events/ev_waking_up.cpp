@@ -264,9 +264,10 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_13, Boss_Txt_Crd(_13, 1), gBossClr, TXT_SPD_ER, true);
 
-				Just_Dr_Heart_3();	// redraw le coeur
+				Just_Dr_Heart();	// redraw le coeur
 
-				MsgQueue::Register(STAGE_ADVANCE);	// Avance d'un stage
+				MsgQueue::Register(STAGE_ADVANCE);	// Avance d'un stage	// faut que le stage soit le 4e
+				MsgQueue::Register(STAGE_ADVANCE);	// Avance d'un stage	// faut que le stage soit le 4e
 				ev_WakeUp.Cancel();
 				break;
 

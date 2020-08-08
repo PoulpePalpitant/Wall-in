@@ -17,7 +17,7 @@ static Event ev_DrHeart3(Ev_Dr_Heart_3, 1);
 static Event ev_DrHeart2(Ev_Dr_Heart_2, 1);
 static Event ev_DrHeart1(Ev_Dr_Heart_1, 1);
 
-static std::string heart_3[] ={
+static const std::string heart_3[] ={
 "   ,;;;, ,;;;,	  ",
 "  ;;;' ';' ';;;  ",
 "  ;;;       ;;;  ",
@@ -25,7 +25,7 @@ static std::string heart_3[] ={
 "     ';;,;;'	  ",
 "       ';'		  "
 };
-static std::string heart_2[] = {
+static const std::string heart_2[] = {
 "   , ., ,;;.	 ",
 "  ';' ';' ';'	 ",
 "  ';       ;'	 ",
@@ -33,7 +33,7 @@ static std::string heart_2[] = {
 "     ;,;'       ",
 "      '		 "
 };
-static std::string heart_1[] = {
+static const std::string heart_1[] = {
 "  ;'';' ';	 ",
 "  ;     ;;	 ",
 "  ;,  ,;'	 ",
@@ -168,7 +168,7 @@ void Ev_Dr_Heart_3()		 // Affiche le coueur à ses différents stades
 			}
 		}
 }
-void Just_Dr_Heart_3()
+void Just_Dr_Heart(int hp)
 {
 	// initialisation, la console doit être setté pour utiliser ça
 	ori.x = Find_Ctr_X();		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
@@ -176,9 +176,17 @@ void Just_Dr_Heart_3()
 
 	for (int i = 0; i < 6; i++)	// Affiche tout les char du coeur
 	{
-		ConsoleRender::Add_String(heart_3[i], { ori.x - 9, ori.y + i }, LIGHT_GREEN);
+		if(hp == 3)
+			ConsoleRender::Add_String(heart_3[i], { ori.x - 9, ori.y + i }, LIGHT_GREEN);
+		else
+			if(hp == 2)
+				ConsoleRender::Add_String(heart_2[i], { ori.x - 9, ori.y + i }, LIGHT_YELLOW);
+			else
+				if(hp==1)
+					ConsoleRender::Add_String(heart_1[i], { ori.x - 9, ori.y + i }, LIGHT_RED);
 	}
 }
+
 
 
 

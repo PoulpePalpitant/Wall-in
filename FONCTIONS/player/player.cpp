@@ -6,6 +6,7 @@
 #include "player.h"
 #include "../blast/blast_modifier_queue.h"
 #include "../UI/console_output/render_list.h"
+#include "../events/global_events/ev_update_heart.h"
 
 extern Player P1 = {};		// Un joueur! 
 extern Player P2 = {};		// Des joueurs!
@@ -15,6 +16,8 @@ void Player::Player_Lose_HP(int hpLost )
 {
 	hp -= hpLost;
 	Upd_State();
+	Just_Dr_Heart();
+
 	//Upd_Color();
 	//update heart
 }	
@@ -24,6 +27,8 @@ void Player::Player_Gains_HP(int hpGain)
 {
 	hp += hpGain; 
 	Upd_State();	// Change le state du joueur
+
+	Just_Dr_Heart();
 	//Upd_Color();	// Change sa couleur
 	//update heart
 

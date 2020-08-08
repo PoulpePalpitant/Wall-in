@@ -19,10 +19,11 @@ void Lvl_1_Initializer()
 
 	if (gSkipStory)
 	{
-		Ev_Dr_Day_1();
+		//gCurrentStage = 3;
+		//MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 
-		//gCurrentStage = 1;	// Skip tout les tutorials
-		//Ev_Bot_Tutorial();	// start tuto avec jerry
+		gCurrentStage = 2;	// Skip tout les tutorials
+		Ev_Bot_Tutorial();	// start tuto avec jerry
 	}
 	else
 	{
@@ -31,7 +32,7 @@ void Lvl_1_Initializer()
 	}
 
 	gSpwBotTimer.Start_Timer(500 , 1 , true);
-	gBotMoveTimer.Start_Timer(8000, 1, true);
+	gBotMoveTimer.Start_Timer(7000, 1, true);
 	
 	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 1000, 0);
 	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 1000, 50);

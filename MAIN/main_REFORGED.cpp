@@ -101,17 +101,17 @@ int main()	// Le début!
 	//	}
 	//}
 
-	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
-	//{
-	//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
-	//	{
-	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-	//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
-	//		ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
+	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	{
+		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+		{
+			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+			ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
 
 
-	//	}
-	//}
+		}
+	}
 	//Coord XYCOLOR = { 0,0 };
 	//for (int i = 0; i < 500; i++)
 	//{
@@ -167,8 +167,8 @@ int main()	// Le début!
 	Initialize_Game();		// Initialize une bunch de crap
 
 	// CLOCK TESTING
-	//Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Spawn Waves: ");
-	Coord crd3 = { 61,1 };	// Update bot alive count
+	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Spawn Waves: ");
+	Coord crd3 = { 61,1 };	// Update la combientième wave
 
 	GameClock LvlClock;
 	//LvlClock.clockName = "Swag Clock";crd = { 0,1 };LvlClock.Dsp_Name(crd);
@@ -207,7 +207,8 @@ int main()	// Le début!
 			//	ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de bot en vie
 			//	loops = 0;
 			//}
-			//ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de bot en vie
+			ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
+			ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 

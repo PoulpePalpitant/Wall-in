@@ -3,6 +3,12 @@
 #include <string>
 #include "coord.h"
 
+
+const int NUM_COOL_CHARS = 23;
+const int NUM_RECT_CHARS = 7;
+const int COOL_CHARS[NUM_COOL_CHARS] = { 170,193,196,197,194,191,192,195,213,217,218,201,204,200,203,206,205,202,187,186,240,238,242 };
+const int RECT_CHARS[NUM_RECT_CHARS] = { 176,178,177,220,219,223,254 };
+
 // Constantes de symboles souvent utulisés
 struct TextConstant
 {

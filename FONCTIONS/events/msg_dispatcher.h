@@ -74,6 +74,7 @@ enum MsgType
 	/* Ennemy Stuff*/
 	, ENNEMY_KILLED
 	, ENNEMY_SPWN
+	, JERRY_DIED
 	, SPECIAL_SPAWN
 	, STOP_BOT_SPAWNS	// n'update plus les spawn
 	, STOP_BOT_MOVE		// n'update plus les mouvements

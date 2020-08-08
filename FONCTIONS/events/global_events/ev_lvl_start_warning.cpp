@@ -28,8 +28,6 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 		crd = ori;
 		stringProgress = 0;
 
-
-		MsgQueue::Register(SPAWN_PLAYER);
 		ev_LvlStartWarning.Activate();
 		ev_LvlStartWarning.Start(10000, (int)ready.size());
 	}
@@ -52,25 +50,26 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 3:
-				ConsoleRender::Add_Char({ crd.x + 2 , crd.y +2  }, inc[stringProgress]);
+				ConsoleRender::Add_Char({ crd.x , crd.y +2  }, inc[stringProgress]);
 				stringProgress++;	// avance d'un char
 				crd.x++;	// avance d'un char
-				ev_LvlStartWarning.Advance(400);
+				ev_LvlStartWarning.Advance(600);
 				break;
 
 			case 4:
-				ev_LvlStartWarning.Advance(400);
+				MsgQueue::Register(SPAWN_PLAYER);
+				ev_LvlStartWarning.Advance(600);
 				break;
 
 			case 5:
-				ConsoleRender::Add_String(ready, ori, WHITE,50, true);
-				ConsoleRender::Add_String(inc, { ori.x + 2, ori.y + 2 }, WHITE,50, true);
 				Ev_Dr_Heart_3();	// affiche le coeur
+				ConsoleRender::Add_String(ready, ori, WHITE,50, true);
+				ConsoleRender::Add_String(inc, { ori.x, ori.y + 2 }, WHITE,50, true);
 				ev_LvlStartWarning.Advance(200);
 				break;
 
 			case 6:
-				MsgQueue::Register(START_BOTS); // Here they come baby
+				MsgQueue::Register(STAGE_ADVANCE); // Here they come baby
 				ev_LvlStartWarning.Advance(0);
 				break;
 			}

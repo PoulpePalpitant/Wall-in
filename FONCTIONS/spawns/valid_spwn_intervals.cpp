@@ -305,8 +305,8 @@ void ValidSpwnIntervals::Reset_Secondary_List()
 			{
 				prev = it;
 				it = it->nxt;
-				delete prev;	// Vide la liste
-			}
+				delete prev;	// Vide la liste		: Si tu Crash ici, c'est que ta essayer de faire spawner un bot sur une coord plus grande que le nombre de spawn possible
+			}											// Genre en écrivant linkGrid.Get_Rows() au lieu de Get_Num_Spawns().   Faudrait Vraiment que Je criss un safety là-dedans....
 
 			scndary.start[i] = NULL;	// ?
 			prev = it = NULL;	// Bonne pratique

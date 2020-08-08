@@ -11,6 +11,8 @@
 #include "events/ev_spawn_life.h"
 #include "events/ev_dot_chase.h"
 #include "events/ev_bot_tutorial.h"
+#include "events/ev_build_start_walls.h"
+#include "../../events/global_events/ev_update_heart.h"
 
 /* Msg events*/
 #include "msg_events/ev_new_goal.h"
@@ -46,7 +48,18 @@ void Dispatch_Msg_To_Lvl_1()
 		{
 			Ev_Dr_Day_1();
 		}
-
+		if (gCurrentStage == 4)
+		{
+			P1.Set_Position({6,6});
+			P1.Dis_Player_Sym();
+			//Build_Lvl_1_Walls();
+			// Ceci est temporaire pour débugger plus rapidement le bot script
+			//Ev_Dr_Arr_Keys();
+			//Ev_Dr_Wasd();
+			Just_Dr_Heart();
+			MsgQueue::Register(FREE_PLAYER);
+			MsgQueue::Register(START_BOTS); // Here they come baby
+		}
 		//MsgQueue::Register(START_BOTS);	stage 3, après le tuto?			// Here they come baby
 		break;	// fack
 
@@ -83,7 +96,6 @@ void Dispatch_Msg_To_Lvl_1()
 
 		/*Bots*/
 	case START_BOTS:
-		Ev_Er_New_Goal();  break;		// efface le Texte du new goal
 		break;
 	}
 }

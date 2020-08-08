@@ -5,6 +5,7 @@
 #include "../../spawns/bots_to_spawn.h"
 #include "../../events/msg_dispatcher.h"
 
+#include "events/ev_build_start_walls.h"
 #include "lvl_1_spwn_script.h"
 
 using namespace bots_to_spawn;
@@ -21,10 +22,12 @@ void Lvl_1_Spwn_Script()
 		//	spawnGrid->Get_MaxSpwnCrdY() - 1
 		//Add(300);
 		
-		// Tout les spawns seront verticaux jusqu'au final push du level
-		if (numSpawnWaves < 100)
-		{
+
+		if(numSpawnWaves > 20)	// Les 20 premier spawns seront manuel
 			Add(1);
+		
+		if (numSpawnWaves < 100) // Tout les spawns seront verticaux jusqu'au final push du level
+		{
 			gVerticalBorder = true;
 		}
 		else
@@ -35,35 +38,47 @@ void Lvl_1_Spwn_Script()
 
 		switch (numSpawnWaves)
 		{
-		case 1: break;
+		case 1:Add_Specific(RIGHT, 0); Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 4; break;
 		case 2:Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		case 3:Add_Specific(RIGHT, 1);break;
-		case 4:Add_Specific(RIGHT, 1);break;
+		case 3:Add_Specific(RIGHT, 5); Build_Lvl_1_Walls(); break;// Dessine un pattern de départ
+		case 4: Add_Specific(RIGHT, 9);break;
 		case 5:Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 6:gBoxSide = RIGHT;break;
-		case 7:gBoxSide = LEFT;break;
-		case 8:gBoxSide = RIGHT;break;
- 		case 9:gBoxSide = RIGHT;break;
-		case 10: skip = 0;break;
-		case 11:skip = 0;break;
-		case 12:break;
-		case 13:break;
-		case 14:break;
-		case 15:break;
-		case 16:break;
-		case 17:break;
-		case 30:Set_Interval(RIGHT, 5, 6);break;
-		case 31:Set_Interval(RIGHT,5,6);break;
-		case 32:Set_Interval(RIGHT,5,6);break;
-		case 33:Set_Interval(RIGHT,5,6);break;
-		case 34:Set_Interval(RIGHT,5,6); skip = 8; break;
-		case 35:Set_Interval(RIGHT, 9,10);break;
-		case 36:Set_Interval(RIGHT, 9,10);break;
-		case 37:Set_Interval(RIGHT, 9,10);break;
-		case 38:Set_Interval(RIGHT, 9,10);break;
-		case 39:Set_Interval(RIGHT, 9,10); skip = 8; break;
-
+		case 6:Add(1);gBoxSide = RIGHT;break;
+		case 7:Add(1);gBoxSide = LEFT;break;
+		case 8:Add(1);gBoxSide = RIGHT;break;
+		case 9:Add(1);gBoxSide = RIGHT; skip = 1; break;
+		case 10:Add(1); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;	// Premier Double
+		case 11:Add(1); break;
+		case 12:Add(1); gBoxSide = LEFT; gSpwNum = 0; break;
+		case 13:Add(1); gBoxSide = LEFT; gSpwNum = 1; break;
+		case 14:Add(1); gBoxSide = LEFT; gSpwNum = 2; break;
+		case 15:Add(1); gBoxSide = LEFT; gSpwNum = 3; break;
+		case 16:Add(1); gBoxSide = LEFT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; break;
+		case 17:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+		case 18:Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2;break;
+		case 19:Add(1); break;
+		case 20:Add(1); break;
+		case 21:Add(1); break;
+		case 22:Add(1); break;
+		case 23:Add(1); break;
+		case 24:Add(1); break;
+		case 25:Add(1); break;
+		case 26:Add(1); break;
+		case 27:Add(1); break;
+		case 28:Add(1); break;
+		case 29:Add(1); break;
 		// Start les doubles spawns
+		case 30:Add(1); Set_Interval(RIGHT, 5, 6);break;
+		case 31:Add(1); Set_Interval(RIGHT,5,6);break;
+		case 32:Add(1); Set_Interval(RIGHT,5,6);break;
+		case 33:Add(1); Set_Interval(RIGHT,5,6);break;
+		case 34:Add(1); Set_Interval(RIGHT,5,6); skip = 8; break;
+		case 35:Add(1); Set_Interval(RIGHT, 9,10);break;
+		case 36:Add(1); Set_Interval(RIGHT, 9,10);break;
+		case 37:Add(1); Set_Interval(RIGHT, 9,10);break;
+		case 38:Add(1); Set_Interval(RIGHT, 9,10);break;
+		case 39:Add(1); Set_Interval(RIGHT, 9,10); skip = 8; break;
+
 		case 40: Set_Interval(LEFT, 2,3); Add(1); break;
 		case 41: Set_Interval(LEFT, 2,3); Add(1); break;
 		case 42: Set_Interval(LEFT, 2,3); Add(1); break;

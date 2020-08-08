@@ -73,7 +73,7 @@ void Update_Player_Action()
 				break;
 
 			case BLAST:
-				if (!blastP1.Is_Active() && !ChoiceTime::Is_Choice_Time())
+				if (!blastP1.Is_Active() && !ChoiceTime::Is_Choice_Time() && !gBlockBlast)
 				{
 					//static Blast* blast; 		blast = &blastP1;	// da blast
 
