@@ -56,8 +56,9 @@ public:
 	int Get_Total() { return total; }
 
 	// GESTION DES ÉLÉMENTS DE LA QUEUE
+	bool Find_Element(const T& data, int& indexFound);
 
-	bool Unregister();	// Retir un élément de la queue
+	bool Unregister(int index);	// Retir un élément de la queue
 	void Register(T data);		// Ajoute le message à la liste des message à traiter 
 	T Copy_Element(int index);	// Copy 1 élément de la list
 
@@ -154,17 +155,16 @@ T RingBufferQueue<T>::Extract()			// Prend le premier élément de la liste; First
 // // // // FIXED LIST
 
 template <typename T>
-bool FixedList<typename T>::Unregister()	// retire le message de la queue
+bool FixedList<typename T>::Unregister(int INDEX)	// retire le message de la queue
 {
-
-	if (index < total)
+	if (INDEX < total)			// je peux pas cancel un autre event que celui qui détient l'index. Ce qui veut dire que je peux uniquement cancelé un event dans sa propre méthode, very bad
 	{
 		total--;	// 1 de moins 
 
-		for (int i = index; i < total; i++)		// Décale tout
+		for (int i = INDEX; i < total; i++)		// Décale tout
 			list[i] = list[i + 1];
 
-		index--;	// FIX PAS RAPPORT
+		INDEX--;	// FIX PAS RAPPORT
 		return true;
 	}
 	return false;	// did not work
@@ -187,6 +187,23 @@ T FixedList<typename T>::Copy_Element(int index)	// Prend 1 élément de la list s
 		return list[index];
 	else
 		return -1;	// Retourne aucune élément ne faisait partie de cet index
+}
+
+
+
+template <typename T>
+bool FixedList<typename T>::Find_Element(const T& data, int& indexFound)
+{
+	for (int i = 0; i < total; i++)
+	{
+		if (list[i] == data)
+		{
+			indexFound = i;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 //	->

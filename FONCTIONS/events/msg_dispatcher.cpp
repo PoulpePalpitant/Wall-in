@@ -61,7 +61,10 @@ void MsgQueue::Register(MsgType msg)	// Ajoute le message à la liste des message
 		total++;
 	}
 	else
+	{
+		 std::cout << "fuck";		// Tu send trop de message, Probablement à cause que tu détruit tout les links
 		return;
+	}
 }
 
 void MsgQueue::Dispatch_Messages()		// Prend un message enregistré de la liste à envoyé

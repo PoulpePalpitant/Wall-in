@@ -14,10 +14,12 @@ extern Player P2 = {};		// Des joueurs!
 // En général, le joueur perdra 1hp seulement
 void Player::Player_Lose_HP(int hpLost ) 
 {
-	hp -= hpLost;
-	Upd_State();
-	Just_Dr_Heart();
-
+	if (hp > 0)
+	{
+		hp -= hpLost;
+		Just_Dr_Heart();
+	}
+		Upd_State();
 	//Upd_Color();
 	//update heart
 }	

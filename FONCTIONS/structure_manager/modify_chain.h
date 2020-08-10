@@ -51,7 +51,6 @@ private:
 	static ChainToModify* start;
 	static ChainToModify* end;
 
-
 	static void Add_Children_To_List(ChainToModify* chain, Link* parent);
 
 	static void Modify_Element(ChainToModify* chain);	// Détruit un élément de la chaîne
@@ -63,6 +62,8 @@ private:
 
 	static void Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev);
 public:
+	static bool annihilating;	// On est en train d'effacer tout les walls
+
 	// Détruit la chaine de link et de mur dépendant d'un Link
 	static void Annihilate_All_Links();	// Efface tout les murs et les links sur tout les grids
 	static void Update_Chain_Modification();

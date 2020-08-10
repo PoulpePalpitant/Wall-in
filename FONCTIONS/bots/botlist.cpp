@@ -35,7 +35,19 @@ bool BotList::Is_Empty()					// Check si tout les bots sont désactivés
 }
 
 
+void BotList::Destroy_All_Bots()
+{
+	for (int i = 0; i < MAX_NUM_BOTS; i++) {
+		if (!bot[i].Is_Dead())
+		{
+			Bot::UI_Erase_Bot(&bot[i]);
+			bot[i].Destroy_Bot();
 
+			if (!gAllBotMeta.alive) // no more bots
+				return;
+		}
+	}
+}
 
 
 

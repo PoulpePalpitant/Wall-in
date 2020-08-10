@@ -20,6 +20,7 @@ struct TextConstant
 	const char PARENTHESIS_CLOSE = ')';
 	const unsigned char VER_BAR = '|';
 	const std::string EMPTY = "";		// EMPTY c'est le 'string' rebel
+	const std::string SPACE_STRING = " ";	// 
 	const std::string R_ARROW = "->";		// nope, deux autres :`)
 	const std::string L_ARROW = "<-";		// nope
 	const std::string DOTDOTDOT = ". . .";
@@ -92,5 +93,7 @@ Coord Up_Txt_3(std::string txt);	// Pour afficher du texte en Haut sur la 3e lig
 
 Coord Heart_Txt_Crd(int line = 0);	// Affiche du texte à la droite du coeur
 
-Coord Boss_Txt_Crd (std::string txt, int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
+Coord Boss_Txt_Crd (std::string txt = TXT_CONST.SPACE_STRING, int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
+int Boss_Txt_X ();	// Affiche du texte à l'emplacement du personnage du boss
+int Boss_Txt_Y (int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
 Coord Jerry_Txt_Crd(std::string txt, int line = 0);	// Affiche du texte à l'emplacement du personnage de Jimmy

@@ -63,12 +63,22 @@ Coord Heart_Txt_Crd(int line)
 
 Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplacement du personnage du boss
 {
-	if(line < 4)
+	if(line < 6)
 		return { (gConWidth - 30) - ((int)std::size(txt) / 2), 12 + line }; // au trois quart à droite
 	else
 		return { 0,0 };	// hehe
 
 }
+int Boss_Txt_X()	
+{
+	return  (gConWidth - 30);
+}
+
+int Boss_Txt_Y(int line)	
+{
+	return 12 + line; 
+}
+
 Coord Jerry_Txt_Crd(std::string txt, int line)	// Affiche du texte à l'emplacement du personnage de Jimmy
 {
 	if (line < 3)

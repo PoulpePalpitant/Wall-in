@@ -32,7 +32,7 @@ bool CountDown_Finished() // Permet de savoir quand le contdown est finit
 		return false;
 }
 
-// Avertit le joueur que le final push arrive!
+// Affiche un tit countdown au milieu de l'écran
 void Ev_CountDown()
 {
 	static int currCoundown;
@@ -76,7 +76,6 @@ void Ev_CountDown()
 			case 2:
 				ConsoleRender::Add_String(go, { crd.x - 1 , crd.y });//Affiche
 				ev_CountDown.Advance(1000);
-				MsgQueue::Register(ACTIVATE_BLAST);		/// Si le joueur tir avant, le blast ne sera pas cancelé
 				break;
 
 			case 3:

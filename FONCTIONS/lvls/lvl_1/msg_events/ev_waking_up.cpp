@@ -175,6 +175,7 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 			case 16:
 				if (ChoiceTime::Get_Choice_Made() == yes_1)
 				{
+					ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_ER, true);
 					Ev_Bot_Tutorial();	// start tuto avec jerry
 					ev_WakeUp.Cancel();	// Stop l'event right now
 				}

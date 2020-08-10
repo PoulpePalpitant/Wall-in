@@ -1,5 +1,5 @@
 
-#include "ev_stop_Jerry_1.h"
+#include "ev_ultimate_test.h"
 #include "../../../UI/console_output/render_list.h"
 #include "../../../console/sweet_cmd_console.h"
 #include "../../../events/events.h"
@@ -7,9 +7,9 @@
 #include "../../../bots/botmeta.h"
 #include "../../../spawns/ev_spawn_Jerry.h"
 
-Event ev_Dr_StopJerry(Ev_Dr_Stop_Jerry, 3);
-static std::string _1 = "- STOP JERRY -"; ;
-static std::string _2 = "(Do It    Times)";
+Event ev_UltimateTest(Ev_Ultimate_Test, 3);
+static std::string _1 = "- STOP EVERYTHING -"; ;
+static std::string _2 = "(Or Die Horribly)";
 static Coord crdCount;		// La coord du numéro à updater
 
 static int deadCount;	// Nombre de Jerry dead
@@ -27,33 +27,33 @@ static void Upd_Jerry_Count()
 
 void Stop_Ev_Dr_Stop_Jerry()	// Stopping the jerrys
 {
-	ev_Dr_StopJerry.Cancel();
+	ev_UltimateTest.Cancel();
 	jerryTime = false;
 	deadCount = 0;
 }
 
-void Ev_Dr_Stop_Jerry()			// Le joueur doit arrêter Jerry plusieurs fois
+void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 {
 	//crd.x = P1.Get_XY().x; crd.y -= 3;
-	if (!ev_Dr_StopJerry.Is_Active())
+	if (!ev_UltimateTest.Is_Active())
 	{
 		 deadCount = 0;
 
 		ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);
 		ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 50);
-		ev_Dr_StopJerry.Activate();
-		ev_Dr_StopJerry.Start(1500);	// 1000 / 2 = 500.		2 secondes
+		ev_UltimateTest.Activate();
+		ev_UltimateTest.Start(1500);	// 1000 / 2 = 500.		2 secondes
 	}
 	else
 	{
-		while (ev_Dr_StopJerry.delay.Tick())
+		while (ev_UltimateTest.delay.Tick())
 		{
-			switch (ev_Dr_StopJerry.Get_Current_Step())
+			switch (ev_UltimateTest.Get_Current_Step())
 			{
 			case 1:
 				Upd_Jerry_Count();
-				ev_Dr_StopJerry.Advance(0);	// Delay 
-				ev_Dr_StopJerry.delay.Start_Timer(1000000, 1, true);
+				ev_UltimateTest.Advance(0);	// Delay 
+				ev_UltimateTest.delay.Start_Timer(1000000, 1, true);
 				break;
 
 			case 2:
@@ -65,7 +65,7 @@ void Ev_Dr_Stop_Jerry()			// Le joueur doit arrêter Jerry plusieurs fois
 
 					if (!jerryTime)
 					{
-						ev_Dr_StopJerry.Cancel();
+						ev_UltimateTest.Cancel();
 						Er_Stop_Jerry();	// efface l'objectif
 					}
 				}

@@ -9,6 +9,7 @@
 
 ChainToModify* ListsOfChainToModify::start = NULL;
 ChainToModify* ListsOfChainToModify::end = NULL;
+bool ListsOfChainToModify::annihilating = false;	// On est en train d'effacer tout les walls
 
 
 //
@@ -422,6 +423,8 @@ void ListsOfChainToModify::Update_Chain_Modification()
 
 void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les links sur le Grid
 {
+	annihilating = true;
+
 	int col = linkGrid->Get_Cols();
 	int row = linkGrid->Get_Rows();
 
@@ -437,8 +440,8 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 
 			if(linkGrid->link[c][r].Get_State() != LinkState::DEAD)
 				Add_Chain_To_Modify({ c,r });
-
-
 		}
 	}
+
+	annihilating = false;
 }

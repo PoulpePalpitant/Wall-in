@@ -28,7 +28,7 @@ public:
 	static int Find_Available_Bot();				// Rapport l'indice d'un bot available dans la liste
 	static bool Is_Full();						// check si tout les bots sont dead
 	static bool Is_Empty();					// Check si tout les bots sont désactivés
-
+	static void Destroy_All_Bots();
 
 };
 

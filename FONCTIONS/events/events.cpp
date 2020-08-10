@@ -21,8 +21,11 @@ void Event::Activate()
 }
 void Event::Deactivate()
 {
+	static int index;
+
 	isActive = false; 
-	toUpdate.Unregister();	//	Retire l'event à la liste de "à updater"
+	if(toUpdate.Find_Element(ID, index))
+		toUpdate.Unregister(index);	//	Retire l'event à la liste de "à updater"
 }
 
 // UPDATE TOUT LES EVENT EN COURS !!!!!!!!!!!!!!!!!!!!!!!!

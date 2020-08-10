@@ -134,7 +134,9 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 		/*do stuff*/
 
 	meta.Remove();
-	MsgQueue::Register(LINK_DEACTIVATED); // we did
+	
+	if(!ListsOfChainToModify::annihilating)
+		MsgQueue::Register(LINK_DEACTIVATED); // we did
 }
 
 void Link::Unbound_All_Child()	// Retire tout les child du link. et n'update pas le state
