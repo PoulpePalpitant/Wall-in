@@ -32,7 +32,7 @@ void Lvl_1_Initializer()
 	}
 
 	gSpwBotTimer.Start_Timer(500 , 1 , true);
-	gBotMoveTimer.Start_Timer(7000, 1, true);
+	gBotMoveTimer.Start_Timer(6200, 1, true);
 	
 	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 1000, 0);
 	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 1000, 50);
@@ -49,7 +49,7 @@ void Lvl_1_Initializer()
 		throw "player pas sur le grid";
 	
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
-	MsgQueue::Register(DEACTIVATE_BLAST);	// It has to be done
+	MsgQueue::Register(DISABLE_BLAST);	// It has to be done
 	//MsgQueue::Register(START_BOTS);	// It has to be done
 	
 }

@@ -2,6 +2,7 @@
 #include "txtstyle.h"
 
 #include "../console/sweet_cmd_console.h"
+#include "map.h"
 #include <Windows.h>
 
 
@@ -12,6 +13,7 @@ Colors gBossClr = LIGHT_RED;
 Colors gJerClr = LIGHT_YELLOW;
 
 const unsigned short TXT_SPD_DR = 200; // vitesse de défilement du texte par défaut
+const unsigned short TXT_SPD_FAST = 70; // vitesse d'affichage
 const unsigned short TXT_SPD_ER = 50; // vitesse d'éffacement du texte par défaut
 
 // Changer la couleur
@@ -79,11 +81,45 @@ int Boss_Txt_Y(int line)
 	return 12 + line; 
 }
 
+void Erase_All_Boss_Txt()
+{
+	for (int i = 0; i < 6; i++)
+	{
+		gotoxy(map.Get_Box_Limit(RIGHT) + 1, 12 + i);
+		clreol();
+	}
+}
+
 Coord Jerry_Txt_Crd(std::string txt, int line)	// Affiche du texte à l'emplacement du personnage de Jimmy
 {
-	if (line < 3)
-		return { (gConWidth - 35) - ((int)std::size(txt) / 2), 8 + line }; // au trois quart à droite
+	if (line < 4)
+		return { (gConWidth - 31) - ((int)std::size(txt) / 2), 7 + line }; // au trois quart à droite
 	else
 		return { 0,0 };	// hehe
 
+}
+
+int Jerry_Txt_X()
+{
+	return  (gConWidth - 31);
+}
+
+int Jerry_Txt_Y(int line)
+{
+	return 7 + line;
+}
+
+void Erase_All_Jerry_Txt()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		gotoxy(map.Get_Box_Limit(RIGHT) + 1, 7 + i);
+		clreol();
+	}
+}
+
+void Erase_Right_Text()
+{
+	Erase_All_Jerry_Txt();
+	Erase_All_Boss_Txt();
 }

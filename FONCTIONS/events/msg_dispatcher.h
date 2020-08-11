@@ -37,6 +37,8 @@ enum MsgType
 	, LVL_ENDED
 	, VICTORY
 	, DEFEAT
+	, PRESS_X_TO_PROCEED
+	, PROCEED
 
 	/* UI stuff */
 	, SHOW_HEALTH
@@ -88,8 +90,8 @@ enum MsgType
 	, WALL_TRANSFER
 	, BLAST_HIT_ITEM
 	, BULLETS_DEPLETED
-	, ACTIVATE_BLAST	// Empêche le joueur de tirer
-	, DEACTIVATE_BLAST	// Empêche le joueur de tirer
+	, ENABLE_BLAST	// Empêche le joueur de tirer
+	, DISABLE_BLAST	// Empêche le joueur de tirer
 
 	/* Window stuff*/
 	, CHANGE_WINSIZE	// Nécessiter de changer la window

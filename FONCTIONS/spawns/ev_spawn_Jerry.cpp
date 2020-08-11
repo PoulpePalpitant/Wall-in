@@ -10,20 +10,28 @@
 #include "../console/sweet_cmd_console.h"
 #include "../UI/console_output/render_list.h"
 #include "spawn_bot.h"
+#include "../lvls/lvl_1/msg_events/ev_stop_Jerry_1.h"
 
-static Event ev_SpawnJerry(Ev_Spawn_Jerry, 1);
+static Event ev_SpawnJerry(Ev_Spawn_Jerry, 2);
 
 static Direction side;
+static bool verti = false;
 static int spw;
+static int limit;		// Nombre de Jerry Max que Le joueur peut summon
 static std::string howTo = "(Press Enter To Summon Jerry Again)";
 
 bool jerryTime = false;		// Si On a des Jerry qui spawnenT
 int jerCount;				// Nombre de fois que le joueur doit stopper Jerry
 int deadJerrys;		// Le nombre de Jerry qui sont dead pendant un Jerry time
 
-static bool jerryAlive;
+
+static bool spwThisFrame = false;
 static int prevSpd;
 
+void Add_Jerrys_To_Stop(int toAdd)
+{
+	jerCount += toAdd;
+}
 
 void Set_Jerry_Time(int JerryToStop)
 {
@@ -46,6 +54,10 @@ void Update_Dead_Jerrys()							// Nombre de Jerry à buter pendant un Jerry time
 		jerryTime = false;
 	}
 }
+void Make_It_Vertical_Only()
+{
+	verti = true;
+}
 
 void Set_Jerry(Direction boxSide, int spwNum, int moveSpeed)	// Set Jerry pour les prochains spawn de Jerry
 {
@@ -57,12 +69,12 @@ void Set_Jerry(Direction boxSide, int spwNum, int moveSpeed)	// Set Jerry pour l
 
 void Ev_Stop_Spawn_Jerry()	// Stop l'event de spawn Jerry!
 {
+	verti = false;
 	ev_SpawnJerry.Cancel();
-	jerryAlive = false;
-	ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 15 }, GRAY, 0, true); // efface ce titre
+	spwThisFrame = false;
+	ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 14 }, GRAY, 0, true); // efface ce titre
 	gBotMoveTimer.Start_Timer(prevSpd, 1, true);	// tu va devoir rétablir la vitesse précédante après ton Jerry spawn
 	MsgQueue::Register(STOP_BOT_MOVE);
-
 }
 
 void Spawn_A_Jerry(Direction boxSide, int spwNum, int delay)	// Permet de spawn un Jerry
@@ -71,6 +83,10 @@ void Spawn_A_Jerry(Direction boxSide, int spwNum, int delay)	// Permet de spawn 
 	gCustomBot.fixedColor = true;
 	gCustomBot.clr = gJerClr;
 	gCustomBot.warningDelay = delay;	
+	
+	if (verti) // random border basically
+		bots_to_spawn::gVerticalBorder = true;
+	
 	Spawn_A_Bot(boxSide, spwNum);		// Off he goes!
 }
 
@@ -79,29 +95,33 @@ void Ev_Spawn_Jerry()
 	if (!ev_SpawnJerry.Is_Active())
 	{
 		// initialisationa
-		ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 15 }, GRAY, 150); // affiche ce titre
-		jerryAlive = false;
+		ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 14 }, GRAY, 150); // affiche ce titre
+		gBotMoveTimer.Start_Timer(prevSpd, 1, true);
+		//Set_Jerry_Time(0);
+		//Ev_Dr_Stop_Jerry();
+		spwThisFrame = false;
 		ev_SpawnJerry.Activate();
 		ev_SpawnJerry.Start(0);
+		ev_SpawnJerry.delay.Start_Timer(10000, 1, true);
 	}
 	else
 	{
-			if (!jerryAlive)
+		while (ev_SpawnJerry.delay.Tick())
+		{
+
+			if (!spwThisFrame && lastKey == KeyPressed::ENTER)	// WE SPAWN JERRY
 			{
-				if (!gAllBotMeta.alive && lastKey == KeyPressed::ENTER)	// WE SPAWN JERRY
-				{
-					gCustomBot.clr = gJerClr;
-					gCustomBot.warningDelay = 10;	// Jerry laisse plus de temps avant de spawner
-					Spawn_A_Bot(side, spw);			// Off he goes!
-					jerryAlive = true;
-				}
+				Spawn_A_Jerry(side, spw, 5);
+				lastKey = KeyPressed::NONE;
+				//Add_Jerrys_To_Stop(1);
+				/*spwThisFrame = true;*/
 			}
-			else
-			{
-				if (!gAllBotMeta.alive)			
-					jerryAlive = false;
-				
-			}
+
+		}
+
+		
+		/*spwThisFrame = false;*/
+		// Cet Event Doit être cancel manuellement
 	}
 }
 

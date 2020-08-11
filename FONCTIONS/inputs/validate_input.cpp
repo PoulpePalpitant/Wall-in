@@ -9,12 +9,12 @@
 #include "../choice/choice_time.h"
 #include "../lvls/lvl_script.h"
 
+
 void Validate_Input()
 {
 
 	if (!gBlockInputs)
 	{
-		keyDirection = NONE;
 		lastKey = KeyPressed::NONE;
 		int key = toupper(_getch());
 
@@ -47,6 +47,11 @@ void Validate_Input()
 				keyDirection = DOWN;	action = BLAST;
 			}
 
+			if (GetKeyState(VK_DOWN) & 0x8000)
+			{
+				keyDirection = DOWN;	action = BLAST;
+			}
+			
 			switch (key)	// Input de charactères
 			{
 			case 'W':	keyDirection = UP; action = MOVE; break;
@@ -54,6 +59,13 @@ void Validate_Input()
 			case 'S':	keyDirection = DOWN; action = MOVE; break;
 			case 'D':	keyDirection = RIGHT;action = MOVE; break;
 			case 'Q':	action = CHANGE_BLAST; break;
+			case 27:	
+				if (gProceedTime)	/* Esc */
+				{
+					MsgQueue::Register(PROCEED);
+					gProceedTime = false;
+				}
+				break;
 			case 13:	/* enter */
 				if (ChoiceTime::Is_Choice_Time())
 					ChoiceTime::Apply_Choice();

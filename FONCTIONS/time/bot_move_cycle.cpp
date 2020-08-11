@@ -8,7 +8,8 @@ bool gMoveBotsThisCycle;	// On bouge les bots durant ce cycle
 int gBotMoveCycleTot;		// Le nombre total de botmove cycle ayant u lieu
 
 SpeedTimer gBotMoveTimer;	// Pour l'instant, les bots bougent tous à la même vitesse, et sur le même rythme
-int prevMovSPeed;
+int prevMovSPeed = 4000;
+
 
 void UPD_Bot_Move_Cycle()
 {
@@ -30,4 +31,18 @@ bool Move_Bots_This_Cycle()
 	}
 
 	return false;	// no moverino
+}
+
+
+void Temporary_Bot_Speed_Switch(int speed, bool overwritePrev)	// Instaure une vouelle vitesse de bots. "Store" la valeur de la vitesse précédante.
+{
+	if(overwritePrev)
+		prevMovSPeed = gBotMoveTimer.Get_Speed();
+
+	gBotMoveTimer.Start_Timer(speed, 1, true);
+
+}
+void Restore_Prev_Bot_Speed()	// restaure la vitesse précédante
+{
+	gBotMoveTimer.Start_Timer(prevMovSPeed, 1, true);
 }

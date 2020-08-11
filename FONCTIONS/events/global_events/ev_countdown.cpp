@@ -5,23 +5,67 @@
 #include "../../UI/console_output/render_list.h"
 #include "../../structure_manager/modify_chain.h"
 #include "../../grid/AllGrids.h"
+#include "../../console/sweet_cmd_console.h"
 
 static Event ev_CountDown(Ev_CountDown, 3);
 static std::string go = "Go!";
+static std::string blast = "(You Can't Shoot During 'This' Countdown)";
 static Coord crd;
 static Colors clr;
 static int clrRatio;		// Change la couleur selon la progression du countdown
-
+static bool blastDisabled = false;
 
 static const int DLFLT_CD = 5;	// La durée du countdown
 static int cd = DLFLT_CD;	// La durée du countdown
 
-void Set_CoundDown_Dur(int duration)
+bool Blast_Disabled_While_CD()
+{
+	static bool msgShown = false;
+
+	if (ev_CountDown.Is_Active())
+	{
+		if (blastDisabled)
+		{
+			if (msgShown)
+				return true;
+			else
+			{
+				msgShown = true;
+				ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 }, GRAY); 			// show message
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void Set_CountDown(int duration, Coord coord, bool disableBlast)
 {
 	if (!ev_CountDown.Is_Active())
+	{
 		cd = duration;
+		crd = coord;
+		blastDisabled = disableBlast;
+	}
 	else
 		throw "fuckyou";
+}
+bool CountDown_Cancel() // Permet de savoir quand le contdown est finit
+{
+	if (ev_CountDown.Is_Active())
+	{
+		ev_CountDown.Cancel();
+		if (blastDisabled)
+		{
+			MsgQueue::Register(ENABLE_BLAST);
+			ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 },WHITE, 50, true); 			// erase
+			blastDisabled = false;
+		}
+		return true;
+	}
+	else
+		return false;
 }
 
 bool CountDown_Finished() // Permet de savoir quand le contdown est finit
@@ -39,10 +83,8 @@ void Ev_CountDown()
 
 	if (!ev_CountDown.Is_Active())
 	{
-		// initialisation
-		//crd.x = linkGrid->link[(linkGrid->Get_Cols() / 2)][0].Get_XY().x;		// Translation: 1 case en dessous de l'élément au milieu du grid
-		crd.x = Find_Ctr_X();
-		crd.y = linkGrid->link[0][(linkGrid->Get_Rows() / 2)].Get_XY().y + 1;		// Translation: 1 case en dessous de l'élément au milieu du grid
+		if (blastDisabled)
+			MsgQueue::Register(DISABLE_BLAST);
 
 		if (cd <= 0)
 			cd = DLFLT_CD;	 
@@ -80,6 +122,13 @@ void Ev_CountDown()
 
 			case 3:
 				ConsoleRender::Add_String(go, { crd.x - 1 , crd.y }, WHITE, 0, true);//erase
+				
+				if (blastDisabled)
+				{
+					ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 }, WHITE, 50, true); 			// erase
+					MsgQueue::Register(ENABLE_BLAST);
+					blastDisabled = false;	
+				}
 				ev_CountDown.Advance(1000);
 				break;
 			}

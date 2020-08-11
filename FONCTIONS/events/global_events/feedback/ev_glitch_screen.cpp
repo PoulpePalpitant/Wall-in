@@ -11,10 +11,11 @@
 
 static int numChars; // Nombre de char pour fill l'écran
 
-static Event ev_GlitchScreen(Ev_Glitch_Screen, 2);	// l'event
+static Event ev_GlitchScreen(Ev_Glitch_Screen, 4);	// l'event
 static Coord crd;	// random crd
 static Intervals::ManageIntervalLists charToFill(0, 0, 0);	// Liste de tout les charactères de la console qui n'ont pas été remplis 
 
+static std::string retry = "[- Retry -]";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void Set_Screen_Filler()
@@ -80,6 +81,17 @@ void Ev_Glitch_Screen()			//  Remplis la screen de char cool pendant un bref ins
 				break;
 
 			case 2:
+				ConsoleRender::Add_String(retry,  { map.Get_Box_Limit(LEFT) + map.Get_Length() / 2 - (int)retry.size()/ 2 , map.Get_Box_Limit(UP) + map.Get_Height() / 2}, LIGHT_RED, 400);
+				ev_GlitchScreen.Advance(500);
+				break;
+				
+			case 3:
+				Set_Screen_Filler();
+				Fill_Screen_Randomly(map.Get_Length() * map.Get_Height());	// nombre de char à fill);		// Fait glitché l'écran rapidement
+				ev_GlitchScreen.Advance(0);
+				break;
+
+			case 4:
 				clrscr();					// Clear l'écran au grand complet
 				ev_GlitchScreen.Advance(0);	// Tu vas devoir réaffiché tout ce qui était affiché avant cette fonction
 				break;

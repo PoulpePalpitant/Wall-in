@@ -40,7 +40,7 @@ void Ev_Dr_Arr_Keys()			// Montre les touches clavier pour tirer
 				ConsoleRender::Add_String(_3, { crd.x - 1 ,crd.y + 3 }, WHITE, 50);	// x -3, y + 2
 				ConsoleRender::Add_String(_4, { crd.x - 6 ,crd.y + 5 }, GRAY, 50);	// x -3, y + 2
 				
-				MsgQueue::Register(ACTIVATE_BLAST);
+				MsgQueue::Register(ENABLE_BLAST);
 				ev_Dr_ArrKeys.Advance(0);	// finito
 				break;
 			}

@@ -60,8 +60,9 @@ void Dispatch_Msg_To_Lvl_1()
 			MsgQueue::Register(FREE_PLAYER);
 			MsgQueue::Register(START_BOTS); // Here they come baby
 		}
-		//MsgQueue::Register(START_BOTS);	stage 3, après le tuto?			// Here they come baby
-		break;	// fack
+		
+	case PROCEED: MsgQueue::Register(STAGE_ADVANCE);
+		break;	
 
 	case WAITING_TIME:
 		break;

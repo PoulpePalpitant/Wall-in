@@ -9,12 +9,12 @@
 
 Event ev_Dr_StopJerry(Ev_Dr_Stop_Jerry, 3);
 static std::string _1 = "- STOP JERRY -"; ;
-static std::string _2 = "(Do It    Times)";
+static std::string _2 = "(Do It     Times)";
 static Coord crdCount;		// La coord du numéro à updater
 
 static int deadCount;	// Nombre de Jerry dead
 
-static void Upd_Jerry_Count()
+void Upd_Jerry_Count()
 {
 	crdCount = Up_Txt_3(_2);
 	crdCount.x += 7;
@@ -22,7 +22,10 @@ static void Upd_Jerry_Count()
 	if(jerCount - deadJerrys == 9)
 		ConsoleRender::Add_String("9 ", crdCount, LIGHT_GREEN, 50);	// Lazy interface stuff
 	else
-		ConsoleRender::Add_String(std::to_string(jerCount - deadJerrys), crdCount, LIGHT_GREEN, 50);	// Update le nombre
+		if (jerCount - deadJerrys == 99)
+			ConsoleRender::Add_String("99 ", crdCount, LIGHT_GREEN, 50);	// Lazy interface stuff
+		else
+			ConsoleRender::Add_String(std::to_string(jerCount - deadJerrys), crdCount, LIGHT_GREEN, 50);	// Update le nombre
 }
 
 void Stop_Ev_Dr_Stop_Jerry()	// Stopping the jerrys

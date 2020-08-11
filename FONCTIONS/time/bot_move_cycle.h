@@ -14,3 +14,6 @@ extern int prevMovSPeed;			// la vitesse de déplacement précédente des bots. à r
 
 void UPD_Bot_Move_Cycle();		// Vérifie si on bouge les bots durant ce cycle
 bool Move_Bots_This_Cycle();	// Bouge les bots
+
+void Temporary_Bot_Speed_Switch(int speed, bool overwritePrev = true);	// Instaure une nouvelle vitesse de bots. "Store" la valeur de la vitesse précédante en option
+void Restore_Prev_Bot_Speed();	// restaure la vitessse précédante

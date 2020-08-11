@@ -1,4 +1,5 @@
 
+#include "update_game.h"
 
 #include "../lvls/lvl_script.h"
 #include "../inputs/action_input.h"
@@ -19,8 +20,8 @@
 #include "../blast/mod_queue_animator.h"
 #include "../animation/UI_invalid_move.h"
 #include "../choice/choice_time.h"
+#include "../events/global_events/ev_countdown.h"
 
-#include "update_game.h"
 
 extern bool gIsRunning = true;		// le state du jeu
 static std::string pauseMsg = "Hey! You PAUSED the game!";
@@ -109,6 +110,13 @@ void Update_Player_Action()
 						blastP1.Setup_Blast(grdCrd, keyDirection);
 					}
 				}
+				else
+				{
+					Blast_Disabled_While_CD();		// Check si c'est à cause de ça
+					P1.Set_Timeout(300);			// Freeze le joueur pour une durée de temps 
+					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		// Really dumb shit
+				}
+					
 				break;
 
 			case MOVE:
@@ -127,6 +135,8 @@ void Update_Player_Action()
 	}
 	// Faut reset l'action
 	action = IDLE;
+	keyDirection = NONE;	// et la keydirection
+
 }
 
 /*

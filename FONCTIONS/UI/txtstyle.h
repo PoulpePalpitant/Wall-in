@@ -79,6 +79,7 @@ extern Colors gBossClr;
 extern Colors gJerClr;
 
 extern const unsigned short TXT_SPD_DR; // vitesse d'affichage
+extern const unsigned short TXT_SPD_FAST; // vitesse d'affichage
 extern const unsigned short TXT_SPD_ER; // vitesse d'effacement
 
 
@@ -96,4 +97,11 @@ Coord Heart_Txt_Crd(int line = 0);	// Affiche du texte à la droite du coeur
 Coord Boss_Txt_Crd (std::string txt = TXT_CONST.SPACE_STRING, int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
 int Boss_Txt_X ();	// Affiche du texte à l'emplacement du personnage du boss
 int Boss_Txt_Y (int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
+void Erase_All_Boss_Txt();
+
 Coord Jerry_Txt_Crd(std::string txt, int line = 0);	// Affiche du texte à l'emplacement du personnage de Jimmy
+int Jerry_Txt_X();
+int Jerry_Txt_Y(int line = 0);
+void Erase_All_Jerry_Txt();
+
+void Erase_Right_Text();

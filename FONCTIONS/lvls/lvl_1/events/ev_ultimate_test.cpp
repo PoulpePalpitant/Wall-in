@@ -6,30 +6,36 @@
 #include "../../../events/msg_dispatcher.h"
 #include "../../../bots/botmeta.h"
 #include "../../../spawns/ev_spawn_Jerry.h"
+#include "../../../grid/AllGrids.h"
+#include "../../../bots/botlist.h"
+#include "../../../time/bot_move_cycle.h"
+#include "../../../events/global_events/ev_update_heart.h"
+#include "../msg_events/ev_stop_Jerry_1.h"
+#include "../../../events/global_events/ev_countdown.h"
 
-Event ev_UltimateTest(Ev_Ultimate_Test, 3);
+Event ev_UltimateTest(Ev_Ultimate_Test, 7);
 static std::string _1 = "- STOP EVERYTHING -"; ;
-static std::string _2 = "(Or Die Horribly)";
-static Coord crdCount;		// La coord du numéro à updater
+static std::string _2 = "(Or Die...";
+static std::string _3 = "Yeah For Real)";
+static std::string _4 = "(Seconds Before Arrival:    )";
+static bool success = false;
 
-static int deadCount;	// Nombre de Jerry dead
+static int spw;
+const int totalSpw = 88;
 
-static void Upd_Jerry_Count()
+bool Ultimate_Test_Time()
 {
-	crdCount = Up_Txt_3(_2);
-	crdCount.x += 7;
-	
-	if(jerCount - deadJerrys == 9)
-		ConsoleRender::Add_String("9 ", crdCount, LIGHT_GREEN, 50);	// Lazy interface stuff
-	else
-		ConsoleRender::Add_String(std::to_string(jerCount - deadJerrys), crdCount, LIGHT_GREEN, 50);	// Update le nombre
+	return ev_UltimateTest.Is_Active();
 }
-
-void Stop_Ev_Dr_Stop_Jerry()	// Stopping the jerrys
+bool Ultimate_Test_Succeed()
 {
-	ev_UltimateTest.Cancel();
-	jerryTime = false;
-	deadCount = 0;
+	if (success)
+	{
+		success = false;
+		return true;
+	}
+
+	return false;
 }
 
 void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
@@ -37,12 +43,15 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 	//crd.x = P1.Get_XY().x; crd.y -= 3;
 	if (!ev_UltimateTest.Is_Active())
 	{
-		 deadCount = 0;
-
-		ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);
-		ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 50);
+		success = false;
+		spw = 3;
+		//Set_Jerry_Time((spawnGrid->Get_MaxSpwnCrdY() - 1) * 2);		// Jerry spawn sur tout les spawn verticaux
+		Set_Jerry_Time(0);		// Jerry spawn sur tout les spawn verticaux
+		Ev_Dr_Stop_Jerry();
 		ev_UltimateTest.Activate();
-		ev_UltimateTest.Start(1500);	// 1000 / 2 = 500.		2 secondes
+		//ev_UltimateTest.Start(1500);	
+		ev_UltimateTest.Start(1500, totalSpw / 4);
+
 	}
 	else
 	{
@@ -51,31 +60,87 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 			switch (ev_UltimateTest.Get_Current_Step())
 			{
 			case 1:
+				//for (int border = 1; border < 4; border += 2)	// deux bordures verticales			
+				//	for (int spw = 0; spw < spawnGrid->Get_MaxSpwnCrdY(); spw++)					
+				//		Spawn_A_Jerry((Direction)border, spw, 100);				
+
+				//ev_UltimateTest.Advance(45);	
+				//break;
+
+				// v2
+				//for (int i = 0; i < 5; i++)
+				//{
+				//	Spawn_A_Jerry(LEFT, spw, 120);
+				//	Spawn_A_Jerry(RIGHT, spw, 120);
+
+				//	if(spw == 3 || spw == 7)
+				//		spw++;
+				//	spw++;
+				//}
+				//spw = 3;	// reset
+
+				// v3
+				Spawn_A_Jerry(LEFT, 6, 120);	Spawn_A_Jerry(LEFT, 8, 120);
+				Spawn_A_Jerry(RIGHT, 6, 120);	Spawn_A_Jerry(RIGHT, 8, 120);
+				Add_Jerrys_To_Stop(4);
 				Upd_Jerry_Count();
-				ev_UltimateTest.Advance(0);	// Delay 
-				ev_UltimateTest.delay.Start_Timer(1000000, 1, true);
+				ev_UltimateTest.Advance(70);
 				break;
 
 			case 2:
-				// Si 1 Jerry Meurt on réduit le compte et on update le nombre
-				if (deadJerrys > deadCount)
-				{
-					deadCount = deadJerrys;
-					Upd_Jerry_Count();		// Update le tit nombre
+				Er_Stop_Jerry();
+				Stop_Ev_Dr_Stop_Jerry();
+				ev_UltimateTest.Advance(950);
+				break;
 
-					if (!jerryTime)
-					{
-						ev_UltimateTest.Cancel();
-						Er_Stop_Jerry();	// efface l'objectif
-					}
+			case 3:
+				ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);	// stop everything or die
+				ConsoleRender::Add_String(_2, { Find_Ctr_X((int)std::size(_2 + _3)),5 }, WHITE, 250);
+				ev_UltimateTest.Advance(300);
+				break;
+
+			case 4:
+				ConsoleRender::Add_String(_3, {(gConWidth / 2 ) - 1, 5 }, WHITE, 250);
+				Just_Dr_Heart(3);
+				ev_UltimateTest.Advance(320);
+				break;
+
+			case 5:
+				ConsoleRender::Add_String(_4, { Find_Ctr_X((int)std::size(_4)), 4 }, WHITE, 80);
+				Set_CountDown(botList.bot[0].Get_Warnings() / 2, { Find_Ctr_X((int)std::size(_4)) + 25 , 4 }, false);	// /2 c'est pour la vitesse des bots, le count down se fait par secondes à 1000 frames
+				Ev_CountDown();
+				ev_UltimateTest.Advance(0);
+				ev_UltimateTest.delay.Start_Timer(100000, 1, true);
+				break;
+
+			case 6:
+
+
+				if (botList.bot[0].Get_Steps_Count() == 1)	// Dès que les bot font un step, on réduit leur vitesse!
+				{
+					Temporary_Bot_Speed_Switch(1600, false);	// Conserve la vitesse d'origine
+					ev_UltimateTest.delay.Stop();
+					ev_UltimateTest.Advance(0);
+					ev_UltimateTest.delay.Start_Timer(100000, 1, true);
+				}
+				break;
+
+			case 7:
+				if (!gAllBotMeta.alive)
+				{
+					if (P1.Get_HP())
+						success = true;
+
+					ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, 50, true);	// ERASE
+					ConsoleRender::Add_String(_2, { Find_Ctr_X((int)std::size(_2 + _3)),5 }, WHITE, 60, true);
+					ConsoleRender::Add_String(_3, { (gConWidth / 2) - 1, 5 }, WHITE, 50, true);
+					ConsoleRender::Add_String(_4, { Find_Ctr_X((int)std::size(_4)), 4 }, WHITE, 50, true);
+					jerryTime = false;
+					ev_UltimateTest.delay.Stop();
+					ev_UltimateTest.Advance(0);
 				}
 			}
 		}
 	}
 }
 
-void Er_Stop_Jerry()
-{
-	ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, 50, true);	// ERASE
-	ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 60, true);
-}

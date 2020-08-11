@@ -196,11 +196,11 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		gBlockInputs = false;
 		break;
 
-	case ACTIVATE_BLAST:
+	case ENABLE_BLAST:
 		gBlockBlast = false;
 		break;
 
-	case DEACTIVATE_BLAST:
+	case DISABLE_BLAST:
 		gBlockBlast = true;
 		break;
 		// Tout les events qui sont trigger par ça  

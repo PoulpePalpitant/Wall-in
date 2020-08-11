@@ -12,5 +12,8 @@ extern bool gChoiceTime;
 extern bool gBlockInputs;
 extern bool gBlockBlast;
 extern bool gTypeTime;
+extern bool gProceedTime;
 extern bool gMenuInputs;
 extern int gMenuKey;
+
+
