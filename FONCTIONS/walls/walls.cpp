@@ -136,9 +136,13 @@ void Wall::Remove_Bot_On_Me()
 {
 	botOnMe = -1; 	// Le bot est pati :)
 
-	if (strgt == WallStrength::NONE)
-		Set_Drawer();				// Réaffiche le mur
+	//if (strgt == WallStrength::NONE)
+	//	Set_Drawer();				// DISABLEED SANS SAVOIR CE QUE ÇA FAISAIT
+
+	if (state != WallState::DEAD)
+		Set_Drawer();				// Réaffiche d'un coup que ya des glitchs visuels. encore
 }
+
 bool Wall::Is_Activated()
 {
 	if (this->state == WallState::DEAD)

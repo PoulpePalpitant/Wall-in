@@ -44,7 +44,7 @@ enum MsgType
 	, SHOW_HEALTH
 	, HIDE_HEALTH
 	, SHOW_MOD_QUEUE
-	, HIDE_NEXT_QUEUE
+	, HIDE_MOD_QUEUE
 
 	/* grid stuff */
 	, GRIDS_RESIZED
@@ -121,6 +121,7 @@ class MsgQueue			// Initialisation à un ring buffer
 public:
 	static void Register(MsgType msg);	// Ajoute le message à la liste des message à traiter pour ce cycle
 	static void Dispatch_Messages();
+	static void Unregister_All();		// Permet de retirer tout les messages de la queue
 };
 
 void Dispatch_To_Lvl();	// Par ici qu'on va updater tout les events du niveau

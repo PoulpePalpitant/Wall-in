@@ -58,14 +58,12 @@ void Dispatch_Msg_To_Menu()
 			case 55: 
 				tempLevel = gMenuKey - 48;
 				Ev_Er_Choose_Lvl();
+				MsgQueue::Unregister_All();	// répare un bug de merde
 				MsgQueue::Register(STAGE_ADVANCE);
-
 			}
-
-
 		}
 
-		if (gCurrentStage == 3)
+		if (gCurrentStage >= 3)
 		{
 			if (gMenuKey == 89 || gMenuKey == 78)	 /*78 = Y Pour Yes */
 			{

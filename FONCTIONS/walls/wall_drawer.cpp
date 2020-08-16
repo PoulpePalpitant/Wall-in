@@ -46,12 +46,14 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 
 	 static WallDrawer* it;
 	 static WallDrawer* prev;
-	
+	 static int bugChecker; bugChecker = 0;
 	 it = start;
 	 prev = NULL;
 
 	 while (it)
 	 {
+		 bugChecker++;
+
 		 if (it == &drawer)
 		 {
 			 for (int i = it->timer.Get_Moves_Left(); i > 0; i--)
@@ -62,6 +64,9 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 			 Remove(prev, it);
 			 return true;
 		 }
+
+		 if (bugChecker == 10000)
+			 throw "Building and breaking doens't quite work";
 	 }
 
 	 return false;

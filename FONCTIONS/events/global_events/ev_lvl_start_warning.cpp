@@ -29,7 +29,7 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 		stringProgress = 0;
 
 		ev_LvlStartWarning.Activate();
-		ev_LvlStartWarning.Start(10000, (int)ready.size());
+		ev_LvlStartWarning.Start(40000, (int)ready.size());
 	}
 	else
 		while (ev_LvlStartWarning.delay.Tick())
@@ -46,17 +46,18 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 			case 2:
 				stringProgress = 0;
 				crd = ori;
-				ev_LvlStartWarning.Advance(10000, (int)inc.size());
+				ev_LvlStartWarning.Advance(30000, (int)inc.size());
 				break;
 
 			case 3:
 				ConsoleRender::Add_Char({ crd.x , crd.y +2  }, inc[stringProgress]);
 				stringProgress++;	// avance d'un char
 				crd.x++;	// avance d'un char
-				ev_LvlStartWarning.Advance(600);
+				ev_LvlStartWarning.Advance(1000);
 				break;
 
 			case 4:
+				P1.Set_Position({ 6,6 });
 				MsgQueue::Register(SPAWN_PLAYER);
 				ev_LvlStartWarning.Advance(600);
 				break;

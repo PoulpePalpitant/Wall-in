@@ -176,7 +176,7 @@ void Ev_Dr_Day_1()			//  Message d'avertissement que les bots s'en viennent et q
 
 			case 2:		
 				Dr_Job();
-				ev_Dr_Day1.Advance(200);
+				ev_Dr_Day1.Advance(160);
 				break;
 				//if (ev_Dr_Day1.delay.Get_Moves_Left() % 2 == 0)
 				//	Dr_Or_Er_Day_1();

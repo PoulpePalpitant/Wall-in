@@ -5,6 +5,8 @@
 #include "lvl_1_initializer.h"
 #include "../../console/sweet_cmd_console.h"
 #include "../lvl_script.h"
+#include "../../structure_manager/structure_manager.h"
+#include "../../bots/botlist.h"
 
 /* Level1  events !*/
 #include "events/ev_change_window.h"
@@ -46,21 +48,27 @@ void Dispatch_Msg_To_Lvl_1()
 	case STAGE_ADVANCE:
 		if (gCurrentStage == 3)
 		{
+			ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
+			botList.Destroy_All_Bots();
+			clrscr();
 			Ev_Dr_Day_1();
+			Set_Up_Drawers(3);
+
 		}
 		if (gCurrentStage == 4)
 		{
-			P1.Set_Position({6,6});
-			P1.Dis_Player_Sym();
+			//P1.Set_Position({6,6});
+			//P1.Dis_Player_Sym();
 			//Build_Lvl_1_Walls();
 			// Ceci est temporaire pour débugger plus rapidement le bot script
 			//Ev_Dr_Arr_Keys();
 			//Ev_Dr_Wasd();
-			Just_Dr_Heart();
+			//Just_Dr_Heart();
 			MsgQueue::Register(FREE_PLAYER);
 			MsgQueue::Register(START_BOTS); // Here they come baby
 		}
-		
+		break;
+
 	case PROCEED: MsgQueue::Register(STAGE_ADVANCE);
 		break;	
 

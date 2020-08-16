@@ -37,7 +37,7 @@ static std::string _13= "And Try Not To Die.";
 static std::string _14 = "As You Should Know";
 static std::string _15 = "\"IF\", You Had Read";
 static std::string _16 = "\"The Good Employee Operation Manual\"";
-static std::string _17 = "- DELUXE EDITION - ";
+static std::string _17 = "- ULTRA PERFORMANCE EDITION - ";
 static std::string _18 = "We Sent You""And Try Not To Die.";
 static std::string _19 = "And Try Not To Die.";
 

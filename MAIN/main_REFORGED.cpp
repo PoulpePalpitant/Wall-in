@@ -101,17 +101,18 @@ int main()	// Le début!
 	//	}
 	//}
 
-	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
-	{
-		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
-		{
-			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
-			ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
+	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	//{
+	//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+	//	{
+	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+	//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+	//		ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
 
 
-		}
-	}
+	//	}
+	//}
+
 	//Coord XYCOLOR = { 0,0 };
 	//for (int i = 0; i < 500; i++)
 	//{
@@ -160,6 +161,9 @@ int main()	// Le début!
 
 	/* test manual wall creation*/
 
+	// some windows stuff
+	Set_Input_Buffer_Handle();	
+
 
 	Setup_Console_Window();	// Titre et curseur
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
@@ -183,6 +187,7 @@ int main()	// Le début!
 	int loops = 0;
 
 	GameLoopClock::Reset_Timer();	// Premier reset
+	//thread *inputs = new thread(Input_Thread_Handler);
 
 	while (isRunning)	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
@@ -192,9 +197,10 @@ int main()	// Le début!
 		lag += GameLoopClock::Get_Delta_Time();
 
 
-		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps			
+		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps		
+		Read_Input_Buffer();
 
-		Detect_Input();				// Détect les inputs mah dude0
+		//Detect_Input();				// Détect les inputs mah dude0
 			/*
 			si ça dépasse le fps: lag = l'excédant
 			tu update une autre fois, mais AVEC la valeur de LAG à la place, pour rattraper
@@ -207,8 +213,8 @@ int main()	// Le début!
 			//	ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de bot en vie
 			//	loops = 0;
 			//}
-			ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
-			ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
+			//ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
+			//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
@@ -217,7 +223,7 @@ int main()	// Le début!
 			GameLoopClock::Reset_Timer();	// Reset la frame!
 		}
 		
-		Update_Game_NOT_60FPS();		
+		Update_Game_NOT_60FPS();	// à remove un jour	
 		ConsoleRender::Render();	// Fait tout les affichages
 	}
 
@@ -244,26 +250,7 @@ int main()	// Le début!
 		//	}
 
 		//	render();
-		//}
-
-
-	//LOAD FILES
-
-	// GAME LOOP	MENU LOOP	
-	// *********	*********
-
-
-	gameClockTEST.Start_Clock(); 	// time test 
-
-	while (gIsRunning)	// Le jeu est ouvert
-	{
-		gameClockTEST.Tick();	// va ajouter du temps à chaque loop à la place
-		gameClockTEST.Dsp_Time(crd);
-
-		Detect_Input();		// Détect les inputs mah dude0
-		Update_Game();		// Update le jeu mah dude
-
-	}
+	
 
 	// SAVE FILES
 

@@ -66,7 +66,7 @@ void Update_Player_Action()
 			{
 			case PAUSE:
 				GameLoopClock::pause = true;
-				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE, 50);			// Besoin d'un max screen size
+				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			// Besoin d'un max screen size
 				break;
 
 			case CHANGE_BLAST:

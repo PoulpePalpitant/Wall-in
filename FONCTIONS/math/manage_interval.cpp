@@ -123,6 +123,12 @@ namespace Intervals
 
 	// SEARCHING!
 	// ----------
+
+	bool ManageIntervalLists::Find_Value(int value, int listNum)		// la valeur dans une liste
+	{
+		return instance[listNum].Search_Value(value);
+	}
+
 	bool ManageIntervalLists::Find_List_With_Value(int value, int& listNum)		// Trouve une liste contenant cette valeur
 	{
 		int list = 0;

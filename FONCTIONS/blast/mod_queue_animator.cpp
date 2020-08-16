@@ -37,7 +37,6 @@ namespace DrawModifierQueue {
 	{
 		ConsoleRender::Add_String(queueTitle, titleCrd, WHITE, 50, true);
 		ConsoleRender::Add_String(line,{ titleCrd.x + 3, titleCrd.y + 4 }, WHITE, true);
-
 		isShown = false;
 	}
 	void Show_Excess() // Les trois tits points qui apparaissent pour signaler qu'il y a plus que 5 éléments dans la queue

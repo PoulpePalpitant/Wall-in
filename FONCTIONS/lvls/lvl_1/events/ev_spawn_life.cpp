@@ -93,6 +93,14 @@ void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de ti
 				ConsoleRender::Add_Char({ pos.x - 2, pos.y + 2 }, '+', WHITE);	// truc diagonal qui splash
 				ConsoleRender::Add_Char({ pos.x - 1, pos.y }, 250, GRAY);	// item2 symbole
 				ConsoleRender::Add_Char({ pos.x + 1, pos.y }, 250, GRAY);	// item3 symbole
+
+
+				// Ajoute l'item dans la liste
+				item.Activate();
+				item.Set_Coord({ linkGrid->Get_Cols() / 2, 0 });
+				item.Set_Type(ItemType::LIFE);
+				ItemsOnGrid::Add(item);
+
 				ev_SpawnMysteriousItem.Advance(12000);
 				break;
 
@@ -121,11 +129,6 @@ void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de ti
 				ConsoleRender::Add_Char({ pos.x - 3, pos.y }, '-', GRAY);	// item2 symbole
 				ConsoleRender::Add_Char({ pos.x + 3, pos.y }, '-', GRAY);	// item3 symbole
 
-				// Ajoute l'item dans la liste
-				item.Activate();
-				item.Set_Coord({ linkGrid->Get_Cols() / 2, 0 });
-				item.Set_Type(ItemType::LIFE);
-				ItemsOnGrid::Add(item);
 				ev_SpawnMysteriousItem.Advance(6000);
 				break;
 
@@ -180,7 +183,6 @@ void Ev_Spawn_Life()					// Trace un chemin vers le coeur
 			crd.y = linkGrid->link[0][0].Get_XY().y + 2;						// première ligne
 			ConsoleRender::Add_Char(crd, TXT_CONST.VER_BAR);
 
-			MsgQueue::Register(LOCK_PLAYER);
 			ev_SpawnLife.Activate();
 			ev_SpawnLife.Start(15000, 10);// ON EMMERDE L'ÉTAPE 0
 		}
@@ -242,18 +244,18 @@ void Ev_Spawn_Life()					// Trace un chemin vers le coeur
 
 			case 8:
 				
-				ConsoleRender::Add_String(healthy, Heart_Txt_Crd(), LIGHT_GREEN, 100);
+				ConsoleRender::Add_String(healthy, Heart_Txt_Crd(healthy), LIGHT_GREEN, 100);
 				ev_SpawnLife.Advance(700);
 				break;
 
 			case 9:
-				ConsoleRender::Add_String(anything, Heart_Txt_Crd(2), LIGHT_GREEN, 110);
+				ConsoleRender::Add_String(anything, Heart_Txt_Crd(anything, 2), LIGHT_GREEN, 110);
 				ev_SpawnLife.Advance(300);
 				break;
 
 			case 10:
-				ConsoleRender::Add_String(healthy, Heart_Txt_Crd(), WHITE,90, true);
-				ConsoleRender::Add_String(healthy, Heart_Txt_Crd(2), WHITE, 90, true);
+				ConsoleRender::Add_String(healthy, Heart_Txt_Crd(healthy), WHITE,90, true);
+				ConsoleRender::Add_String(anything, Heart_Txt_Crd(anything, 2), WHITE, 90, true);
 				ev_SpawnLife.Advance(0);
 				break;
 			}

@@ -10,7 +10,7 @@
 
 */
 
- int const MAX_CHOICES = 10;	// nb de choix max
+ int const MAX_CHOICES = 20;	// nb de choix max
 
 struct Choice
 {

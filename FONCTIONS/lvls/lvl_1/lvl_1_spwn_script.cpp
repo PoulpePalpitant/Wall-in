@@ -40,7 +40,7 @@ void Lvl_1_Spwn_Script()
 		{
 		case 1:Add_Specific(RIGHT, 0); Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 4; break;
 		case 2:Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		case 3:Add_Specific(RIGHT, 5); Build_Lvl_1_Walls(); break;// Dessine un pattern de départ
+		case 3:Add_Specific(RIGHT, 5); break;// Dessine un pattern de départ
 		case 4: Add_Specific(RIGHT, 9);break;
 		case 5:Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
 		case 6:Add(1);gBoxSide = RIGHT;break;

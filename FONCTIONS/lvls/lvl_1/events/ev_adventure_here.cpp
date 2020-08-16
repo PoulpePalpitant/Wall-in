@@ -18,6 +18,10 @@ void Ev_Adventure_Here()// Trace un chemin vers une fausse porte de sortie
 	if (!ev_AdventureHere.Is_Active())
 	{
 		dotChase = { 2, 6 };		// Premier Dot
+		
+		if (P1.Get_Grd_Coord().c == 2 || P1.Get_Grd_Coord().r == 6)
+			dotChase = { 0, 4 };
+
 		ConsoleRender::Add_Char(linkGrid->link[dotChase.c][dotChase.r].Get_XY(), 250);
 		ev_AdventureHere.Activate();
 		ev_AdventureHere.Start(600);
@@ -33,7 +37,6 @@ void Ev_Adventure_Here()// Trace un chemin vers une fausse porte de sortie
 			{
 				if (Are_Equal(P1.Get_Grd_Coord(), dotChase))	// Si le player se déplace sur le dot
 				{
-
 					XY = linkGrid->link[linkGrid->Get_Cols() - 6][dotChase.r].Get_XY();
 					XY.x += DELTA_X;
 					ev_AdventureHere.delay.Stop();	// Stop le infinite check

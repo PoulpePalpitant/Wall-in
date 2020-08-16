@@ -317,7 +317,7 @@ namespace Intervals {
 
 	void IntervalList::Exclude_Interval_From_Interval(Interval*& previous, Interval*& intval, int newMax, int newMin)	// Créer un gap dans un intervalle avec un intervalle
 	{
-		if (newMax < intval->min || newMin < intval->max)	//	[old min, newmax,	[newMin, oldMax[
+		if (newMax < intval->min || newMin > intval->max)	//	[old min, newmax,	[newMin, oldMax[   // j'ai des doutes icic
 			throw "you fucked up";
 
 		if (Equals_Min(intval, newMax) && newMin >= intval->max - 1)		// Exclut l'intervalle au complet
@@ -338,6 +338,7 @@ namespace Intervals {
 			return;
 		}
 
+		// Si ce trouve pas à aucune extremités
 		Modify_Max(intval, newMax);
 		Create_Interval(previous, newMin + 1, intval->max);	// Créer un nouvel intervalle suivant 
 	}
@@ -449,9 +450,9 @@ namespace Intervals {
 		{
 			if (first->min <= min)
 			{
-				if (max <= first->max)			// l'intervalle était contenu au complet dans un seul intervalle, on le modifie pour y exclure les valeurs
+				if (max <= first->max)			// Interval trouvé
 				{
-					Exclude_Interval_From_Interval(prev, first, min, max);
+					Exclude_Interval_From_Interval(prev, first, min, max);	// si t'arrive ici, c'est que les TOUT valeurs que tu veux exlure se trouvent TOUS dans 1 seul interval. ex opposé  : ToExclude [-5 , 10} interval {0, 10} = marchera pas
 					return;
 				}
 
@@ -466,7 +467,7 @@ namespace Intervals {
 			}
 		}
 
-		//----------------------------------------------------------------------------------------
+		//----------------------------------------------------------------------------------------	
 
 		// La valeur minimal fut trouvé dans un intervalle. Maintenant on vérifie si des valeurs de la liste se trouve entre le min et le max
 

@@ -41,8 +41,6 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 				ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, 50);	// x -3, y + 2
 				ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, 50);	// x -3, y + 2
 				ev_Dr_Wasd.Advance(0);	// finito
-
-				MsgQueue::Register(SPAWN_SPECIAL_ITEM);	// Spawn la vie
 				break;
 			}
 	}

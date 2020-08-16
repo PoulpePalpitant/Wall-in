@@ -30,7 +30,7 @@ bool Blast_Disabled_While_CD()
 				return true;
 			else
 			{
-				msgShown = true;
+				msgShown = false;
 				ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 }, GRAY); 			// show message
 				return true;
 			}
@@ -60,7 +60,7 @@ bool CountDown_Cancel() // Permet de savoir quand le contdown est finit
 		{
 			MsgQueue::Register(ENABLE_BLAST);
 			ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 },WHITE, 50, true); 			// erase
-			blastDisabled = false;
+			 blastDisabled = false;
 		}
 		return true;
 	}
@@ -127,7 +127,7 @@ void Ev_CountDown()
 				{
 					ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 }, WHITE, 50, true); 			// erase
 					MsgQueue::Register(ENABLE_BLAST);
-					blastDisabled = false;	
+					blastDisabled = false;
 				}
 				ev_CountDown.Advance(1000);
 				break;

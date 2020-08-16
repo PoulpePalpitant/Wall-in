@@ -73,6 +73,10 @@ void Ev_Stop_Spawn_Jerry()	// Stop l'event de spawn Jerry!
 	ev_SpawnJerry.Cancel();
 	spwThisFrame = false;
 	ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 14 }, GRAY, 0, true); // efface ce titre
+	
+	if (prevSpd == 0)
+		prevSpd = prevMovSpeed;
+
 	gBotMoveTimer.Start_Timer(prevSpd, 1, true);	// tu va devoir rétablir la vitesse précédante après ton Jerry spawn
 	MsgQueue::Register(STOP_BOT_MOVE);
 }

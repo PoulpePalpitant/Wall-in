@@ -19,11 +19,12 @@ void Lvl_1_Initializer()
 
 	if (gSkipStory)
 	{
-		//gCurrentStage = 3;
-		//MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 
-		gCurrentStage = 2;	// Skip tout les tutorials
-		Ev_Bot_Tutorial();	// start tuto avec jerry
+		gCurrentStage = 2;
+		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+
+		//gCurrentStage = 2;	// Skip tout les tutorials
+		//Ev_Bot_Tutorial();	// start tuto avec jerry
 	}
 	else
 	{
@@ -50,6 +51,5 @@ void Lvl_1_Initializer()
 	
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
 	MsgQueue::Register(DISABLE_BLAST);	// It has to be done
-	//MsgQueue::Register(START_BOTS);	// It has to be done
-	
+	MsgQueue::Register(SPAWN_SPECIAL_ITEM);	// Spawn la vie
 }

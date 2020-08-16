@@ -22,5 +22,4 @@ void Menu_Initializer()
 	//MsgQueue::Register(SPAWN_PLAYER);
 	MsgQueue::Register(LVL_INITIALIZED);// Envoie msg que le niveau à été intialisé
 
-
 }

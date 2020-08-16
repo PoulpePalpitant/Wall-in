@@ -7,32 +7,34 @@
 #include "../items/item_list.h"
 #include "../choice/choice_time.h"
 #include "player_move.h"
+#include "../time/movement_timer.h"
+
 
 
 void Move_Player(Player& player, Direction dir)
 {
-	static GrdCoord start, end;	
+	static GrdCoord start, end;
 
-	start = player.Get_Grd_Coord();	// position de départ
-	end = Find_End_Position(start, dir);		// Position d'arrivée
+		start = player.Get_Grd_Coord();	// position de départ
+		end = Find_End_Position(start, dir);		// Position d'arrivée
 
-	player.Upd_Sym_From_Direction(dir);				// Change le symbole du joueur selon la direction, même si le mouv échoue
+		player.Upd_Sym_From_Direction(dir);				// Change le symbole du joueur selon la direction, même si le mouv échoue
 
-	if (Validate_Move(end))						// Vérifie si position valide
-	{
-		player.Set_Position(end);				// Nouvelle position
-		player.Get_Grd_Coord();
-		UI_Move_Player(player, start, end);		// Efface l'ancienne position. Affiche la nouvelle
-		ItemsOnGrid::Pickup_Item_Here(end);		// Si ya un item, grab it!
-		
-		if (ChoiceTime::Is_Choice_Time())	// pour faire des choix
+		if (Validate_Move(end))						// Vérifie si position valide
 		{
-			ChoiceTime::Unselect_If_Player_Off();
-			ChoiceTime::Select_If_Player_On();
+			player.Set_Position(end);				// Nouvelle position
+			player.Get_Grd_Coord();
+			UI_Move_Player(player, start, end);		// Efface l'ancienne position. Affiche la nouvelle
+			ItemsOnGrid::Pickup_Item_Here(end);		// Si ya un item, grab it!
+
+			if (ChoiceTime::Is_Choice_Time())	// pour faire des choix
+			{
+				ChoiceTime::Unselect_If_Player_Off();
+				ChoiceTime::Select_If_Player_On();
+			}
 		}
-	}
-	else
-		UI_Invalide_Action(/*player*/);		// Fait flasher le joueur
+		else
+			UI_Invalide_Action(/*player*/);		// Fait flasher le joueur
 }
 
 GrdCoord Find_End_Position(GrdCoord& start, Direction dir)	// Position dans le grid, après le move

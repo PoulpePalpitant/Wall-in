@@ -85,7 +85,7 @@ void Ev_Dot_Chase_Adventure_1()// Trace un chemin vers une fausse porte de sorti
 
 				case 11:
 					dotChase.r++;
-					Ev_Dr_Heart_2();	// Le joueur perd de la vie
+					Just_Dr_Heart(2);	// Le joueur perd de la vie
 					break;
 
 				case 12:

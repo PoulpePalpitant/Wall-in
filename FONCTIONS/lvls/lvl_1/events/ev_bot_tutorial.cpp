@@ -48,7 +48,7 @@ static std::string _1 = "Alright Then, Let's Get You Started";
 static std::string _2 = "Step #1";
 static std::string _3 = "Build Some Walls";
 static std::string _4 = "Step #2";
-static std::string _5 = "Let Them Smash Into Them";
+static std::string _5 = "Let The Shapes Smash Into Them";
 static std::string _6 = "It's As Simple As That!";
 static std::string _7 = "Now Jerry Here, ";
 static std::string _8 = "Hi!";
@@ -87,7 +87,8 @@ static std::string _11 = "Jerry It's Your Turn Now";
 static std::string _12 = "You Got This Jerry!";
 static std::string _13 = "Okay, Here I Come!";
 static std::string _14 = "Ow";
-static std::string _15 = "(Don't let Jerry Reach The Border)";
+static std::string _15 = "(Don't Let Jerry Reach The Border)";
+static std::string _15_1 = "(Don't let The Shapes Reach This Border)";
 static std::string _16 = "Nice Work! You Stopped Jerry!";
 static std::string _17 = "Actually, This Might Have Been";
 static std::string _18 = "A Little Bit Too Easy";
@@ -108,17 +109,17 @@ static std::string _32 = "TEST ©";// . . .
 static std::string _33 = "Jerry, What Are You Doing?";
 static std::string _34 = "What?";
 static std::string _35 = "That Is Not \" THE ULTIMATE TEST © \"?";
-static std::string _36 = "Yeah I Know Boss But...";
-static std::string _37 = "With All These Positive Feedbacks And...";
-static std::string _38 = "I Fell, Like... We Can Do Anything, Right?";
-static std::string _39 = "'88', Are You Insane? We Can't Even Stop Them!";
+static std::string _36 = "Yes I Know Boss But...";
+static std::string _37 = "With All The Positive Feedbacks You Gave...";
+static std::string _38 = "I Thought... \"Why Not Push The Limit To The Max?\" ";
+static std::string _39 = "'100'!? Are You Insane? We Can't Even Stop Them!";
 static std::string _39_1 = "The Employee's Gonna Die!";
 static std::string _40 = "Yeah, Huh, No? But, I Mean.... Really?";
 static std::string _41 = "What The Hell Were You Thinking You Doofus!";
 static std::string _42 = "Hey Don't Call Me That!";
 static std::string _43 = "I Know I Shouldn't Call You That!";
 static std::string _43_1 = "But You Ruined Everything, Damn It!";
-static std::string _44 = "But!.... There Is A Change th-";
+static std::string _44 = "But!.... There Is A Chance th-";
 static std::string _45 = "Now Our Brand New Employee Here";
 static std::string _46 = "Is Gonna Die A Horrible Death Because Of You!";
 static std::string _47 = "I'm Sorry Boss!";
@@ -126,10 +127,10 @@ static std::string _47 = "I'm Sorry Boss!";
 static std::string _48 = "Now How Am I Going To Explain That To HR?";
 static std::string _49 = "I Huh... I Don't Know!";
 static std::string _50 = "You Don't Know?";
-static std::string _51 = "Hehhggg... Yes?";
+static std::string _51 = "Hehhggg... Maybe?";
 static std::string _52 = " . . . ?";
-static std::string _53 = "Come On Then! Tell Me. ";// Something You Know?
-static std::string _54 = "I Huh, Hum, ehh Trees...";
+static std::string _53 = "Maybe? Come On Then! Tell Me. ";// Something You Know?
+static std::string _54 = "I Huh, Hum, ehh Try-...Tree-...";
 static std::string _55 = "TREES!?";
 static std::string _55_1 = "What The Hell Do Trees";
 static std::string _56 = "Have Anything To Do With This?";
@@ -144,7 +145,7 @@ static std::string _63 = "GOD DAMN It Jerry!";
 static std::string _64 = "Do You Even Realize How Serious This Is?";
 // v1
 static std::string _65 = "Now I Have To Ask HR To Send Us Another One!";
-static std::string _66= "A Freshly Picked, Packaged and Untrained Employee";
+static std::string _66= "A Freshly Picked and Untrained Employee";
 static std::string _67 = "And I'm Gonna Have To Waste Another"; /// ...
 static std::string _68 = "15 Minutes Of My Life Explaining Stuff Again";
 static std::string _69 = "Do You Feel The Guilt Now?";
@@ -155,14 +156,14 @@ static std::string _73 = "No!";
 static std::string _74 = "FUCK!!";
 static std::string _75 = "Oh. ";
 static std::string _76 = "You Made It. ";
-static std::string _77 = "Yes We Expected That";
-static std::string _78 = "Congratulation! Hah.";
-static std::string _79 = "Good Job";
-static std::string _80 = "Since You Survived That";
-static std::string _81 = "Hum. Well, I Think You Are All Set Then";
-static std::string _82 = "I Have To Go, Now. But...";
-static std::string _83 = "If You Need More Practice";
-static std::string _84 = "If You Want...";
+static std::string _77 = "Well Done, Yes We Expected That";
+static std::string _78 = "It Was All Planned After All Hahh..";
+//static std::string _79 = "Good Job";
+static std::string _80 = "Anyway Since You Survived";
+static std::string _81 = "I Think You Are Finally Ready";
+static std::string _82 = "I Have To Go, Now. But";
+static std::string _83 = "If You Think You Need More Practice";
+//static std::string _84 = "If You Want...";
 static std::string _85 = "Just Ask...Jerry";
 static std::string _86 = "Good Luck!";
 
@@ -172,28 +173,38 @@ static std::string stop = "Until You Stop Mah Boi Jerry";
 static std::string jer_1= "How about me?";
 static std::string jer_2= "Did I Do Good?";
 static std::string jer_3 = "Yes, You Too Did Good Jerry!";
-static std::string jer_4 = "(Jerry's Confidence Was Boosted)";
-static std::string jer_5 = "Sorry About The Ultimate Test Thing";
-static std::string jer_6 = "Still, Did, Did I Do Good?";
-static std::string scale = "Like On A scale, How Would You Rate It?";
+static std::string jer_4 = "(Jerry's Self-Esteem Was Boosted)";
+static std::string jer_5 = "Hey. Sorry About Almost Killing You";
+static std::string jer_6 = "I... I Just Wanted Show Boss The Best That I Can Do";
+static std::string jer_7 = "So anwyay...";
+static std::string jer_8 = "What Did You Think Of My Test?";
+static std::string jer_9 = "Did I Do Good?";// remove
+static std::string jer_10 = "It Was Good Right?";
+static std::string jer_11 = "Please Tell me!";
+static std::string jer_12 = "I Need To Know!";
+static std::string jer_13 = "I Want Feedback!";
+//static std::string scale = "On A scale, How Would You Rate It?";
 static std::string rate = "Rate Jerry's Performance";
+static std::string rate_1 = "(His Self-Esteem Depends On It)";
 static std::string choiceMade;
-static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 " };
-static std::string recomSub[] = { "The Actual Worst You Have Ever Seen", " Okay " };
+static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 ", " 12 ", " 13 " };
+//static std::string recomSub[] = { "The Worst, Honestly", " The Best " };
+static std::string recomSub2[] = { "The Worst, Honestly", "Pathetic","Terrible", "Awful","Poor", "Satisfactory", "Atrocious","Not Good", "Okay", "Fine", "Delicious", "The Absolute Best" };
+static std::string jerrAnswer[] = { "...", "hum. ok. th-thanks...","Okay. Thanks. I Will Take that", "What?" , "Wow!"};
 static std::string answer[] =
 { 
-	"Jerry Is Feeling Miserable About Himself. He Doesn't Have Any Power To Help You"
-	"You Said That Just To Be Mean. Jerry Felt That. Jerry Doesn't Want To Help You Anymore",
-	"You Didn't Seem Honest Enough. Jerry Seems Disappointed",
-	"Jerry Doesn't Seem Satisfied By Your Answer",
-	"Jerry Appreciates Your FeedBack. Even Though You Have Hurt His Feelings", 
-	"Jerry Appreciates Your FeedBack. Even Though It was Just A MeaningLess Number",
-	"Jerry Appreciates Your FeedBack. Even Though Your Opinion Means Very Little To Him"
+	"(You Said That Just To Be Mean. Jerry Felt It. Jerry Doesn't Want To Help You Anymore)",
+	"(You Destroyed Jerry's Self-esteem. He Doesn't Have Any WillPower To Help You)",
+	"(Jerry Is Satisfied With Your Modest FeedBack. His Self-Esteem Remains Stable, For Now)",
+	"(Jerry Is Confused By Your Answer, But Takes It As A Compliment Anyway)",
+	"(You Boosted Jerry's Self-esteem So Much That He Thinks He Is The Best Now. He, Therefore, Doesn't Want To Waste His Time Helping You Anymore)",
 };
 
-static std::string tempAnswer;
+std::string jerResponse = "There Is No Bug In The Text";
+std::string jerFeelings = "There Is No Bug In The Text";
 
 static int stepToSendBack;	// Si le joueur fail une étape, il va devoir être send back à une étape précédante
+static bool jerNoHelp = false;
 
 static bool Retry_If_Fail()
 {
@@ -201,9 +212,12 @@ static bool Retry_If_Fail()
 	{
 		Ev_Glitch_Screen();
 		Stop_Ev_Dr_Stop_Jerry();	// stop l'even de jerrys
+		ListsOfChainToModify::Annihilate_All_Links();	// for good mesure
 		BotList::Destroy_All_Bots();	// clear les bots qui aurait pu resté
 		Restore_Prev_Bot_Speed();	// rétablit la vitesse précédante
 		Ev_Stop_Spawn_Jerry();		// arrête cet event, mais si il est actif une fois à la fin
+		Cancel_Ultimate_Test();		// idem
+		P1.Set_Hp(3);
 
 		ev_BotTutorial.delay.Stop();
 		ev_BotTutorial.delay.Start_Timer(500);
@@ -223,6 +237,8 @@ void Finish_Ultimate_Test()
 		ev_BotTutorial.delay.Start_Timer(0);
 		ev_BotTutorial.Go_To_X_Step(114);
 	}
+	else
+		Retry_If_Fail();
 
 }
 
@@ -234,20 +250,24 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 		//Erase_Map_Borders_1(23);	// erase borders
 		ev_BotTutorial.Activate();
 		ev_BotTutorial.Start(400);
+		ev_BotTutorial.Go_To_X_Step(140);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(130);		// now that's a shortcut
 		//ev_BotTutorial.Go_To_X_Step(114);		// now that's a shortcut
-		ev_BotTutorial.Go_To_X_Step(129);		// now that's a shortcut
-		//ev_BotTutorial.Go_To_X_Step(56);		// now that's a shortcut
-		//ev_BotTutorial.Go_To_X_Step(42);		// now that's a shortcut
-		//ev_BotTutorial.Go_To_X_Step(14);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(129);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(41);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(25);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(18);		// now that's a shortcut
 	}
 	else	// doin stuff 
 	{
+		Finish_Ultimate_Test();	// Cancel la discussion entre les deux personnages 
+
 		while (ev_BotTutorial.delay.Tick())
 		{
 			if (jerryTime)
 				Retry_If_Fail();	// Si le joueur fail un bout du tutorial, on step back sur des étapes de l'event
 
-			Finish_Ultimate_Test();	// Cancel la discussion entre les deux personnages 
 
 			static int step; step = ev_BotTutorial.Get_Current_Step();
 
@@ -337,12 +357,11 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
 				Just_Dr_Heart();
 				MsgQueue::Register(ENABLE_BLAST);	// backup
-
 				ev_BotTutorial.Advance(200);
 				break;
 
 			case 15:
-				prevMovSPeed = gBotMoveTimer.Get_Speed();	// vitesse de déplacement précédante
+				prevMovSpeed = gBotMoveTimer.Get_Speed();	// vitesse de déplacement précédante
 				Spawn_A_Jerry(RIGHT, 1, 20); // spawn Jerrry!
 				ConsoleRender::Add_String(_13, Jerry_Txt_Crd(_13), gJerClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(250);
@@ -366,9 +385,9 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 						ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(_15, { 38 , 4 }, GRAY, TXT_SPD_ER, true);
-						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 5), gBossClr, TXT_SPD_ER, true);
+						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 5), gBossClr, 200, true);
 
-						gBotMoveTimer.Start_Timer(prevMovSPeed, 1, true);	// Rétablit la vitesse précédante
+						gBotMoveTimer.Start_Timer(prevMovSpeed, 1, true);	// Rétablit la vitesse précédante
 						ev_BotTutorial.delay.Stop();
 						ev_BotTutorial.Advance(500);
 					}
@@ -389,7 +408,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 0:
 				ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_15, { 38 , 4 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_1, { 38 , 4 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Just_Dr_Arr_Keys();												// réaffichage
 				P1.Player_Gains_HP();					// redonne de la vie
 				
@@ -431,6 +450,8 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				ConsoleRender::Add_String(_17, Boss_Txt_Crd(_17), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_18, Boss_Txt_Crd(_18, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_19, Boss_Txt_Crd(_19, 2), gBossClr, TXT_SPD_ER, true);
+				Set_CountDown(13);
+				Ev_CountDown();	// Countdown
 				ev_BotTutorial.Advance(600);
 				break;
 
@@ -438,8 +459,6 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				stepToSendBack = 24;	// si le joueur fail ce test, il sera send back à cette étape
 				Set_Jerry_Time(5);
 				Ev_Dr_Stop_Jerry();
-				Set_CountDown(10);
-				Ev_CountDown();	// Countdown
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
 				P1.Set_Hp(3); Just_Dr_Heart(); Just_Dr_Arr_Keys();	// réaffichage et redonne de la vie
 
@@ -448,7 +467,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 26:
-				ConsoleRender::Add_String(_15, { map.Get_Box_Limit(RIGHT) - (int)_15.length() / 2, 4 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Set_Flashy_Border(RIGHT, 11);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
 
@@ -491,7 +510,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 32:
 				if (!jerryTime)
 				{
-					ConsoleRender::Add_String(_15, { map.Get_Box_Limit(RIGHT) - (int)_15.length() / 2, 4 }, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_20, Boss_Txt_Crd(_20), gBossClr, TXT_SPD_DR);	// // congratz!			
 					ev_BotTutorial.delay.Stop();
 					ev_BotTutorial.Advance(500);
@@ -547,15 +566,15 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 41:
 				ConsoleRender::Add_String(_24, Boss_Txt_Crd(_24, 2), gBossClr, TXT_SPD_DR);			
+				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
+				Set_CountDown(13);
+				Ev_CountDown();	// Countdown
 				ev_BotTutorial.Advance(420);
 				break;
 
 			case 42:
-				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
 				ConsoleRender::Add_String(_25, { map.Get_Box_Limit(RIGHT)  + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, GRAY, TXT_SPD_DR);	// lols
-				Build_Lvl_1_Walls();
-				Set_CountDown(10);
-				Ev_CountDown();	// Countdown
+				Build_Lvl_1_Walls();			// Builder un wall qui se fait destroy LOCK le jeu indéfinimment
 				ev_BotTutorial.Advance(350);
 				break;
 
@@ -569,7 +588,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;						
 
 			case 44:
-				ConsoleRender::Add_String(_15, { map.Get_Box_Limit(RIGHT) - (int)_15.length() / 2, 4 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Set_Flashy_Border(RIGHT, 11);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
 
@@ -637,7 +656,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 					ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 1), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_24, Boss_Txt_Crd(_24, 2), gBossClr, TXT_SPD_ER, true);
-					ConsoleRender::Add_String(_15, { map.Get_Box_Limit(RIGHT) - (int)_15.length() / 2, 4 }, GRAY, TXT_SPD_ER, true);	
+					ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_25, { map.Get_Box_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, WHITE, TXT_SPD_ER, true);	// lols
 					ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 					P1.Set_Hp(3);
@@ -665,10 +684,6 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 58:
-				stepToSendBack = 58;	// si le joueur fail ce test, il sera send back icitte
-				MsgQueue::Register(ENABLE_BLAST);	// réactive le blast
-				Temporary_Bot_Speed_Switch(2000);	// vitesse de déplacement 
-				Ev_Ultimate_Test();
 				ConsoleRender::Add_String(_30, { Boss_Txt_X() - 10, Boss_Txt_Y()}, gBossClr, 0);
 				ev_BotTutorial.Advance(550);
 				break;
@@ -679,6 +694,11 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 				
 			case 60:
+				stepToSendBack = 57;	// si le joueur fail ce test, il sera send back icitte
+				MsgQueue::Register(ENABLE_BLAST);	// réactive le blast
+				Temporary_Bot_Speed_Switch(2000);	// vitesse de déplacement 
+				Ev_Ultimate_Test();
+
 				ConsoleRender::Add_String(_32, { Boss_Txt_X() + 7 ,Boss_Txt_Y() }, gBossClr, 0);
 				ev_BotTutorial.Advance(400);
 				break;
@@ -708,20 +728,20 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 65:
-				ConsoleRender::Add_String(_35, Boss_Txt_Crd(_35, 1), gBossClr, TXT_SPD_DR);
-				ev_BotTutorial.Advance(700);
+				ConsoleRender::Add_String(_35, Boss_Txt_Crd(_35, 2), gBossClr, TXT_SPD_DR);
+				ev_BotTutorial.Advance(400);
 				break;
 
 			case 66:
 				ConsoleRender::Add_String(_36, Jerry_Txt_Crd(_36, 1), gJerClr, TXT_SPD_DR);
-				ev_BotTutorial.Advance(400);
+				ev_BotTutorial.Advance(360);
 				break;
 
 			case 67:
 				ConsoleRender::Add_String(_37, Jerry_Txt_Crd(_37, 2), gJerClr, 250);
 				ConsoleRender::Add_String(_33, Boss_Txt_Crd(_33), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_34, Jerry_Txt_Crd(_34), gJerClr, TXT_SPD_ER, true);				
-				ConsoleRender::Add_String(_35, Boss_Txt_Crd(_35, 1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_35, Boss_Txt_Crd(_35, 2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_36, Jerry_Txt_Crd(_36, 1), gJerClr, TXT_SPD_ER, true);
 				ev_BotTutorial.Advance(400);
 				break;
@@ -1019,21 +1039,22 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 118:
 				ConsoleRender::Add_String(_78, Boss_Txt_Crd(_78, 2), gBossClr, 250);
-				ConsoleRender::Add_String(_79, Jerry_Txt_Crd(_79), gJerClr, 350);
+				//ConsoleRender::Add_String(_79, Jerry_Txt_Crd(_79), gJerClr, 350);
 				ev_BotTutorial.Advance(420);
 				break;
 
 			case 119:
-				ConsoleRender::Add_String(_77, Boss_Txt_Crd(_77), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_77, Boss_Txt_Crd(_77), gBossClr, 0, true);
 				ConsoleRender::Add_String(_78, Boss_Txt_Crd(_78, 2), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_79, Jerry_Txt_Crd(_79), gJerClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 1), gBossClr, 400);
-				ev_BotTutorial.Advance(420);
+				//ConsoleRender::Add_String(_79, Jerry_Txt_Crd(_79), gJerClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT), gBossClr, 700);
+				ev_BotTutorial.Advance(320);
 				break;
 
 			case 120:
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_80, Boss_Txt_Crd(_80, 2), gBossClr, 250);
-				ev_BotTutorial.Advance(600);
+				ev_BotTutorial.Advance(400);
 				break;
 
 			case 121:
@@ -1044,23 +1065,22 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 122:				
 				ConsoleRender::Add_String(_80, Boss_Txt_Crd(_80, 2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_81, Boss_Txt_Crd(_81, 3), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 1), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(390);
+				ev_BotTutorial.Advance(1000);
 				break;
 
 			case 123:
 				ConsoleRender::Add_String(_82, Boss_Txt_Crd(_82), gBossClr, 250);
-				ev_BotTutorial.Advance(390);					 
+				ev_BotTutorial.Advance(700);					 
 				break;
 
 			case 124:
 				ConsoleRender::Add_String(_83, Boss_Txt_Crd(_83, 1), gBossClr, 250);
-				ev_BotTutorial.Advance(390);
+				ev_BotTutorial.Advance(450);
 				break;
 
 			case 125:
-				ConsoleRender::Add_String(_84, Boss_Txt_Crd(_84, 3), gBossClr, 250);
-				ev_BotTutorial.Advance(390);
+				//ConsoleRender::Add_String(_84, Boss_Txt_Crd(_84, 3), gBossClr, 250);
+				ev_BotTutorial.Advance(0);
 				break;
 
 			case 126:
@@ -1071,179 +1091,237 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 127:
 				ConsoleRender::Add_String(_82, Boss_Txt_Crd(_82),	 gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_83, Boss_Txt_Crd(_83, 1), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_84, Boss_Txt_Crd(_84, 3), gBossClr, TXT_SPD_ER, true);
+				//ConsoleRender::Add_String(_84, Boss_Txt_Crd(_84, 3), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_85, Boss_Txt_Crd(_85, 4), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(390);
+				ev_BotTutorial.Advance(1000);
 				break;
 
 			case 128:
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, 250);
-				ev_BotTutorial.Advance(500);
+				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, 50);
+				ev_BotTutorial.Advance(700);
 				break;
 
 			case 129:
 				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(1000);
+				ev_BotTutorial.Advance(500);
 				break;
 			
 			case 130:
-				ev_BotTutorial.Advance(400);
+				ConsoleRender::Add_String(jer_5, Jerry_Txt_Crd(jer_5), gJerClr, TXT_SPD_DR);
+				ev_BotTutorial.Advance(350);
 				break;
-				
+
 			case 131:
-				stepToSendBack = 129;
-				jerryTime = true;
-				P1.Set_Hp(3); Just_Dr_Heart(); Press_X_To_Proceed();
-				Make_It_Vertical_Only();
-				Set_Jerry(NONE, -1, prevMovSPeed);
-				Ev_Spawn_Jerry();
-				MsgQueue::Register(ENABLE_BLAST);
-				ev_BotTutorial.Advance(400);
-				ev_BotTutorial.delay.Start_Timer(10000, 1, true);
+				ConsoleRender::Add_String(jer_6, Jerry_Txt_Crd(jer_6, 2), gJerClr, 140);
+				ev_BotTutorial.Advance(250);
 				break;
 
 			case 132:
-
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(400);
+				ev_BotTutorial.Advance(1000);
 				break;
 
 			case 133:
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(400);
+				ConsoleRender::Add_String(jer_5, Jerry_Txt_Crd(jer_5), gJerClr, 0, true);
+				ConsoleRender::Add_String(jer_6, Jerry_Txt_Crd(jer_6, 2), gJerClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jer_7, Jerry_Txt_Crd(jer_7), gJerClr, TXT_SPD_DR);
+				ev_BotTutorial.Advance(500);
 				break;
 
 			case 134:
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jer_8, Jerry_Txt_Crd(jer_8, 1), gJerClr, TXT_SPD_FAST);
 				ev_BotTutorial.Advance(400);
 				break;
 
 			case 135:
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER, true);
-				ev_BotTutorial.Advance(400);
+				ConsoleRender::Add_String(jer_9, Jerry_Txt_Crd(jer_9, 2), gJerClr, TXT_SPD_FAST);
+				ev_BotTutorial.Advance(500);
 				break;
 
 			case 136:
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jer_10, Jerry_Txt_Crd(jer_10, 3), gJerClr, TXT_SPD_FAST);
+				ev_BotTutorial.Advance(600);
+				break;
+
+			case 137:
+				ConsoleRender::Add_String(jer_7, Jerry_Txt_Crd(jer_7), gJerClr, 0, true);
+				ConsoleRender::Add_String(jer_8, Jerry_Txt_Crd(jer_8, 1), gJerClr, 0, true);
+				ConsoleRender::Add_String(jer_9, Jerry_Txt_Crd(jer_9, 2), gJerClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jer_10, Jerry_Txt_Crd(jer_10, 3), gJerClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jer_11, Jerry_Txt_Crd(jer_11), gJerClr, TXT_SPD_FAST);
+				ev_BotTutorial.Advance(800);
+				break;
+
+			case 138:
+				ConsoleRender::Add_String(jer_12, Jerry_Txt_Crd(jer_12, 1), gJerClr, TXT_SPD_FAST);
+				ev_BotTutorial.Advance(1000);
+				break;
+
+			case 139:
+				ConsoleRender::Add_String(jer_13, Jerry_Txt_Crd(jer_13, 3), gJerClr, TXT_SPD_FAST);
+				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links
+				ev_BotTutorial.Advance(500);
+				break;
+
+			case 140:				
+				ConsoleRender::Add_String(jer_12, Jerry_Txt_Crd(jer_12), gJerClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jer_13, Jerry_Txt_Crd(jer_13, 2), gJerClr, TXT_SPD_ER, true);
+
+				// Coord tu titre du choix
+				XY.x = Find_Ctr_X((int)rate.size() / 2) - 5;
+				XY.y = linkGrid->link[6][4].Get_XY().y + 4;
+				ConsoleRender::Add_String(rate, XY, GRAY, TXT_SPD_DR);
+				ConsoleRender::Add_String(rate_1, { XY.x - 5,XY.y + 1 }, GRAY, TXT_SPD_DR);
+				
+				// Début d'un choix pour le joueur
+				choiceCrd = { 0, 8 };
+
+				//v1
+				//for (int i = 0; i < 10; i++)		// Le joueur doit "Rater" la performance de Jerry!
+				//{
+				//	
+				//	if (i == 0)
+				//	{
+				//		ChoiceTime::Add_Choice(recom[i], recomSub[0], choiceCrd);					
+				//		choiceCrd.c++;
+				//	}
+				//	else
+				//		if (i == 9) // le dixième choix
+				//			ChoiceTime::Add_Choice(recom[i], recomSub[1], choiceCrd);
+				//		else
+				//			ChoiceTime::Add_Choice(recom[i], TXT_CONST.SPACE_STRING, choiceCrd); // nada
+
+				//	if (i == 8) // Pour le dixième choix
+				//		choiceCrd.c+= 2;
+		
+				//	choiceCrd.c++;
+				//}
+				choiceCrd = { 1, 8 };
+
+				for (int i = 0; i < 12; i++)		// Le joueur doit "Rater" la performance de Jerry!
+				{
+					switch (i)
+					{			
+					case 0:  choiceCrd = { 1, 8 }; break;
+					case 1:  choiceCrd = { 10, 8 }; break;
+					case 2:  choiceCrd = { 4, 12 }; break;
+					case 3:  choiceCrd = { 7, 12 }; break;
+					case 4:  choiceCrd = { 12, 10 }; break;
+					case 5:  choiceCrd = { 5, 9 }; break;
+					case 6:  choiceCrd = { 9, 9 }; break;
+					case 7:  choiceCrd = { 0, 14 }; break;
+					case 8:  choiceCrd = { 6, 11 }; break;
+					case 9: choiceCrd = { 11, 13 }; break;
+					case 10: choiceCrd = { 2, 10 }; break;
+					case 11: choiceCrd = { 10, 11 }; break;
+					}
+					ChoiceTime::Add_Choice(recom[i], recomSub2[i], choiceCrd);
+
+				}
+
+				ev_BotTutorial.Advance(0);
+				ev_BotTutorial.delay.Start_Timer(2000, 1, true);	// infinite check here
+				break;
+
+			case 141:
+				if (!ChoiceTime::Is_Choice_Time())
+				{
+					ConsoleRender::Add_String(rate, XY, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(rate_1, { XY.x - 5,XY.y + 1 }, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(jer_11, Jerry_Txt_Crd(jer_11), gJerClr, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(jer_12, Jerry_Txt_Crd(jer_12, 1), gJerClr, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(jer_13, Jerry_Txt_Crd(jer_13, 3), gJerClr, TXT_SPD_ER, true);
+					ev_BotTutorial.delay.Stop();
+					ev_BotTutorial.Advance(500);
+				}
+				break;
+
+			case 142:
+				choiceMade = ChoiceTime::Get_Choice_Made();
+				jerNoHelp = false;
+
+				for (int i = 0; i < 12; i++)
+				{
+					if (choiceMade == recom[i])
+					{
+						// 0-5 7-8
+						// 6 9 10
+						// 11 delic
+						// 12 best
+						if (i == 0)
+						{
+							jerResponse = jerrAnswer[0];
+							jerFeelings = answer[0];
+							jerNoHelp = true;
+						}
+						else
+							if (i == 5 || i == 8 || i == 9)
+							{
+								jerResponse = jerrAnswer[2];
+								jerFeelings = answer[2];
+							}
+							else
+								if (i == 10)
+								{
+									jerResponse = jerrAnswer[3];
+									jerFeelings = answer[3];
+								}
+								else
+									if (i == 11)
+									{
+										jerResponse = jerrAnswer[4];
+										jerFeelings = answer[4];
+										jerNoHelp = true;
+									}
+									else
+									{
+										jerResponse = jerrAnswer[1];
+										jerFeelings = answer[1];
+										jerNoHelp = true;
+									}
+
+						break;
+					}
+				}
+				ev_BotTutorial.Advance(3000);
+				break;
+			
+			case 143:
+				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), gJerClr, 200);
 				ev_BotTutorial.Advance(400);
 				break;
+
+			case 144:
+				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, 120);
+				ev_BotTutorial.Advance(150);
+				break;
+
+			case 145:
+				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), GRAY, TXT_SPD_ER, true);
+
+				stepToSendBack = 129;
+				P1.Set_Hp(3); Just_Dr_Heart(); Press_X_To_Proceed( true);
+				
+				if (!jerNoHelp)	// Jerry Might Not want to help you
+				{
+					jerryTime = true;
+					Make_It_Vertical_Only();
+					Set_Jerry(NONE, -1, prevMovSpeed);
+					Ev_Spawn_Jerry();
+					MsgQueue::Register(ENABLE_BLAST);
+				}
+
+
+				ev_BotTutorial.Advance(400);
+				ev_BotTutorial.delay.Start_Timer(10000, 1, true);	// l'event doit rester actif si le joueur die.
+				break;
+
+
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+				// Cet Event Doit être arrêté manuellement!
 
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//case 82:// V1 
-			//	ConsoleRender::Add_String(_48, Boss_Txt_Crd(_48), gBossClr, TXT_SPD_DR);
-			//	ev_BotTutorial.Advance(400);
-			//	break;
-
-			//case 83:
-			//	ConsoleRender::Add_String(_49, Boss_Txt_Crd(_49, 1 ), gBossClr, TXT_SPD_DR);
-			//	ev_BotTutorial.Advance(400);
-			//	break;
-
-			//case 84:
-			//	ConsoleRender::Add_String(_50, Boss_Txt_Crd(_50, 2), gBossClr, TXT_SPD_DR);
-			//	ev_BotTutorial.Advance(300);
-			//	break;
-
-			//case 85:
-			//	ConsoleRender::Add_String(_51, Boss_Txt_Crd(_51, 3), gBossClr, TXT_SPD_FAST);
-			//	ev_BotTutorial.Advance(400);
-			//	break;
-
-			//case 86:
-			//	ConsoleRender::Add_String(_52, Jerry_Txt_Crd(_52), gJerClr, TXT_SPD_DR);
-			//	ev_BotTutorial.Advance(400);
-			//	break;
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-			//case 25:
-			//	ConsoleRender::Add_String(_20, Boss_Txt_Crd(_20), gBossClr, TXT_SPD_DR);	// You Know what to do
-			//	ev_BotTutorial.Advance(500);
-			//	break;
-			//
-			//case 26:
-			//	ConsoleRender::Add_String(_21, Jerry_Txt_Crd(_21), gJerClr, TXT_SPD_DR);
-			//	ev_BotTutorial.Advance(400);
-			//	break;
-
-
-				//case 20:
-			//	ConsoleRender::Add_String(doubt, Jerry_Txt_Crd(doubt), gJerClr, 260);
-			//	ev_BotTutorial.Advance(500);
-			//	break;
-
-			//case 21:
-			//	ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links
-			//	ev_BotTutorial.Advance(1500);
-			//	break;
-			//
-			//case 22:				
-			//	ConsoleRender::Add_String(doubt, Jerry_Txt_Crd(doubt), gJerClr, TXT_SPD_ER, true);
-			//	ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16), gBossClr, TXT_SPD_ER, true);
-
-			//	// Coord tu titre du choix
-			//	XY.x = Find_Ctr_X((int)rate.size() / 2) - 5;
-			//	XY.y = linkGrid->link[6][4].Get_XY().y + 4;
-			//	ConsoleRender::Add_String(rate, XY, GRAY, TXT_SPD_DR);
-
-			//	// Début d'un choix pour le joueur
-			//	choiceCrd = { 0, 8 };
-
-			//	for (int i = 0; i < 10; i++)		// Le joueur doit "Rater" la performance de Jerry!
-			//	{
-			//		
-			//		if (i == 0)
-			//		{
-			//			ChoiceTime::Add_Choice(recom[i], "(The Worst)", choiceCrd);
-			//		}
-			//		else
-			//			if (i == 9) // le dixième choix
-			//			{
-			//				ChoiceTime::Add_Choice(recom[i], "(Okay)", choiceCrd);
-			//				choiceCrd.c++;
-			//			}
-			//			else
-			//			{
-			//				ChoiceTime::Add_Choice(recom[i], TXT_CONST.EMPTY, choiceCrd);
-			//			}
-			//		choiceCrd.c++;
-
-			//	}
-
-			//	ev_BotTutorial.Advance(0);
-			//	ev_BotTutorial.delay.Start_Timer(2000, 1, true);	// infinite check here
-			//	break;
-
-			//case 23:
-			//	if (!ChoiceTime::Is_Choice_Time())
-			//	{
-			//		ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_ER, true);
-					//ConsoleRender::Add_String(rate, XY, GRAY, TXT_SPD_ER, true);
-
-			//		ev_BotTutorial.delay.Stop();
-			//		ev_BotTutorial.Advance(400);
-			//	}
-			//	break;
-
-			//case 24:
-			//	choiceMade = ChoiceTime::Get_Choice_Made();
-
-			//	for (int i = 0; i < 10; i++)
-			//	{
-			//		if (choiceMade == rview[i])
-			//		{
-			//			//tempAnswer = answer[i];
-			//			break;
-			//		}
-			//	}
-
-			//	ConsoleRender::Add_String(tempAnswer, Jerry_Txt_Crd(tempAnswer), GRAY, 260);
-			//	ev_BotTutorial.Advance(500);
-			//	break;
 			}
 
 

@@ -66,6 +66,11 @@ void MsgQueue::Register(MsgType msg)	// Ajoute le message à la liste des message
 		return;
 	}
 }
+void MsgQueue::Unregister_All()
+{
+	for (int i = 0; i < total; i++)
+		Unregister();
+}
 
 void MsgQueue::Dispatch_Messages()		// Prend un message enregistré de la liste à envoyé
 {
@@ -143,10 +148,10 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case HIDE_HEALTH:break;
 	
 	case SHOW_MOD_QUEUE:
-		DrawModifierQueue::Show_Queue_UI();
+ 		DrawModifierQueue::Show_Queue_UI();
 		break;
 
-	case HIDE_NEXT_QUEUE:
+	case HIDE_MOD_QUEUE:
 		DrawModifierQueue::Hide_Queue_UI();
 		break;
 

@@ -51,7 +51,11 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 		 XY = linkGrid->link[crd.c][crd.r].Get_XY();	// XY
 		 XY.y -= 2;	// 2 cases plus bas
 		 XY.x = XY.x - ((int)choiceList[index].subname.size() / 2);	// nom centré
-		 ConsoleRender::Add_String(choiceList[index].subname, XY, GRAY, 25); // affiche le subname
+
+		 if(clr == LIGHT_YELLOW)	// Si le Texte est highlighté, la couleur est jaune
+			ConsoleRender::Add_String(choiceList[index].subname, XY, WHITE); // affiche le subname
+		 else
+			 ConsoleRender::Add_String(choiceList[index].subname, XY, GRAY); // affiche le subname
 	 }
  }
  
@@ -82,14 +86,14 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
  {
 	 XY.x = Find_Ctr_X((int)enter.size());
 	 XY.y = gConHeight - 15;
-	 ConsoleRender::Add_String(enter, XY, GRAY, 90); // affiche ce titre
+	 ConsoleRender::Add_String(enter, XY, GRAY); // affiche ce titre
 	 enterDrawn = true;
  }
  void ChoiceTime::Erase_Press_Enter()
  {
 	 XY.x = Find_Ctr_X((int)enter.size());
 	 XY.y = gConHeight - 15;
-	 ConsoleRender::Add_String(enter, XY, WHITE, 90, true); // Efface ce titre
+	 ConsoleRender::Add_String(enter, XY, WHITE, 0, true); // Efface ce titre
 	 enterDrawn = false;
  }
 

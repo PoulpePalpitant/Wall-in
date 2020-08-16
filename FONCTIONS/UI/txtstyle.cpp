@@ -54,10 +54,12 @@ Coord Up_Txt_3(std::string txt)// Pour afficher du texte en Haut sur la 2e ligne
 }
 
 // Le text à côté du coeur
-Coord Heart_Txt_Crd(int line)
+Coord Heart_Txt_Crd(std::string txt ,int line)
 {
+	int txtSize = (int)txt.size();
+
 	if(line < 10)
-		return { (gConWidth / 2) + 15, (gConHeight - 10) + line };
+		return { (gConWidth - txtSize) / 2 + 22 , (gConHeight - 7 ) + line };
 	else
 		return { 0,0 };	// hehe
 
