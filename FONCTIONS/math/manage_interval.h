@@ -46,7 +46,7 @@ namespace Intervals {
 		// RECHERCHE DE VALEURS DISPONIBLES
 		bool Pick_From_Lists(int &listNum, int &value, bool rdmValue = false, bool rdmList = false, SearchConditions search = STOP);		// Pogne une valeur provenant d'une list quelconque
 		bool Find_List_With_Value(int value, int& listNum);		// Trouve une liste contenant cette valeur
-		bool Find_Value(int value, int listNum);		// Trouve une liste contenant cette valeur
+		bool Find_Value(int listNum, int value);		// Trouve une liste contenant cette valeur
 		bool Is_All_Empty();
 		int Get_Default_Max(int list = 0) { return instance->dfltMax; } // prend le premier max par défaut
 		int Get_Max_Available_Lists() { return availableLists.dfltMax; } // Nombre de list max possible

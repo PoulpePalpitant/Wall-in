@@ -55,7 +55,9 @@ public:
 	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
 	
 	// SPÉCIALE
-	void Dis_Player_Sym();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
+	void Dr_Player();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
+	void Er_Player();									// fait juste effacer
+	void Reset_State();	// health, crd, and state
 // changer le symbole selon la direction du dernier move du player
 
 };

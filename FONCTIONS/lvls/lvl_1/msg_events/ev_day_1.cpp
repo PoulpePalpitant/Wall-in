@@ -17,7 +17,7 @@ static Event ev_Dr_Day1(Ev_Dr_Day_1, 8);	// l'event
 static Coord ori;	// Origine du titre
 static Coord ori_2;	// Origine du titre
 static Coord crd;	// random crd
-static Intervals::ManageIntervalLists charToFill(0,0,0);	// Liste de tout les charactères de la console qui n'ont pas été remplis 
+static Intervals::ManageIntervalLists charToDr(0,0,0);	// Liste de tout les charactères de la console qui n'ont pas été remplis 
 
 
 //static std::string day_1 = " DAY 1";
@@ -161,7 +161,7 @@ void Ev_Dr_Day_1()			//  Message d'avertissement que les bots s'en viennent et q
 		MsgQueue::Register(LOCK_PLAYER);
 		Ev_Fill_Map();	// fill la map
 		ev_Dr_Day1.Activate();
-		ev_Dr_Day1.Start(150);	
+		ev_Dr_Day1.Start(250);	
 	}
 	else
 	{

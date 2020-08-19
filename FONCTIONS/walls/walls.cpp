@@ -117,7 +117,7 @@ void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 
 	//drawer.timer.Stop();		// STOP l'effacement du mur si il vient juste d'être détruit
 	if (drawer.timer.Is_On())
-		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur 
+		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur				Cett fonction peut fail
 
 	Set_Drawer(false, true);
 
@@ -167,7 +167,7 @@ void Wall::Take_Damage(int dmg)
 }
 
 
-
+// Si un wall était déjà en train d'être dessiné? faudrait au moins finir de le draw?????????
 void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gère pas la création des queues
 {
 	CoordIncrementor startPos;	// Position de départ
@@ -182,6 +182,9 @@ void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gè
 
 	if (childPos == NEG)								//  x  ->   <-  x		x = startpos
 		*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
+
+	// Si Le Wall était déjà en train d'être afficher, on finis de faire ça
+	DrawWalls::Finish_Wall(drawer);
 
 	// Timer is set boyos
 	if (erase)

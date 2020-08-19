@@ -12,6 +12,8 @@
 #include "dispatch_msg_to_menu.h"
 #include "../inputs/action_input.h"
 
+#include "../events/global_events/ev_update_heart.h" // for testing
+
 static int tempLevel = 0;
 
 void Dispatch_Msg_To_Menu()
@@ -32,16 +34,24 @@ void Dispatch_Msg_To_Menu()
 		if (gCurrentStage == 1)
 		{
 			Ev_Dr_Choose_Lvl();
-			MsgQueue::Register(STAGE_ADVANCE);
+
+			/* test de créatio de coeurs*/
+			//Start_Ev_Dr_Heart(3);
+			//Fill_Heart_Randomly(true);
+			//Fill_Outisde_Heart(false);
 		}
 		else
 			if (gCurrentStage == 3)
 			{
 				Ev_Er_Choose_Lvl();
 				Dr_Skip_Story_Choice();
-			}
+				//if(tempLevel == 1)
+				//	Start_Ev_Dr_Heart(2); // tasety
 
-	case LVL_ENDED:		
+				//Fill_Heart_Randomly(false);
+				//Fill_Outisde_Heart(true);
+
+			}
 		break;
 
 	case PRESSED_KEY:
@@ -50,24 +60,27 @@ void Dispatch_Msg_To_Menu()
 			switch (gMenuKey)	// Input de charactères
 			{
 			case 49:	/* Les numéros de 1 à 9 */
-			case 50:
-			case 51:
-			case 52:
-			case 53:
-			case 54:
-			case 55: 
+			//case 50:	
+			//case 51:
+			//case 52:
+			//case 53:
+			//case 54:
+			//case 55: 
 				tempLevel = gMenuKey - 48;
 				Ev_Er_Choose_Lvl();
 				MsgQueue::Unregister_All();	// répare un bug de merde
 				MsgQueue::Register(STAGE_ADVANCE);
+				//
+				//if(tempLevel == 2)
+				//	Start_Ev_Dr_Heart(1);
 			}
 		}
 
 		if (gCurrentStage >= 3)
 		{
-			if (gMenuKey == 89 || gMenuKey == 78)	 /*78 = Y Pour Yes */
+			if (gMenuKey == 89 || gMenuKey == 78)	 /*78 = Y Pour Yes */ /*89 n pour no */
 			{
-				if (gMenuKey == 78)				/* n pour no */
+				if (gMenuKey == 89)				
 					gSkipStory = true; 
 
 				OBS_Erase_Game_Title();	// Erase Title Screen
@@ -90,9 +103,9 @@ void Dispatch_Msg_To_Menu()
 				*/
 
 			}
+			break;
 		}
 	}
-	
 	// Afficher "Start"
 	// Afficher "Quit"
 	// Do stuff when: "Start"

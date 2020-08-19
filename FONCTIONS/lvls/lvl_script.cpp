@@ -10,6 +10,7 @@
 
 short gCurrentLevel = 0;	// Le niveau actuel!!1
 short gCurrentStage = 0;	// Chaque niveau peut avoir plusieurs stages
+bool gDayStarted = false;
 bool gSkipStory = false;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
 
 void Peek_Lvl_Script()

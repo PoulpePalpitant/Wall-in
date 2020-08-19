@@ -8,7 +8,7 @@
 #include "../../choice/choice_time.h"
 #include "../../console/sweet_cmd_console.h"
 
-static Event ev_Dr_ChooseLvl(Ev_Dr_Choose_Lvl, 2);	// Déclaration
+static Event ev_Dr_ChooseLvl(Ev_Dr_Choose_Lvl, 3);	// Déclaration
 
 static std::string skip = "Select Level";
 static std::string pressNum = "(Press Number)";
@@ -49,8 +49,14 @@ void Ev_Dr_Choose_Lvl()
 					ConsoleRender::Add_String(recom[i], crd, WHITE, 0);
 
 				}
+				ev_Dr_ChooseLvl.Advance(7000);
+				break;
+
+			case 3:
+				MsgQueue::Register(STAGE_ADVANCE);
 				ev_Dr_ChooseLvl.Advance(0);
 				break;
+
 			}
 		}
 }

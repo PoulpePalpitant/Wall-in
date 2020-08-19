@@ -9,6 +9,30 @@ Intervals::ManageIntervalLists ItemSpawner::availableLinks(0, 0, 0);	// Position
 ItemSpawnPool ItemSpawner::pool = {};
 bool ItemSpawner::pause = false;	// permet de pauser les updates
 
+
+bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd)	// Bypass la pool et le timer pour faire spawner un item
+{
+	Item item;
+	item.itemType = type;	// that's my type
+	item.active = true;	// Activate that boi
+
+
+	if (!ItemsOnGrid::Reached_Max())
+	{
+		Refresh_Available_Spawn_List();
+
+		if (!Pick_Specific_Coord(crd))
+			if (!ItemSpawner::Find_Spawn_Location(item.grdCrd))	// // Generate random coord Si aucun spawn location found. Spawn juste pas 
+				return false;	// we couldn't spawn yo shit
+
+		item.grdCrd = crd;
+		ItemsOnGrid::Add(item); // Add à la lsite des items sur le grid
+		DrawItemSpawnList::Add(item.itemType, item.grdCrd);	// Add a la list du drawer de spawn
+		return true;
+	}
+}
+
+
 bool ItemSpawner::Add_To_Pool(ItemType type, int timerSpeed, int rngDelay)
 {
 	TypeSpawner temp;
@@ -95,7 +119,6 @@ void ItemSpawner::UPD_Item_Spawn_Timers()
 				// Generate random coord
 				if (ItemSpawner::Find_Spawn_Location(item.grdCrd))	// Si aucun spawn location found?? Spawn juste pas pour ce cycle 
 				{
-
 					item.active = true;	// Activate that boi
 					item.itemType = pool.spawner[i].type;		// le bon type
 
@@ -157,6 +180,11 @@ void ItemSpawner::Refresh_Available_Spawn_List()		// Refresh le trouver de spawn
 bool ItemSpawner::Generate_Rdm_Coord(GrdCoord &itmCrd)	// Trouve une coord. si non-dispo, en trouve une autre au hasard
 {	
 	return availableLinks.Pick_From_Lists(itmCrd.c, itmCrd.r, true, true, Intervals::RDM_ALL);	// si échoue, aucune coord n'est dispo
+}
+
+bool ItemSpawner::Pick_Specific_Coord(GrdCoord& itmCrd)	// Prend la coord dispo qu'on veut
+{
+	return availableLinks.Find_Value(itmCrd.c, itmCrd.r);	
 }
 
 bool ItemSpawner::Find_Spawn_Location(GrdCoord &itemCrd)

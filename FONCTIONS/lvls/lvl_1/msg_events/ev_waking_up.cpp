@@ -268,7 +268,6 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				Just_Dr_Heart();	// redraw le coeur
 
 				MsgQueue::Register(STAGE_ADVANCE);	// Avance d'un stage	// faut que le stage soit le 4e
-				MsgQueue::Register(STAGE_ADVANCE);	// Avance d'un stage	// faut que le stage soit le 4e
 				ev_WakeUp.Cancel();
 				break;
 

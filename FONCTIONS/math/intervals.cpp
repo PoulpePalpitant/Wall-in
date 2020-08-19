@@ -63,7 +63,7 @@ namespace Intervals {
 	{
 		Interval* it = start;
 
-		if (it->min <= value || end->max < value)	// On skip la recherche au complet si aucun élément de la liste n'a cette valeur
+		if (value < start->min  || value >= end->max)	// On skip la recherche au complet si aucun élément de la liste n'a cette valeur
 			return false;
 
 		while (it)
@@ -339,8 +339,9 @@ namespace Intervals {
 		}
 
 		// Si ce trouve pas à aucune extremités
+		int oldMax = intval->max;
 		Modify_Max(intval, newMax);
-		Create_Interval(previous, newMin + 1, intval->max);	// Créer un nouvel intervalle suivant 
+		Create_Interval(intval, newMin + 1, oldMax);	// Créer un nouvel intervalle suivant 
 	}
 
 	// CRÉER UN NOUVEL INTERVALLE!!

@@ -5,7 +5,7 @@
 
 #include "../../../console/sweet_cmd_console.h"
 #include "../../lvl_script.h"
-#include "../../../events/events.h"
+#include "../../../events/events.h"//https://www.twitch.tv/gamesdonequick
 #include "../../../grid/AllGrids.h"
 #include "../../../player/player.h"
 #include "../../../UI/console_output/render_list.h"
@@ -237,9 +237,8 @@ void Ev_Spawn_Life()					// Trace un chemin vers le coeur
 				break;
 			case 7:
 				ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
-				Ev_Dr_Heart_3();	// spawn le coeur
-				
-				ev_SpawnLife.Advance(600);
+				Start_Ev_Dr_Heart(3, true); // affiche le coeur 	// spawn le coeur
+				ev_SpawnLife.Advance(350);
 				break;
 
 			case 8:

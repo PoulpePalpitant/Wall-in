@@ -12,7 +12,7 @@
 
 static Coord crd;
 static Coord ori;		// Coordonnée d'origine, servira de référence pour TOUT les affichages
-static Event ev_LvlStartWarning(Ev_Lvl_Start_Warning, 6);
+static Event ev_LvlStartWarning(Ev_Lvl_Start_Warning, 7);
 static std::string ready = "Prepare Yourself";
 static std::string inc = "They Are Coming";
 
@@ -27,6 +27,8 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 		ori.y = linkGrid->Get_Rows();
 		crd = ori;
 		stringProgress = 0;
+		P1.Set_Position({ 6,6 });
+		MsgQueue::Register(SPAWN_PLAYER);
 
 		ev_LvlStartWarning.Activate();
 		ev_LvlStartWarning.Start(40000, (int)ready.size());
@@ -44,6 +46,8 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 2:
+				MsgQueue::Register(FREE_PLAYER);
+				MsgQueue::Register(ENABLE_BLAST);
 				stringProgress = 0;
 				crd = ori;
 				ev_LvlStartWarning.Advance(30000, (int)inc.size());
@@ -57,19 +61,23 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 4:
-				P1.Set_Position({ 6,6 });
-				MsgQueue::Register(SPAWN_PLAYER);
-				ev_LvlStartWarning.Advance(600);
+
+				Start_Ev_Dr_Heart(3, true); // affiche le coeur						
+				ev_LvlStartWarning.Advance(500);
 				break;
 
 			case 5:
-				Ev_Dr_Heart_3();	// affiche le coeur
-				ConsoleRender::Add_String(ready, ori, WHITE,50, true);
-				ConsoleRender::Add_String(inc, { ori.x, ori.y + 2 }, WHITE,50, true);
+				ConsoleRender::Add_String(ready, ori, WHITE, 50, true);
+				ConsoleRender::Add_String(inc, { ori.x, ori.y + 2 }, WHITE, 50, true);
 				ev_LvlStartWarning.Advance(200);
 				break;
 
 			case 6:
+
+				ev_LvlStartWarning.Advance(300);
+				break;
+			
+			case 7:
 				MsgQueue::Register(STAGE_ADVANCE); // Here they come baby
 				ev_LvlStartWarning.Advance(0);
 				break;

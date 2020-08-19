@@ -60,9 +60,14 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 			 {
 				 ConsoleRender::Add_Char(it->xy.coord, it->sym, it->clr);
 				 it->xy.Increment_Coord();
-			 } 
+			 }
 			 Remove(prev, it);
 			 return true;
+		 }
+		 else
+		 {
+			 prev = it;
+			 it = it->nxt;
 		 }
 
 		 if (bugChecker == 10000)
@@ -71,6 +76,39 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 
 	 return false;
 }
+
+ void DrawWalls::Finish_Wall(WallDrawer& drawer) // Termine d'afficher un wall. Utilisé quand je veux afficher ou effacer 1 même mur durant 1 même frame
+ {
+	 if (start == NULL) return;	// Liste vide
+
+	 static WallDrawer* it;
+	 static WallDrawer* prev;
+
+	 it = start;
+	 prev = NULL;
+
+	 // nombre de count left
+	 int charsLeft = drawer.timer.Get_Moves_Left();
+
+	 while (it)
+	 {
+		 if (it == &drawer)
+		 {
+			 for (int i = 0; i < charsLeft; i++)
+			 {
+				 ConsoleRender::Add_Char(it->xy.coord, it->sym, it->clr);
+				 it->xy.Increment_Coord();
+				 Remove(prev, it);
+				 return;
+			 }
+		 }
+		 else
+		 {
+			 prev = it;
+			 it = it->nxt;	// Le wall peut être introuvable je suppose
+		 }
+	 }
+ }
 
 void DrawWalls::Draw_Them_Walls()		
 {

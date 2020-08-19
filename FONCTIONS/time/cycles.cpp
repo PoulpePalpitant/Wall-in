@@ -8,6 +8,7 @@
  bool stopMoveCycle = true;
  bool stopItmSpwCycle = true;
 
+
 void UPD_Cycles_Stuff()
 {
 	if (!stopSpwCycle)
@@ -18,8 +19,6 @@ void UPD_Cycles_Stuff()
 		ItemSpawner::UPD_Item_Spawn_Timers();	// Update timers des spawners
 		
 }
-
-
 
 void Do_Stuff_this_Cycle()
 {

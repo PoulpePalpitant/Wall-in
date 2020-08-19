@@ -21,10 +21,10 @@
 #include "../FONCTIONS/spawns/bots_to_spawn.h"
 #include "../FONCTIONS/spawns/valid_spwn_intervals.h"
 #include "../FONCTIONS/math/manage_interval.h"
-
 #include "../FONCTIONS/time/spawn_cycle.h"
-
-
+// test//
+#include "../FONCTIONS/events/global_events/ev_update_heart.h"
+//
 #include "../FONCTIONS/UI/console_output/dsp_char.h"
 #include "../FONCTIONS/UI/console_output/dsp_string.h"
 
@@ -101,17 +101,17 @@ int main()	// Le début!
 	//	}
 	//}
 
-	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
-	//{
-	//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
-	//	{
-	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-	//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
-	//		ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
+	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	{
+		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+		{
+			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+			ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
 
 
-	//	}
-	//}
+		}
+	}
 
 	//Coord XYCOLOR = { 0,0 };
 	//for (int i = 0; i < 500; i++)
@@ -159,7 +159,6 @@ int main()	// Le début!
 	//gGrids.Activate_Chain_Of_Walls({ 6,5 }, UP, 6);
 	//gGrids.Activate_Chain_Of_Walls({ 6,7 }, DOWN, 6);
 
-	/* test manual wall creation*/
 
 	// some windows stuff
 	Set_Input_Buffer_Handle();	
@@ -174,10 +173,10 @@ int main()	// Le début!
 	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Spawn Waves: ");
 	Coord crd3 = { 61,1 };	// Update la combientième wave
 
-	GameClock LvlClock;
+	//GameClock LvlClock;
 	//LvlClock.clockName = "Swag Clock";crd = { 0,1 };LvlClock.Dsp_Name(crd);
 	crd = { 13,1 };
-	LvlClock.Start_Clock();	// Start l'horloge 
+	//LvlClock.Start_Clock();	// Start l'horloge 
 
 	bool isRunning = true;
 	float frameRate = 60.0f;// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
@@ -185,6 +184,7 @@ int main()	// Le début!
 	float lag = 0;
 	int MS_PER_UPDATE = 10;	// Rythme à laquelle je veais ttout update
 	int loops = 0;
+	int frames = 0;
 
 	GameLoopClock::Reset_Timer();	// Premier reset
 	//thread *inputs = new thread(Input_Thread_Handler);
@@ -198,28 +198,26 @@ int main()	// Le début!
 
 
 		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps		
-		Read_Input_Buffer();
+			Read_Input_Buffer();
+			//Detect_Input();				// Détect les inputs mah dude0
 
-		//Detect_Input();				// Détect les inputs mah dude0
-			/*
-			si ça dépasse le fps: lag = l'excédant
-			tu update une autre fois, mais AVEC la valeur de LAG à la place, pour rattraper
-			*/
+				/*
+				si ça dépasse le fps: lag = l'excédant
+				tu update une autre fois, mais AVEC la valeur de LAG à la place, pour rattraper
+				*/
 			Update_Game();				// Update le jeu mah dude
-		
-			ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
-			//if (++loops == 60)
-			//{
-			//	ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de bot en vie
-			//	loops = 0;
-			//}
-			//ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
-			//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
-			//cout << 1 / Timer->Get_Delta_Time() << "\t \t";	// Le nombre de FRAMES en une seconde, soit le framerate : 60
-			// OU cout << gLvlTime << endl;		// Temps total écoulé
+			if (++frames == 25)	// update les infos à chaque X Frames
+			{
+			//	ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
+				ConsoleRender::Add_String(std::to_string((int)(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
+				ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
+				ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
+
+				frames = 0;
+			}
 			GameLoopClock::Reset_Timer();	// Reset la frame!
 		}
 		

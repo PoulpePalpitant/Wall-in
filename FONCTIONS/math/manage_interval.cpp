@@ -78,7 +78,7 @@ namespace Intervals
 
 	void ManageIntervalLists::Exclude_Interval_From_List(int listNum, int min, int max)
 	{
-		instance->Exclude_Interval_From_List(min, max);
+		instance[listNum].Exclude_Interval_From_List(min, max);
 		Remove_Empty_List(listNum);
 	}
 
@@ -124,9 +124,12 @@ namespace Intervals
 	// SEARCHING!
 	// ----------
 
-	bool ManageIntervalLists::Find_Value(int value, int listNum)		// la valeur dans une liste
+	bool ManageIntervalLists::Find_Value(int listNum, int value)		// la valeur dans une liste
 	{
-		return instance[listNum].Search_Value(value);
+		if (instance[listNum].count)
+			return instance[listNum].Search_Value(value);
+		else
+			return false;
 	}
 
 	bool ManageIntervalLists::Find_List_With_Value(int value, int& listNum)		// Trouve une liste contenant cette valeur

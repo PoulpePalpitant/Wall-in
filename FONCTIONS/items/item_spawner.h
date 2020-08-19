@@ -39,12 +39,13 @@ public:
 	static bool Add_To_Pool(ItemType type, int timerduration, int rngDelay);			// Ajoute un type d'item à la pool
 	static bool Remove_From_Pool(ItemType type);
 	static void Set_Spawner_Timer(TypeSpawner& spawner, int timerduration, int rngDelay);	// Set le timer pour le type dans la pool
-
-
+	
 	// SPAWNER
+	static bool Spawn_This_Item(ItemType type, GrdCoord crd);	// Fait spawner un item. Si l'endroit que l'on voulait faire spawner marche pas, génère une crd random automatiquement. 
 	static void Refresh_Available_Spawn_List();
 	static bool Find_Spawn_Location(GrdCoord &itemCrd);
 	static bool Generate_Rdm_Coord(GrdCoord& itmCrd);	// Trouve une coord dispo
+	static bool Pick_Specific_Coord(GrdCoord& itmCrd);	// Trouve la coord dispo qu'on veut
 
 	// EXCLUT LES POSITIONS DU GRIDS SUIVANTES
 	static void Player_Exclusion(GrdCoord P1Pos);	// Exclut les spawns trop proches du joueur

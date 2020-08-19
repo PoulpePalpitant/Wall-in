@@ -176,7 +176,7 @@ bool ChainToModify::pop(Link*& data)	// Détruit l'item sur le dessus, mais conse
 			data = chain.top->link;		// data devient l'item du top
 			chain.top = chain.top->below;	// le top devient l'item en dessous
 
-			delete above;			// pète le(ancien) top
+			delete above;			// pète le(ancien) top										// pt que ça bug icite
 			chain.count--;
 		}
 		else
@@ -273,7 +273,7 @@ void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool ex
  }
 
 
-void ListsOfChainToModify::Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev)
+void ListsOfChainToModify::Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev)	// BUG DE DELETE: Soit ici
 {
 	if (toRemove == start && toRemove == end)
 	{

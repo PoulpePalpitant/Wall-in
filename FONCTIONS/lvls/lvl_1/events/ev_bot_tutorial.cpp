@@ -190,7 +190,7 @@ static std::string choiceMade;
 static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 ", " 12 ", " 13 " };
 //static std::string recomSub[] = { "The Worst, Honestly", " The Best " };
 static std::string recomSub2[] = { "The Worst, Honestly", "Pathetic","Terrible", "Awful","Poor", "Satisfactory", "Atrocious","Not Good", "Okay", "Fine", "Delicious", "The Absolute Best" };
-static std::string jerrAnswer[] = { "...", "hum. ok. th-thanks...","Okay. Thanks. I Will Take that", "What?" , "Wow!"};
+static std::string jerrAnswer[] = { "...", "oh. ok.... I... huh... th-thanks...","Okay. Thanks. I Will Take that", "What?" , "Wow!"};
 static std::string answer[] =
 { 
 	"(You Said That Just To Be Mean. Jerry Felt It. Jerry Doesn't Want To Help You Anymore)",
@@ -210,17 +210,18 @@ static bool Retry_If_Fail()
 {
 	if (!P1.Get_HP())		// Fait restarter la séquence 
 	{
-		Ev_Glitch_Screen();
+		Ev_Glitch_Map_Retry();
 		Stop_Ev_Dr_Stop_Jerry();	// stop l'even de jerrys
 		ListsOfChainToModify::Annihilate_All_Links();	// for good mesure
 		BotList::Destroy_All_Bots();	// clear les bots qui aurait pu resté
 		Restore_Prev_Bot_Speed();	// rétablit la vitesse précédante
 		Ev_Stop_Spawn_Jerry();		// arrête cet event, mais si il est actif une fois à la fin
 		Cancel_Ultimate_Test();		// idem
+		Press_X_To_Proceed(0, true);// idem
 		P1.Set_Hp(3);
 
 		ev_BotTutorial.delay.Stop();
-		ev_BotTutorial.delay.Start_Timer(500);
+		ev_BotTutorial.delay.Start_Timer(200);
 		ev_BotTutorial.Go_To_X_Step(stepToSendBack);
 		return true;
 	}
@@ -250,10 +251,10 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 		//Erase_Map_Borders_1(23);	// erase borders
 		ev_BotTutorial.Activate();
 		ev_BotTutorial.Start(400);
-		ev_BotTutorial.Go_To_X_Step(140);		// now that's a shortcut
-		//ev_BotTutorial.Go_To_X_Step(130);		// now that's a shortcut
-		//ev_BotTutorial.Go_To_X_Step(114);		// now that's a shortcut
-		//ev_BotTutorial.Go_To_X_Step(129);		// now that's a shortcut
+		ev_BotTutorial.Go_To_X_Step(145);		// jerry time
+		//ev_BotTutorial.Go_To_X_Step(140);		// jerry answer
+		//ev_BotTutorial.Go_To_X_Step(130);		// jerry's is sorry
+		//ev_BotTutorial.Go_To_X_Step(114);		// just survived
 		//ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
 		//ev_BotTutorial.Go_To_X_Step(41);		// now that's a shortcut
 		//ev_BotTutorial.Go_To_X_Step(25);		// now that's a shortcut
@@ -396,7 +397,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 						ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_DR);
 						ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_DR);
 						ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
-						Ev_Glitch_Screen();
+						Ev_Glitch_Map_Retry();
 
 						ev_BotTutorial.delay.Stop();
 						ev_BotTutorial.Go_To_X_Step(0);
@@ -1299,15 +1300,17 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), GRAY, TXT_SPD_ER, true);
 
-				stepToSendBack = 129;
-				P1.Set_Hp(3); Just_Dr_Heart(); Press_X_To_Proceed( true);
+				stepToSendBack = 138;
+				P1.Set_Hp(3); Just_Dr_Heart(); Press_X_To_Proceed(1);
 				
 				if (!jerNoHelp)	// Jerry Might Not want to help you
 				{
+					//P1.Set_Hp(2000); // testing okay?
 					jerryTime = true;
 					Make_It_Vertical_Only();
-					Set_Jerry(NONE, -1, prevMovSpeed);
+					Set_Jerry(RIGHT, 0, prevMovSpeed);	// Tu peux pas mettre un boxisde random et une crd de spawn specific
 					Ev_Spawn_Jerry();
+
 					MsgQueue::Register(ENABLE_BLAST);
 				}
 

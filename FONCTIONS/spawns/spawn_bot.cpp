@@ -65,7 +65,10 @@ void Spawn_A_Bot(Direction boxSide, int spwNum)	// Spawn un bot en dehors des cy
 	if (!gMoveBotsThisCycle)
 		MsgQueue::Register(START_BOT_MOVE);	// Enable les bots pour qu'ils puissent bouger
 	
-	bots_to_spawn::Add_Specific(boxSide, spwNum);	// Ajoute le bot en question
+	bots_to_spawn::Add_Specific(boxSide, spwNum /*= 3 */);	// Ajoute le bot en question
+	//bots_to_spawn::Add_Specific(boxSide, --spwNum);	// for testy ;)
+	//bots_to_spawn::Add_Specific(boxSide, --spwNum);	// for testy ;)
+	//bots_to_spawn::Add_Specific(boxSide, --spwNum);	// for testy ;)
 	Spawn_Bots();	// Ensuite on spawn le bot
 }
 

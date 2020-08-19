@@ -5,16 +5,18 @@
 #include "../../console/sweet_cmd_console.h"
 #include "../../inputs/action_input.h"
 
-static std::string proceed = "Press \"Esc\" to Proceed";
-static std::string lvl = "Press \"Esc\" to Start Level";
+static std::string proceed[3] = { "Press \"Enter\" to Proceed","Press \"Enter\" to Start Level", "Press \"Enter\" to Retry" };
 
-void Press_X_To_Proceed(bool startLvl)
+void Press_X_To_Proceed(int action, bool cancel)	// Active ou désactive le proceed time
 {
-	gProceedTime = true;
-	
-	if(!startLvl)
-		ConsoleRender::Add_String(proceed, { Find_Ctr_X((int)std::size(proceed)),gConHeight - 1 } , GRAY); 
+	if (cancel)
+	{
+		gProceedTime = false;	// prend le plus long text à effacer
+		ConsoleRender::Add_String(proceed[1], { Find_Ctr_X((int)std::size(proceed[action])),gConHeight - 1 }, WHITE, true);
+	}
 	else
-		ConsoleRender::Add_String(lvl, { Find_Ctr_X((int)std::size(lvl)),gConHeight - 1 } , GRAY);
-
+	{
+		gProceedTime = true;
+		ConsoleRender::Add_String(proceed[action], { Find_Ctr_X((int)std::size(proceed[action])),gConHeight - 1 }, GRAY);
+	}
 }

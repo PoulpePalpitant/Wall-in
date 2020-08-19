@@ -369,17 +369,25 @@ void Read_Input_Buffer()
 					case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
 					case 'Q':case 'q':	action = CHANGE_BLAST; break;
 
-					case 27:
-						if (gProceedTime)	/* Esc */
+					case 27: /*Esc */
+						if (GameLoopClock::pause)	// Quand le jeu est en pause, tu va avoir le choix de retourner au menu principal	
 						{
-							MsgQueue::Register(PROCEED);
-							gProceedTime = false;
+							MsgQueue::Register(RETURN_TO_MENU);
+							GameLoopClock::pause = false;
 						}
+
+
 						break;
 
 					case 13:	/* enter */
 						if (ChoiceTime::Is_Choice_Time())
 							ChoiceTime::Apply_Choice();
+
+						if (gProceedTime)
+						{
+							MsgQueue::Register(PROCEED);
+							gProceedTime = false;
+						}
 
 						MsgQueue::Register(PRESSED_ENTER);
 						action = ENTER;

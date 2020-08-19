@@ -34,11 +34,12 @@ enum MsgType
 	, STAGE_ADVANCE			// Passe au prochain stage dans le niveau
 	, LVL_INITIALIZED
 	, FINAL_PUSH
-	, LVL_ENDED
+	, WAIT_LAST_BOT			// attend que le dernier bot meurt avant de progress
 	, VICTORY
 	, DEFEAT
 	, PRESS_X_TO_PROCEED
 	, PROCEED
+	, RETURN_TO_MENU
 
 	/* UI stuff */
 	, SHOW_HEALTH
@@ -84,6 +85,7 @@ enum MsgType
 	, START_BOT_SPAWNS	// update les spawn
 	, START_BOT_MOVE	// update les mouvements
 	, START_BOTS		// update les deux plus haut
+	, RESET_SPW_TOT		// Reset le compteur à 0 pour repartir le script de spawn
 
 	/* Blast Stuff*/
 	, BLAST_REACHED_BORDER

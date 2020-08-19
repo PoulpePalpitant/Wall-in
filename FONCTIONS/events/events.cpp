@@ -19,6 +19,7 @@ void Event::Activate()
 	isActive = true;	
 	toUpdate.Register(ID);	// Ajoute l'event à la liste à updater
 }
+
 void Event::Deactivate()
 {
 	static int index;
@@ -28,6 +29,14 @@ void Event::Deactivate()
 		toUpdate.Unregister(index);	//	Retire l'event à la liste de "à updater"
 }
 
+void Event::Cancel_All()	// Gros moyen
+{
+	for (toUpdate.index = 0; toUpdate.index < toUpdate.Get_Total(); toUpdate.index++)		// Tant qu'on a des events qui n'ont pas été désactivé	
+		eventsID[toUpdate.Copy_Element(toUpdate.index)]->Cancel();		
+																		
+}
+
+
 // UPDATE TOUT LES EVENT EN COURS !!!!!!!!!!!!!!!!!!!!!!!!
 void Event::Update_Active_Events()
 {
@@ -35,7 +44,7 @@ void Event::Update_Active_Events()
 	for (toUpdate.index = 0; toUpdate.index < toUpdate.Get_Total(); toUpdate.index++)		// Tant qu'on a des events qui n'ont pas été updaté
 	{
 		eventsID[toUpdate.Copy_Element(toUpdate.index)]->Handle_It();		// Ne jamais touché à toUpdate.index en dehors d'ici :()
-	}															// Pour l'instant, un event pourrait en activer un autre, et rallonger cette loop!
+	}																		// Pour l'instant, un event pourrait en activer un autre, et rallonger cette loop!
 }
 
 bool Event::Stop_If_No_More_Steps()

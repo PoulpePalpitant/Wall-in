@@ -12,6 +12,7 @@
 #include "../lvl_script.h"
 #include "events/ev_bot_tutorial.h"
 #include "msg_events/ev_day_1.h"
+#include "msg_events/ev_waking_up.h"
 
 void Lvl_1_Initializer()
 {
@@ -19,10 +20,9 @@ void Lvl_1_Initializer()
 
 	if (gSkipStory)
 	{
-
-		gCurrentStage = 2;
+		// Pour un quick start
+		gCurrentStage = 3; // Quick start normal = 2. Garde juste stage advance
 		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
-
 		//gCurrentStage = 2;	// Skip tout les tutorials
 		//Ev_Bot_Tutorial();	// start tuto avec jerry
 	}
@@ -32,13 +32,14 @@ void Lvl_1_Initializer()
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
-	gSpwBotTimer.Start_Timer(500 , 1 , true);
-	gBotMoveTimer.Start_Timer(6200, 1, true);
+	gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
+	//gSpwBotTimer.Start_Timer(3000, 1 , true); // TEST
+	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
+	//gBotMoveTimer.Start_Timer(50200, 1, true);	// TEST
 	
 	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 1000, 0);
 	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 1000, 50);
 	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 1000, 0);
-
 
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn

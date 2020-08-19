@@ -13,32 +13,32 @@ static int numChars; // Nombre de char pour fill l'écran
 static Event ev_FillMap(Ev_Fill_Map, 8);	// l'event
 
 static Coord crd;	// random crd
-static Intervals::ManageIntervalLists charToFill(0, 0, 0);	// Liste de tout les charactères de la console qui n'ont pas été remplis 
+static Intervals::ManageIntervalLists charToDr(0, 0, 0);	// Liste de tout les charactères de la console qui n'ont pas été remplis 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void Set_Screen_Filler()
 {
-	charToFill.Resize(gConWidth, 0, gConHeight);
+	charToDr.Resize(gConWidth, 0, gConHeight);
 
 	// Fill uniquement la box maintenant
 	// Exclut côté gauche
 	for (int row = 0; row < map.Get_Box_Limit(LEFT); row++)
-		charToFill.Empty_List(row);
+		charToDr.Empty_List(row);
 	// Exclut côté droit
 	for (int row = map.Get_Box_Limit(RIGHT) + 1; row < gConWidth; row++)
-		charToFill.Empty_List(row);
+		charToDr.Empty_List(row);
 	// Exclut côté up
 	for (int col = 0; col < map.Get_Box_Limit(UP); col++)
-		charToFill.Remove_Value_Everywhere(col);
+		charToDr.Remove_Value_Everywhere(col);
 	// Exclut côté droit
 	for (int col = map.Get_Box_Limit(DOWN) + 1; col < gConHeight; col++)
-		charToFill.Remove_Value_Everywhere(col);
+		charToDr.Remove_Value_Everywhere(col);
 }
 
 static void Fill_Screen_Randomly(bool erase = false)
 {
-	charToFill.Pick_From_Lists(crd.x, crd.y, true, true, Intervals::RDM_ALL);	// pogne une coord random
+	charToDr.Pick_From_Lists(crd.x, crd.y, true, true, Intervals::RDM_ALL);	// pogne une coord random
 
 	if (erase)
 		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// blakc
@@ -57,7 +57,7 @@ void Ev_Fill_Map()			//  Fill la map de charactère cools, delete ensuite tout
 	{
 		numChars = (map.Get_Length()) * (map.Get_Height());	// nombre de char à fill
 		ev_FillMap.Activate();
-		ev_FillMap.Start(200);
+		ev_FillMap.Start(350);
 	}
 	else
 	{

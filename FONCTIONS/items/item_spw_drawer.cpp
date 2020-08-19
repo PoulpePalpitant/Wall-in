@@ -67,7 +67,6 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 {
 	if (!total) return;	// Liste vide
 
-
 	static ItemDrawer* draw;	/// my pencil	
 	static int X;				// facilite l'affichage
 	static int Y;				// facilite l'affichage

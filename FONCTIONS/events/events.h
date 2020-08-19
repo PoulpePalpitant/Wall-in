@@ -5,6 +5,8 @@
 #include "../math/math_stuff.h"
 #include "../time/movement_timer.h"
 
+// Some rules: Tu peux pas terminer un event avec un advance(0)
+
 // CONST
 const int MAX_NUM_EVENTS = 80;	// Nombre d'events max
 
@@ -56,6 +58,7 @@ public:
 
 	// THAT BIG MOVE
 	static void Update_Active_Events();
+	static void Cancel_All();	// Gros moyen
 
 	//	CONSTRUCTOR
 	Event(void (*toDefine)(), int eventSteps = 1) {

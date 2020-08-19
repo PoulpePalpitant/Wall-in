@@ -25,10 +25,8 @@ void Change_Color(int c) {
 // Retourne la couleur d'affichage actuelle de la console
 Colors Get_Current_Color()// Si on veut affiché quoi que ce soit, on utilise ceci pour vérifier si on a besoin, oui ou non de changer la couleur de l'output de la console
 {
-	return gCurrentColor;
-	   
+	return gCurrentColor;   
 }
-
 
 // Trouve la crd en x qui permettrait d'output une string au centre
 int Find_Ctr_X(int size)		
@@ -62,7 +60,6 @@ Coord Heart_Txt_Crd(std::string txt ,int line)
 		return { (gConWidth - txtSize) / 2 + 22 , (gConHeight - 7 ) + line };
 	else
 		return { 0,0 };	// hehe
-
 }
 
 Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplacement du personnage du boss
@@ -71,7 +68,6 @@ Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplaceme
 		return { (gConWidth - 30) - ((int)std::size(txt) / 2), 12 + line }; // au trois quart à droite
 	else
 		return { 0,0 };	// hehe
-
 }
 int Boss_Txt_X()	
 {

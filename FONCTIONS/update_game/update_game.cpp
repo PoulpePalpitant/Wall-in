@@ -21,10 +21,12 @@
 #include "../animation/UI_invalid_move.h"
 #include "../choice/choice_time.h"
 #include "../events/global_events/ev_countdown.h"
+#include "../console/sweet_cmd_console.h"
 
 
 extern bool gIsRunning = true;		// le state du jeu
 static std::string pauseMsg = "Hey! You PAUSED the game!";
+static std::string pauseMsg_2 = "Press 'Esc' To Go Back To The Menu ";
 
 void Update_Game()		// Update tout ce qui se passe dans le jeu
 {
@@ -41,9 +43,9 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 
 		ItemSpawner::UPD_Item_Spawn_Timers();
 		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent
-		DrawWalls::Draw_Them_Walls();			// draw les putains de walls
 		ListsOfChainToModify::Update_Chain_Modification();
 		DrawModifierQueue::Update_Modifier_Queue();
+		DrawWalls::Draw_Them_Walls();			// draw les putains de walls
 
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 	}
@@ -67,6 +69,7 @@ void Update_Player_Action()
 			case PAUSE:
 				GameLoopClock::pause = true;
 				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			// Besoin d'un max screen size
+				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			// Besoin d'un max screen size
 				break;
 
 			case CHANGE_BLAST:
@@ -130,7 +133,9 @@ void Update_Player_Action()
 			if (action == UNPAUSE)
 			{
 				GameLoopClock::pause = false;
-				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			// Besoin d'un max screen size
+				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			// Besoin d'un max screen size / DONE
+				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);		// 
+
 			}
 	}
 	// Faut reset l'action

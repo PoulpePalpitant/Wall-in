@@ -55,7 +55,7 @@ void Ev_Enter_Name()			// Accueil Le joueur quand il sort de son répit
 
 					Beep(250, 100); // avertit le joueur que ce sera pas vrai
 					MsgQueue::Register(FREE_PLAYER);
-					P1.Dis_Player_Sym();	// réaffichje le joueur
+					P1.Dr_Player();	// réaffichje le joueur
 
 					ev_EnterName.Cancel();	// finito
 					break;

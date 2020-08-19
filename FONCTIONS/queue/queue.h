@@ -71,7 +71,7 @@ public:
 	//	DESTRUCTOR
 	~FixedList() 
 	{
-		delete list;	// Libération
+		delete list;	
 	}
 };
 

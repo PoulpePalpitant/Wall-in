@@ -25,10 +25,13 @@
 #include "../items/item_spw_drawer.h"			// spawner les items
 #include "../blast/mod_queue_animator.h"
 #include "../spawns/ev_spawn_Jerry.h"
+#include "global_events/ev_wait_last_bot.h"
+#include "global_events/ev_victory_screen.h"
+#include "global_events/ev_defeat_screen.h"
+#include "global_events/ev_back_to_menu.h"
 
-
-
-
+// other necessities
+#include "../time/cycles.h"
 
 
 // GLOBAL
@@ -107,10 +110,10 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	{
 		/* Level */
 
-	case BLAST_REACHED_BORDER:
-		if(!gBorderShown)
-			Ev_Border_Splash();		// fait un tit splash
-		break; 		
+	case RETURN_TO_MENU:
+		Go_Back_To_Menu();
+		break;
+
 
 	case FINAL_PUSH: 
 		Ev_Final_Push(); // Msg que la dernière attaque s'en vient
@@ -124,8 +127,19 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		gCurrentStage++;	// Passe au prochain stage
 		break;
 
-		//Ev_Flash_Map_Corners();	// Fait flaser les coins de la map pendant un bref instant, si le joueur tir sur un mur
-		
+	case WAIT_LAST_BOT:
+		Ev_Wait_For_Last_Bot();
+		break;
+	
+	case VICTORY:
+		Ev_Victory_Screen();
+		break;	
+	
+	case DEFEAT:
+		if (gDayStarted)
+			Ev_Defeat_Screen();
+		break;
+
 		/* GRIDS*/
 	case GRIDS_RESIZED: 
 		Ev_Resize_From_Grids();
@@ -155,11 +169,17 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		DrawModifierQueue::Hide_Queue_UI();
 		break;
 
+		/* BLAST */
 
-
+	case BLAST_REACHED_BORDER:
+		if (!gBorderShown)
+			Ev_Border_Splash();		// fait un tit splash
+		break;
 
 
 		/* PLAYER*/
+
+
 	case LOCK_PLAYER: 
 		Ev_Block_Inputs(true);
 		break;
@@ -180,6 +200,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		//Draw_Item_Spawn();
 		break;
 		/* BOTS */
+	case RESET_SPW_TOT:		Reset_Spw_Cycle(); break;
 	case STOP_BOTS:			Ev_Stop_Bot_Cycles(); break;
 	case STOP_BOT_MOVE:		Ev_Stop_Bot_Move();break;
 	case STOP_BOT_SPAWNS:	Ev_Stop_Bot_Spawn();break;

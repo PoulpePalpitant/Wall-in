@@ -52,25 +52,43 @@ void Dispatch_Msg_To_Lvl_1()
 			botList.Destroy_All_Bots();
 			clrscr();
 			Ev_Dr_Day_1();
-			Set_Up_Drawers(3);
 
 		}
 		if (gCurrentStage == 4)
 		{
-			//P1.Set_Position({6,6});
-			//P1.Dis_Player_Sym();
-			//Build_Lvl_1_Walls();
 			// Ceci est temporaire pour débugger plus rapidement le bot script
-			//Ev_Dr_Arr_Keys();
-			//Ev_Dr_Wasd();
-			//Just_Dr_Heart();
-			MsgQueue::Register(FREE_PLAYER);
+			Just_Dr_Arr_Keys(); 
+			Just_Dr_Wasd();
+			Just_Dr_Heart();
+			P1.Set_Position({ 6,6 });
+			P1.Dr_Player();
+			MsgQueue::Register(FREE_PLAYER);	// quicker quick start
+			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+			gSkipStory = false;
+			gDayStarted = true;
 			MsgQueue::Register(START_BOTS); // Here they come baby
 		}
 		break;
 
-	case PROCEED: MsgQueue::Register(STAGE_ADVANCE);
+	case PROCEED: 
+		if (gCurrentStage == 4)
+		{
+			MsgQueue::Register(PLS_INTIALIZE_LVL);
+			clrscr();
+			
+			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
+			{
+				gCurrentStage = 0;
+				gCurrentLevel = 2;
+			}
+		}
+		else
+			MsgQueue::Register(STAGE_ADVANCE);
 		break;	
+
+	case VICTORY:
+		break;
+
 
 	case WAITING_TIME:
 		break;

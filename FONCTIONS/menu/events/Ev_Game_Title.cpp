@@ -69,6 +69,7 @@ static void Ev_Er_Game_Title()
 
 	//ConsoleRender::Add_String("     ", { Find_Ctr_X(sizeof("Start")),38 }, BRIGHT_WHITE, 20);	// le piton start aussi est effacé
 
+
 	// On Unregister l'event, pour ne plus updater
 	EV_Er_GameTitle.Deactivate();
 }

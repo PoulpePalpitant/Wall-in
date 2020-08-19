@@ -10,6 +10,10 @@ int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
 
 SpeedTimer gSpwBotTimer;
 
+void Reset_Spw_Cycle()				// Reset le nombre de spw cycle à 0
+{
+	gSpawnCycleTot = 0;
+}
 
 void UPD_Spawn_Cycle()			// Refresh Timer des spawns
 {

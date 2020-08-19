@@ -13,4 +13,17 @@ bool gBlockBlast = true;
 bool gMenuInputs = true;
 int gMenuKey = 0;
 
+void Reset_All_Flags()	// Cancel tout les flags
+{
+	action = IDLE;
+	keyDirection = Direction::NONE;
+	lastKey = KeyPressed::NONE;
+	gChoiceTime = false;
+	gBlockInputs = false;
+	gTypeTime = false;
+	gProceedTime = false;
+	gBlockBlast = true;
+	gMenuInputs = false;
+}
+
 

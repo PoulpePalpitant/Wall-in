@@ -7,33 +7,33 @@
 #include "../blast/blast_modifier_queue.h"
 #include "../UI/console_output/render_list.h"
 #include "../events/global_events/ev_update_heart.h"
+#include "../events/msg_dispatcher.h"
 
 extern Player P1 = {};		// Un joueur! 
 extern Player P2 = {};		// Des joueurs!
 
 // En général, le joueur perdra 1hp seulement
-void Player::Player_Lose_HP(int hpLost ) 
+void Player::Player_Lose_HP(int hpLost)
 {
 	if (hp > 0)
 	{
 		hp -= hpLost;
-		Just_Dr_Heart();
-	}
+
+		if (hp > 0)
+			Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
+		else
+			Start_Ev_Dr_Heart(0);	// important de mettre 0 ici, car ça peut être plus bas
+
 		Upd_State();
-	//Upd_Color();
-	//update heart
-}	
+	}
+}
 
 // Gagne 1 point de vie!
 void Player::Player_Gains_HP(int hpGain)
 {
 	hp += hpGain; 
 	Upd_State();	// Change le state du joueur
-
-	Just_Dr_Heart();
-	//Upd_Color();	// Change sa couleur
-	//update heart
-
+	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
 }
 
 // Change le STate du joueur quand son hp tombe à 0 ou devient plus grand que zéro
@@ -42,7 +42,17 @@ void Player::Upd_State()
 	if (hp > 0)
 		state = PlayerState::ALIVE;
 	else
-		state = PlayerState::DEAD;
+	{
+		state = PlayerState::DEAD;	
+		MsgQueue::Register(DEFEAT);	// dead
+	}
+}
+
+void Player::Reset_State()	// health, crd, and state
+{
+	Set_Hp(3);
+	state = ALIVE;
+	Set_Position({ 6,6 });
 }
 
 // Change la couleur du joueur quand il pred ou gagne de la vie
@@ -65,16 +75,21 @@ void Player::Upd_Color()
 
 	}
 
-	Dis_Player_Sym(); // Display le joueur si on update sa couleur booda
+	Dr_Player(); // Display le joueur si on update sa couleur booda
 }
 
 // Affiche le joueur		
-void Player::Dis_Player_Sym()
+void Player::Dr_Player()
 {
 	static Coord crd;
 	crd = Get_XY();	// Position XY
 	
 	ConsoleRender::Add_Char(crd, sym, clr); 	// display
+}
+
+void Player::Er_Player()									// fait juste effacer
+{
+	ConsoleRender::Add_Char(Get_XY(), TXT_CONST.SPACE); 	// display
 }
 
 // Change le symbole du joueur lors d'un mouvement
