@@ -7,7 +7,7 @@
 #include "../events/global_events/ev_resize_from_grids.h"
 
 const int MAX_ITEM_TYPE = 10;
-const unsigned char ITEM_SYM[MAX_ITEM_TYPE] = { '+',  254 ,158, 207, 176,176,176,245 };
+const unsigned char ITEM_SYM[MAX_ITEM_TYPE] = { '+',  254 ,158, 207, 176,176,245,245 };
  
 /*
 	ITEMS

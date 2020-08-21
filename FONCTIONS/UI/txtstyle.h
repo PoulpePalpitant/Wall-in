@@ -15,6 +15,7 @@ struct TextConstant
 	const char MINUS = '-';
 	const char PLUS = '+';
 	const char SPACE = ' ';
+	const char O = 'O';
 	const unsigned char SPACE_FILL = 219;
 	const char PARENTHESIS_OPEN = '(';
 	const char PARENTHESIS_CLOSE = ')';

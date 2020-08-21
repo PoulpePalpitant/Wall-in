@@ -251,7 +251,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 		//Erase_Map_Borders_1(23);	// erase borders
 		ev_BotTutorial.Activate();
 		ev_BotTutorial.Start(400);
-		ev_BotTutorial.Go_To_X_Step(145);		// jerry time
+		//ev_BotTutorial.Go_To_X_Step(145);		// jerry time
 		//ev_BotTutorial.Go_To_X_Step(140);		// jerry answer
 		//ev_BotTutorial.Go_To_X_Step(130);		// jerry's is sorry
 		//ev_BotTutorial.Go_To_X_Step(114);		// just survived

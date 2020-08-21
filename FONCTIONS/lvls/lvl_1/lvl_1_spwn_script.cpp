@@ -93,7 +93,7 @@ void Lvl_1_Spwn_Script()
 		case 46: Set_Interval(RIGHT, 11, 12);  Add(1);break;
 		case 47: Set_Interval(RIGHT, 10, 12);Add(1);  Add(1);break;
 		case 48: Set_Interval(RIGHT, 10, 12);Add(1);  Add(1);break;
-		case 49: Set_Interval(RIGHT, 10, 12);Add(1);  Add(1); skip = 6; 
+		case 49: skip = 6; 
 			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 8,6 }); // Spawn de la vie ici?
 			break;
 
