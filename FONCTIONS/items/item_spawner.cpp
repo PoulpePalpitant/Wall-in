@@ -30,6 +30,8 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd)	// Bypass la pool
 		DrawItemSpawnList::Add(item.itemType, item.grdCrd);	// Add a la list du drawer de spawn
 		return true;
 	}
+	else
+		return false;
 }
 
 

@@ -32,14 +32,14 @@ void Lvl_1_Initializer()
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
-	gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
-	//gSpwBotTimer.Start_Timer(3000, 1 , true); // TEST
+	//gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
+	gSpwBotTimer.Start_Timer(30000, 1 , true); // TEST
 	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
 	//gBotMoveTimer.Start_Timer(50200, 1, true);	// TEST
 	
-	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 1000, 0);
-	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 1000, 50);
-	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 1000, 0);
+	ItemSpawner::Add_To_Pool(ItemType::BUFFER, 30, 0);
+	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 20, 50);
+	ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
 
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn

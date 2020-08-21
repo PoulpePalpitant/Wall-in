@@ -28,6 +28,7 @@
 
 #include "../../player/player.h"	// don't...
 #include "../../grid/AllGrids.h"
+#include "../../events/global_events/ev_progress_bar.h"
 
 // C'EST ICI QUE ÇA SE PASSE
 void Dispatch_Msg_To_Lvl_1()
@@ -57,6 +58,7 @@ void Dispatch_Msg_To_Lvl_1()
 		if (gCurrentStage == 4)
 		{
 			// Ceci est temporaire pour débugger plus rapidement le bot script
+			P1.Set_Hp(1000);
 			Just_Dr_Arr_Keys(); 
 			Just_Dr_Wasd();
 			Just_Dr_Heart();
@@ -64,16 +66,17 @@ void Dispatch_Msg_To_Lvl_1()
 			P1.Dr_Player();
 			MsgQueue::Register(FREE_PLAYER);	// quicker quick start
 			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+			MsgQueue::Register(START_BOTS); // Here they come baby
 			gSkipStory = false;
 			gDayStarted = true;
-			MsgQueue::Register(START_BOTS); // Here they come baby
+			Ev_Progress_Bar();	// Make that progress bar
 		}
 		break;
 
 	case PROCEED: 
 		if (gCurrentStage == 4)
 		{
-			MsgQueue::Register(PLS_INTIALIZE_LVL);
+			MsgQueue::Register(PLS_INTIALIZE_LVL);	
 			clrscr();
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!

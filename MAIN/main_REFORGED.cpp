@@ -101,17 +101,17 @@ int main()	// Le début!
 	//	}
 	//}
 
-	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
-	{
-		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
-		{
-			//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
-			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
-			ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
+	//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	//{
+	//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+	//	{
+	//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+	//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+	//		ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
 
 
-		}
-	}
+	//	}
+	//}
 
 	//Coord XYCOLOR = { 0,0 };
 	//for (int i = 0; i < 500; i++)

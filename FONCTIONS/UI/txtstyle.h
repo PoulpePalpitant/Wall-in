@@ -24,7 +24,9 @@ struct TextConstant
 	const std::string R_ARROW = "->";		// nope, deux autres :`)
 	const std::string L_ARROW = "<-";		// nope
 	const std::string DOTDOTDOT = ". . .";
-	const unsigned char DOT = 250;
+	const unsigned char DOT = 250;	// middle dot
+	const unsigned char LINE_HOR = 196;// HORIZONTAL LINE
+	const unsigned char LINE_VER = 179;// VERTICAL LINE
 };
 extern TextConstant TXT_CONST;
 
