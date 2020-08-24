@@ -4,6 +4,7 @@
 #include "../blast/blast_modifier_queue.h"
 #include "item_spw_drawer.h"
 #include "../events/msg_dispatcher.h"
+#include "../player/player.h"
 
 Item ItemsOnGrid::items[MAX_ITEMS] = {};
 int ItemsOnGrid::size;	// dimension de la liste
@@ -76,11 +77,17 @@ void ItemsOnGrid::Pickup_Item_Here(GrdCoord crd)
 		{
 
 			if (Is_Item_Modifier(items[i]))
+			{
 				if (blastP1.Is_Active() && blastP1.Get_Modifier() == Modifier::REGULAR)
 					blastP1.Setup_Modifier((Modifier)items[i].Get_Type());		// change le blast actuel
 				else
 					BlastModifierQueue::Add_Modifier((Modifier)items[i].Get_Type());		// Ajoute l'item à la blast modifier queue
-			
+			}
+			else
+			{
+				if (items[i].Get_Type() == ItemType::HEALTH)
+					P1.Player_Gains_HP();
+			}
 			// Cancel l'animation de spawn ssi y elle avait lieux
 			DrawItemSpawnList::Cancel(linkGrid->link[items[i].grdCrd.c][items[i].grdCrd.r].Get_XY());	// ouach lol
 			Item::meta.Item_Picked_Up();	// picked up!

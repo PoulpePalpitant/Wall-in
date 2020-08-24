@@ -70,6 +70,7 @@ namespace Intervals
 			Remove_Empty_List(listNum);
 		}
 	}
+
 	void ManageIntervalLists::Remove_Value_Everywhere(int value)	 // enlève une valeur dans tout les listes
 	{
 		for (int i = 0; i < listTot; i++)		// implémentation lazy, essaie d'enlever une valeur dans des listes qui pourraient être vide

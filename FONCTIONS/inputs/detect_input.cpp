@@ -24,7 +24,8 @@ static DWORD cNumRead;
 
 static int keyCode;
 static int lastKeyPressed;
-
+static int loopBuffer;		// Ceci va enregistrer la dernière touche p`ser entre deux loop pour essayer d'éviter que le jeu detect pas un input
+static bool keyHandled = false;	// Si un input à été traité avec succès
 /* Ceci est basé sur le modèle d'exemple de l'utilisation de la fonction "Reading Input Buffer Events" sur le site web de microsoft. J'ai enlevé quelque truc comme la détection des mouse events, ou la redimension
 du buffer size*/
 
@@ -197,106 +198,54 @@ void Reset_For_Next_Frame()
 
 void Handle_Input()
 {
+	switch (keyCode)	// Input de charactères
+	{
+	case VK_LEFT:	keyDirection = LEFT;	action = BLAST;	break;
+	case VK_RIGHT:	keyDirection = RIGHT;	action = BLAST;	break;
+	case VK_UP:		keyDirection = UP;		action = BLAST;break;
+	case VK_DOWN:	keyDirection = DOWN;	action = BLAST;break;
 
+	case 'W':case 'w':	keyDirection = UP; action = MOVE; break;
+	case 'A':case 'a':	keyDirection = LEFT; action = MOVE;	break;	// faire mouvement
+	case 'S':case 's':	keyDirection = DOWN; action = MOVE; break;
+	case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
+	case 'Q':case 'q':	action = CHANGE_BLAST; break;
+	case 'J':case 'j':	lastKey = KeyPressed::JERRY; break;
 
+	case 27: /*Esc */
+		if (gPauseUpdates)	// Quand le jeu est en pause, tu va avoir le choix de retourner au menu principal	
+		{
+			MsgQueue::Register(RETURN_TO_MENU);
+			gPauseUpdates = false;
+		}
 
+		break;
+
+	case 13:	/* enter */
+		if (ChoiceTime::Is_Choice_Time())
+			ChoiceTime::Apply_Choice();
+
+		if (gProceedTime)
+		{
+			MsgQueue::Register(PROCEED);
+			gProceedTime = false;
+		}
+
+		MsgQueue::Register(PRESSED_ENTER);
+		action = ENTER;
+		break;	// 13 = enter
+
+	case ' ':
+		if (!gPauseUpdates)
+			action = ActionType::PAUSE;
+		else
+			action = ActionType::UNPAUSE;
+		break;
+	}
+
+	lastKeyPressed = keyCode;
+	keyHandled = true;
 }
-
-
-//
-//void Handle_Inputs()
-//{
-//	if (!gBlockInputs)
-//	{
-//		lastKey = KeyPressed::NONE;
-//
-//		if (gMenuInputs)
-//		{
-//			gMenuKey = keyCode;
-//			MsgQueue::Register(PRESSED_KEY);
-//		}
-//		else
-//		{
-//			switch (keyCode)	// Input de charactères
-//			{
-//			case VK_LEFT: keyDirection = LEFT;		action = BLAST;break;
-//			case VK_RIGHT: keyDirection = RIGHT;	action = BLAST;break;
-//			case VK_UP: keyDirection = UP;			action = BLAST;break;
-//			case VK_DOWN: keyDirection = DOWN;		action = BLAST;break;
-//
-//			case 'W':case 'w':	keyDirection = UP; action = MOVE; break;
-//			case 'A':case 'a':	keyDirection = LEFT; action = MOVE; break;	// faire mouvement
-//			case 'S':case 's':	keyDirection = DOWN; action = MOVE; break;
-//			case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
-//			case 'Q':case 'q':	action = CHANGE_BLAST; break;
-//			
-//			case 27:
-//				if (gProceedTime)	/* Esc */
-//				{
-//					MsgQueue::Register(PROCEED);
-//					gProceedTime = false;
-//				}
-//				break;
-//
-//			case 13:	/* enter */
-//				if (ChoiceTime::Is_Choice_Time())
-//					ChoiceTime::Apply_Choice();
-//
-//				MsgQueue::Register(PRESSED_ENTER);
-//				action = ENTER;
-//				break;	// 13 = enter
-//
-//			case ' ':
-//				if (!GameLoopClock::pause)
-//					action = ActionType::PAUSE;
-//				else
-//					action = ActionType::UNPAUSE;
-//				break;
-//			default: keyCode = NULL;
-//			}
-//
-//			if (gTypeTime)
-//			{
-//				MsgQueue::Register(PRESSED_KEY);
-//				gTypeTime = false;				// On écrit rien dans ce jeu xD
-//			}
-//		}
-//	}
-//}
-
-//void Read_Input_Buffer()
-//{
-//	static DWORD cNumRead;
-//	static int counter;
-//
-//	cNumRead = 0;	 //reset
-//
-//	// Wait for the events. 
-//	if (!PeekConsoleInput(
-//		buffHandle,      // input buffer handle 
-//		buffer,     // buffer to read into 
-//		128,         // size of read buffer 
-//		&cNumRead)) // number of records read 
-//		ExitProcess(0);
-//
-//	// Dispatch the events to the appropriate handler. 
-//
-//	for (counter = 0; counter < cNumRead; counter++)
-//	{
-//		if (buffer[counter].EventType == KEY_EVENT)
-//		{
-//
-//
-//
-//		}
-//	}
-//
-//	Handle_Input();
-//	FlushConsoleInputBuffer(buffHandle);
-//	Refresh_Buffer();
-//	Reset_For_Next_Frame();
-//}
-
 
 // Cette version de détection d'input prend uniquement en compte les touches clavier "pressed", et non release. On Prend le dernier élément d'enregistré uniquement. Si celui-ci est un release, on prend l'autre d'avant
 // et ainsi de suite. Il sera donc impossible de peser plus qu'un piton en même temps
@@ -336,7 +285,6 @@ void Read_Input_Buffer()
 	// Dispatch the events to the appropriate handler. 
 	for (counter = cNumRead - 1; counter >= 0; counter--)// Test de juste prendre le dernier piton
 	{
-
 		if (buffer[counter].EventType == KEY_EVENT)
 		{
 			keyCode = buffer[counter].Event.KeyEvent.wVirtualKeyCode;
@@ -355,59 +303,36 @@ void Read_Input_Buffer()
 						continue;
 
 				if (buffer[counter].Event.KeyEvent.bKeyDown && buffer[counter].Event.KeyEvent.wRepeatCount == 1)// si le bouton n'est pas release/hold, mais pressed
-				{
-					switch (keyCode)	// Input de charactères
-					{
-					case VK_LEFT:	keyDirection = LEFT;	action = BLAST;	break;
-					case VK_RIGHT:	keyDirection = RIGHT;	action = BLAST;	break;
-					case VK_UP:		keyDirection = UP;		action = BLAST;break;
-					case VK_DOWN:	keyDirection = DOWN;	action = BLAST;break;
-
-					case 'W':case 'w':	keyDirection = UP; action = MOVE; break;
-					case 'A':case 'a':	keyDirection = LEFT; action = MOVE;	break;	// faire mouvement
-					case 'S':case 's':	keyDirection = DOWN; action = MOVE; break;
-					case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
-					case 'Q':case 'q':	action = CHANGE_BLAST; break;
-
-					case 27: /*Esc */
-						if (GameLoopClock::pause)	// Quand le jeu est en pause, tu va avoir le choix de retourner au menu principal	
-						{
-							MsgQueue::Register(RETURN_TO_MENU);
-							GameLoopClock::pause = false;
-						}
-
-
-						break;
-
-					case 13:	/* enter */
-						if (ChoiceTime::Is_Choice_Time())
-							ChoiceTime::Apply_Choice();
-
-						if (gProceedTime)
-						{
-							MsgQueue::Register(PROCEED);
-							gProceedTime = false;
-						}
-
-						MsgQueue::Register(PRESSED_ENTER);
-						action = ENTER;
-						break;	// 13 = enter
-
-					case ' ':
-						if (!GameLoopClock::pause)
-							action = ActionType::PAUSE;
-						else
-							action = ActionType::UNPAUSE;
-						break;
-					}
-
-					lastKeyPressed = keyCode;
-					break;	// sort de la loop quand on trouve un charctère pressed
-				}
+					Handle_Input();
 			}
+			
 		}
 	}
 
+	if (!keyHandled && loopBuffer)	//back up
+	{
+		keyCode = loopBuffer;
+		Handle_Input();
+	}
+
+	keyHandled = loopBuffer = NULL;
 	FlushConsoleInputBuffer(buffHandle);
 	Refresh_Buffer();
+}
+
+void Load_Loop_Buffer()
+{
+	static int lastInput;
+	// Wait for the events. 
+	PeekConsoleInput(
+		buffHandle,      // input buffer handle 
+		buffer,     // buffer to read into 
+		128,         // size of read buffer 
+		&cNumRead); // number of records read 
+
+	lastInput = cNumRead - 1;	// Dernier piton
+
+	if (buffer[lastInput].EventType == KEY_EVENT)
+		if (buffer[lastInput].Event.KeyEvent.bKeyDown && buffer[lastInput].Event.KeyEvent.wRepeatCount == 1)// si le bouton n'est pas release/hold, mais pressed
+			loopBuffer = buffer[lastInput].Event.KeyEvent.wVirtualKeyCode;
 }

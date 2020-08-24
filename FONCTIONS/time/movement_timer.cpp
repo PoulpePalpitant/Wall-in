@@ -6,6 +6,8 @@
 
 #include "movement_timer.h"
 
+SpeedTimer* SpeedTimer::allTimers[MAX_TIMERS] = {};
+int SpeedTimer::idTotal = 0;				// Le nombre timer total actuel
 
 void SpeedTimer::katch_Up()
 {
@@ -133,4 +135,12 @@ bool SpeedTimer::Tick()	// Update le temps écoulé à partir de delta time
 	}
 
 	return false;	// we NO update
+}
+void SpeedTimer::Stop_All_Timers()	// peut seulement marcher si tu delete absolument aucun timer
+{
+	for (int id = 0; id < idTotal; id++)
+	{
+		if(allTimers[id] != NULL)
+			allTimers[id]->Stop();
+	}
 }

@@ -58,7 +58,7 @@ namespace Intervals
 		void Exclude_Value_From_Interval(Interval* &previous, Interval* &intval, int value);	// Retire une valeur d'un intervalle
 
 		Interval* Create_Interval(Interval* &previous, int min, int max);				// Créer un Nouvel intervalle unique
-		void Add_Interval_On_Top(int min, int max);					// Ajoute un intervalle de valeurs qui va combiner toute celle qui contiendrait l'une de ses valeur
+		void Add_Interval_On_Top(int min, int max);					// Ajoute un intervalle de valeurs qui va combiner toute celle qui contiendrait l'une de ses valeur	// CETTE FONCTION EST BROKEN
 		void Exclude_Interval_From_List(int min, int max);						// Retire un intervalle de valeurs de la liste
 		
 

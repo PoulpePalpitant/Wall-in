@@ -38,13 +38,20 @@ static Colors clrFlash;	// Fait flasher le coueur d'une certaine couleur
 static const int distUnderGrid = 4;
 static Event ev_DrHeart(Ev_Dr_Heart, 3);
 
-static const std::string heart_4[] = {
-"   ,;;;, ,;;;,   ",
-"  ;;;' ';' ';;;  ",
-"  ;;;       ;;;  ",
-"   ';;,   ,;;'   ",
-"     ';;,;;'     ",
-"       ';'       "
+static const std::string heart_4[] = {	// do this now
+//" * ,;;;, ,;;;,  *",
+//"  ;;;:::;:::;;;  ",
+//"  ;;;:::::::;;;  ",
+//"*  ';;:::::;;'   ",
+//"     ';;:;;'  *  ",
+//"    *  ';'       "
+//};
+"  ,;;;;, ,;;;;,  ",
+" ;;;*::*;*::*;;; ",
+" ;;;*:::*:::*;;; ",
+"  ';;*:::::*;;'  ",
+"    ';*;:;*;'    ",
+"      `';'`      "
 };
 
 static const std::string heart_3[] ={
@@ -82,7 +89,7 @@ static const std::string heart_dead[] = {	// the void
 "----------------------",
 "----------------------"
 };
-static const std::string* allHearts[5] = { heart_dead, heart_1, heart_2, heart_3,heart_4 };	// all of the hearts
+static const std::string* allHearts[5] = { heart_dead, heart_1, heart_2, heart_3, heart_4 };	// all of the hearts
 
 //"   .';' ';	 ",	// v2
 //"  ; .   ;	 ",
@@ -217,23 +224,46 @@ void Just_Dr_Heart(int hp)
 	for (int i = 0; i < 6; i++)	// Affiche tout les char du coeur
 	{
 		if(hp == 3)
-			ConsoleRender::Add_String(heart_3[i], { ori.x - 9, ori.y + i }, LIGHT_GREEN);
+			ConsoleRender::Add_String(heart_3[i], { ori.x - 8, ori.y + i }, LIGHT_GREEN);
 		else
 			if(hp == 2)
-				ConsoleRender::Add_String(heart_2[i], { ori.x - 9, ori.y + i }, LIGHT_YELLOW);
+				ConsoleRender::Add_String(heart_2[i], { ori.x - 8, ori.y + i }, LIGHT_YELLOW);
 			else
 				if(hp==1)
-					ConsoleRender::Add_String(heart_1[i], { ori.x - 9, ori.y + i }, LIGHT_RED);
+					ConsoleRender::Add_String(heart_1[i], { ori.x - 8, ori.y + i }, LIGHT_RED);
 	}
 }
 
 
 void Exclude_Outside_From_Heart(int hp)
 {
+	if (hp == 4)
+	{
+		inside.Resize(6, 0, 17);	 // Default
+		// la je doit exclure tout le dedans
+
+//"*  ,;;;, ,;;;,  *",
+//"  ;;;:::;:::;;;  ",
+//"  ;;;:::::*:;;;  ",
+//"*  ';;:::::;;'   ",
+//"     ';;:;;'  *  ",
+//"  *    ';'       "
+		//Exclusion lignes par lignes des charactères qui composent l'ext du coeur
+		
+	///*inside.Exclude_Interval_From_List(0, 1, 2);*/
+	//inside.Exclude_Interval_From_List(0, 14, 15); 	
+	//inside.Exclude_Interval_From_List(1, 0, 1);		inside.Exclude_Interval_From_List(1, 15, 17);
+	//inside.Exclude_Interval_From_List(2, 0, 1);		inside.Exclude_Interval_From_List(2, 15, 17);
+	///*inside.Exclude_Interval_From_List(3, 0, 2);*/	inside.Exclude_Interval_From_List(3, 14, 17);	
+	//inside.Exclude_Interval_From_List(4, 1, 4);/*	inside.Exclude_Interval_From_List(4, 12, 14);	*/
+	///*inside.Exclude_Interval_From_List(5, 4, 6);*/	inside.Exclude_Interval_From_List(5, 10, 17);	
+
+	}
+
 	if (hp == 3)
 	{
-		inside.Resize(6, 0, 16);	 // Default
-		// la je doit exclure tout le dedans
+		inside.Resize(6, 0, 17);	 // Default
+		// la je doit exclure tout l'ext
 //"   ,;;;, ,;;;,   ",
 //"  ;;;' ';' ';;;  ",
 //"  ;;;       ;;;  ",
@@ -242,7 +272,7 @@ void Exclude_Outside_From_Heart(int hp)
 //"       ';'       "
 
 
-		// Exclusion lignes par lignes des charactères qui composent l'ext du coeur
+		//// Exclusion lignes par lignes des charactères qui composent l'ext du coeur
 		inside.Exclude_Interval_From_List(0, 0, 2);	inside.Exclude_Interval_From_List(0, 14, 16); 
 		inside.Exclude_Interval_From_List(1, 0, 1);	inside.Exclude_Interval_From_List(1, 15, 16);	
 		inside.Exclude_Interval_From_List(2, 0, 1);	inside.Exclude_Interval_From_List(2, 15, 16); 
@@ -298,9 +328,9 @@ void Exclude_Outside_From_Heart(int hp)
 		inside.Exclude_Interval_From_List(3, 0, 4);	inside.Exclude_Interval_From_List(3, 20, 22);
 		inside.Exclude_Interval_From_List(4, 0, 2);
 		inside.Exclude_Interval_From_List(5, 0, 5);	inside.Exclude_Interval_From_List(5, 21, 22);
-		inside.Exclude_Interval_From_List(6, 0, 7);	inside.Exclude_Interval_From_List(6, 19, 22);
-		inside.Exclude_Interval_From_List(7, 0, 8);	inside.Exclude_Interval_From_List(7, 20, 22);
-		inside.Exclude_Interval_From_List(8, 0, 6);	inside.Exclude_Interval_From_List(8, 15, 22);
+		inside.Exclude_Interval_From_List(6, 0, 7);	inside.Exclude_Interval_From_List(6, 20, 22);
+		inside.Exclude_Interval_From_List(7, 0, 7);	inside.Exclude_Interval_From_List(7, 21, 22);
+		inside.Exclude_Interval_From_List(8, 0, 6);	inside.Exclude_Interval_From_List(8, 16, 22);
 //"                ",
 //"                ",
 //"                ",
@@ -317,6 +347,31 @@ void Exclude_Inside(int hp)
 	outside.Reset_All_Lists(); // 
 
 	outside.Resize(8, 0, 20);	 // Default
+
+	if (hp == 4)
+	{
+		// Exclusion lignes par lignes des charactères qui composent l'intérieur du coeur
+		outside.Remove_Value(1,2);outside.Remove_Value(1, 17);  outside.Exclude_Interval_From_List(1, 4, 14);
+		outside.Exclude_Interval_From_List(2, 3, 15);
+		outside.Exclude_Interval_From_List(3, 3, 15);
+		outside.Remove_Value(4, 2);outside.Exclude_Interval_From_List(4, 4, 14);
+		outside.Remove_Value(5, 15);outside.Exclude_Interval_From_List(5, 6, 12);
+		outside.Remove_Value(6, 5);outside.Exclude_Interval_From_List(6, 8, 10);
+		// Exclusion lignes par lignes des charactères qui composent l'intérieur du coeur
+		outside.Exclude_Interval_From_List(1, 3, 15);
+		outside.Exclude_Interval_From_List(2, 2, 16);
+		outside.Exclude_Interval_From_List(3, 2, 16);
+		outside.Exclude_Interval_From_List(4, 3, 15);
+		outside.Exclude_Interval_From_List(5, 5, 13);
+		outside.Exclude_Interval_From_List(6, 7, 11);
+
+//" * ,;;;, ,;;;,  *",
+//"  ;;;:::;:::;;;  ",
+//"  ;;;:::::*:;;;  ",
+//" * ';;:::::;;'   ",
+//"     ';;:;;'  *  ",
+//"    *  ';'       "
+	}
 
 	if (hp == 3)
 	{
@@ -416,7 +471,20 @@ void Fill_Heart_Randomly(bool rdmChars)
 			ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, COOL_CHARS[rand() % NUM_COOL_CHARS], fillClr[0]); // Fill uniquement les chars qui forment le coueur, pas la vide au milieu
 	}
 	else
-		ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, allHearts[HP][r][c], fillClr[1]); // Fill aussi le vide au milieu
+	{
+		if (HP == 4)	// special colors
+		{
+			if(allHearts[HP][r][c] == TXT_CONST.DOTDOT)
+				ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, allHearts[HP][r][c], LIGHT_AQUA); // dedans 
+			else
+				if(allHearts[HP][r][c] == TXT_CONST.ASTERISK)
+					ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, allHearts[HP][r][c], LIGHT_YELLOW); // éclat 
+				else
+					ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, allHearts[HP][r][c], fillClr[1]); // Fill aussi le vide au milieu
+		}
+		else
+			ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, allHearts[HP][r][c], fillClr[1]); // Fill aussi le vide au milieu
+	}
 }
 
 void Set_Up_Drawers(int hp, bool slow)		 // Setup les intervalles pour l'affichage
@@ -430,12 +498,12 @@ void Set_Up_Drawers(int hp, bool slow)		 // Setup les intervalles pour l'afficha
 	case 1:fillClr[1] = LIGHT_RED; break;
 	case 2:fillClr[1] = LIGHT_YELLOW; break;
 	case 3:fillClr[1] = LIGHT_GREEN; break;
-	case 4:fillClr[1] = LIGHT_AQUA; break;
+	case 4:fillClr[1] = LIGHT_GREEN/*LIGHT_AQUA*/; break;
 	}
 
-	if (slow)
-		fillClr[0] = WHITE;	// Quand c'est slow, on affiche des lignes blanches
-	else
+	//if (slow)
+	//	fillClr[0] = WHITE;	// Quand c'est slow, on affiche des lignes blanches
+	//else
 		fillClr[0] = fillClr[1];	// same couleur
 
 	
@@ -492,6 +560,7 @@ void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
 			fastDraw = false;
 			ori.x += 2;
 		}
+
 
 		boringNum = drawnOut = 0; // Pour un peu de random
 

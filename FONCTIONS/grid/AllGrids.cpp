@@ -381,3 +381,18 @@ void AllGrids::Buff_All_Child_Walls()
 // si un link est corrupt, n'ajoute pas ses childs walls dans la liste à buffer
 
 }
+
+
+
+// SPÉCIAL
+// * ** * * 
+void AllGrids::Remove_All_Bots_From_Grid()	// Si tu élimine les bots artificiellement, tu dois aussi les removes
+{
+	for (int col = 0; col < gGrids.wallGrdHor.Get_Cols(); col++)
+		for (int row = 0; row < gGrids.wallGrdHor.Get_Rows(); row++)
+			gGrids.wallGrdHor.wall[col][row].Remove_Bot_On_Me();
+
+	for (int col = 0; col < gGrids.wallGrdVer.Get_Cols() ; col++)
+		for (int row = 0; row < gGrids.wallGrdVer.Get_Rows(); row++)
+			gGrids.wallGrdVer.wall[col][row].Remove_Bot_On_Me();
+}

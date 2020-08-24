@@ -34,6 +34,7 @@
 #include "../time/cycles.h"
 
 
+
 // GLOBAL
 
 MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msg qui sera interprété par les event Listeners
@@ -195,7 +196,14 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case PLAYER_SPAWNED:
 		break;
 		/* ITEMS */
+	case ENABLE_ITEM_SPAWN:
+		stopItmSpwCycle = false;
+		break;
 
+	case DISABLE_ITEM_SPAWN:
+		stopItmSpwCycle = true;
+		break;
+		
 	case ITEM_SPAWNED: 
 		//Draw_Item_Spawn();
 		break;

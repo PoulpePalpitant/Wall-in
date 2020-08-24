@@ -5,9 +5,12 @@
 #include "../../spawns/bots_to_spawn.h"
 #include "../../events/msg_dispatcher.h"
 
-#include "events/ev_build_start_walls.h"
 #include "lvl_1_spwn_script.h"
+
+//some events Shhh...
 #include "../../items/item_spawner.h"
+#include "../../events/global_events/ev_warning.h"
+
 
 // GENERAL RULES: 
 // Dépasse jamais le nombre de spawn permis sur une bordure
@@ -41,23 +44,24 @@ void Lvl_1_Spwn_Script()
 		{
 			gHorizontalBorder = true;
 		}
+		
 		switch (numSpawnWaves)
 		{
-		case 1:Add_Specific(RIGHT, 0);Add_Specific(RIGHT, 1); Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2); skip = 4; break;
-		case 2:Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
+		case 1:Ev_MultiColor_Warnings(); skip = 6; break; // test
+		case 2:Add_Specific(RIGHT, 0);Add_Specific(RIGHT, 1); Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2);Add_Specific(LEFT, 6);  skip = 2; break;
 		case 3:Add_Specific(RIGHT, 5); break;// Dessine un pattern de départ
 		case 4:Add_Specific(RIGHT, 9);break;
 		case 5:Add_Specific(RIGHT, 7);break;
-		case 6:Add(1);gBoxSide = RIGHT; skip = 1;break;
-		case 7:Add(1);gBoxSide = RIGHT;break;
-		case 8:Add(1);gBoxSide = RIGHT;break;
-		case 9:Add(1);gBoxSide = RIGHT; skip = 1; break;
+		case 6:Add(1);gBoxSide = RIGHT; break;
+		case 7:Add(1);gBoxSide = RIGHT; break;
+		case 8:Add(1);gBoxSide = RIGHT; break;
+		case 9:Add(1);gBoxSide = RIGHT; break;
 		case 10:Add(1); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;	// Premier Double
 		case 11:Add(1); break;
 		case 12:Add(1); gBoxSide = LEFT; gSpwNum = 0; break;
 		case 13:gBoxSide = LEFT; gSpwNum = 1; break;
 		case 14:Add(1); gBoxSide = LEFT; gSpwNum = 2; break;
-		case 15:gBoxSide = LEFT; gSpwNum = 3; skip = 3; break;
+		case 15:gBoxSide = LEFT; gSpwNum = 3; break;
 		case 16:Add(1); gBoxSide = LEFT; Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;		// Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; // CETTE FORMULE CRASH 100% DU TEMPS
 		case 17:gBoxSide = RIGHT;Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2); break;
 		case 18:gBoxSide = LEFT; Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2);break;
@@ -73,7 +77,7 @@ void Lvl_1_Spwn_Script()
 		case 28:Add(1); break;
 		case 29:Add(1); break;
 		// Start les doubles spawns
-		case 30:Add(1); Set_Interval(RIGHT, 5, 6);break;
+		case 30: skip = 7;break;//BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 		case 31:Add(1); Set_Interval(RIGHT,5,6);break;
 		case 32:Add(1); Set_Interval(RIGHT,5,6);break;
 		case 33:Add(1); Set_Interval(RIGHT,5,6);break;
@@ -82,40 +86,40 @@ void Lvl_1_Spwn_Script()
 		case 36:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break; //Set_Interval(RIGHT, 9,10);
 		case 37:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
 		case 38:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		case 39:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 4; break;
+		case 39:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);  break;		 
 
-		case 40: Set_Interval(LEFT, 2,3); Add(1); break;
+		case 40: Set_Interval(LEFT, 2, 3); Add(1); break;
 		case 41: Set_Interval(LEFT, 2,3); Add(1); break;
 		case 42: Set_Interval(LEFT, 2,3); Add(1); break;
 		case 43: Set_Interval(LEFT, 2,3); Add(1); break;
-		case 44: Set_Interval(LEFT, 2,3); Add(1);  skip = 2; break;
+		case 44: Set_Interval(LEFT, 2,3); Add(1); break;
 		case 45: Set_Interval(RIGHT, 11, 12);  Add(1);break;
 		case 46: Set_Interval(RIGHT, 11, 12);  Add(1);break;
-		case 47: Set_Interval(RIGHT, 10, 12);Add(1);  Add(1);break;
-		case 48: Set_Interval(RIGHT, 10, 12);Add(1);  Add(1);break;
-		case 49: skip = 6; 
-			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 8,6 }); // Spawn de la vie ici?
-			break;
+		case 47: Set_Interval(RIGHT, 10, 12);Add(3); break;
+		case 48: Set_Interval(RIGHT, 10, 13);Add(3); break;
+		case 49: skip = 8; 
+			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 1,1 }); // Spawn de la vie ici?
+			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 			// Random spawns
 		case 50:Add(1);break;
-		case 51:Add(1);break;
+		case 51:Add(2);break;
 		case 52:Add(1);break;
-		case 53:Add(1);break;
+		case 53:Add(2);break;
 		case 54:Add(1);break;
-		case 55:Add(1);break;
+		case 55:Add(2);break;
 		case 56:Add(1);break;
-		case 57:Add(1);break;
+		case 57:Add(2);break;
 		case 58:Add(1);break;
-		case 59:Add(1);break;
+		case 59:Add(2);break;
 		case 60:Add(1);break;
 		case 61:Add(1);break;
-		case 62:Add(1);break;
-		case 63:Add(1);break;
-		case 64:Add(1);break;
+		case 62:Add(3);break;
+		case 63:Add(4);break;
+		case 64:Add(5);break;
 		case 65:Add(1);break;
 		case 66:Add(1);break;
-		case 67:skip = 2;break;
+		case 67:skip = 7;break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 		
 			// Start les triples spawns!!
 		case 80: Set_Interval(LEFT, 0,4);Add(2); break;
@@ -127,8 +131,8 @@ void Lvl_1_Spwn_Script()
 		case 99: Add(2); break;
 
 			// FINAL PUSH	
-		case 100: MsgQueue::Register(FINAL_PUSH); skip = 5;	break;
-		case 101:break;
+		case 100: gNumSpawnTOT = 0; MsgQueue::Register(FINAL_PUSH); skip = 5;	break;
+		case 101: skip = 3; break;
 		case 102:break;
 		case 103:break;
 		case 104:break;
@@ -147,7 +151,10 @@ void Lvl_1_Spwn_Script()
 		case 117:  Add(1);break;
 		case 118:  Add(1);break;
 		case 119:  Add(1);break;
-		case 120:  Add(1); 
+		case 120:  Add(1); break;
+		case 121:  Add(1); break;
+		case 122:  Add(1); break;
+		case 123:  Add(1);
 			MsgQueue::Register(STOP_BOT_SPAWNS); 
 			MsgQueue::Register(WAIT_LAST_BOT); break;
 		}

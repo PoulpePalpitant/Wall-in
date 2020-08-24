@@ -6,25 +6,28 @@
 #include "../msg_dispatcher.h"
 #include "../../UI/console_output/render_list.h"
 #include "../../UI/map.h"
+#include "ev_final_push.h"
+
 // les cript de break des progress bar
 #include "../../lvls/lvl_1/lvl_1_prg_bar_scrpt.h"
+
 
 static void Ev_Progress_Animation();
 static void Ev_Break_Animation();
 static void Dr_Er_Cursor(bool draw);
 
-
 static Event ev_ProgressAnimation(Ev_Progress_Animation, 6);	// pour faire afficher un ti progrès dans la bar
 static Event ev_BreakAnimation(Ev_Break_Animation, 1);	// Animation surt les points break
 static Event ev_ProgressBar(Ev_Progress_Bar);
+static Event ev_DrawWholeBar(Ev_Draw_Whole_Bar, 1);
 
 // got lazy here
 // Permet d'inscrire certains "break" dans la progress bar au endroit dans le spawn script ou une certaine longues pause à lieu. J'ai décidé de faire ça manuellement.
 // Cette décision m'oblige à updater continuellement les ce script autant que le spawn script si je souhaite une cohérence entre les deux. Heureusement ya pas grand chose à changer
 
-static const int NUM_BREAKS[] = { 5, 1, 1 ,1 };	// Nombre de break dans chaque lvlv
-static const int BREAKS_LVL_1[] = { 2,10,20,39,49 };	// List de tout les moment de repos dans le script de spawn.
-static const int BREAKS_LVL_2[] = { 120 };	
+static const int NUM_BREAKS[] = { 3, 1, 1 ,1 };		// Nombre de break dans chaque lvlv
+static const int BREAKS_LVL_1[] = { 30, 49, 67 };	// List de tout les moment de repos dans le script de spawn.
+static const int BREAKS_LVL_2[] = { 123 };	
 static const int BREAKS_LVL_3[] = { 120 };	
 static const int BREAKS_LVL_4[] = { 120 };	
 
@@ -53,7 +56,7 @@ static bool Is_Break_Here(int lvl, int waveTot)	// Check si un break à lieu ici
 	return false;
 }
 
-static void Draw_tip(bool side)	// True = left false = right
+static void Draw_tip(Coord crd, bool side)	// True = left false = right
 {
 	if (side)
 	{
@@ -67,46 +70,61 @@ static void Draw_tip(bool side)	// True = left false = right
 	}
 }
 
-static void Draw_Whole_Bar(int lvl)	// Happens first
+void Ev_Draw_Whole_Bar()	// Happens first
 {
-	int waveTot = 0;
-	float nextWave = 0;
-	float ratio = (numWaves[lvl]) / ((float)barLength );
-	Colors baseClr = GRAY;
+	static int waveTot;
+	static float nextWave;
+	static float ratio;
+	static Colors baseClr;
+	static Coord coord;
 
-	crd = { Find_Ctr_X(barLength) - (int)tip[true].length() /*- 1*/, map.Get_Box_Limit(UP) - 3 };	// pos de départ
-
-	Draw_tip(true); crd.x += (int)tip[true].length();	//  left tip
-
-	// Draw chaque ligne (devrait s'arrêter à 30 théoriquement )
-	for (waveTot = 0; waveTot < numWaves[lvl]; waveTot++)
+	if (!ev_DrawWholeBar.Is_Active())
 	{
-		if (Is_Break_Here(lvl, waveTot)) // Check si on draw un break ici
+		waveTot = nextWave = 0;
+		ratio = (numWaves[gCurrentLevel - 1]) / ((float)barLength);
+		baseClr = GRAY;
+		coord = { Find_Ctr_X(barLength) - (int)tip[true].length() /*- 1*/, map.Get_Box_Limit(UP) - 4 };	// pos de départ
+		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
+
+		ev_DrawWholeBar.Activate();
+		ev_DrawWholeBar.Start(0);
+		ev_DrawWholeBar.delay.Start_Timer(50000, numWaves[gCurrentLevel - 1]);
+	}
+	else
+		while (ev_DrawWholeBar.delay.Tick())
 		{
-			// Affiche le symbole du break
-			ConsoleRender::Add_Char(crd, '|', LIGHT_GREEN); crd.x++;
-			nextWave += ratio;
-		}
-		else
-			if (finalhour[lvl] == waveTot)
+			if (Is_Break_Here(gCurrentLevel - 1, waveTot)) // Check si on draw un break ici
 			{
-				ConsoleRender::Add_Char(crd, TXT_CONST.LINE_VER, LIGHT_RED); crd.x++;
-				baseClr = RED;
+				// Affiche le symbole du break
+				ConsoleRender::Add_Char(coord, '|', LIGHT_GREEN); coord.x++;
 				nextWave += ratio;
 			}
 			else
-				if ((int)nextWave == waveTot)	// On passe au prochain
+				if (finalhour[gCurrentLevel - 1] == waveTot)
 				{
-					ConsoleRender::Add_Char(crd, TXT_CONST.DOT, baseClr); crd.x++;
+					finalHour = coord;
+					ConsoleRender::Add_Char(coord, TXT_CONST.LINE_VER, LIGHT_RED); coord.x++;
+					baseClr = RED;
 					nextWave += ratio;
-					// Start l'animation du prochain
 				}
+				else
+					if ((int)nextWave == waveTot)	// On passe au prochain
+					{
+						ConsoleRender::Add_Char(coord, TXT_CONST.DOT, baseClr); coord.x++;
+						nextWave += ratio;
+						// Start l'animation du prochain
+					}
+
+			waveTot++;
+		}
+
+	if (!ev_DrawWholeBar.delay.Is_On())
+	{
+		Draw_tip(coord, false);	// right tip, à la fin
+		ev_DrawWholeBar.Cancel();	// safety
 	}
 
-	Draw_tip(false);	// right tip
 }
-
-// pas de spawn sur les break? Pas de spawn sur les break!|
 
 
 static void Progress()
@@ -121,16 +139,15 @@ static void Progress()
 	}
 }
 
-
-
-// Signale au joueur combien de waves y reste avant la fin
+// pas de spawn sur les break? Pas de spawn sur les break!|
+// Signale au joueur combien de waves y reste avant la fin 
 void Ev_Progress_Bar()
 {
 	if (!ev_ProgressBar.Is_Active())
 	{
-		Draw_Whole_Bar(gCurrentLevel - 1);
+		Ev_Draw_Whole_Bar();
 		ratio = numWaves[gCurrentLevel - 1] / ((float)barLength);	// On se fie à cette valeur pour progresser dans la bar
-		crd = { Find_Ctr_X(barLength) - 1, map.Get_Box_Limit(UP) - 3 };	// pos de départ
+		crd = { Find_Ctr_X(barLength) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ
 		nextWave = 0;
 		progClr = LIGHT_YELLOW;
 

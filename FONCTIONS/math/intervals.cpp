@@ -485,6 +485,7 @@ namespace Intervals {
 			else
 			{
 				Modify_Max(first, min);	// Réduit son maximum
+				prev = first;	// J'AI AJOUTÉ ÇA UN PEU DANS LE VIDE CAR ÇA CRASHAIT
 				last = first->nxt; // cherchons si un intervalle contient la valeur max
 			}
 		}

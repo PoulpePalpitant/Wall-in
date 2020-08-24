@@ -25,7 +25,7 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 	{
 		crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2};
 		ev_Dr_Wasd.Activate();
-		ev_Dr_Wasd.Start(400/*600*/);	// 1000 / 2 = 500.		2 secondes
+		ev_Dr_Wasd.Start(600);	// 1000 / 2 = 500.		2 secondes
 	}
 	else
 	{

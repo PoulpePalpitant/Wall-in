@@ -28,7 +28,6 @@ bool Bot::Is_Dead()											// vérifie si un bot est mort
 void Bot::Destroy_Bot()
 {
 	this->hp = 0;		// Remet le HP à 0. this boi is dead
-	
 	ConsoleRender::Add_Char(this->XY, TXT_CONST.SPACE, this->clr);		//Effacement!
 	gAllBotMeta.Bot_Died();	// One more :(
 	

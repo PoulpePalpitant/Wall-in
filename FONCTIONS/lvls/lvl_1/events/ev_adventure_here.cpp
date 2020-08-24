@@ -22,7 +22,7 @@ void Ev_Adventure_Here()// Trace un chemin vers une fausse porte de sortie
 		if (P1.Get_Grd_Coord().c == 2 || P1.Get_Grd_Coord().r == 6)
 			dotChase = { 0, 4 };
 
-		ConsoleRender::Add_Char(linkGrid->link[dotChase.c][dotChase.r].Get_XY(), 250);
+		ConsoleRender::Add_Char(linkGrid->link[dotChase.c][dotChase.r].Get_XY(), 250, LIGHT_GREEN);
 		ev_AdventureHere.Activate();
 		ev_AdventureHere.Start(600);
 		ev_AdventureHere.delay.Start_Timer(10000, 1, true);	// va checker à l'infinie pour vérifier si le joueur se trouve sur la position

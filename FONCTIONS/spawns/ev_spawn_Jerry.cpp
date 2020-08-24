@@ -18,7 +18,7 @@ static Direction side;
 static bool verti = false;
 static int spw;
 static int limit;		// Nombre de Jerry Max que Le joueur peut summon
-static std::string howTo = "(Press Enter To Summon Jerry Again)";
+static std::string howTo = "(Press \"J\" To Summon Jerry Again)";
 
 bool jerryTime = false;		// Si On a des Jerry qui spawnenT
 int jerCount;				// Nombre de fois que le joueur doit stopper Jerry

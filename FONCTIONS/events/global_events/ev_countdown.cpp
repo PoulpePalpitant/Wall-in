@@ -9,7 +9,7 @@
 
 static Event ev_CountDown(Ev_CountDown, 3);
 static std::string go = "Go!";
-static std::string blast = "(You Can't Shoot During 'This' Countdown)";
+static std::string blast = "(You Can Shoot \"After\" The Countdown)";
 static Coord crd;
 static Colors clr;
 static int clrRatio;		// Change la couleur selon la progression du countdown

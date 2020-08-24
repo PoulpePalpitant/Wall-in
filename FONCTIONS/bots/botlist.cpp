@@ -1,7 +1,7 @@
 
 #include "botlist.h"
 #include "botmeta.h"
-
+#include "../grid/AllGrids.h"
 
 Bot BotList::bot[MAX_NUM_BOTS];	// LISTE DE TOUT LES BOTS
 
@@ -37,16 +37,25 @@ bool BotList::Is_Empty()					// Check si tout les bots sont désactivés
 
 void BotList::Destroy_All_Bots()
 {
+	gGrids.Remove_All_Bots_From_Grid();	// gotta remove them from the grid 
+
 	for (int i = 0; i < MAX_NUM_BOTS; i++) {
 		if (!bot[i].Is_Dead())
 		{
-			Bot::UI_Erase_Bot(&bot[i]);
+			Bot::UI_Erase_Bot(&bot[i]);// enlève
 			bot[i].Destroy_Bot();
-
-			if (!gAllBotMeta.alive) // no more bots
-				return;
+			bot[i] = {};
 		}
 	}
+	gGrids.Remove_All_Bots_From_Grid();	// gotta remove them from the grid 
+
+	if (!gAllBotMeta.alive) // no more bots
+	{
+		gAllBotMeta.alive = 0;
+		return;
+	}
+	else
+		throw "This Shit ain't working";
 }
 
 

@@ -24,11 +24,12 @@
 #include "msg_events/ev_arr_keys.h"
 #include "msg_events/ev_day_1.h"
 
+// others
 #include "../../events/global_events/feedback/ev_draw_map.h"
-
 #include "../../player/player.h"	// don't...
 #include "../../grid/AllGrids.h"
 #include "../../events/global_events/ev_progress_bar.h"
+#include "../../events/global_events/ev_thank_you.h"
 
 // C'EST ICI QUE ÇA SE PASSE
 void Dispatch_Msg_To_Lvl_1()
@@ -58,18 +59,26 @@ void Dispatch_Msg_To_Lvl_1()
 		if (gCurrentStage == 4)
 		{
 			// Ceci est temporaire pour débugger plus rapidement le bot script
-			P1.Set_Hp(1000);
-			Just_Dr_Arr_Keys(); 
-			Just_Dr_Wasd();
-			Just_Dr_Heart();
-			P1.Set_Position({ 6,6 });
-			P1.Dr_Player();
-			MsgQueue::Register(FREE_PLAYER);	// quicker quick start
+			//P1.Set_Hp(1000);
+			if (gSkipStory)
+			{
+				/*safety*/
+				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
+				botList.Destroy_All_Bots();
+
+				P1.Set_Position({ 6,6 });
+				P1.Er_Player();
+				MsgQueue::Register(SPAWN_PLAYER);	
+				Just_Dr_Heart();
+				Ev_Progress_Bar();
+			}
+			//Just_Dr_Arr_Keys(); 
+			//Just_Dr_Wasd();
 			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
 			MsgQueue::Register(START_BOTS); // Here they come baby
+			MsgQueue::Register(ENABLE_ITEM_SPAWN); // items!
 			gSkipStory = false;
 			gDayStarted = true;
-			Ev_Progress_Bar();	// Make that progress bar
 		}
 		break;
 
@@ -83,6 +92,7 @@ void Dispatch_Msg_To_Lvl_1()
 			{
 				gCurrentStage = 0;
 				gCurrentLevel = 2;
+				Ev_Thks_For_Playing();
 			}
 		}
 		else
@@ -115,8 +125,11 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 		/* Items*/
 	case ITEM_PICKUP:
-		Ev_Dr_New_Goal();		// - NEW GOAL -
-		Ev_Spawn_Life();
+		if (gCurrentStage <= 1)
+		{
+			Ev_Dr_New_Goal();		// - NEW GOAL -
+			Ev_Spawn_Life();
+		}
 		//Erase_Map_Borders_1();
 		break;
 

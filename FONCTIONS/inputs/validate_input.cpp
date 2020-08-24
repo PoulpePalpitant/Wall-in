@@ -8,7 +8,7 @@
 #include "../events/msg_dispatcher.h"
 #include "../choice/choice_time.h"
 #include "../lvls/lvl_script.h"
-
+#include "../update_game/update_game.h"
 
 void Validate_Input()
 {
@@ -75,7 +75,7 @@ void Validate_Input()
 				break;	// 13 = enter
 
 			case ' ':
-				if (!GameLoopClock::pause)
+				if (!gPauseUpdates)
 					action = ActionType::PAUSE;
 				else
 					action = ActionType::UNPAUSE;

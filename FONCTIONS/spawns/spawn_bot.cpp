@@ -24,7 +24,10 @@ static void Spawn_Da_Bot_On_Da_Coord(SpwCrd crd)
 	// type = Poptypelist() ;p			// Tous le même TYPE, ils ont
 
 	int botIndex = botList.Find_Available_Bot();	// trouve un bot accessible
-	botList.bot[botIndex].Create_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// spawn da bot!!
+	if (botIndex == -1)
+		throw "There is too many bots, and it's getting buggy over here";
+	else
+		botList.bot[botIndex].Create_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// spawn da bot!!
 	// SpawnWarning Stuff???
 
 }

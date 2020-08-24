@@ -181,23 +181,33 @@ int main()	// Le début!
 	bool isRunning = true;
 	float frameRate = 60.0f;// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
 	float fps = 1 / frameRate;
+	float inputBuffer = fps / 3;
+	bool loadBuffer = true;
 	float lag = 0;
 	int MS_PER_UPDATE = 10;	// Rythme à laquelle je veais ttout update
 	int loops = 0;
 	int frames = 0;
-
+	
 	GameLoopClock::Reset_Timer();	// Premier reset
 	//thread *inputs = new thread(Input_Thread_Handler);
 
-	while (isRunning)	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
+	while (GameLoopClock::Is_Running())	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
 		GameLoopClock::Tick();	// Delta time est en seconde!!!
 		GameLoopClock::UPD_Total_Time();	// Temps du niveau
 		
 		lag += GameLoopClock::Get_Delta_Time();
 
+		if (loadBuffer && GameLoopClock::Get_Delta_Time() >= inputBuffer)
+		{
+			Load_Loop_Buffer();	// un tit buffer d'inputs
+			loadBuffer = false;
+		}
+
 
 		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps		
+			
+			loadBuffer = true;
 			Read_Input_Buffer();
 			//Detect_Input();				// Détect les inputs mah dude0
 
@@ -215,6 +225,7 @@ int main()	// Le début!
 				ConsoleRender::Add_String(std::to_string((int)(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
 				ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
 				ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
+				ConsoleRender::Add_String(std::to_string(gAllBotMeta.spawned), { crd3.x + 8, crd3.y });	// Nombre de bot en vie
 
 				frames = 0;
 			}
@@ -224,7 +235,6 @@ int main()	// Le début!
 		Update_Game_NOT_60FPS();	// à remove un jour	
 		ConsoleRender::Render();	// Fait tout les affichages
 	}
-
 
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 		// GAME LOOP DES INTERNETS!

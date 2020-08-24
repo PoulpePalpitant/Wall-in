@@ -15,6 +15,7 @@ struct TextConstant
 	const char MINUS = '-';
 	const char PLUS = '+';
 	const char SPACE = ' ';
+	const char ASTERISK = '*';
 	const char O = 'O';
 	const unsigned char SPACE_FILL = 219;
 	const char PARENTHESIS_OPEN = '(';
@@ -26,6 +27,7 @@ struct TextConstant
 	const std::string L_ARROW = "<-";		// nope
 	const std::string DOTDOTDOT = ". . .";
 	const unsigned char DOT = 250;	// middle dot
+	const unsigned char DOTDOT = ':';	// double point
 	const unsigned char LINE_HOR = 196;// HORIZONTAL LINE
 	const unsigned char LINE_VER = 179;// VERTICAL LINE
 };

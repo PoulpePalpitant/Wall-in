@@ -5,8 +5,14 @@
 #include "../math/math_stuff.h"
 #include <string>
 
+const int MAX_TIMERS = 50000;
+
 class SpeedTimer {	// Timer qui me permet de bouger des affaires dans mon jeu
 private:
+	static SpeedTimer* allTimers[MAX_TIMERS];
+	static int idTotal;				// Le nombre d'id total
+	int id;							// l'id de chaque timers
+
 	bool moving = false;			// Pause le countdown
 	bool infinite = false;			// Le timer va se reset à l'infini!
 	float cdDuration = 0.f;			// Le durée maximale du timer en millisecondes.	par défaut 0 secondes
@@ -26,6 +32,8 @@ private:
 	bool Catchup_Needed();				// Tick autant qu'il faut pour rattraper le temps
 	bool Timer_Was_Reset() { return resetThisFrame; }		// Le countdown fut reset durant cette frame. On tick pas sur la même frame qu'un reset à lieu
 public:
+	static void Stop_All_Timers();	// some hardcore stuff, be careful
+
 	// KEY
 	bool OLD_Tick();		// Update le temps écoulé à partir de delta time
 	bool Updates_Left();	// Dans un while, fait les updates que ta de besoin selon le le nombre de moves durant une frame
@@ -42,6 +50,18 @@ public:
 
 	// Doit être absolument utilisé avec un while
 	bool Tick();	// Update le temps écoulé à partir de delta time
+
+	SpeedTimer()
+	{
+		id = idTotal;
+		allTimers[id] = this;
+		idTotal++;
+	}
+
+	~SpeedTimer()
+	{
+		allTimers[id] = NULL;
+	}
 };
 
 

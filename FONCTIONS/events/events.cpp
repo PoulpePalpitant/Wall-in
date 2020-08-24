@@ -31,9 +31,12 @@ void Event::Deactivate()
 
 void Event::Cancel_All()	// Gros moyen
 {
-	for (toUpdate.index = 0; toUpdate.index < toUpdate.Get_Total(); toUpdate.index++)		// Tant qu'on a des events qui n'ont pas été désactivé	
-		eventsID[toUpdate.Copy_Element(toUpdate.index)]->Cancel();		
-																		
+	// the inefficient, but correct way
+	for (int id = 0; id < MAX_NUM_EVENTS; id++)
+	{
+		if (eventsID[id] && eventsID[id]->Is_Active()) // check si non-nul, et si actif
+			eventsID[id]->Deactivate();
+	}
 }
 
 

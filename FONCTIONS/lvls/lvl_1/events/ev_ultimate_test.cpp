@@ -21,8 +21,8 @@ static std::string _4 = "(Seconds Before Arrival:    )";
 static bool success = false;
 
 static int spw;
-static int warnings = 125;/*120*/
-const int totalSpw = 80;
+static int warnings = 127;/*112*/
+const int totalSpw = 72;
 
 bool Ultimate_Test_Time()
 {
@@ -90,7 +90,7 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 				Spawn_A_Jerry(RIGHT, 6, warnings);	Spawn_A_Jerry(RIGHT, 8, warnings);
 				Add_Jerrys_To_Stop(4);
 				Upd_Jerry_Count();
-				ev_UltimateTest.Advance(4000, 5);
+				ev_UltimateTest.Advance(4000, 7);
 				break;
 
 			case 2:

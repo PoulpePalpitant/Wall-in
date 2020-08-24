@@ -22,8 +22,10 @@ static Coord ori;		// Coordonnée d'origine, servira de référence pour TOUT les a
 static Colors fillClr[2];	// Fait flasher le coueur d'une certaine couleur la première est blanche, l'autre représente la couleur du coeur
 static const int DFLT_FAST_SPEED[2] = {300000, 100000};	// same logic 
 static const int DFLT_SLOW_SPEED[2] = {60000, 42000};	// same logic 
+static std::string tip = "Tip: ";
+static std::string tips[] = { "Never Stop Building", "Speed Is Key", "Shooting From Afar Is Slower", "" };
 
-static std::string dead[] = { "YOU HAVE DIED","YOU LOST", "DEFEAT", "NOT VICTORIOUS" };
+static std::string dead[] = { "YOU DIED","YOU LOST", "DEFEAT", "NOT VICTORIOUS" };
 static std::string retry = "Retry?";
 
 // Comment faire du ascii art
@@ -40,7 +42,7 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 	if (!ev_DefeatScreen.Is_Active())
 	{
 		// La console doit être setté pour utiliser ça
-		ori.x = Find_Ctr_X() - 8;		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
+		ori.x = Find_Ctr_X((int)dead[0].length()) - 1;		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
 		ori.y = linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y -6;
 
 		// refresh all
@@ -56,16 +58,16 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 			case 1:
 				Set_Custom_Glitch_Map_Ev(false, 1900000); // pour remplir l'écran de petits char cool
 				Start_Ev_Dr_Heart(0);		 // Setup l'event Précédent
-				ev_DefeatScreen.Advance(300);
+				ev_DefeatScreen.Advance(500);
 				break;
 
 			case 2: // tit break
 				ConsoleRender::Add_String(dead[0], ori, LIGHT_RED, 400);
-				ev_DefeatScreen.Advance(350);
+				ev_DefeatScreen.Advance(500);
 				break;
 
 			case 3:
-				ConsoleRender::Add_String(retry, { ori.x + 4, ori.y + 2 }, LIGHT_RED, 400);
+				ConsoleRender::Add_String(retry, { ori.x, ori.y + 2 }, LIGHT_RED, 400);
 				ev_DefeatScreen.Advance(2000);
 				break;
 

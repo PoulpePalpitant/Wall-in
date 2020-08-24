@@ -134,7 +134,7 @@ void Wall::Deactivate_Wall()
 
 void Wall::Remove_Bot_On_Me()
 {
-	botOnMe = -1; 	// Le bot est pati :)
+	this->botOnMe = -1; 	// Le bot est pati :)
 
 	//if (strgt == WallStrength::NONE)
 	//	Set_Drawer();				// DISABLEED SANS SAVOIR CE QUE ÇA FAISAIT

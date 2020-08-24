@@ -20,12 +20,17 @@ void Lvl_1_Initializer()
 
 	if (gSkipStory)
 	{
-		// Pour un quick start
-		//gCurrentStage = 3; // Quick start normal = 2. Garde juste stage advance
-		//MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+		// Pour un quick start avec warning
+		//gCurrentStage = 2; // Quick start normal = 2. Garde juste stage advance
+		//gSkipStory = false;
 		
-		gCurrentStage = 2;	// Skip tout les tutorials
-		Ev_Bot_Tutorial();	// start tuto avec jerry
+		// Pour un normal quick start
+		gCurrentStage = 3; // super fast
+		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+
+
+		//gCurrentStage = 2;	// Skip tout les tutorials
+		//Ev_Bot_Tutorial();	// start tuto avec jerry
 	}
 	else
 	{
@@ -33,14 +38,15 @@ void Lvl_1_Initializer()
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
-	//gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
-	gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
+	gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
+	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
 	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
 	//gBotMoveTimer.Start_Timer(50200, 1, true);	// TEST
 	
 	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 30, 0);
 	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 20, 50);
 	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
+	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 500, 0);
 
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn

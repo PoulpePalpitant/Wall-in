@@ -9,6 +9,7 @@
 #include "../../grid/AllGrids.h"
 #include "../../UI/console_output/dsp_string.h"
 #include "ev_update_heart.h"
+#include "ev_progress_bar.h"
 
 static Coord crd;
 static Coord ori;		// Coordonnée d'origine, servira de référence pour TOUT les affichages
@@ -61,7 +62,6 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 4:
-
 				Start_Ev_Dr_Heart(3, true); // affiche le coeur						
 				ev_LvlStartWarning.Advance(500);
 				break;
@@ -69,12 +69,12 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 			case 5:
 				ConsoleRender::Add_String(ready, ori, WHITE, 50, true);
 				ConsoleRender::Add_String(inc, { ori.x, ori.y + 2 }, WHITE, 50, true);
-				ev_LvlStartWarning.Advance(200);
+				ev_LvlStartWarning.Advance(1000);
 				break;
 
 			case 6:
-
-				ev_LvlStartWarning.Advance(300);
+				Ev_Progress_Bar();	// Make that progress bar
+				ev_LvlStartWarning.Advance(0);
 				break;
 			
 			case 7:

@@ -10,6 +10,8 @@ struct cycles{	// Template de cycles
 
 extern bool stopSpwCycle; 
 extern bool stopMoveCycle;
+extern bool stopItmSpwCycle;
+
 
 void Reset_Spw_Cycle();				// Reset le nombre de spw cycle à 0
 void UPD_Cycles_Stuff();			// Update les cycles des bots

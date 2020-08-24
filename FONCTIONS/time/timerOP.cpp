@@ -8,11 +8,20 @@ extern long double gLvlTime = 0;	// test de temps du lvl
  std::chrono::system_clock::time_point GameLoopClock::startTime = std::chrono::system_clock::now();	// Pour quand tu reset?
  float GameLoopClock::timeScale = 1.0f;;
  std::chrono::duration<float> GameLoopClock::deltaTime = std::chrono::duration<float>(0.0f);
- bool GameLoopClock::pause = false;
+ bool GameLoopClock::active = true;
+
+ bool GameLoopClock::Is_Running()
+ {
+	 return active;
+ }
+ void GameLoopClock::Stop()
+ {
+	 active = false;
+ }
 
  void GameLoopClock::UPD_Total_Time()
  {
-	 if (!pause) 
+	 if (active) 
 		 gLvlTime += GameLoopClock::Get_Delta_Time();	// Update du temps actuel
 
  }

@@ -24,7 +24,7 @@
 #include "../console/sweet_cmd_console.h"
 
 
-extern bool gIsRunning = true;		// le state du jeu
+extern bool gPauseUpdates = false;		// le state du jeu
 static std::string pauseMsg = "Hey! You PAUSED the game!";
 static std::string pauseMsg_2 = "Press 'Esc' To Go Back To The Menu ";
 
@@ -32,7 +32,7 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 {
 	Update_Player_Action();
 
-	if (!GameLoopClock::pause)	// GAME_PAUSED
+	if (!gPauseUpdates)	// GAME_PAUSED
 	{
 		blastP1.UPD_Blast_Shot();		// Devrais être un event global	
 
@@ -41,7 +41,7 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 		Do_Stuff_this_Cycle();	// Bouge et spawn les bots
 		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
 
-		ItemSpawner::UPD_Item_Spawn_Timers();
+		//ItemSpawner::UPD_Item_Spawn_Timers(); // est déjà dans upd cycles stuff
 		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent
 		ListsOfChainToModify::Update_Chain_Modification();
 		DrawModifierQueue::Update_Modifier_Queue();
@@ -62,12 +62,12 @@ void Update_Player_Action()
 {
 	if (!gBlockInputs)
 	{
-		if (!GameLoopClock::pause)
+		if (!gPauseUpdates)
 		{
 			switch (action)
 			{
 			case PAUSE:
-				GameLoopClock::pause = true;
+				gPauseUpdates = true;
 				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			// Besoin d'un max screen size
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			// Besoin d'un max screen size
 				break;
@@ -132,7 +132,7 @@ void Update_Player_Action()
 		else
 			if (action == UNPAUSE)
 			{
-				GameLoopClock::pause = false;
+				gPauseUpdates = false;
 				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			// Besoin d'un max screen size / DONE
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);		// 
 
@@ -141,7 +141,6 @@ void Update_Player_Action()
 	// Faut reset l'action
 	action = IDLE;
 	keyDirection = NONE;	// et la keydirection
-
 }
 
 /*
