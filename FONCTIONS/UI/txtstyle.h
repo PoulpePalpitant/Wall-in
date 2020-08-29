@@ -16,6 +16,7 @@ struct TextConstant
 	const char PLUS = '+';
 	const char SPACE = ' ';
 	const char ASTERISK = '*';
+	const char CASH = '$';
 	const char O = 'O';
 	const unsigned char SPACE_FILL = 219;
 	const char PARENTHESIS_OPEN = '(';
@@ -91,13 +92,19 @@ extern const unsigned short TXT_SPD_ER; // vitesse d'effacement
 Colors Get_Current_Color();// Si on veut affiché quoi que ce soit, on utilise ceci pour vérifier si on a besoin, oui ou non de changer la couleur de l'output de la console
 void Change_Color(int c);		// Permet de changer la couleur des prochains output de textes dans la console
 
-int Find_Ctr_X(int size = 0);		// Trouve la crd en x qui permettrait d'output un char au centre
+int Find_Ctr_X(int size = 0);			// Trouve la crd en x qui permettrait d'output un char au centre
+int Find_Ctr_String_X(std::string txt);	// ce que j'aurais du faire depuis le début lol. Retourne la valeur en X d'une string centré dans la console
+int Half_String(std::string txt);		// Le nombre de charactère qui compose la moitié d'une string, utile pour les affichages
+
+
+
 
 Coord Up_Txt_1(std::string txt);	// Pour afficher du texte en Haut sur la première ligne
 Coord Up_Txt_2(std::string txt);	// Pour afficher du texte en Haut sur la 2e ligne
 Coord Up_Txt_3(std::string txt);	// Pour afficher du texte en Haut sur la 3e ligne
 
-Coord Heart_Txt_Crd(std::string txt, int line = 0);	// Affiche du texte à la droite du coeur
+Coord Heart_Txt_Crd_Right(std::string txt, int line = 0);	// Affiche du texte à la droite du coeur
+Coord Heart_Txt_Crd_Left(std::string txt, int line = 0);	// Affiche du texte à la gauche du coeur
 
 Coord Boss_Txt_Crd (std::string txt = TXT_CONST.SPACE_STRING, int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
 int Boss_Txt_X ();	// Affiche du texte à l'emplacement du personnage du boss

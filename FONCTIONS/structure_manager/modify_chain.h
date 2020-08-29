@@ -3,6 +3,7 @@
 
 #include "../grid/AllGrids.h"
 #include "../time/movement_timer.h"
+#include "../events/global_events/clear_all_states.h"
 
 // Les trois actions possibles pour la gestion des chaines de murs
 enum ModifyChain
@@ -29,24 +30,41 @@ class ChainToModify
 
 	SpeedTimer timer;	// Vitesse à laquelle on détruit les murs
 	
-	Chain chain;
+	Chain chain = {};
 	Link* selectedLink = NULL;
 	Link *toErase = NULL;		// Le Link à effacer quand tu détruit une chaîne de mur. On l'efface APRÈS que le mur soit effacé
 	ModifyChain modification;	// L'action qui sera faite sur les éléments de la chaîne
 
-	Wall* parentWall;					// Le mur à détruire entre deux Link
+	Wall* parentWall = NULL;					// Le mur à détruire entre deux Link
 	ChainToModify* nxt = NULL;
 	
 
 
-	bool empty();
+	bool is_empty();
 	void push(Link* link);	// Ajoute un Link à détruire de la liste
 	bool pop(Link*& data);	// Enlève un Link à détruire de la liste
+
+	~ChainToModify() // vide!/
+	{
+		Chain* toEmpty = &chain;
+		LinkToDestroy* above;
+
+		while (toEmpty->count)
+		{
+			above = chain.top;
+			chain.top = chain.top->below;	// le top devient l'item en dessous
+			delete above;			// pète le(ancien) top						
+			chain.count--;
+		}	
+	}
+
 };
 
 
 class ListsOfChainToModify {
 	friend class StructureManager;
+	friend void Clear_All_States(bool eraseLinks);	// Gros reset button()	
+
 private:
 	static ChainToModify* start;
 	static ChainToModify* end;
@@ -61,7 +79,9 @@ private:
 	static void Buff_Walls(ChainToModify* chain);		// Buff les walls 
 
 	static void Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev);
+	static void Remove_All();	// dangerous stuff!!
 public:
+	static bool Is_Empty();	//
 	static bool annihilating;	// On est en train d'effacer tout les walls
 
 	// Détruit la chaine de link et de mur dépendant d'un Link

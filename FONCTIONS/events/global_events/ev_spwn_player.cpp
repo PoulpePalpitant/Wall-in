@@ -7,8 +7,7 @@
 #include "../events.h"
 #include "../../UI/console_output/render_list.h"
 
-static Event ev_SpawnPlayer(Ev_Spawn_Player, 11);
-static CDTimer timer;	// Pour délay l'event and shit
+static Event ev_SpawnPlayer(Ev_Spawn_Player, 10);
 static Coord crd;
 
 void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
@@ -99,10 +98,6 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 
 			case 10:
 				ConsoleRender::Add_Char(crd, 197, LIGHT_GREEN);
-				ev_SpawnPlayer.Advance(800);
-				break;
-
-			case 11:
 				MsgQueue::Register(PLAYER_SPAWNED);
 				MsgQueue::Register(FREE_PLAYER);
 				ev_SpawnPlayer.Advance(0);

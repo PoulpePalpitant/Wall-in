@@ -13,6 +13,7 @@
 #include "events/ev_bot_tutorial.h"
 #include "msg_events/ev_day_1.h"
 #include "msg_events/ev_waking_up.h"
+#include "../../spawns/valid_spwn_intervals.h"
 
 void Lvl_1_Initializer()
 {
@@ -31,6 +32,7 @@ void Lvl_1_Initializer()
 
 		//gCurrentStage = 2;	// Skip tout les tutorials
 		//Ev_Bot_Tutorial();	// start tuto avec jerry
+		//gSkipStory = false;
 	}
 	else
 	{
@@ -48,16 +50,17 @@ void Lvl_1_Initializer()
 	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
 	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 500, 0);
 
+	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); // MUST BE DONE BEFORE WHEN WE START EACH LEVEL BRAH
+
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
 	
 	P1.Set_Hp(3);	// 3 de vie le gros
-	P1.Set_Position({ linkGrid->Get_Cols() / 2, 7 + linkGrid->Get_Rows() / 2 });
+	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
 	
 	if (!P1.Set_On_Grid())		// Doit être sur le grid pour le niveau
 		throw "player pas sur le grid";
 	
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
 	MsgQueue::Register(DISABLE_BLAST);	// It has to be done
-	MsgQueue::Register(SPAWN_SPECIAL_ITEM);	// Spawn la vie
 }

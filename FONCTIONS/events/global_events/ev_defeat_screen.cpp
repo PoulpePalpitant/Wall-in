@@ -62,12 +62,12 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 				break;
 
 			case 2: // tit break
-				ConsoleRender::Add_String(dead[0], ori, LIGHT_RED, 400);
-				ev_DefeatScreen.Advance(500);
+				ConsoleRender::Add_String(dead[0], ori, LIGHT_RED);
+				ev_DefeatScreen.Advance(700);
 				break;
 
 			case 3:
-				ConsoleRender::Add_String(retry, { ori.x, ori.y + 2 }, LIGHT_RED, 400);
+				ConsoleRender::Add_String(retry, { ori.x + 1, ori.y + 2 }, LIGHT_RED, 400);
 				ev_DefeatScreen.Advance(2000);
 				break;
 

@@ -11,6 +11,7 @@
 #include "../UI/console_output/render_list.h"
 #include "spawn_bot.h"
 #include "../lvls/lvl_1/msg_events/ev_stop_Jerry_1.h"
+#include "../grid/AllGrids.h"
 
 static Event ev_SpawnJerry(Ev_Spawn_Jerry, 2);
 
@@ -72,7 +73,7 @@ void Ev_Stop_Spawn_Jerry()	// Stop l'event de spawn Jerry!
 	verti = false;
 	ev_SpawnJerry.Cancel();
 	spwThisFrame = false;
-	ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 14 }, GRAY, 0, true); // efface ce titre
+	ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 2}, GRAY, 0, true); // efface ce titre
 	
 	if (prevSpd == 0)
 		prevSpd = prevMovSpeed;
@@ -99,7 +100,7 @@ void Ev_Spawn_Jerry()
 	if (!ev_SpawnJerry.Is_Active())
 	{
 		// initialisationa
-		ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , gConHeight - 14 }, GRAY, 150); // affiche ce titre
+		ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 2 }, GRAY, 150); // affiche ce titre
 		gBotMoveTimer.Start_Timer(prevSpd, 1, true);
 		//Set_Jerry_Time(0);
 		//Ev_Dr_Stop_Jerry();
@@ -113,7 +114,7 @@ void Ev_Spawn_Jerry()
 		while (ev_SpawnJerry.delay.Tick())
 		{
 
-			if (!spwThisFrame && lastKey == KeyPressed::ENTER)	// WE SPAWN JERRY
+			if (!spwThisFrame && lastKey == KeyPressed::JERRY)	// WE SPAWN JERRY
 			{
 				Spawn_A_Jerry(side, spw, 5);
 				lastKey = KeyPressed::NONE;

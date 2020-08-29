@@ -2,6 +2,8 @@
 #include "../UI/map.h"
 #include "managegrids.h"
 #include "../events/msg_dispatcher.h"
+#include "../console/sweet_cmd_console.h"
+#include "../structure_manager/modify_chain.h"
 
 // Génère les Grids pour la première fois
 void Create_All_Grids(AllGrids& grid, int col, int row)
@@ -25,14 +27,22 @@ void Resize_All_Grids(AllGrids& grid, int col, int row)
 }
 
 
-void Resize_Grids_To_Level(AllGrids& grid, int lvl) {	
+bool Resize_Grids_To_Level(AllGrids& grid, int lvl) {	
 	
-	int col = 14, row = 15;	// dimension par défaut au premier niveau
+	// NE JAMAIS resizer le grid quand tu fais encore des affichages des links et de walls and stuff
+	if (!DrawWalls::Is_Empty() || !ListsOfChainToModify::Is_Empty())
+		return false;
+
+	int col = 14, row = 14;	// dimension par défaut au premier niveau
+	
+	int gridLength; // pour calculer un start_x Centré
+	int gridHeight; // pour calculer un start_y Centré
+
 
 	switch (lvl)
 	{
-	case 0:	col = 14, row = 15;	break;		
-	case 1:	col = 13, row = 15;	break;
+	case 0:	col = 14, row = 14;	break;		
+	case 1:	col = 13, row = 15;	break; // col = 13	row = 15
 	case 2:	col = 14, row = 15;	break;
 	case 3:	col = 14, row = 15;	break;
 	case 4:	col = 14, row = 15;	break;
@@ -40,11 +50,17 @@ void Resize_Grids_To_Level(AllGrids& grid, int lvl) {
 	case 6:	col = 14, row = 15;	break;
 	case 7:	col = 14, row = 15;	break;
 	}
-	
+
+	gridLength = DELTA_X * col;
+	START_X = (gConWidth - gridLength) / 2;
+	gridHeight = DELTA_Y * row;
+	START_Y = (gConHeight - gridHeight) / 2;
+
 	if (grid.areCreated)
 		Resize_All_Grids(grid, col, row); // UNE SEULE CRÉATION
 	else
 		Create_All_Grids(grid, col, row);
 
 	MsgQueue::Register(GRIDS_RESIZED);
+	return true;
 }

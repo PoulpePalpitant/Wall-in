@@ -14,7 +14,7 @@
 
 #include "../events/global_events/ev_update_heart.h" // for testing
 
-static int tempLevel = 0;
+ int choosenLvl = 0;	
 
 void Dispatch_Msg_To_Menu()
 {
@@ -66,10 +66,10 @@ void Dispatch_Msg_To_Menu()
 			//case 53:
 			//case 54:
 			//case 55: 
-				tempLevel = gMenuKey - 48;
-				Ev_Er_Choose_Lvl();
+				choosenLvl = gMenuKey - 48;
 				MsgQueue::Unregister_All();	// répare un bug de merde
 				MsgQueue::Register(STAGE_ADVANCE);
+				Ev_Er_Choose_Lvl();
 				//
 				//if(tempLevel == 2)
 				//	Start_Ev_Dr_Heart(1);
@@ -83,12 +83,14 @@ void Dispatch_Msg_To_Menu()
 				if (gMenuKey == 89)				
 					gSkipStory = true; 
 
+				if (P1.Set_On_Grid())
+					P1.Set_Position({ 6,7 });
+
 				OBS_Erase_Game_Title();	// Erase Title Screen
 				Er_Skip_Story_Choice();	// Efface ce choix
 				gMenuInputs = false;
+				//gCurrentLevel = choosenLvl;
 
-				gCurrentLevel = tempLevel;
-				MsgQueue::Register(PLS_INTIALIZE_LVL);	// Start le niveau sélectionné mon gars
 				//OBS_Start_Game();		// Passe au prochain niveau
 			}
 

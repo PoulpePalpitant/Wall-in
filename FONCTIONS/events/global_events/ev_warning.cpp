@@ -162,7 +162,7 @@ void Ev_MultiColor_Warnings() // voici un event custom
 	if (!ev_MultiColorWarnings.Is_Active())
 	{
 		ev_MultiColorWarnings.Activate();
-		ev_MultiColorWarnings.Start(4000, 8);
+		ev_MultiColorWarnings.Start(4000, 9);
 	}
 	else
 		while (ev_MultiColorWarnings.delay.Tick())
@@ -170,25 +170,25 @@ void Ev_MultiColor_Warnings() // voici un event custom
 			switch (ev_MultiColorWarnings.Get_Current_Step())
 			{
 			case 1: 
-				modulo = ev_MultiColorWarnings.delay.Get_Moves_Left() % 4;
-				if (modulo == 3)
-					clr = LIGHT_YELLOW;
-				else
-					if(modulo == 2)
-						clr = LIGHT_PURPLE;
-					else
-						if(modulo == 1)
-							clr = LIGHT_RED;
-						else
-							if (modulo == 0)
-								clr = LIGHT_GREEN;
-				////v2 
-				//if(modulo == 1)
+				modulo = ev_MultiColorWarnings.delay.Get_Moves_Left() % 2;
+				
+				// V1
+				//if (modulo == 3)
 				//	clr = LIGHT_YELLOW;
 				//else
-				//	clr = LIGHT_RED;
-
-
+				//	if(modulo == 2)
+				//		clr = LIGHT_PURPLE;
+				//	else
+				//		if(modulo == 1)
+				//			clr = LIGHT_RED;
+				//		else
+				//			if (modulo == 0)
+				//				clr = LIGHT_GREEN;
+				//v2 
+				if(modulo == 1)
+					clr = LIGHT_YELLOW;
+				else
+					clr = LIGHT_RED;
 
 
 				WarningDrawerList::Add(true, clr);
@@ -203,6 +203,14 @@ void Ev_MultiColor_Warnings() // voici un event custom
 		}
 }
 
+void WarningDrawerList::Remove_All()
+{
+	for (int i = 0; i < MAX_WAR_DRAWERS; i++)		// ALL SHALL BE DELETED
+		drawer[i] = {};
+	total = 0;
+}
+
+
 void WarningDrawerList::Remove(int index)	// On delete rien au final
 {
 	for (int i = index; i < total; i++)		// Décale tout
@@ -211,6 +219,7 @@ void WarningDrawerList::Remove(int index)	// On delete rien au final
 	if (!--total)
 		ev_DrawWarnings.Cancel();
 }
+
 bool WarningDrawerList::Add(bool dr_Er, Colors clr, int speed)		// Ajoute un drawer à la liste
 {
 	static WarningDrawer tempDrawer = {};

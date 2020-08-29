@@ -2,7 +2,7 @@
 
 #include "../grid/AllGrids.h"
 #include "item_list.h"
-
+#include "../events/global_events/clear_all_states.h"
 
 
 struct ItemDrawer
@@ -16,12 +16,15 @@ struct ItemDrawer
 
 class DrawItemSpawnList
 {
+	friend void Clear_All_States(bool eraseMap );	// Gros reset button
+		
 	static int animationSteps;
 	static ItemDrawer  drawer[20];
 	static int total;
 
 	//static void Set_Drawer_From_Type(const ItemType& type);
 	static void Remove(int index);
+	static void Remove_All();
 	static void Find_Item_Sym(ItemType type);
 public:
 

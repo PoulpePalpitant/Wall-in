@@ -21,7 +21,7 @@ void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 		crd = { ((Find_Ctr_X((int)std::size(faster))) / 2) - 20, (gConHeight / 2) };
 		
 		ev_SpeedingUp.Activate();
-		ev_SpeedingUp.Start(2000, 20);
+		ev_SpeedingUp.Start(2000, 15);
 	}
 	else
 	{
@@ -32,7 +32,7 @@ void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 			else
 				Dr_Er = true;
 
-			ConsoleRender::Add_String(faster, { Up_Txt_1(faster).x, 1 }, LIGHT_RED, 0, Dr_Er);	// fais clignoter ce titre
+			ConsoleRender::Add_String(faster, { Up_Txt_1(faster).x,  Up_Txt_1(faster).y - 1 }, LIGHT_RED, 0, Dr_Er);	// fais clignoter ce titre
 			//ConsoleRender::Add_String(faster, crd, LIGHT_RED, 0, Dr_Er);	// fais clignoter ce titre
 		}
 	}

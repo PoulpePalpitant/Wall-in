@@ -29,6 +29,13 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
 	 size--;
  }
 
+ void ItemsOnGrid::Remove_All()
+ {
+	 for (int i = 0; i < MAX_ITEMS; i++)		// Décale tout
+		 items[i] = {};
+	 size = 0;
+ }
+
  bool ItemsOnGrid::Add(Item& item)
  {
 	 if (size == MAX_ITEMS)

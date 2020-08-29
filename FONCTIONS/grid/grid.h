@@ -11,8 +11,12 @@ struct GrdCoord { int c; int r; };		//  Les grids du jeux seront tous navigué pa
 // CONSTANTES POUR L'AFFICHAGE SEULEMENT
 // *************************************
 
-extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
-extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
+//extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
+//extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
+
+// Je me rend compte que si l'écran du joueur est petite, ça vaut plus rien tout ça
+extern int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
+extern int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
 
 extern const int START_X_LVL2;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
 extern const int START_Y_LVL2;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid

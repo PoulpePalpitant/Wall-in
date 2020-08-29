@@ -1,7 +1,6 @@
 #pragma once
 
 #include "items.h"
-
 #include "../global_types/global_types.h"
 
 const int MAX_ITEMS = 30;
@@ -20,5 +19,6 @@ public:
 	static bool Is_Item_Modifier( Item& item);
 	static bool Add(Item& item);
 	static void Remove(int index);
+	static void Remove_All();
 };
 

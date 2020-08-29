@@ -175,7 +175,7 @@ void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gè
 
 	// Initialisation de l'incrémenteur
 	startPos.Initialize_Axis(axis);
-	startPos.polar = childPos;
+	startPos.polar = childPos;	// pourrait mettre un safety ici, genre if(childpos exist)
 	startPos.coord = XY;
 
 	wallSize = Get_Wall_Size(axis);

@@ -36,6 +36,7 @@ void Ev_Dr_Choose_Lvl()
 				ConsoleRender::Add_String(skip, crd, WHITE, 0);
 				ev_Dr_ChooseLvl.Advance(0);
 				break;
+
 			case 2:
 				ConsoleRender::Add_String(pressNum, { crd.x - 1, crd.y + 1 }, GRAY, 0);
 
@@ -63,12 +64,13 @@ void Ev_Dr_Choose_Lvl()
 
 void Ev_Er_Choose_Lvl()	// efface le choix de lvl
 {
-	crd.y = 33;
-	crd.x = Find_Ctr_X((int)skip.length());
-	ConsoleRender::Add_String(skip, crd, WHITE, 0, true);
-	ConsoleRender::Add_String(pressNum, { crd.x - 1, crd.y + 1 }, WHITE, 0, true);
+	Coord coord;
+	coord.y = 33;
+	coord.x = Find_Ctr_X((int)skip.length());
+	ConsoleRender::Add_String(skip, coord, WHITE, 0, true);
+	ConsoleRender::Add_String(pressNum, { coord.x - 1, coord.y + 1 }, WHITE, 0, true);
 
-	crd.y += 5;
-	crd.x = 0;
-	gotoxy(crd.x, crd.y);	clreol();	// oldschool stuff
+	coord.y += 5;
+	coord.x = 0;
+	gotoxy(coord.x, coord.y);	clreol();	// oldschool stuff
 }

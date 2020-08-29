@@ -4,6 +4,7 @@
 #include "../console/sweet_cmd_console.h"
 #include "map.h"
 #include <Windows.h>
+#include "../events/global_events/ev_update_heart.h"
 
 
 TextConstant TXT_CONST;	// Symboles constants et souvant utilisés pour l'affichage
@@ -33,85 +34,114 @@ int Find_Ctr_X(int size)
 {
 	return (gConWidth - size) / 2;
 }
+
+int Find_Ctr_String_X(std::string txt)	// version un peu différente de celle en haut
+{
+	return (gConWidth - (int)txt.size()) / 2;
+
+}
+int Half_String(std::string txt)	// J'aurais du y penser plus tôt xD
+{
+	return ((int)txt.size() / 2);
+}
+
 /* Voici mes efforts pour uniformiser l'emplacement des crd dans le jeu pour afficher du texte*/
+
+
+														/* BEHOLD! YOU NOW ENTER THE REALM OF COPY PASTE*/
+
 
 // Le texte en HAUt ava être centré, et sur les lignes 3,4 et 5
 Coord Up_Txt_1(std::string txt)	// Pour afficher du texte en Haut
 {
-	return { Find_Ctr_X((int)std::size(txt)), 3 };
+	return { Find_Ctr_X((int)std::size(txt)), map.Get_Box_Limit(UP) - 5 };
 }	
 
 Coord Up_Txt_2(std::string txt) 
 {
-	return { Find_Ctr_X((int)std::size(txt)), 4 };
+	return { Find_Ctr_X((int)std::size(txt)),map.Get_Box_Limit(UP) - 4 };
 }	
 
 Coord Up_Txt_3(std::string txt)// Pour afficher du texte en Haut sur la 2e ligne
 {
-	return { Find_Ctr_X((int)std::size(txt)),5 };
+	return { Find_Ctr_X((int)std::size(txt)),map.Get_Box_Limit(UP) - 3 };
 }
 
-// Le text à côté du coeur
-Coord Heart_Txt_Crd(std::string txt ,int line)
+// Le text à droite du coeur
+Coord Heart_Txt_Crd_Right(std::string txt ,int line)
 {
 	int txtSize = (int)txt.size();
 
+	Coord crd = Find_Heart_Ori_XY();
+
 	if(line < 10)
-		return { (gConWidth - txtSize) / 2 + 22 , (gConHeight - 7 ) + line };
+		return { (crd.x - (txtSize / 2)) + 26 , crd.y + 2 + line };
 	else
 		return { 0,0 };	// hehe
+}
+
+Coord Heart_Txt_Crd_Left(std::string txt, int line)
+{
+	int txtSize = (int)txt.size();
+
+	Coord crd = Find_Heart_Ori_XY();
+
+	if (line < 10)
+		return { (crd.x + (txtSize / 2)) - 37 , crd.y + 2 + line };
+	else
+		return { 0,0 };	// hehe
+}
+
+int Boss_Txt_X()
+{
+	return  (gConWidth - (gConWidth / 5));
+}
+
+int Boss_Txt_Y(int line)
+{
+	return  (gConHeight / 2) - 7 + line;
 }
 
 Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplacement du personnage du boss
 {
-	if(line < 6)
-		return { (gConWidth - 30) - ((int)std::size(txt) / 2), 12 + line }; // au trois quart à droite
+	if(line < 6)	// 4/5 de l'écran
+		return { Boss_Txt_X() - ((int)std::size(txt) / 2),Boss_Txt_Y(line)}; // au trois quart à droite
 	else
 		return { 0,0 };	// hehe
-}
-int Boss_Txt_X()	
-{
-	return  (gConWidth - 30);
-}
-
-int Boss_Txt_Y(int line)	
-{
-	return 12 + line; 
 }
 
 void Erase_All_Boss_Txt()
 {
 	for (int i = 0; i < 6; i++)
 	{
-		gotoxy(map.Get_Box_Limit(RIGHT) + 1, 12 + i);
+		gotoxy(map.Get_Box_Limit(RIGHT) + 1, Boss_Txt_Y(i));
 		clreol();
 	}
 }
 
-Coord Jerry_Txt_Crd(std::string txt, int line)	// Affiche du texte à l'emplacement du personnage de Jimmy
-{
-	if (line < 4)
-		return { (gConWidth - 31) - ((int)std::size(txt) / 2), 7 + line }; // au trois quart à droite
-	else
-		return { 0,0 };	// hehe
-
-}
-
 int Jerry_Txt_X()
 {
-	return  (gConWidth - 31);
+	return  (gConWidth - (gConWidth / 5));
 }
 
 int Jerry_Txt_Y(int line)
 {
-	return 7 + line;
+	return  (gConHeight / 2) - 12 + line;
+}
+
+Coord Jerry_Txt_Crd(std::string txt, int line)	// Affiche du texte à l'emplacement du personnage de Jimmy
+{
+	if (line < 5)
+		return { Jerry_Txt_X() - ((int)std::size(txt) / 2),Jerry_Txt_Y(line)}; // au trois quart à droite
+	else
+		return { 0,0 };	// hehe
 }
 
 void Erase_All_Jerry_Txt()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = -1; i < 5; i++)
 	{
-		gotoxy(map.Get_Box_Limit(RIGHT) + 1, 7 + i);
+		gotoxy(map.Get_Box_Limit(RIGHT) + 1, Jerry_Txt_Y(i));
 		clreol();
 	}
 }

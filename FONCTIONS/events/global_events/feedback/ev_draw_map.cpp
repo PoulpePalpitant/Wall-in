@@ -187,7 +187,7 @@ static void Draw_Or_Erase_Border(bool erase = false)	// Pour faire flasher une b
 		break;
 
 	case RIGHT:
-		instXY = { map.Get_Box_Limit(RIGHT) + 1, map.Get_Box_Limit(UP) - 2 };
+		instXY = { map.Get_Box_Limit(RIGHT) + 1, map.Get_Box_Limit(UP) /*- 2*/ };
 		for (int i = instXY.y; i <= map.Get_Box_Limit(DOWN); i++)
 		{
 			ConsoleRender::Add_Char(instXY, sym, BRIGHT_WHITE);

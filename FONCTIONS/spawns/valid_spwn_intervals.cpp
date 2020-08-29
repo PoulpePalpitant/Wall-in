@@ -40,7 +40,7 @@ bool ValidSpwnIntervals::Is_Secondary_List_Full(int border)
 // -------------------------
 bool ValidSpwnIntervals::Is_Secondary_List_Empty(int border)
 {
-	return scndary.start[border] == NULL && bannedSpwn[border] == 0;	// La liste d'intervalle est vide
+	return (scndary.start[border] == NULL && bannedSpwn[border] == 0);	// La liste d'intervalle est vide
 }
 
 void ValidSpwnIntervals::Modify_Min(Interval* intval, int newMin)// Modifie le min
@@ -216,13 +216,13 @@ bool ValidSpwnIntervals::Add_Primary_Interval(int border, int min, int max)	// S
 // Ajoute un intervalle de spawn invalide à la liste secondaire
 bool ValidSpwnIntervals::Exclude_Primary_Interval(int border, int min, int max)		// SIDENOTE: L'exclusion se fait toujours sur une liste à 1 intervalle 0 à max. Cuz I said So!
 {
-	if (!Is_Secondary_List_Empty(border))	// dafuck, y'avais déjà quek chose icitte!
-		return false;
+	//if (!Is_Secondary_List_Empty(border))	// dafuck, y'avais déjà quek chose icitte!
+	//	return false;
 
 	int scndaryMax = scndary.start[border]->max;	// backup du max original
 	int scndaryMin = scndary.start[border]->min;	// backup du min original
 
-	if (min == scndaryMin || scndaryMax == max)	// Exclusion de l'intervalle au complet
+	if (min == scndaryMin || scndaryMax == max)	// Exclusion de l'intervalle au complet				// Devrait pas être min <= scndaryMin && scndaryMax <= max ??
 		Destroy_Empty_Interval(scndary, scndary.start[border], border);// On doit détruire l'intervalle
 	else
 	{

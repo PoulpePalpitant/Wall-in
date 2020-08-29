@@ -47,7 +47,6 @@ void BotList::Destroy_All_Bots()
 			bot[i] = {};
 		}
 	}
-	gGrids.Remove_All_Bots_From_Grid();	// gotta remove them from the grid 
 
 	if (!gAllBotMeta.alive) // no more bots
 	{

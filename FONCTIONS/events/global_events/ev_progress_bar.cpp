@@ -83,7 +83,7 @@ void Ev_Draw_Whole_Bar()	// Happens first
 		waveTot = nextWave = 0;
 		ratio = (numWaves[gCurrentLevel - 1]) / ((float)barLength);
 		baseClr = GRAY;
-		coord = { Find_Ctr_X(barLength) - (int)tip[true].length() /*- 1*/, map.Get_Box_Limit(UP) - 4 };	// pos de départ
+		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) - (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
 		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
 
 		ev_DrawWholeBar.Activate();
@@ -147,7 +147,11 @@ void Ev_Progress_Bar()
 	{
 		Ev_Draw_Whole_Bar();
 		ratio = numWaves[gCurrentLevel - 1] / ((float)barLength);	// On se fie à cette valeur pour progresser dans la bar
-		crd = { Find_Ctr_X(barLength) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ
+		
+		crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+		//crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) + (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+		//crd = { Find_Ctr_X(barLength) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ
+
 		nextWave = 0;
 		progClr = LIGHT_YELLOW;
 

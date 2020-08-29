@@ -13,7 +13,7 @@ extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall ver
 //enum class WallType { REGULAR, CORRUPTED, INVINCIBLE};
 enum class WallStrength { NONE, REGULAR, STRONG, BIGSTRONGWOW};		//
 enum class WallState { DEAD, EXISTS, ETERNAL, SAD};					// Je reviendrais customize ça quand je serais plus avancé
-enum class WallSym {DEAD, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_HOR3 = 240,  SYM_VER = 179, SYM_VER2= 186, SYM_VER3 = 221};				// Le symbole d'un seul wall, horizontal et vertical
+enum class WallSym {DEAD = 255, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_HOR3 = 240,  SYM_VER = 179, SYM_VER2= 186, SYM_VER3 = 221};				// Le symbole d'un seul wall, horizontal et vertical
 
 // Les walls pourraient avoir deux propriétés; 1 pour chacun des deux Links qui les cadrent
 
@@ -34,16 +34,16 @@ private:
 	WallStrength strgt = WallStrength::REGULAR;		// Type et force de résistance au bots du mur (dépend des propirétés du tir du joueur)
 	WallState state = WallState::DEAD;		// Si le wall existe visuellement sur l'UI (que le joueur peut le voir)
 	Colors clr = Colors::BRIGHT_WHITE;			// Colors is great. Par défaut se sera Blanc doe
-	WallSym sym;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
-	Axis axis;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
+	WallSym sym = WallSym::DEAD;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
+	Axis axis = HOR;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
 	int hp;									// La force du wall
 	int botOnMe = -1;						// Avertis si un bot est présent sur le wall. Si le wall s'active au même moment qu'un bot se trouve dessus, celui-ci sera détruit
 private:
 	friend class StructureManager;
 
-	Link* pParent;					// Le Link par lequel le wall dépend pour éxister. Si le Link est détruit, le wall est détruit
-	Link* pChild;					// Le Link qui dépend de ce wall. Si ce Wall ou son parent est détruis, ce child le sera aussi
-	Polarization childPos;			// Renseigne sur la position du CHILD selon la polarisation POS/NEG		Si POS: Le child est soit à droite, soit en bas.		Contraire pour le NEG
+	Link* pParent = NULL;					// Le Link par lequel le wall dépend pour éxister. Si le Link est détruit, le wall est détruit
+	Link* pChild = NULL;					// Le Link qui dépend de ce wall. Si ce Wall ou son parent est détruis, ce child le sera aussi
+	Polarization childPos = POS;			// Renseigne sur la position du CHILD selon la polarisation POS/NEG		Si POS: Le child est soit à droite, soit en bas.		Contraire pour le NEG
 
 private:
 	// NO TOUCHO!	BAD CODING HERE

@@ -8,6 +8,7 @@
 #include "../events/msg_dispatcher.h"
 #include "../inputs/action_input.h"
 #include "../player/player.h"
+#include "../grid/AllGrids.h"
 
 // Choice time static stuff
 Choice ChoiceTime::choiceList[MAX_CHOICES];	// liste des choix
@@ -84,15 +85,15 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 
  void ChoiceTime::Draw_Press_Enter()
  {
-	 XY.x = Find_Ctr_X((int)enter.size());
-	 XY.y = gConHeight - 15;
+	 XY.x = Find_Ctr_X((int)enter.size() - 1);
+	 XY.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 1;
 	 ConsoleRender::Add_String(enter, XY, GRAY); // affiche ce titre
 	 enterDrawn = true;
  }
  void ChoiceTime::Erase_Press_Enter()
  {
-	 XY.x = Find_Ctr_X((int)enter.size());
-	 XY.y = gConHeight - 15;
+	 XY.x = Find_Ctr_X((int)enter.size() - 1);
+	 XY.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 1;
 	 ConsoleRender::Add_String(enter, XY, WHITE, 0, true); // Efface ce titre
 	 enterDrawn = false;
  }

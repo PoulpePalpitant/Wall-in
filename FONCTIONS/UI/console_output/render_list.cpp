@@ -21,8 +21,8 @@ void ConsoleRender::Create_Queue(float speed, bool linear)
 	else
 		last = last->nxtQueue = new AnimationQueue;	// Nouvelle queue
 
-	last->timer.Set_Cd_Duration(speed);	 // Set la durée du countdown, mais L'ACTIVE TOUT DE SUITE BRAH
-	last->timer.Start_CountDown();	 // Set la durée du countdown, mais L'ACTIVE TOUT DE SUITE BRAH
+	last->timer.Set_Cd_Duration(speed);	 // Set la durée du countdown
+	last->timer.Start_CountDown();	 // mais L'ACTIVE TOUT DE SUITE BRAH
 	
 	animationQueue = last;
 	animationQueue->isLinear = linear;	// Si l'animation est lineaire, ou pas

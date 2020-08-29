@@ -6,8 +6,10 @@
 
 
 bool gSpawnThisCycle;
-int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
-//int gSpawnCycleTot = 120;						// Le nombre total de spawn cycle ayant u lieu
+//int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
+//int gSpawnCycleTot = 122;						// Le nombre total de spawn cycle ayant u lieu
+//int gSpawnCycleTot = 65;						// Le nombre total de spawn cycle ayant u lieu
+int gSpawnCycleTot = 46;						// Le nombre total de spawn cycle ayant u lieu
 
 SpeedTimer gSpwBotTimer;
 

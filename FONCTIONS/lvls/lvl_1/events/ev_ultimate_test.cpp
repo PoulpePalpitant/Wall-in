@@ -18,10 +18,11 @@ static std::string _1 = "- STOP EVERYTHING -"; ;
 static std::string _2 = "(Or Die...";
 static std::string _3 = "Yeah For Real)";
 static std::string _4 = "(Seconds Before Arrival:    )";
+static Coord crd;
 static bool success = false;
 
 static int spw;
-static int warnings = 127;/*112*/
+static int warnings = 109;/*112*/ // le - 8 c'est parce que ça pars moins vite somehow quand je debug pas
 const int totalSpw = 72;
 
 bool Ultimate_Test_Time()
@@ -107,19 +108,19 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 
 			case 4:
 				ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);	// stop everything or die
-				ConsoleRender::Add_String(_2, { Find_Ctr_X((int)std::size(_2 + _3)),5 }, WHITE, 250);
+				ConsoleRender::Add_String(_2, {Up_Txt_3(_2).x - Half_String(_3),Up_Txt_3(_2).y} , WHITE, 250);
 				ev_UltimateTest.Advance(220);
 				break;
 
 			case 5:
-				ConsoleRender::Add_String(_3, {(gConWidth / 2 ) - 1, 5 }, WHITE, 250);
+				ConsoleRender::Add_String(_3, { Up_Txt_3(_3).x + Half_String(_2),Up_Txt_3(_3).y }, WHITE, 250);
 				Just_Dr_Heart(3);
 				ev_UltimateTest.Advance(320);
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(_4, { Find_Ctr_X((int)std::size(_4)), 4 }, WHITE, 80);
-				Set_CountDown(botList.bot[0].Get_Warnings() / 2, { Find_Ctr_X((int)std::size(_4)) + 25 , 4 }, false);	// /2 c'est pour la vitesse des bots, le count down se fait par secondes à 1000 frames
+				ConsoleRender::Add_String(_4, Up_Txt_2(_4), WHITE, 80);
+				Set_CountDown((botList.bot[0].Get_Warnings() / 2) + 8, { Up_Txt_2(_4).x + 25,Up_Txt_2(_4).y }, false);	// /2 c'est pour la vitesse des bots, le count down se fait par secondes à 1000 frames
 				Ev_CountDown();
 				ev_UltimateTest.Advance(0);
 				ev_UltimateTest.delay.Start_Timer(100000, 1, true);
@@ -142,9 +143,9 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 						success = true;
 
 					ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, 50, true);	// ERASE
-					ConsoleRender::Add_String(_2, { Find_Ctr_X((int)std::size(_2 + _3)),5 }, WHITE, 60, true);
-					ConsoleRender::Add_String(_3, { (gConWidth / 2) - 1, 5 }, WHITE, 50, true);
-					ConsoleRender::Add_String(_4, { Find_Ctr_X((int)std::size(_4)), 4 }, WHITE, 50, true);
+					ConsoleRender::Add_String(_2, { Up_Txt_3(_2).x - Half_String(_3),Up_Txt_3(_2).y }, WHITE, 60, true);
+					ConsoleRender::Add_String(_3, { Up_Txt_3(_3).x + Half_String(_2),Up_Txt_3(_3).y }, WHITE, 50, true);
+					ConsoleRender::Add_String(_4, Up_Txt_2(_4), WHITE, 50, true);
 					jerryTime = false;
 					ev_UltimateTest.delay.Stop();
 					ev_UltimateTest.Advance(0);

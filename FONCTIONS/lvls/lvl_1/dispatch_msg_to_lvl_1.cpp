@@ -111,8 +111,11 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 
 	case PLAYER_SPAWNED: 
-		if(gCurrentStage == 0)
+		if (gCurrentStage == 0)
+		{
 			Ev_Dr_Wasd();							// Affiche les touches clavier du mouvement
+			MsgQueue::Register(SPAWN_SPECIAL_ITEM);	// Spawn la vie
+		}
 		break;
 
 	case BUMPED_BORDER:

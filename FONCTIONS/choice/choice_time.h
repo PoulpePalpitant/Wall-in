@@ -3,7 +3,7 @@
 #include "../UI/txtstyle.h"
 #include "../queue/queue.h"
 #include "../grid/AllGrids.h"
-
+#include "../events/global_events/clear_all_states.h"
 
 /* 
 	Choice Time: Fait apparaître des choix sur le terrain de jeu. Si le joueur se déplace sur le tit point en bas d'un choix, celui-ci sera sélectionné. Si le joueur pèse sur enter, le choix sera fait
@@ -22,6 +22,10 @@ struct Choice
 
 class ChoiceTime
 {
+	// FREIDN :)
+	friend void Clear_All_States(bool eraseMap);	// Gros reset button
+
+
 	static bool enterDrawn;
 	static Choice choiceList[MAX_CHOICES];	// liste des choix
 	static bool choiceTime;				// it is

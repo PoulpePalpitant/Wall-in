@@ -12,7 +12,7 @@ static std::string stop = "Stop";
 
 void Menu_Initializer()
 {
-	Resize_Grids_To_Level(gGrids, 0);	// Resize tout les grids pour ce niveau :)
+	 
 
 
 	///* CREATE CHOICE_TIME!!!!*/
@@ -20,6 +20,7 @@ void Menu_Initializer()
 	//ChoiceTime::Add_Choice(start, TXT_CONST.EMPTY, crd);					// Le joueur doit sélectionner du texte
 	//ChoiceTime::Add_Choice(stop, TXT_CONST.EMPTY, { crd.c, crd.r + 7 });	// Le joueur doit sélectionner du texte
 	//MsgQueue::Register(SPAWN_PLAYER);
+	MsgQueue::Register(LOCK_PLAYER);
 	MsgQueue::Register(LVL_INITIALIZED);// Envoie msg que le niveau à été intialisé
 
 }

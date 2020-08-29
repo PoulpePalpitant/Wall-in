@@ -16,6 +16,8 @@ class RingBufferQueue
 
 	void Unregister();
 public:
+	void EMPTY_QUEUE(); // very dangerous here
+
 	void Register(T msg);	// Ajoute le message à la liste des message à traiter 
 	bool Is_Full();
 
@@ -101,6 +103,13 @@ void RingBufferQueue<T>::Unregister()	// retire le message de la queue
 {
 	head = (head + 1) % MAX_Q_SIZE;	// Retire l'élément au début de la queue
 	total--;
+}
+
+template <class T>		
+void RingBufferQueue<T>::EMPTY_QUEUE()	// very dangerous here
+{
+	while (total)
+		Unregister();
 }
 
 template <class T>

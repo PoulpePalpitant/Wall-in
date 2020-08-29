@@ -3,6 +3,7 @@
 #include "../coord.h"
 #include "../txtstyle.h"
 #include "../../time/countdown_clock.h"
+#include "../../time/movement_timer.h"
 
 struct OutputData {
 

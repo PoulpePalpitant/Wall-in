@@ -94,7 +94,7 @@ static std::string _17 = "Actually, This Might Have Been";
 static std::string _18 = "A Little Bit Too Easy";
 static std::string _19 = "Let's Bring The Difficulty Up A Notch";
 static std::string _20 = "Nicely done!";
-static std::string _21 = "You Are Getting Better By the Seconds!";
+static std::string _21 = "You Are Getting Better By the Second!";
 static std::string _22 = "Now, A Tip For The Next Step:";
 static std::string _23 = "Big Structures Are Easily Breakable";
 static std::string _24 = "Try To Build Smaller Walls!";
@@ -159,7 +159,7 @@ static std::string _76 = "You Made It. ";
 static std::string _77 = "Well Done, Yes We Expected That";
 static std::string _78 = "It Was All Planned After All Hahh..";
 //static std::string _79 = "Good Job";
-static std::string _80 = "Anyway Since You Survived";
+static std::string _80 = "Anyway Since You Survived This Test";
 static std::string _81 = "I Think You Are Finally Ready";
 static std::string _82 = "I Have To Go, Now. But";
 static std::string _83 = "If You Think You Need More Practice";
@@ -175,7 +175,7 @@ static std::string jer_2= "Did I Do Good?";
 static std::string jer_3 = "Yes, You Too Did Good Jerry!";
 static std::string jer_4 = "(Jerry's Self-Esteem Was Boosted)";
 static std::string jer_5 = "Hey. Sorry About Almost Killing You";
-static std::string jer_6 = "I... I Just Wanted Show Boss The Best That I Can Do";
+static std::string jer_6 = "I... I Just Wanted To Show Boss The Best That I Can Do";
 static std::string jer_7 = "So anwyay...";
 static std::string jer_8 = "What Did You Think Of My Test?";
 static std::string jer_9 = "Did I Do Good?";// remove
@@ -189,7 +189,7 @@ static std::string rate_1 = "(His Self-Esteem Depends On It)";
 static std::string choiceMade;
 static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 ", " 12 ", " 13 " };
 //static std::string recomSub[] = { "The Worst, Honestly", " The Best " };
-static std::string recomSub2[] = { "The Worst, Honestly", "Pathetic","Terrible", "Awful","Poor", "Satisfactory", "Atrocious","Not Good", "Okay", "Fine", "Delicious", "The Absolute Best" };
+static std::string recomSub2[] = { "You Are The Worst.", "Pathetic","Terrible", "Awful","Poor", "Satisfactory", "Atrocious","Not Good", "Okay", "Fine", "Delicious", "You Are The Best." };
 static std::string jerrAnswer[] = { "...", "oh. ok.... I... huh... th-thanks...","Okay. Thanks. I Will Take that", "What?" , "Wow!"};
 static std::string answer[] =
 { 
@@ -266,14 +266,14 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 		//ev_BotTutorial.Go_To_X_Step(140);		// jerry answer
 		//ev_BotTutorial.Go_To_X_Step(130);		// jerry's is sorry
 		//ev_BotTutorial.Go_To_X_Step(114);		// just survived
-		//ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
+		ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
 		//ev_BotTutorial.Go_To_X_Step(41);		// now that's a shortcut
 	//	ev_BotTutorial.Go_To_X_Step(25);		// second trial
 		//ev_BotTutorial.Go_To_X_Step(18);		// first trial
 	}
 	else	// doin stuff 
 	{
-		Finish_Ultimate_Test();	// Cancel la discussion entre les deux personnages 
+		Finish_Ultimate_Test();	// Cancel la discussion entre les deux personnages  
 
 		while (ev_BotTutorial.delay.Tick())
 		{
@@ -363,7 +363,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 			
 			case 14:
-				ConsoleRender::Add_String(_15, {38 , 4}, GRAY, TXT_SPD_DR);
+				ConsoleRender::Add_String(_15, { map.Get_Box_Limit(LEFT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);
 				ConsoleRender::Add_String(_11, Boss_Txt_Crd(_11, 1), gBossClr, TXT_SPD_ER, true);
 				Set_Flashy_Border(LEFT);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
@@ -374,7 +374,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 15:
 				prevMovSpeed = gBotMoveTimer.Get_Speed();	// vitesse de déplacement précédante
-				Spawn_A_Jerry(RIGHT, 1, 20); // spawn Jerrry!
+				Spawn_A_Jerry(RIGHT, 1, 30); // spawn Jerrry!
 				ConsoleRender::Add_String(_13, Jerry_Txt_Crd(_13), gJerClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(250);
 				break;
@@ -396,7 +396,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 						ConsoleRender::Add_String(_14, Jerry_Txt_Crd(_14, 1), gJerClr, TXT_SPD_DR);	// Jerry à finis d'avancer
 						//ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_ER, true);
 						//ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_ER, true);
-						ConsoleRender::Add_String(_15_1, { 38 , 4 }, GRAY, TXT_SPD_ER, true);
+						ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(LEFT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 5), gBossClr, 200, true);
 
 						gBotMoveTimer.Start_Timer(prevMovSpeed, 1, true);	// Rétablit la vitesse précédante
@@ -420,7 +420,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 0:
 				ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_15_1, { 38 , 4 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(LEFT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Just_Dr_Arr_Keys();												// réaffichage
 				P1.Player_Gains_HP();					// redonne de la vie
 				
@@ -480,7 +480,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 26:
-				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Set_Flashy_Border(RIGHT, 11);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
 
@@ -523,7 +523,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 32:
 				if (!jerryTime)
 				{
-					ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_20, Boss_Txt_Crd(_20), gBossClr, TXT_SPD_DR);	// // congratz!			
 					ev_BotTutorial.delay.Stop();
 					ev_BotTutorial.Advance(500);
@@ -602,7 +602,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;						
 
 			case 44:
-				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Set_Flashy_Border(RIGHT, 11);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
 
@@ -670,7 +670,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 					ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 1), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_24, Boss_Txt_Crd(_24, 2), gBossClr, TXT_SPD_ER, true);
-					ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - (int)_15_1.length() / 2, 4 }, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(RIGHT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_25, { map.Get_Box_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, WHITE, TXT_SPD_ER, true);	// lols
 					ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 					P1.Set_Hp(3);
@@ -1033,12 +1033,14 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 114:
-				Just_Dr_Heart();
+				P1.Set_Hp(3);
+				Start_Ev_Dr_Heart(3);
 				ConsoleRender::Add_String(_75, Boss_Txt_Crd(_75 + _76), gBossClr, 300);
 				ev_BotTutorial.Advance(350);	
 				break;
 
 			case 115:
+				Erase_All_Jerry_Txt();
 				ConsoleRender::Add_String(_76, { Boss_Txt_X() - 3, Boss_Txt_Y() }, gBossClr, 250);
 				ev_BotTutorial.Advance(500);
 				break;
@@ -1168,6 +1170,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 138:
+				MsgQueue::Register(FREE_PLAYER);
 				ConsoleRender::Add_String(jer_12, Jerry_Txt_Crd(jer_12, 1), gJerClr, TXT_SPD_FAST);
 				ev_BotTutorial.Advance(1000);
 				break;
@@ -1175,6 +1178,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 139:
 				ConsoleRender::Add_String(jer_13, Jerry_Txt_Crd(jer_13, 3), gJerClr, TXT_SPD_FAST);
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links
+				MsgQueue::Register(DISABLE_BLAST);
 				ev_BotTutorial.Advance(500);
 				break;
 
@@ -1323,7 +1327,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 					//P1.Set_Hp(2000); // testing okay?
 					jerryTime = true;
 					Make_It_Vertical_Only();
-					Set_Jerry(RIGHT, 0, prevMovSpeed);	// Tu peux pas mettre un boxisde random et une crd de spawn specific
+					Set_Jerry(NONE, -1, prevMovSpeed);	// Tu peux pas mettre un boxisde random et une crd de spawn specific
 					Ev_Spawn_Jerry();
 
 					MsgQueue::Register(ENABLE_BLAST);

@@ -34,7 +34,8 @@ class Event
 public:
 	static FixedList<int> toUpdate;		// La queue de tout les events actifs À UPDATER
 	SpeedTimer delay;					// Permet de créer un délay entre chaque étapes de l'event
-
+	
+	void Safety();	// si, somehow, le timer est à OFF et que l'event est activé , on l'arrête
 	bool Is_Active()	{ return isActive;  }
 	void Activate();
 	void Deactivate();

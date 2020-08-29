@@ -24,7 +24,7 @@ namespace Intervals
 		Interval* start = nullptr;
 		Interval* end = nullptr;
 		int count = 0;						// Le nombre d'intervalles figurant dans la liste
-		int dfltMin = 0, dfltMax = 0;	// Le min et le max de base pour chaque intervalles
+		int dfltMin = 0, dfltMax = 1;	// Le min et le max de base pour chaque intervalles
 
 		// INFORMATION SUR LISTE
 		bool Is_Empty();	// Liste est vide?

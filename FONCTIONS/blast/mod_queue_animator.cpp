@@ -109,6 +109,13 @@ namespace DrawModifierQueue {
 		drawer[index].active = false;
 		total--;
 	}
+	void DrawerQueue::Remove_All()
+	{
+		for (int i = 0; i < MAX_QUEUE_SIZE; i++)
+			drawer[i].active = false;
+		total = 0;
+	}
+
 	void DrawerQueue::Cancel()	// Modifie une animation en cours si on cancel. Il faut soit effacer, ou empêcher de draw les char aux endroits qu'ils ne devraient pas être
 	{
 		for (int index = 0; index < MAX_QUEUE_SIZE; index++)

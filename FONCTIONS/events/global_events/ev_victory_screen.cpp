@@ -12,6 +12,8 @@
 #include "../../player/player.h"
 #include "ev_to_proceed.h"
 #include "../global_events/clear_all_states.h"
+#include "ev_make_it_rain.h"
+#include "../../console/sweet_cmd_console.h"
 
 static Event ev_VictoryScreen(Ev_Victory_Screen, 5);
 
@@ -63,7 +65,7 @@ static const std::string bigSurvived[] =
 "SSSSSSSSSSSSSSS         UUUUUUUUU     RRRRRRRR     RRRRRRR           VVV           IIIIIIIIII           VVV           EEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD         "
 };
 
-static int length[2] = { bigDAY[0].size(), bigSurvived[0].size() };
+static int length[2] = { (int)(bigDAY[0].size()), (int)(bigSurvived[0].size()) };
 static int height = 16;
 
 
@@ -154,7 +156,7 @@ static void Dr_Day()
 }
 static void Dr_Victory()
 {
-	Coord crd = { 5, 30 };
+	Coord crd = { Find_Ctr_X(length[1]), 12+ height+ 4 };
 	for (int line = 0; line < 16; line++)
 		ConsoleRender::Add_String(bigSurvived[line], { crd.x, crd.y + line });
 
@@ -185,43 +187,26 @@ static void Dr_Victory()
 			case 1:
 				
 				Dr_Day();
-				//Dr_Victory_Phrase();
-				//ListsOfChainToModify::Annihilate_All_Links();
-				//P1.Er_Player(); // efface joueur
 				ev_VictoryScreen.Advance(500);
 				break;
 
 			case 2: // tit break
 				Dr_Victory();
-				ev_VictoryScreen.Advance(1000);
+				ev_VictoryScreen.Advance(10000);
 				break;
 
 			case 3:
-			//	ConsoleRender::Add_String(GG_1, ori, LIGHT_GREEN, 450);
-				ev_VictoryScreen.Advance(500); 
+				Press_X_To_Proceed(0);
+				ev_VictoryScreen.Advance(0); 
+				ev_VictoryScreen.delay.Start_Timer(rainSpd, 1 ,true);
+				Ev_Make_It_Rain();				// fais l'event
 				break;
 
 			case 4:
-				Press_X_To_Proceed(0);
-				ev_VictoryScreen.Advance(00); 
-				ev_VictoryScreen.delay.Start_Timer(1000000, 1 ,true); 
+				Q_ev_MakeItRain.Add({});		// ajoute un symbole de cash!
 				break;
 
 			case 5:
-				//rng[0] = rand();
-				//rng[1] = rng[0] + 7;
-				//rdmHeight[0] = rng[0] % 16;
-				//rdmHeight[1] = rng[1] % 16;
-				//rdmLength[0] = rng[0] % length[0];
-				//rdmLength[1] = rng[1] % length[1];
-				//rdmClr[0] = (rng[0] % 16) +1;
-				//rdmClr[1] = (rng[1] % 16) +1;
-
-				//if(bigDAY[rdmHeight[0]][rdmLength[0]] != TXT_CONST.SPACE && bigDAY[rdmHeight[0]][rdmLength[0]] != ':')
-				//	ConsoleRender::Add_Char({ Find_Ctr_X(length[0]) + rdmLength[0], 10 + rdmHeight[0] },bigDAY[rdmHeight[0]][rdmLength[0]], (Colors)rdmClr[0]);
-				//
-				//if (bigSurvived[rdmHeight[1]][rdmLength[1]] != TXT_CONST.SPACE && bigSurvived[rdmHeight[1]][rdmLength[1]] != ':')
-				//	ConsoleRender::Add_Char({ 4+ rdmLength[1] , 26 + rdmHeight[1] },bigSurvived[rdmHeight[1]][rdmLength[1]], (Colors)rdmClr[1]);
 				break;
 			}
 		}

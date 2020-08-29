@@ -24,7 +24,7 @@ void Ev_Wait_For_Last_Bot() 	// Attend que le dernier bot du niveau meurt(bool s
 			if (!gAllBotMeta.alive && P1.Get_HP())	
 			{
 				MsgQueue::Register(VICTORY);
-				ev_WaitForLastBot.Advance(0);
+				ev_WaitForLastBot.Cancel();
 			}
 		}
 }

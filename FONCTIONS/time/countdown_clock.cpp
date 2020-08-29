@@ -6,16 +6,27 @@
 
 #include "countdown_clock.h"
 
-
+// OLDVERSION : pour nouvelle version, checker speedtimer dans movement_timer.h
 /*
 	Cette version de timer fonctionne avec le delta time provenant du timer principale de la gameloop de mon jeu. Chaque countdown sera décrémenté en fonction de ce deltatime.
 */
+
+int dbugDelay_Lol = 1;
+
+void CDTimer::Set_Debug_Delay_Lol()
+{
+	if (dbugDelay_Lol == 1)
+		dbugDelay_Lol = 20;
+	else
+		dbugDelay_Lol = 1;
+
+}
 
 
 bool CDTimer::Tick_Timer()	// Update le temps écoulé à partir de delta time
 {
 	if (this->isRunning)
-		this->timeLeft -= /*lag / framerate(ou MS_PER_UPDATE) * */ GameLoopClock::Get_Delta_Time();	// Réduit le countdown à partir de DeltaTime
+		this->timeLeft -= /*lag / framerate(ou MS_PER_UPDATE) * */ GameLoopClock::Get_Delta_Time() / dbugDelay_Lol;	// Réduit le countdown à partir de DeltaTime
 
 	if (this->timeLeft <= 0)
 	{

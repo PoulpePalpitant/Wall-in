@@ -10,20 +10,32 @@ ItemSpawnPool ItemSpawner::pool = {};
 bool ItemSpawner::pause = false;	// permet de pauser les updates
 
 
-bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd)	// Bypass la pool et le timer pour faire spawner un item
+bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel)	// Bypass la pool et le timer pour faire spawner un item
 {
 	Item item;
 	item.itemType = type;	// that's my type
 	item.active = true;	// Activate that boi
+	bool found = false;
 
 
 	if (!ItemsOnGrid::Reached_Max())
 	{
 		Refresh_Available_Spawn_List();
 
-		if (!Pick_Specific_Coord(crd))
-			if (!ItemSpawner::Find_Spawn_Location(item.grdCrd))	// // Generate random coord Si aucun spawn location found. Spawn juste pas 
-				return false;	// we couldn't spawn yo shit
+		if (Pick_Specific_Coord(crd))
+			if (!linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
+			{
+				availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
+				found = true;
+			}
+		
+		if(!cancel)
+			if(!found)
+				return false;	// we don't spawn elsewhere
+			else
+				if (!ItemSpawner::Find_Spawn_Location(item.grdCrd))	// // Generate random coord Si aucun spawn location found. Spawn juste pas 
+					return false;	// we couldn't spawn yo shit
+
 
 		item.grdCrd = crd;
 		ItemsOnGrid::Add(item); // Add à la lsite des items sur le grid

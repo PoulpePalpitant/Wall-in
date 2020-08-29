@@ -41,7 +41,7 @@ public:
 	static void Set_Spawner_Timer(TypeSpawner& spawner, int timerduration, int rngDelay);	// Set le timer pour le type dans la pool
 	
 	// SPAWNER
-	static bool Spawn_This_Item(ItemType type, GrdCoord crd);	// Fait spawner un item. Si l'endroit que l'on voulait faire spawner marche pas, génère une crd random automatiquement. 
+	static bool Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel = false);	// Fait spawner un item. Si l'endroit que l'on voulait faire spawner marche pas, génère une crd random automatiquement. 
 	static void Refresh_Available_Spawn_List();
 	static bool Find_Spawn_Location(GrdCoord &itemCrd);
 	static bool Generate_Rdm_Coord(GrdCoord& itmCrd);	// Trouve une coord dispo

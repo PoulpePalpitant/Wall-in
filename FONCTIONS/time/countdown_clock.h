@@ -5,6 +5,8 @@
 #include "../math/math_stuff.h"
 #include <string>
 
+extern int dbugDelay_Lol;
+
 class CDTimer {	// Timer de countdown
 private:
 	bool isRunning = false;	// Pause le countdown
@@ -17,6 +19,8 @@ private:
 
 	void Restart_CountDown();						// Ré-Enclanche le timer
 public:	
+	static void Set_Debug_Delay_Lol();	// this dumb timer needs this
+
 	void Set_Cd_Duration(float duration) { cdDuration = duration; }	// Set la durée de base du CountDown.
 	void End_CountDown() {	timeLeft = 0; isRunning = false; isFinished	= true;	}	// Finis abruptement le temps de CountDown
 	void Start_CountDown(int nbCD = 1);				// Enclanche le temps. Va reset automatiquement si nbCD > 1
@@ -38,7 +42,6 @@ public:
 	void Dsp_Name(Coord crd, Colors clr = WHITE, time_t time = 0);		// Affiche le nom de la clock
 	void Dsp_Time_Left(Coord crd, Colors clr = WHITE);					// Affiche le temps restant
 };
-
 
 
 

@@ -39,13 +39,6 @@ static const int distUnderGrid = 4;
 static Event ev_DrHeart(Ev_Dr_Heart, 3);
 
 static const std::string heart_4[] = {	// do this now
-//" * ,;;;, ,;;;,  *",
-//"  ;;;:::;:::;;;  ",
-//"  ;;;:::::::;;;  ",
-//"*  ';;:::::;;'   ",
-//"     ';;:;;'  *  ",
-//"    *  ';'       "
-//};
 "  ,;;;;, ,;;;;,  ",
 " ;;;*::*;*::*;;; ",
 " ;;;*:::*:::*;;; ",
@@ -131,106 +124,27 @@ void Ev_Rmv_Excess_Health();	// Même principe, sauf que retire le tit +
 
 
 */
-//
-//void Ev_Dr_Heart_3()		 // Affiche le coueur à ses différents stades
-//{
-//	if (!ev_DrHeart3.Is_Active())
-//	{
-//		// initialisation, la console doit être setté pour utiliser ça
-//		ori.x = Find_Ctr_X();		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
-//		ori.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y + distUnderGrid;	// Lignes en dessous du grid
-//		
-//		ev_DrHeart3.Activate();
-//		ev_DrHeart3.Start(0);
-//	}
-//	else
-//		while (ev_DrHeart3.delay.Tick())
-//		{
-//			switch (ev_DrHeart3.Get_Current_Step())
-//			{
-//			case 1:
-//				for (int i = 0; i < 10; i++)
-//				{
-//					if (i % 2 == 0)
-//						clrFlash = BRIGHT_WHITE;
-//					else
-//						clrFlash = LIGHT_GREEN;
-//
-//					for (int i = 0; i < 6; i++)	// Affiche tout les char du coeur
-//					{
-//						UI_Dsp_String( { ori.x - 9, ori.y + i }, heart_3[i], clrFlash);
-//						Sleep(20);
-//						//ConsoleRender::Add_String(heart_3[i], { origin.x - 9, origin.y + i }, clrFlash);
-//					}
-//				}
-//				//Ev_Dr_Heart_2();
-//				ev_DrHeart3.Advance(0);
-//				break;
-//
-//			case 2:
-//				ConsoleRender::Add_String(heart_3[1], { ori.x, ori.y + 1 }, LIGHT_GREEN);
-//				ev_DrHeart3.Advance(10000);
-//				break;
-//
-//			case 3:
-//				ConsoleRender::Add_String(heart_3[2], { ori.x, ori.y + 2 }, LIGHT_GREEN);
-//				ev_DrHeart3.Advance(10000);
-//				break;
-//
-//			case 4:
-//				ConsoleRender::Add_String(heart_3[3], { ori.x, ori.y + 3 }, LIGHT_GREEN);
-//				ev_DrHeart3.Advance(10000);
-//				break;
-//
-//			case 5:
-//				ConsoleRender::Add_String(heart_3[4], { ori.x, ori.y + 4 }, LIGHT_GREEN);
-//				ev_DrHeart3.Advance(10000);
-//				break;
-//
-//			case 6:
-//				ConsoleRender::Add_String(heart_3[5], { ori.x, ori.y + 5 }, LIGHT_GREEN);
-//				ev_DrHeart3.Advance(10000);
-//				break;
-//
-//			case 7:
-//				ConsoleRender::Add_Char(xy, 197, GRAY);
-//				ev_DrHeart3.Advance(2000);
-//				break;
-//
-//			case 8:
-//				ConsoleRender::Add_Char(xy, 197, WHITE);
-//				ev_DrHeart3.Advance(2500);
-//				break;
-//
-//			case 9:
-//				ConsoleRender::Add_Char(xy, 197, BRIGHT_WHITE);
-//				ev_DrHeart3.Advance(4000);
-//				break;
-//
-//			case 10:
-//				ConsoleRender::Add_Char(xy, 197, LIGHT_GREEN);
-//				ev_DrHeart3.Advance(0);
-//				break;
-//			}
-//		}
-//}
+
+Coord Find_Heart_Ori_XY()	 // position de départ pour draw le coeur
+{
+	return { Find_Ctr_String_X(heart_dead[0]), linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y + distUnderGrid };
+}
 
 void Just_Dr_Heart(int hp)
 {
-	// initialisation, la console doit être setté pour utiliser ça
-	ori.x = Find_Ctr_X();		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
-	ori.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y + distUnderGrid;	// Lignes en dessous du grid
+	// initialisation, la console doit être setté pour utiliser ça, ainsi que le grid
+	ori = Find_Heart_Ori_XY();
 
 	for (int i = 0; i < 6; i++)	// Affiche tout les char du coeur
 	{
 		if(hp == 3)
-			ConsoleRender::Add_String(heart_3[i], { ori.x - 8, ori.y + i }, LIGHT_GREEN);
+			ConsoleRender::Add_String(heart_3[i], { ori.x, ori.y + i }, LIGHT_GREEN);
 		else
 			if(hp == 2)
-				ConsoleRender::Add_String(heart_2[i], { ori.x - 8, ori.y + i }, LIGHT_YELLOW);
+				ConsoleRender::Add_String(heart_2[i], { ori.x, ori.y + i }, LIGHT_YELLOW);
 			else
 				if(hp==1)
-					ConsoleRender::Add_String(heart_1[i], { ori.x - 8, ori.y + i }, LIGHT_RED);
+					ConsoleRender::Add_String(heart_1[i], { ori.x, ori.y + i }, LIGHT_RED);
 	}
 }
 
@@ -508,24 +422,6 @@ void Set_Up_Drawers(int hp, bool slow)		 // Setup les intervalles pour l'afficha
 
 	
 	HP = hp;
-	//Coord xy;
-	//Coord origin = { 75, 45 };
-
-	//// Ceci sera utile pour fill le coueur Outside!
-	//for (int r = 0; r < inside.Get_Max_Available_Lists(); r++)
-	//{
-	//	xy.y = origin.y; xy.y += r;
-	//	xy.x = origin.x;
-
-	//	for (int c = 0; c < inside.Get_Default_Max(); c++)
-	//	{
-	//		if (inside.Find_Value(r, c)) // Si échoue à trouver la valeur, on continue			
-	//			ConsoleRender::Add_Char(xy, heart_3[r][c], LIGHT_GREEN);
-
-	//		xy.x++;
-	//	}
-	//}
-
 }
 
 void Start_Ev_Dr_Heart(int hp, bool slow)		 // Setup l'event Précédent
@@ -544,12 +440,12 @@ void Start_Ev_Dr_Heart(int hp, bool slow)		 // Setup l'event Précédent
 void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
 {
 	static int boringNum;
+	static int rdmFill;
 	if (!ev_DrHeart.Is_Active())
 	{
 		// La console doit être setté pour utiliser ça
-		ori.x = Find_Ctr_X() - 8;		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
-		ori.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y + distUnderGrid;	// Lignes en dessous du grid
-		
+		ori = Find_Heart_Ori_XY();
+		rdmFill = 15;	// nombre de ill random à l'etéreieur du coeur
 		if (HP == 0) // repositionnnement
 		{
 			ori.x -= 6;
@@ -557,10 +453,10 @@ void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
 		}
 		if (HP == 1)
 		{
+			rdmFill * 3;
 			fastDraw = false;
 			ori.x += 2;
 		}
-
 
 		boringNum = drawnOut = 0; // Pour un peu de random
 
@@ -580,7 +476,7 @@ void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
 				if (!inside.Is_All_Empty())
 				{
 					// Draw quelques char cool un peu à l'ext du coeur, d'in fois
-					if(drawnOut < 15)
+					if(drawnOut < rdmFill)
 						if (boringNum % 6 == 0)
 							Fill_Outside_Heart(false);
 					

@@ -1,7 +1,7 @@
 //
-#include <iostream>   // pour le cout
-#include <conio.h>   // pour le _getch()
-#include <thread>	// Pour multiplier les processus en simultané!
+//#include <iostream>   // pour le cout
+//#include <conio.h>   // pour le _getch()
+//#include <thread>	// Pour multiplier les processus en simultané!
 //#include <string>	// pour le string
 //#include <iomanip> // pour les manipulateurs
 //#include <windows.h> //pour le time, et toute sorte de shits.
@@ -9,36 +9,25 @@
 //#include "WinUser.h"
 
 #include "../FONCTIONS/rng/rng.h"
-#include "../FONCTIONS/grid/managegrids.h"
-#include "../FONCTIONS/structure_manager/structure_manager.h"
 #include "../FONCTIONS/grid/AllGrids.h"
-#include "../FONCTIONS/link/link.h"
-#include "../FONCTIONS/bots/botlist.h"
-#include "../FONCTIONS/bots/bot.h"
-#include "../FONCTIONS/bots/botinitialize/bot_intializer.h"
-#include "../FONCTIONS/bots/botmove.h"
-#include "../FONCTIONS/spawns/spawn_bot.h"
-#include "../FONCTIONS/spawns/bots_to_spawn.h"
-#include "../FONCTIONS/spawns/valid_spwn_intervals.h"
-#include "../FONCTIONS/math/manage_interval.h"
+#include "../FONCTIONS/grid/managegrids.h"
 #include "../FONCTIONS/time/spawn_cycle.h"
-// test//
-#include "../FONCTIONS/events/global_events/ev_update_heart.h"
-//
-#include "../FONCTIONS/UI/console_output/dsp_char.h"
-#include "../FONCTIONS/UI/console_output/dsp_string.h"
+#include "../FONCTIONS/bots/botmeta.h"
+#include "../FONCTIONS/lvls/lvl_script.h"
 
 #include "../FONCTIONS/update_game/update_game.h"
 #include "../FONCTIONS/UI/console_output/render_list.h"
 #include "../FONCTIONS/inputs/detect_input.h"
 #include "../FONCTIONS/time/clock.h"
 #include "../FONCTIONS/time/timerOP.h"
-#include "../FONCTIONS/bots/botmeta.h"
-#include "../FONCTIONS/inputs/action_input.h"
 #include "../FONCTIONS/events/msg_dispatcher.h"
 #include "../FONCTIONS/console/sweet_cmd_console.h"
-
 #include "../FONCTIONS/game/initialize_game.h"
+
+// test zone
+#include "../FONCTIONS/lvls/lvl_1/msg_events/ev_arr_keys.h"
+#include "../FONCTIONS/lvls/lvl_1/msg_events/ev_wasd.h"
+
 
 using namespace std;
 
@@ -128,27 +117,6 @@ int main()	// Le début!
 	//	}
 	//}
 
-
-
-	Intervals::ManageIntervalLists itemSpwLocations(linkGrid->Get_Cols(), 0, linkGrid->Get_Rows());
-	itemSpwLocations.Empty_List(4);	// Vide la colonne #4
-	itemSpwLocations.Add_Interval_On_Top(2, -7, 12);
-	itemSpwLocations.Exclude_Interval_From_List(5, -7, 12);
-	itemSpwLocations.Remove_Value(7, 3);
-	int col = 0, row = 0;	itemSpwLocations.Pick_From_Lists(col, row, true, false, Intervals::RDM_ALL);
-
-	itemSpwLocations.Resize(linkGrid->Get_Cols(), 0, 2);
-
-	while (!itemSpwLocations.Is_All_Empty())	// breaking time
-	{
-		itemSpwLocations.Pick_From_Lists(col, row, true, true, Intervals::RDM_ALL);
-	}
-
-	itemSpwLocations.Reset_All_Lists();
-	itemSpwLocations.~ManageIntervalLists();
-
-	Intervals::ManageIntervalLists* itemSpwLocations2 = new Intervals::ManageIntervalLists(linkGrid->Get_Cols(), 0, linkGrid->Get_Rows());
-
 	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
 
@@ -162,15 +130,15 @@ int main()	// Le début!
 
 	// some windows stuff
 	Set_Input_Buffer_Handle();	
-
-
-	Setup_Console_Window();	// Titre et curseur
-	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Set_Dflt_WND();			// Dimension de la window mon gars
+	//CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
+
+	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Initialize_Game();		// Initialize une bunch de crap
 
+
 	// CLOCK TESTING
-	Coord crd2 = { 45,1 }; UI_Dsp_String(crd2, "Spawn Waves: ");
+	Coord crd2 = { 45,1 }; ConsoleRender::Add_String("Spawn Waves: ", crd2 );
 	Coord crd3 = { 61,1 };	// Update la combientième wave
 
 	//GameClock LvlClock;
@@ -198,16 +166,16 @@ int main()	// Le début!
 		
 		lag += GameLoopClock::Get_Delta_Time();
 
-		if (loadBuffer && GameLoopClock::Get_Delta_Time() >= inputBuffer)
-		{
-			Load_Loop_Buffer();	// un tit buffer d'inputs
-			loadBuffer = false;
-		}
+		//if (loadBuffer && GameLoopClock::Get_Delta_Time() >= inputBuffer)
+		//{
+		//	Load_Loop_Buffer();	// un tit buffer d'inputs
+		//	loadBuffer = false;
+		//}
 
 
 		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps		
 			
-			loadBuffer = true;
+			//loadBuffer = true;
 			Read_Input_Buffer();
 			//Detect_Input();				// Détect les inputs mah dude0
 

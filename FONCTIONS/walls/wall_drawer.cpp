@@ -4,24 +4,38 @@
 extern const int WALL_DRAW_SPEED = 40000;
 
 
-WallDrawer* DrawWalls::start; 
-WallDrawer*DrawWalls::end;
+WallDrawer* DrawWalls::start = NULL; 
+WallDrawer*DrawWalls::end = NULL;
+
+
+void DrawWalls::Reset_Drawer(WallDrawer* &drawer)
+{
+	drawer->timer.Stop();
+	drawer->nxt = NULL;
+	drawer = NULL;	// reset that shit
+}
 
 void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)	// On delete rien au final
 {
+	toRemove->timer.Stop();
+
 	if (toRemove == start && toRemove == end)
 		start = end = toRemove = NULL;
 	else
 		if (toRemove == start)
 		{
 			start = start->nxt;
-			toRemove->nxt = NULL;		// Je me suis fais chié ici, car le .nxt n'était pas reset à chaque fois. Et comme on détruit pas, ça peut créer une loop infinie!
+			//Reset_Drawer(toRemove); // Je me suis fais chié ici, car le .nxt n'était pas reset à chaque fois. Et comme on détruit pas, ça peut créer une loop infinie!
+			toRemove->nxt = NULL;		
 			toRemove = start;
 		}
 		else
 			if (toRemove == end)
 			{
 				end = prev;
+ 				toRemove->nxt = NULL;
+				//toRemove = NULL;
+				//Reset_Drawer(toRemove);	// trying stuff here
 				toRemove = prev->nxt = NULL;
 			}
 			else
@@ -29,7 +43,24 @@ void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)	// On delete ri
 				toRemove = toRemove->nxt;
 				prev->nxt->nxt = NULL;
 				prev->nxt = toRemove;
+				//prev->nxt = toRemove->nxt;
+				//Reset_Drawer(toRemove);
+				//toRemove = prev->nxt;
 			}
+}
+void DrawWalls::Remove_All()
+{
+	WallDrawer* toRemove, *nxt;
+
+	toRemove = start;
+
+	while (toRemove)
+	{
+		nxt = toRemove->nxt;
+		Reset_Drawer(toRemove);
+	}
+
+	start = end = NULL;
 }
 
 void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
@@ -61,6 +92,7 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 				 ConsoleRender::Add_Char(it->xy.coord, it->sym, it->clr);
 				 it->xy.Increment_Coord();
 			 }
+
 			 Remove(prev, it);
 			 return true;
 		 }
@@ -109,6 +141,47 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 		 }
 	 }
  }
+ 
+ bool DrawWalls::Is_Empty()
+ {
+	 if (start)
+		 return false;
+	 else
+		 return true;
+
+ }
+
+ void DrawWalls::Finish_All() // Termine d'afficher tout les walls! Alternative à remove all qui crash tout le temps
+ {
+
+	 if (start == NULL) return;	// Liste vide
+
+	 static WallDrawer* it;
+	 static WallDrawer* prev;
+
+	 it = start;
+	 prev = NULL;
+
+	 // nombre de count left
+	 int charsLeft = it->timer.Get_Moves_Left();
+
+	 while (it)
+	 {
+		 for (int i = 0; i < charsLeft; i++)
+		 {
+			 ConsoleRender::Add_Char(it->xy.coord, it->sym, it->clr);
+			 it->xy.Increment_Coord();
+			 Remove(prev, it);
+			 return;
+		 }
+
+		 prev = it;
+		 it = it->nxt;	// do that
+	 }
+
+	 start = end = NULL;
+ }
+
 
 void DrawWalls::Draw_Them_Walls()		
 {
@@ -117,7 +190,7 @@ void DrawWalls::Draw_Them_Walls()
 	static WallDrawer* it;
 	static WallDrawer* prev;
 	
-	it = start;
+	it = DrawWalls::start;
 	prev = NULL;
 
 	while(it)
