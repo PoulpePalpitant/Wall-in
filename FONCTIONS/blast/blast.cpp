@@ -266,15 +266,18 @@ void Blast::UPD_Blast_Shot()
 
 void Blast::Stop_Blast()	// stop le blast...... le grus
 {
-	UI_MoveBlast::Erase_Blast_Tail(this); 	// Sert principalement à effacer la tail bien franchement 
+	if (active)
+	{
+		UI_MoveBlast::Erase_Blast_Tail(this); 	// Sert principalement à effacer la tail bien franchement 
 
-	// Après le blast!!
-	P1.Upd_Sym_From_Direction(dir);
-	P1.Dr_Player();				// Faut réafficher le joueur après le tir
+	   // Après le blast!!
+		P1.Upd_Sym_From_Direction(dir);
+		P1.Dr_Player();				// Faut réafficher le joueur après le tir
 
-	// Le Blast peut resté actif si il ne créé pas de mur. Il faut attendre que ses char soit effacés
-	active = gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
-	updateTimer.Stop();
+		// Le Blast peut resté actif si il ne créé pas de mur. Il faut attendre que ses char soit effacés
+		active = gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
+		updateTimer.Stop();
+	}
 }
 
 

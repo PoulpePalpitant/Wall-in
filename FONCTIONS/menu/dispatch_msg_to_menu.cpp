@@ -60,7 +60,7 @@ void Dispatch_Msg_To_Menu()
 			switch (gMenuKey)	// Input de charactères
 			{
 			case 49:	/* Les numéros de 1 à 9 */
-			//case 50:	
+			case 50:	
 			//case 51:
 			//case 52:
 			//case 53:
@@ -78,9 +78,9 @@ void Dispatch_Msg_To_Menu()
 
 		if (gCurrentStage >= 3)
 		{
-			if (gMenuKey == 89 || gMenuKey == 78)	 /*78 = Y Pour Yes */ /*89 n pour no */
+			if (gMenuKey == 78 || gMenuKey == 89)	 /*78 = Y Pour Yes */ /*89 n pour no */
 			{
-				if (gMenuKey == 89)				
+				if (gMenuKey == 78)				
 					gSkipStory = true; 
 
 				if (P1.Set_On_Grid())

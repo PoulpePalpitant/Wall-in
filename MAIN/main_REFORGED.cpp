@@ -34,7 +34,7 @@ using namespace std;
 
 // ALL IN ONE PLACE MOTHERFUCKER!
 
-int main()	// Le début!
+void main()	// Le début!
 {
 	// START STUFF LOOP
 	// ***************
@@ -131,14 +131,14 @@ int main()	// Le début!
 	// some windows stuff
 	Set_Input_Buffer_Handle();	
 	Set_Dflt_WND();			// Dimension de la window mon gars
-	//CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
+	CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
 
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Initialize_Game();		// Initialize une bunch de crap
 
 
 	// CLOCK TESTING
-	Coord crd2 = { 45,1 }; ConsoleRender::Add_String("Spawn Waves: ", crd2 );
+	//Coord crd2 = { 45,1 }; ConsoleRender::Add_String("Spawn Waves: ", crd2 );
 	Coord crd3 = { 61,1 };	// Update la combientième wave
 
 	//GameClock LvlClock;
@@ -155,7 +155,7 @@ int main()	// Le début!
 	int MS_PER_UPDATE = 10;	// Rythme à laquelle je veais ttout update
 	int loops = 0;
 	int frames = 0;
-	
+	//GameLoopClock::Stop();
 	GameLoopClock::Reset_Timer();	// Premier reset
 	//thread *inputs = new thread(Input_Thread_Handler);
 
@@ -171,7 +171,7 @@ int main()	// Le début!
 		//	Load_Loop_Buffer();	// un tit buffer d'inputs
 		//	loadBuffer = false;
 		//}
-
+		
 
 		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps		
 			
@@ -187,13 +187,13 @@ int main()	// Le début!
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
-			if (++frames == 25)	// update les infos à chaque X Frames
+			if (++frames == 15)	// update les infos à chaque X Frames
 			{
-			//	ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
-				ConsoleRender::Add_String(std::to_string((int)(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
-				ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
-				ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
-				ConsoleRender::Add_String(std::to_string(gAllBotMeta.spawned), { crd3.x + 8, crd3.y });	// Nombre de bot en vie
+				//ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
+				//ConsoleRender::Add_String(std::to_string((int)(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
+				//ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
+				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
+				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.spawned), { crd3.x + 8, crd3.y });	// Nombre de bot en vie
 
 				frames = 0;
 			}
@@ -203,10 +203,8 @@ int main()	// Le début!
 		Update_Game_NOT_60FPS();	// à remove un jour	
 		ConsoleRender::Render();	// Fait tout les affichages
 	}
-
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
 		// GAME LOOP DES INTERNETS!
-
 
 		//double previous = getCurrentTime();
 		//double lag = 0.0;

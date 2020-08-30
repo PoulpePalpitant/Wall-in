@@ -7,6 +7,7 @@
 #include "../menu/dispatch_msg_to_menu.h"
 #include "../menu/events/Ev_Start_Game.h"
 #include "../lvls/lvl_1/dispatch_msg_to_lvl_1.h"
+#include "../lvls/lvl_2/dispatch_msg_to_lvl_2.h"
 
 
 
@@ -96,7 +97,7 @@ void Dispatch_To_Lvl()	// Par ici qu'on va updater tout les events du niveau
 	{
 	case 0:	Dispatch_Msg_To_Menu(); break;			// Update les events du menu
 	case 1: Dispatch_Msg_To_Lvl_1();break;			// Check les events à faire
-	case 2:// Lvl_2_Upd_Events();break;			// Check les events à faire
+	case 2: Dispatch_Msg_To_Lvl_2();break;			// Check les events à faire
 	case 3:// Lvl_3_Upd_Events();break;			// Check les events à faire
 	case 4:// Lvl_4_Upd_Events();break;			// Check les events à faire
 	case 5:// Lvl_5_Upd_Events();break;			// Check les events à faire

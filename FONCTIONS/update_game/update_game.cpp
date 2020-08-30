@@ -43,10 +43,10 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 
 		//ItemSpawner::UPD_Item_Spawn_Timers(); // est déjà dans upd cycles stuff
 		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent
-		ListsOfChainToModify::Update_Chain_Modification();
-		DrawModifierQueue::Update_Modifier_Queue();
-		DrawWalls::Draw_Them_Walls();			// draw les putains de walls
+		ListsOfChainToModify::Update_Chain_Modification();	//
+		DrawModifierQueue::Update_Modifier_Queue();			//
 
+		DrawWalls::Draw_Them_Walls();	// draw les putains de walls
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 	}
 }

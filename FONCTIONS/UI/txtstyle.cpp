@@ -1,10 +1,11 @@
 
+#include <Windows.h>
 #include "txtstyle.h"
 
 #include "../console/sweet_cmd_console.h"
 #include "map.h"
-#include <Windows.h>
 #include "../events/global_events/ev_update_heart.h"
+#include "../grid/AllGrids.h"
 
 
 TextConstant TXT_CONST;	// Symboles constants et souvant utilisés pour l'affichage
@@ -44,7 +45,10 @@ int Half_String(std::string txt)	// J'aurais du y penser plus tôt xD
 {
 	return ((int)txt.size() / 2);
 }
-
+int Find_Ctr_Grid(std::string txt)		// Affiche au centre du grid			
+{
+	return map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - Half_String(txt);
+}
 /* Voici mes efforts pour uniformiser l'emplacement des crd dans le jeu pour afficher du texte*/
 
 

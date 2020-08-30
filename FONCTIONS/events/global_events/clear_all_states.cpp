@@ -16,13 +16,14 @@
 #include "../../blast/mod_queue_animator_add.h"
 #include "../../blast/mod_queue_animator_consume.h"
 #include "../../blast/blast_modifier_queue.h"
-
+#include "../../blast/blast.h"
 //#include "../../player/player.h"
 //#include "../../grid/AllGrids.h"
 
 void Clear_All_States(bool eraseLinks)	// Gros reset button()	
 {
 	// PRIME RESETS
+	blastP1.Cancel();			 // Cancel le blast
 	MsgQueue::Unregister_All();	// Tout les msg é
 	Event::Cancel_All();		// Tout les events
 	Reset_All_Flags();				// Flags
@@ -35,7 +36,6 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
 	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
 	BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
-
 
 	if (eraseLinks)	// efface les links et walls
 	{

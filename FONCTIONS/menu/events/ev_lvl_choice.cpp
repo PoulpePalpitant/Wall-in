@@ -12,7 +12,7 @@ static Event ev_Dr_ChooseLvl(Ev_Dr_Choose_Lvl, 3);	// Déclaration
 
 static std::string skip = "Select Level";
 static std::string pressNum = "(Press Number)";
-static std::string recom[] = { " 1 " , "...To Be Announced"};
+static std::string recom[] = { " 1 " , "More...To Be Announced"};
 //static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 "};
 
 static Coord crd;

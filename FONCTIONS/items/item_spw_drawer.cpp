@@ -63,7 +63,7 @@ void DrawItemSpawnList::Find_Item_Sym(ItemType type)
 	switch (type)
 	{
 	case ItemType::REGULAR:			  break;
-	case ItemType::BUFFER:		sym = 254;	clr = LIGHT_GREEN;		  break;
+	case ItemType::BUFFER:		sym = 254;	clr = LIGHT_YELLOW;		  break;
 	case ItemType::BLOCKER:		sym = 158; 	clr = LIGHT_RED;		  break;
 	case ItemType::CORRUPTED:	sym = 207;	clr = LIGHT_PURPLE;		break;
 	case ItemType::COLOR_A:		sym = 176;	clr = LIGHT_YELLOW;	  break;

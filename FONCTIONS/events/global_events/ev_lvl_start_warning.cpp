@@ -24,7 +24,7 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 	if (!ev_LvlStartWarning.Is_Active())
 	{
 		// initialisation, la console doit être setté pour utiliser ça
-		ori.x = Find_Ctr_X((int)ready.size());			// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
+		ori.x = Find_Ctr_Grid(ready);		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
 		ori.y = linkGrid->Get_Rows();
 		crd = ori;
 		stringProgress = 0;

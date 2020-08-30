@@ -13,7 +13,7 @@ static Event ev_MakeItRain(Ev_Make_It_Rain, steps);
 DrawerQueue Q_ev_MakeItRain(1550 , steps);		// Queue de 50, avec 5 steps
 
 static Coord xy;	// dollars positions
-const int rainSpd = 120000;	// viteese d'apparition des dollars	
+const int rainSpd = 110000;	// viteese d'apparition des dollars	
 static const int fadeSpd = 2300;		// vitesse de dispartition des dollars (linéaire)
 
 
@@ -40,6 +40,9 @@ void Ev_Make_It_Rain()				 // Affiche un écran qui gratifiant
 					Q_ev_MakeItRain.queue[i].XY.y = rand() % gConHeight;
 					if (Q_ev_MakeItRain.queue[i].XY.y <= 3)
 						Q_ev_MakeItRain.queue[i].XY.y += 3;
+					else
+						if (Q_ev_MakeItRain.queue[i].XY.y >= gConHeight - 5)
+							Q_ev_MakeItRain.queue[i].XY.y -= 5;
 
 					ConsoleRender::Add_Char(Q_ev_MakeItRain.queue[i].XY, TXT_CONST.CASH, LIGHT_GREEN);
 					Q_ev_MakeItRain.Step(i, fadeSpd);
@@ -62,7 +65,7 @@ void Ev_Make_It_Rain()				 // Affiche un écran qui gratifiant
 					ConsoleRender::Add_Char(Q_ev_MakeItRain.queue[i].XY, TXT_CONST.SPACE);
 					Q_ev_MakeItRain.queue[i].XY.y--;
 					ConsoleRender::Add_Char(Q_ev_MakeItRain.queue[i].XY, TXT_CONST.CASH, GRAY);
-					Q_ev_MakeItRain.Step(i, fadeSpd  * 2);
+					Q_ev_MakeItRain.Step(i, fadeSpd);
 					break;
 
 				case 5:

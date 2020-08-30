@@ -65,8 +65,8 @@ void Player::Upd_Color()
 
 	switch ((Modifier)tempMod)
 	{
-	case REGULAR: clr = WHITE;				  break;
-	case BUFFER: clr = LIGHT_GREEN;			  break;
+	case REGULAR: clr = LIGHT_GREEN;		  break;
+	case BUFFER: clr = LIGHT_YELLOW;		  break;
 	case BLOCKER: clr = LIGHT_RED;			  break;
 	case CORRUPTER: clr = LIGHT_PURPLE;		  break;
 	case COLOR_A: clr = LIGHT_YELLOW;		  break;

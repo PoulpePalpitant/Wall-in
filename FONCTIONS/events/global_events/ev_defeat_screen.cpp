@@ -25,8 +25,8 @@ static const int DFLT_SLOW_SPEED[2] = {60000, 42000};	// same logic
 static std::string tip = "Tip: ";
 static std::string tips[] = { "Never Stop Building", "Speed Is Key", "Shooting From Afar Is Slower", "" };
 
-static std::string dead[] = { "YOU DIED","YOU LOST", "DEFEAT", "NOT VICTORIOUS" };
-static std::string retry = "Retry?";
+static std::string dead[] = { "EMPLOYEE TERMINATED","YOU LOST", "DEFEAT", "NOT VICTORIOUS" };
+static std::string retry = "Be Replaced?";
 
 // Comment faire du ascii art
 //static const std::string heart_3[] = {};
@@ -42,7 +42,7 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 	if (!ev_DefeatScreen.Is_Active())
 	{
 		// La console doit être setté pour utiliser ça
-		ori.x = Find_Ctr_X((int)dead[0].length()) - 1;		// L'afficahge du coeur se fera à partir d'un point central, situé en plein milieu de la fenêtre windows
+		ori.x = Find_Ctr_Grid(dead[0]);
 		ori.y = linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y -6;
 
 		// refresh all
@@ -67,7 +67,7 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 				break;
 
 			case 3:
-				ConsoleRender::Add_String(retry, { ori.x + 1, ori.y + 2 }, LIGHT_RED, 400);
+				ConsoleRender::Add_String(retry, { Find_Ctr_Grid(retry), ori.y + 2 }, LIGHT_RED, 400);
 				ev_DefeatScreen.Advance(2000);
 				break;
 

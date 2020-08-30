@@ -23,19 +23,21 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel)	// B
 		Refresh_Available_Spawn_List();
 
 		if (Pick_Specific_Coord(crd))
+			availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
+
+		while (!found)
+		{
 			if (!linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
-			{
-				availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
-				found = true;
-			}
-		
-		if(!cancel)
-			if(!found)
+				break;
+
+			if (cancel)
 				return false;	// we don't spawn elsewhere
 			else
-				if (!ItemSpawner::Find_Spawn_Location(item.grdCrd))	// // Generate random coord Si aucun spawn location found. Spawn juste pas 
+				if (!ItemSpawner::Find_Spawn_Location(crd))	// // Generate random coord Si aucun spawn location found. Spawn juste pas 
 					return false;	// we couldn't spawn yo shit
-
+				else
+					found = true;
+		}
 
 		item.grdCrd = crd;
 		ItemsOnGrid::Add(item); // Add à la lsite des items sur le grid

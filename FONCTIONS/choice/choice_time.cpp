@@ -85,14 +85,15 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 
  void ChoiceTime::Draw_Press_Enter()
  {
-	 XY.x = Find_Ctr_X((int)enter.size() - 1);
+	 XY.x = Find_Ctr_Grid(enter);
 	 XY.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 1;
 	 ConsoleRender::Add_String(enter, XY, GRAY); // affiche ce titre
 	 enterDrawn = true;
  }
  void ChoiceTime::Erase_Press_Enter()
  {
-	 XY.x = Find_Ctr_X((int)enter.size() - 1);
+	 XY.x = Find_Ctr_Grid(enter);
+	 //XY.x = Find_Ctr_X((int)enter.size() - 1);
 	 XY.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 1;
 	 ConsoleRender::Add_String(enter, XY, WHITE, 0, true); // Efface ce titre
 	 enterDrawn = false;
@@ -200,8 +201,9 @@ bool ChoiceTime::Add_Choice(std::string name, std::string subname, GrdCoord crd)
 		// highlight le choix si le player se trouve dessus?
 
 		Draw_Choice(numChoices);		// affiche le choix
-
 		numChoices++;
+
+		Select_If_Player_On();	// si le joueur était déjà sur un choix
 
 		return true;
 	}

@@ -81,20 +81,19 @@ static int Adapt_Font_To_Screen()	// permet de changer la font du jeu selon le g
 	// 236 de longueur, mon écran
 	// 62 de largeur, mon écran
 
-	
-		if (gConHeight <= 50)
-			return 10;
+	if (gConHeight <= 46)
+		return 10;
+	else
+		if (gConHeight > 46 && gConHeight <= 50)	// écran d'étienne, un écran de portable de gaming
+			return 12;
 		else
-			if (gConHeight > 50 && gConHeight <= 56)	// écran d'étienne, un écran de portable de gaming
-				return 12;
+			if (gConHeight > 50 && gConHeight <= 60)
+				return 14;
 			else
-				if (gConHeight > 56 && gConHeight <= 61)
-					return 14;
+				if (gConWidth < 236)
+					return 14;	// square screen!
 				else
-					if (gConWidth < 236)
-						return 14;	// square screen!
-					else
-						return 16;	// font size par défaut
+					return 16;	// font size par défaut
 }
 
 void Change_Font(bool deflt, int size ) {

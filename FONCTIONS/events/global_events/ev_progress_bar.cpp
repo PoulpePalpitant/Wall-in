@@ -8,9 +8,6 @@
 #include "../../UI/map.h"
 #include "ev_final_push.h"
 
-// les cript de break des progress bar
-#include "../../lvls/lvl_1/lvl_1_prg_bar_scrpt.h"
-
 
 static void Ev_Progress_Animation();
 static void Ev_Break_Animation();

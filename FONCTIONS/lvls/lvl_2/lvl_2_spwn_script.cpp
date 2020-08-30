@@ -1,10 +1,10 @@
 
 
+#include "lvl_2_spwn_script.h"
 #include "../../time/spawn_cycle.h"
 #include "../../grid/managegrids.h"
 #include "../../spawns/bots_to_spawn.h"
 #include "../../events/msg_dispatcher.h"
-#include "lvl_1_spwn_script.h"
 
 //some events Shhh...
 #include "../../items/item_spawner.h"
@@ -20,7 +20,7 @@
 
 using namespace bots_to_spawn;
 
-void Lvl_1_Spwn_Script()
+void Lvl_2_Spwn_Script()
 {
 	if (gSpawnThisCycle)
 	{
@@ -32,80 +32,70 @@ void Lvl_1_Spwn_Script()
 		//	spawnGrid->Get_MaxSpwnCrdY() - 1
 		//Add(300);
 		
-
-		if(numSpawnWaves > 10)	// Les 20 premier spawns seront manuel
-			Add(1);
-		
-		if (numSpawnWaves < 100) // Tout les spawns seront verticaux jusqu'au final push du level
-		{
-			gVerticalBorder = true;
-		}
-		else
-		{
-			gHorizontalBorder = true;
-		}
+		// Toujours un bot par défaut à chaque wave
+		Add(1);
 		
 		switch (numSpawnWaves)
 		{
 		
-		case 1: Erase_Map_Borders_1(84);skip = 4; break; // Erase la border seulement si le joueur est en mode quickstartS
-		case 2:Add_Specific(RIGHT, 7); /*MsgQueue::Register(START_BOT_SPAWNS); */break;
-		case 3:Add_Specific(RIGHT, 5); break;// Dessine un pattern de départ
-		case 4:Add_Specific(RIGHT, 9);break;
-		case 5:Add_Specific(RIGHT, 7);break;
-		case 6:Add(1);gBoxSide = RIGHT; break;
-		case 7:Add(1);gBoxSide = RIGHT; break;
-		case 8:Add(1);gBoxSide = RIGHT; break;
-		case 9:Add(1);gBoxSide = RIGHT; break;
-		case 10:Add(1); Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;	// Premier Double. Spawn Left Now
-		case 11:Add(1); gBoxSide = LEFT; break;
-		case 12:Add(1); gBoxSide = LEFT; gSpwNum = 0; break;
-		case 13:gBoxSide = LEFT; gSpwNum = 1; break;
-		case 14:Add(1); gBoxSide = LEFT; gSpwNum = 2; break;
-		case 15:gBoxSide = LEFT; gSpwNum = 3; break;
-		case 16:gBoxSide = LEFT; gSpwNum = 0; Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2); Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;		// Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; // CETTE FORMULE CRASH 100% DU TEMPS
-		case 17:gBoxSide = LEFT;Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2); break;
-		case 18:gBoxSide = LEFT; Add_Specific(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2);break;
-		// Start les doubles spawns left and Right
-
-		case 19:Add(1);gBoxSide = LEFT; break;
-		case 20:Add(1);gBoxSide = RIGHT; break;
-		case 21:Add(1);gBoxSide = LEFT; break;
-		case 22:Add(1);gBoxSide = RIGHT;  break;
-		case 23:Add(1);gBoxSide = LEFT; break;
-		case 24:Add(1);gBoxSide = RIGHT;  break;
-		case 25:Add(1);gBoxSide = LEFT; break;
-		case 26:Add(1); gBoxSide = RIGHT; break;
-		case 27:Add(1);gBoxSide = LEFT; break;
-		case 28:Add(1); gBoxSide = RIGHT; break;
-		case 29: gNumSpawnTOT = 0; skip = 1;break;
-		case 30: gNumSpawnTOT = 0;skip = 6;
-			Ev_MultiColor_Warnings();	// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
-			gSpwBotTimer.Start_Timer(800, 1, true);	// speed is inscreased!!!
+		case 1: Erase_Map_Borders_1(84); skip = 4; break; // Erase la border juste si le joueur est pas en mode quickstartS
+		case 2: gBoxSide = DOWN; break;
+		case 3: gBoxSide = DOWN;break;
+		case 4:break;	// it's all random wut?
+		case 5:break;
+		case 6:break;
+		case 7:break;
+		case 8:break;
+		case 9:break;
+		case 10:break;	
+		case 11:break;
+		case 12:break;
+		case 13:break;
+		case 14:break;
+		case 15:break;
+		case 16:break;		// Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; // CETTE FORMULE CRASH 100% DU TEMPS
+		case 17:break;
+		case 18:break;
+		case 19:break;
+		case 20:				
+			gNumSpawnTOT = 0;skip = 6;
 			break;//BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
-		case 31:Add(1); Set_Interval(RIGHT,5,6);break;
-		case 32:Add(1); Set_Interval(RIGHT,5,6);break;
-		case 33:Add(1); Set_Interval(RIGHT,5,6);break;
-		case 34:Add(1); Set_Interval(RIGHT,5,6); break;
-		case 35:Add(1); Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 36:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break; //Set_Interval(RIGHT, 9,10);
-		case 37:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		case 38:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		case 39:Add_Specific(LEFT, 0); Add_Specific(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);  break;		 
+			
+			// Les items sont aussi importants que les bots pour ce niveau?
 
-		case 40: Set_Interval(LEFT, 2, 3); Add(1); break;
-		case 41: Set_Interval(LEFT, 2,4); Add(1); break;
-		case 42: Set_Interval(LEFT, 2,5); Add(1); break;
-		case 43: Set_Interval(LEFT, 2,6); Add(1); break;
-		case 44: Set_Interval(LEFT, 2,7); Add(1); break;
-		case 45: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 3, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(1);break;
-		case 46: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 4, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(1);break;
-		case 47: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 5, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
-		case 48: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 6, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
-		case 49: gNumSpawnTOT = 0;skip = 8;
-			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 1,1 }); // Spawn de la vie ici?
+		// Start les doubles spawns
+		case 21:Add(1);break;
+		case 22:Add(1); break;
+		case 23:Add(1);break;
+		case 24:Add(1); break;
+		case 25:Add(1);break;
+		case 26:Add(1);break;
+		case 27:Add(1);break;
+		case 28:Add(1);break;
+		case 29:Add(1);break;
+		case 30:Add(1);break;
+		case 31:Add(1); Set_Interval(UP,5,9);break;
+		case 32:Add(1); Set_Interval(DOWN,5,9);break;
+		case 33:Add(1); Set_Interval(UP,5,9);break;
+		case 34:Add(1); Set_Interval(DOWN,5,9); break;
+		case 35:skip = 1; break;
+		case 36:Add(1);Set_Interval(LEFT, 5, 9);break;
+		case 37:Add(1);Set_Interval(RIGHT, 5, 9);break;
+		case 38:Add(1);Set_Interval(LEFT, 5, 9);break;
+		case 39:Add(1);Set_Interval(RIGHT, 5, 9); break;
+		case 40: gNumSpawnTOT = 0;skip = 8;
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
+
+		case 41: break;
+		case 42: break;
+		case 43: break;
+		case 44: break;
+		case 45: break;
+		case 46: break;
+		case 47: break;
+		case 48: break;
+		case 49: break;
 
 			// Random spawns
 		case 50:Add(1);break;
@@ -121,34 +111,51 @@ void Lvl_1_Spwn_Script()
 		case 60:Add(1);break;
 		case 61:Add(1);break;
 		case 62:Add(3);break;
-		case 63:Add(4);break;
-		case 64:Add(5);break;
+		case 63:Add(3);break;
+		case 64:Add(3);break;
 		case 65:Add(1);break;
 		case 66:Add(1);break;
-		case 67:gNumSpawnTOT = 0;
+		case 67:gNumSpawnTOT = 0; skip = 1;
+
+			// TOOLS SPAWN SPEED INCREASED!
+
+			Ev_MultiColor_Warnings();// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNINGbreak;
+			break;
+
+		case 68:break;
+		case 69:Add(1);break;
+		case 70:break;
+		case 71:Add(1);break;
+		case 72:break;
+		case 73:Add(1);break;
+		case 74:break;
+		case 75:Add(1);break;
+		case 76:break;
+		case 77:Add(1);break;
+		case 78:break;
+		case 79:Add(1);break;
+		case 80: Set_Interval(LEFT, 4,6);Add(3); break;
 			skip = 7;
-			gSpwBotTimer.Start_Timer(900, 1, true);	// speed is inscreased!!!	sSShhhhh
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 		
 			// Start les quad spawns!!
-		case 80: Set_Interval(LEFT, 4,6);Add(3); break;
-		case 81: Set_Interval(RIGHT, 4,8);Add(3); break;
-		case 83: Set_Interval(LEFT, 8,12);Add(3); break;
-		case 84: Set_Interval(LEFT, 4,6);Add(3); break;
-		case 87: Set_Interval(RIGHT, 4,8);Add(3); break;
+		case 81:gVerticalBorder = true; Add(3); break;
+		case 83:gHorizontalBorder = true; Add(3); break;
+		case 84:gHorizontalBorder = true; Add(3); break;
+		case 87:gVerticalBorder = true; Add(3); break;
 
 			// Biggest rush of all time
-		case 88: Set_Interval(LEFT, 8,12);Add(2); break;		
-		case 89: Set_Interval(LEFT, 7,12);Add(2); break;
-		case 90: Set_Interval(LEFT, 6,12);Add(2); break;
-		case 91: Set_Interval(LEFT, 5,12);Add(2); break;
-		case 92: Set_Interval(LEFT, 4,12);Add(2); break;
-		case 93: Set_Interval(LEFT, 3,12);Add(2); break;
-		case 94: Set_Interval(RIGHT, 7,12);Add(2); break;
-		case 95: Set_Interval(RIGHT, 6,12);Add(2); break;
-		case 96: Set_Interval(RIGHT, 5,12);Add(2); break;
-		case 97: Set_Interval(RIGHT, 4,12);Add(2); break;
-		case 98: Set_Interval(RIGHT, 3,12);Add(2); break;
+		case 88: gVerticalBorder = true; Add(1); break;		
+		case 89: gHorizontalBorder = true; Add(1); break;
+		case 90: gVerticalBorder = true; Add(1); break;
+		case 91: gHorizontalBorder = true;  Add(1); break;
+		case 92: gVerticalBorder = true; Add(1); break;
+		case 93: gHorizontalBorder = true; Add(1); break;
+		case 94: gVerticalBorder = true; Add(1); break;
+		case 95: gHorizontalBorder = true; Add(1); break;
+		case 96: gVerticalBorder = true; Add(1); break;
+		case 97: gHorizontalBorder = true;Add(1); break;
+		case 98: gVerticalBorder = true; Add(1); break;
 		case 99: Add(2); break;
 
 			// FINAL PUSH	

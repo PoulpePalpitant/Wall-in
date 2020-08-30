@@ -79,7 +79,7 @@ namespace DrawModifierQueue {
 		switch (mod)
 		{
 		case Modifier::REGULAR:			  break;
-		case Modifier::BUFFER:		sym = 254;	clr = LIGHT_GREEN;	 break;
+		case Modifier::BUFFER:		sym = 254;	clr = LIGHT_YELLOW;	 break;
 		case Modifier::BLOCKER:		sym = 158; 	clr = LIGHT_RED;	 break;
 		case Modifier::CORRUPTER:	sym = 207;	clr = LIGHT_PURPLE;	 break;
 		case Modifier::COLOR_A:		sym = 176;	clr = LIGHT_YELLOW;	 break;

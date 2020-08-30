@@ -3,7 +3,6 @@
 
 /* LEs LEvels*/
 #include "../menu/menu_script.h"
-#include "lvl_1/lvl_1_script.h"
 #include "lvl_1/lvl_1_spwn_script.h"
 
 #include "lvl_1/sub_lvl_1_script.h"

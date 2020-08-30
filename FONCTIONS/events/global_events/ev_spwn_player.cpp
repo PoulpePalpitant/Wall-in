@@ -20,7 +20,7 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 		// initialisation
 		crd = P1.Get_XY();	// Le player doit être setté sur le grid avant de le spawn
 		ev_SpawnPlayer.Activate();
-		ev_SpawnPlayer.Start(330);
+		ev_SpawnPlayer.Start(650);
 	}
 	else
 		while (ev_SpawnPlayer.delay.Tick())

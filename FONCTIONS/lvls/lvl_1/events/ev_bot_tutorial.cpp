@@ -266,7 +266,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 		//ev_BotTutorial.Go_To_X_Step(140);		// jerry answer
 		//ev_BotTutorial.Go_To_X_Step(130);		// jerry's is sorry
 		//ev_BotTutorial.Go_To_X_Step(114);		// just survived
-		ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
 		//ev_BotTutorial.Go_To_X_Step(41);		// now that's a shortcut
 	//	ev_BotTutorial.Go_To_X_Step(25);		// second trial
 		//ev_BotTutorial.Go_To_X_Step(18);		// first trial

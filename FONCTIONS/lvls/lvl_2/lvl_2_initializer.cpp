@@ -1,5 +1,5 @@
 
-#include "lvl_1_initializer.h"
+#include "lvl_2_initializer.h"
 
 #include "../../events/msg_dispatcher.h"
 #include "../../time/spawn_cycle.h"
@@ -9,30 +9,18 @@
 #include "../../time/timerOP.h"
 #include "../../grid/managegrids.h"
 #include "../../items/item_spawner.h"
-#include "../lvl_script.h"
-#include "events/ev_bot_tutorial.h"
-#include "msg_events/ev_day_1.h"
-#include "msg_events/ev_waking_up.h"
 #include "../../spawns/valid_spwn_intervals.h"
+#include "../lvl_script.h"
 
-void Lvl_1_Initializer()
+void Lvl_2_Initializer()
 {
 	gLvlTime = 0;		// Reset Le timer du niveau
 
 	if (gSkipStory)
 	{
-		// Pour un quick start avec warning
-		//gCurrentStage = 2;
-		//gSkipStory = false;
-		
 		// Pour un normal quick start
-		gCurrentStage = 3; // super fast
+		gCurrentStage = 5; // super fast
 		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
-
-
-		//gCurrentStage = 2;	// Skip tout les tutorials
-		//Ev_Bot_Tutorial();	// start tuto avec jerry
-		//gSkipStory = false;
 	}
 	else
 	{
@@ -52,7 +40,7 @@ void Lvl_1_Initializer()
 
 	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); // MUST BE DONE BEFORE WHEN WE START EACH LEVEL BRAH
 
-	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
+	Resize_Grids_To_Level(gGrids, 2);			// Resize tout les grids pour ce niveau :)
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
 	
 	P1.Set_Hp(3);	// 3 de vie le gros

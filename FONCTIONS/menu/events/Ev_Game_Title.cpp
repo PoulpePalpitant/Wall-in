@@ -101,7 +101,7 @@ void Ev_Er_Game_Title()
 				//ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 4 );y++;
 				//ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 20);y++;
 				//ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 11);
-				ev_Er_GameTitle.Advance(300);
+				ev_Er_GameTitle.Advance(400);
 				break;
 
 			case 2:

@@ -95,7 +95,7 @@ void Change_Color(int c);		// Permet de changer la couleur des prochains output 
 int Find_Ctr_X(int size = 0);			// Trouve la crd en x qui permettrait d'output un char au centre
 int Find_Ctr_String_X(std::string txt);	// ce que j'aurais du faire depuis le début lol. Retourne la valeur en X d'une string centré dans la console
 int Half_String(std::string txt);		// Le nombre de charactère qui compose la moitié d'une string, utile pour les affichages
-
+int Find_Ctr_Grid(std::string txt);		// Affiche au centre du grid			
 
 
 
