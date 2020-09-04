@@ -209,8 +209,9 @@ void Handle_Input()
 	case 'A':case 'a':	keyDirection = LEFT; action = MOVE;	break;	// faire mouvement
 	case 'S':case 's':	keyDirection = DOWN; action = MOVE; break;
 	case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
-	case 'Q':case 'q':	action = CHANGE_BLAST; break;
+	case 'Q':case 'q':	break;
 	case 'J':case 'j':	lastKey = KeyPressed::JERRY; break;
+	case 'R':case 'r':	gRefreshStage = true; break;	// Refresh un stage, quand c'est possible
 
 	case 27: /*Esc */
 		if (gPauseUpdates)	// Quand le jeu est en pause, tu va avoir le choix de retourner au menu principal	

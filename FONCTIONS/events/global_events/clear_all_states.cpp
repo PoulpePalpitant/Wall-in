@@ -17,7 +17,8 @@
 #include "../../blast/mod_queue_animator_consume.h"
 #include "../../blast/blast_modifier_queue.h"
 #include "../../blast/blast.h"
-//#include "../../player/player.h"
+#include "feedback/ev_draw_map.h"
+#include "../../player/player.h"
 //#include "../../grid/AllGrids.h"
 
 void Clear_All_States(bool eraseLinks)	// Gros reset button()	
@@ -26,8 +27,8 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	blastP1.Cancel();			 // Cancel le blast
 	MsgQueue::Unregister_All();	// Tout les msg é
 	Event::Cancel_All();		// Tout les events
-	Reset_All_Flags();				// Flags
-	gSkipStory = gDayStarted = false;	// important flags
+	Reset_Input_Flags();				// Flags
+	gSkipStory = gDayStarted = gRefreshStage = false;	// Other important flags
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
 	SpeedTimer::Stop_All_Timers(); // STOP TOUT LES TIMERS du monde, sauf la gameloop bien entendu
 
@@ -35,7 +36,9 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	WarningDrawerList::Remove_All();
 	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
 	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
-	BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
+
+	//BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
+	BlastModifierQueue::Reset();
 
 	if (eraseLinks)	// efface les links et walls
 	{
@@ -48,9 +51,21 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	ItemsOnGrid::Remove_All();	// enlève tout les items spawné
 	Reset_Spw_Cycle();			// Reset le nombre de spw cycle à 0
 
+	//MsgQueue::Register(HIDE_MOD_QUEUE);
 	MsgQueue::Register(LOCK_PLAYER);
 	MsgQueue::Register(STOP_BOT_SPAWNS);
 	MsgQueue::Register(RESET_SPW_TOT);
 	//P1.Reset_State();			// 
 }
-
+void Clear_Map()// Tout ce qui à une influence sur l'interface graphique 
+{
+	P1.Er_Player();
+	ListsOfChainToModify::Annihilate_All_Links();	// Links
+	botList.Destroy_All_Bots();	// Bots
+	ItemsOnGrid::Remove_All();	// enlève tout les items spawné
+	BlastModifierQueue::Reset();
+	//BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers			// CECI CRASH
+	//MsgQueue::Register(HIDE_MOD_QUEUE);
+	ChoiceTime::Stop_Choice_Time();	// flag spécial
+	Erase_Map_Borders_1();
+}

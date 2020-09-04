@@ -27,7 +27,7 @@ class DrawItemSpawnList
 	static void Remove_All();
 	static void Find_Item_Sym(ItemType type);
 public:
-
+	static void Draw_Item(ItemType type, GrdCoord crd);
 	static void Draw_Item_Spawn();	// Draw them items mmké6?
 	static void Cancel(Coord XY);					// Stop l'animation de l'item sur cette position
 	static bool Add(ItemType type , GrdCoord crd);	// Ajoute un item à draw

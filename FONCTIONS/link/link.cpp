@@ -45,7 +45,7 @@ void Link::Set_UI()
 		break;
 	case BUFFER:
 		sym = 254;		
-		clr = LIGHT_GREEN;
+		clr = LIGHT_YELLOW;
 		break;
 
 	case Modifier::BLOCKER:
@@ -94,6 +94,7 @@ void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier
 		if (pParent->Get_Parent_Modifier() == CORRUPTER)
 			mod = CORRUPTER;
 }
+
 // Active un Link et le relie à un Child
 bool Link::Activate_Link(Modifier& mod, Wall* child)
 {
@@ -179,10 +180,10 @@ bool Link::Unbound_Wall_Child(Wall* child)
 			this->Dsp_Link();	// Affiche le sym
 		}
 		else
-			if (state == LinkState::ROOT)		// Si le root n'a plus de Child, il mourre
+			if (state == LinkState::ROOT && modifier == REGULAR)		// Si le root n'a plus de Child, il mourre, SAUF SI C'EST UN MOTHERFUCKER MODIFIER
 			{
 				this->Deactivate_Link();				
-				Clr_Link();		// Efface le Link		// Pourrait être mis à pars
+				Er_Link();		// Efface le Link		// Pourrait être mis à pars
 			}
 		return true;		// success
 	}
@@ -198,7 +199,7 @@ void Link::Dsp_Link()						// Affiche le Link
 	ConsoleRender::Add_Char(this->coord, this->sym, this->clr);
 }
 
-void Link::Clr_Link( )						// Clear le Link
+void Link::Er_Link( )						// Clear le Link
 {
 	if (!Are_Equal(P1.Get_XY(), Get_XY()))
 		ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);	// Efface pas le player!!

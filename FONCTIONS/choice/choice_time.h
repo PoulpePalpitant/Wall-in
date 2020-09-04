@@ -23,7 +23,6 @@ struct Choice
 class ChoiceTime
 {
 	// FREIDN :)
-	friend void Clear_All_States(bool eraseMap);	// Gros reset button
 
 
 	static bool enterDrawn;
@@ -36,7 +35,6 @@ class ChoiceTime
 
 
 	static void Start_Choice_Time();	// Signale au joueur qu'il doit faire un choix
-	static void Stop_Choice_Time();	
 
 	static void Clear_List();
 
@@ -59,6 +57,7 @@ class ChoiceTime
 	static void Erase_Press_Enter();
 
 public:
+	static void Stop_Choice_Time();		// Pour arrêter le choice time
 	static bool Select_If_Player_On();			// Player fait une sélection, en étant sur un choix
 	static bool Unselect_If_Player_Off();		// Retire la sélection. Le player n'est plus sur un choix
 	static bool Add_Choice(std::string name, std::string subname, GrdCoord crd);

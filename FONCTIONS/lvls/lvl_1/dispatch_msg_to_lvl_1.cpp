@@ -92,7 +92,7 @@ void Dispatch_Msg_To_Lvl_1()
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
-				gCurrentStage = 0;
+				gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
 				gCurrentLevel = 2;
 				Ev_Thks_For_Playing();
 			}

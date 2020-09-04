@@ -129,7 +129,9 @@ void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool ex
 			else 
 			{	// Si le premier Link est une Root			
 				Add_Children_To_List(it, it->selectedLink);	 // Ajoute tout de suite ses enfants
-				it->selectedLink->Deactivate_Link();	 // Et on désactive tout de suite 	
+				
+				if(it->selectedLink->Get_Modifier() == REGULAR)	// Désactive uniquement si c'est un regular
+					it->selectedLink->Deactivate_Link();	 // Et on désactive tout de suite 	
 			}
 		}
 	}
@@ -196,7 +198,13 @@ void ListsOfChainToModify::Remove_All()	// dangerous stuff!!
 void ListsOfChainToModify::Delete_Parents(ChainToModify* chain)	// Détruit un élément de la chaîne ainsi que son parent wall
 {
 	chain->parentWall = chain->selectedLink->pParent;	 // trouve le mur parent
-	chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
+
+	// Tous les root qui possèdent un modifiers ne seront jamais détruits...
+	if (!(chain->selectedLink->Get_Modifier() != REGULAR && chain->selectedLink->Get_State() == LinkState::ROOT))
+		chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
+	else
+		throw " im testing this here";
+
 	chain->parentWall->Deactivate_Wall();		 // Désactive le mur,	ensuite on attend que le mur c'est effacé continuer l'opération			
 	chain->parentWall->Set_Drawer(true);
 	chain->toErase = chain->selectedLink;
@@ -279,7 +287,7 @@ void ListsOfChainToModify::Update_Chain_Modification()
 				if(it->modification == DESTROY)	// dumb stuff
 					if (it->toErase) // the dumbest shit
 						if (it->toErase->Get_State() == LinkState::DEAD)
-							it->toErase->Clr_Link();	// Efface le link
+							it->toErase->Er_Link();	// Efface le link
 
 				if (!it->pop(it->selectedLink))	// Prend un élément da liste de Link 
 				{
@@ -334,7 +342,7 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 		for (int r = 0; r < row; r++)
 		{
 			linkGrid->link[c][r].Deactivate_Link();
-			linkGrid->link[c][r].Clr_Link();
+			linkGrid->link[c][r].Er_Link();
 		}
 
 	wallGrid = wallGridHor;	// commence par wallgrid horizontal

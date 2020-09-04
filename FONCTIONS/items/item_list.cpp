@@ -32,7 +32,12 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
  void ItemsOnGrid::Remove_All()
  {
 	 for (int i = 0; i < MAX_ITEMS; i++)		// Décale tout
-		 items[i] = {};
+	 {
+		 if (items[i].Is_Active())
+			 linkGrid->link[items[i].grdCrd.c][items[i].grdCrd.r].Er_Link();
+			 
+		 items[i] = {};	// erase tout anyway
+	 }
 	 size = 0;
  }
 

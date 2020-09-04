@@ -5,7 +5,7 @@
 #include "../UI/console_output/render_list.h"
 #include "../animation/UI_move_blast.h"
 #include "AllGrids.h"
-
+#include "../global_types/global_types.h"
 
 extern AllGrids gGrids = {};	//	 La variable globale contenant tout les grids
 
@@ -165,7 +165,7 @@ static GridIndexIncrementor Find_First_Wall_Crd(const WallGrid &grid, const GrdC
 }
 
 // Créer manuellement une chaîne de murs et de Links dans une direction
-void AllGrids::Activate_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type)
+void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type)
 {
 	static Wall* wall;						// Wall à activer
 	static Link* child, * parent;			// Link à activer et son child
@@ -302,6 +302,10 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 			}
 			else
 			{
+				// Si le Link était une root, faudrait tout chopper, non.... ? je pense pas en fait
+				//if (link->Get_State() == LinkState::ROOT)
+					//ListsOfChainToModify::Add_Chain_To_Modify({}, link, false, DESTROY);	// destroy le Link
+
 				link->Convert_Modifier(blastMod);	// Convertit en blocker
 
 				if(link->Get_Num_Child())	// pas de chaîne à détruire si ya pas de child
@@ -355,13 +359,15 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 	}
 	else
 	{
-		/* Par défault, tout les autres modifiers vont créer des murs quand il atteigned la bordure. Ya juste le blocker qui va faire un tit 'x'*/
-		if (blastMod == BLOCKER)
-		{
-			link->Activate_Link(blastMod);		// créer le link tu seul
- 			link->Convert_Modifier(BLOCKER);	// ensuite le convertit
-			eraseBlast = true;
-		}
+		///* Par défault, tout les modifiers vont créer des murs quand il atteigned la bordure. Ils vont aussi créer une ROOT, qui sra indestructible, mais modifiables
+		// le child sera impassable également
+
+		////if (blastMod != REGULAR)
+		//{
+		//		link->Activate_Link(blastMod);		// créer le link tu seul
+		//		link->Convert_Modifier(BLOCKER);	// ensuite le convertit
+		//		eraseBlast = true;
+		//}
 
 	}
 	return true;
@@ -395,4 +401,22 @@ void AllGrids::Remove_All_Bots_From_Grid()	// Si tu élimine les bots artificiell
 	for (int col = 0; col < gGrids.wallGrdVer.Get_Cols() ; col++)
 		for (int row = 0; row < gGrids.wallGrdVer.Get_Rows(); row++)
 			gGrids.wallGrdVer.wall[col][row].Remove_Bot_On_Me();
+}
+
+void AllGrids::Activate_Blocker(GrdCoord crd, bool deactivate)	// Active un blocker sUR UNE COORD. OU LE DÉSACTIVE
+{
+	if (crd.c < 0 || crd.r < 0)
+		return;
+
+	Modifier mod = BLOCKER;
+	if (deactivate)
+	{
+		linkGrd.link[crd.c][crd.r].Deactivate_Link();
+		linkGrd.link[crd.c][crd.r].Er_Link();
+	}
+	else
+	{
+		linkGrd.link[crd.c][crd.r].Activate_Link(mod);
+		linkGrd.link[crd.c][crd.r].Dsp_Link();
+	}
 }

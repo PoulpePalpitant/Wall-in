@@ -169,6 +169,7 @@ void Blast::Setup_Position_Incrementors(GrdCoord& startPos)	// Sa position
 void Blast::Setup_Modifier(Modifier mod)										// Le modifier du blast, voir global_types.h
 {
 	modifier = mod;
+	P1.Upd_Color();	// couleur du joueur change selon son prochain modifier
 }
 
 

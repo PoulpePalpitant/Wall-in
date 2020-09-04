@@ -52,7 +52,7 @@ void Build_Lvl_1_Walls()	// Fait appa^raître des murs pour aider le joueur
 		wallDir = UP;
 	}
 
-	gGrids.Activate_Chain_Of_Walls({ col, row }, LEFT, 1);
-	gGrids.Activate_Chain_Of_Walls({ col - 1, row }, wallDir, 1);
+	gGrids.Make_Chain_Of_Walls({ col, row }, LEFT, 1);
+	gGrids.Make_Chain_Of_Walls({ col - 1, row }, wallDir, 1);
 
 }

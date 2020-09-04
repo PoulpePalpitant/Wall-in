@@ -13,7 +13,7 @@ bool gBlockBlast = true;
 bool gMenuInputs = true;
 int gMenuKey = 0;
 
-void Reset_All_Flags()	// Cancel tout les flags
+void Reset_Input_Flags()	// Cancel tout les flags
 {
 	action = IDLE;
 	keyDirection = Direction::NONE;

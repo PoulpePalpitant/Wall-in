@@ -87,7 +87,7 @@ public:
 	bool Set_First_Modifier(Modifier mod);// Assigne le state 
 
 	void Dsp_Link();			// Affiche le Link
-	void Clr_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
+	void Er_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
 	
 	bool Activate_Link(Modifier & mod, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
 	void Deactivate_Link();		// Désactive le Link

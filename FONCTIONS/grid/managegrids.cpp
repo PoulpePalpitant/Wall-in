@@ -27,7 +27,7 @@ void Resize_All_Grids(AllGrids& grid, int col, int row)
 }
 
 
-bool Resize_Grids_To_Level(AllGrids& grid, int lvl) {	
+bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 	
 	// NE JAMAIS resizer le grid quand tu fais encore des affichages des links et de walls and stuff
 	if (!DrawWalls::Is_Empty() || !ListsOfChainToModify::Is_Empty())
@@ -43,12 +43,26 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl) {
 	{
 	case 0:	col = 14, row = 14;	break;		
 	case 1:	col = 13, row = 15;	break; // col = 13	row = 15
-	case 2:	col = 14, row = 15;	break;
-	case 3:	col = 14, row = 15;	break;
-	case 4:	col = 14, row = 15;	break;
-	case 5:	col = 14, row = 15;	break;
-	case 6:	col = 14, row = 15;	break;
-	case 7:	col = 14, row = 15;	break;
+	case 2:
+		switch (stage)
+		{
+		default:	col = 13, row = 15; break;	// dimension du Level
+		case 2:	col = 17, row = 5; break;		// dimension des training stages
+		case 3:	col = 7, row = 14; break;		
+		case 4:	col = 21, row = 3; break;		
+		}
+		break;
+
+	case 3:
+	col = 14, row = 15;	break;
+	case 4:
+	col = 14, row = 15;	break;
+	case 5:
+	col = 14, row = 15;	break;
+	case 6:
+	col = 14, row = 15;	break;
+	case 7:
+	col = 14, row = 15;	break;
 	}
 
 	gridLength = DELTA_X * col;

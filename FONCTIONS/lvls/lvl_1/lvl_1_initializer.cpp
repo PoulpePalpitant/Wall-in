@@ -50,7 +50,6 @@ void Lvl_1_Initializer()
 	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
 	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 500, 0);
 
-	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); // MUST BE DONE BEFORE WHEN WE START EACH LEVEL BRAH
 
 	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
 	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn

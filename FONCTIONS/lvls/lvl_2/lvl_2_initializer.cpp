@@ -50,5 +50,6 @@ void Lvl_2_Initializer()
 		throw "player pas sur le grid";
 	
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
-	MsgQueue::Register(DISABLE_BLAST);	// It has to be done
+	MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+	MsgQueue::Register(SPAWN_PLAYER);	// It has to be done
 }

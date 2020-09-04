@@ -120,6 +120,44 @@ void EV_Event_Method()
 				ev_EventObject.Advance(0);
 				break;
 				// maybe trigger a message here
+
+			case 3:
+
+				ev_Lvl2_Training_1.Advance(800);
+				break;
+
+			case 4:
+				ev_Lvl2_Training_1.Advance(340);
+				break;
+
+			case 5:
+				ev_Lvl2_Training_1.Advance(0);
+				break;
+
+			case 6:
+				ev_Lvl2_Training_1.Advance(400);
+				break;
+
+			case 7:
+				ev_Lvl2_Training_1.Advance(800);
+				break;
+
+			case 8:
+				ev_Lvl2_Training_1.Advance(600);
+				break;
+
+			case 9:
+				ev_Lvl2_Training_1.Advance(900);
+				break;
+
+			case 10:
+				ev_Lvl2_Training_1.Advance(350);
+				break;
+
+			case 11:
+				ev_Lvl2_Training_1.Advance(0);
+			
+			
 			}
 		}
 }

@@ -152,7 +152,7 @@ void ValidSpwnIntervals::Initialize_Valid_Spawn_List()							// DOIT ÊTRE FAIT À
 {
 	for (int border = 0; border < 4; border++)
 	{
-		Set_First_Interval(border);			// Premier Intervalle	
+		Reset_Secondary_List();	// Si un grid fut créé dans le passé, on fait juste resize les intervals
 	}
 }
 // // Set le premier interval, soit de "0 à Max Number of Spawn on border"

@@ -9,11 +9,16 @@
 #include "../../bots/botlist.h"
 
 /* Level  events !*/
-#include "events/ev_build_labyrinth.h"
 #include "../../events/global_events/ev_update_heart.h"
+#include "events/ev_build_labyrinth.h"
+#include "events/ev_lvl2_training_1.h"
+#include "events/ev_lvl2_training_2.h"
+#include "events/ev_lvl2_training_3.h"
 
 /* Msg events*/
 #include "msg_events/ev_day_2.h"
+#include "msg_events/ev_waking_up_2.h"
+
 
 // others
 #include "../../events/global_events/feedback/ev_draw_map.h"
@@ -31,18 +36,27 @@ void Dispatch_Msg_To_Lvl_2()
 	case PLS_INTIALIZE_LVL: Lvl_2_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
 
 	case LVL_INITIALIZED: 
+		Ev_Build_Labyrinth();
 		break;	
 
 	case STAGE_ADVANCE:
-		if (gCurrentStage == 3)
+		Event::Cancel_All();		// Tout les events en cours sont annulés
+		//Clear_All_States();
+		clrscr();
+
+		switch (gCurrentStage)
 		{
+		case 1:Ev_Wake_Up_2();break;//gCurrentStage++;
+		case 2://Ev_Lvl2_Training_1();break;
+		case 3://Ev_Lvl2_Training_2();break;
+		case 4://Ev_Lvl2_Training_3();break;
+		case 5:
 			ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 			botList.Destroy_All_Bots();
-			clrscr();
 			Ev_Dr_Day_2();
-		}
-		if (gCurrentStage == 4)
-		{
+			break;
+
+		case 6:
 			// Ceci est temporaire pour débugger plus rapidement le bot script
 			//P1.Set_Hp(1000);
 			if (gSkipStory)
@@ -53,7 +67,7 @@ void Dispatch_Msg_To_Lvl_2()
 
 				P1.Set_Position({ 6,6 });
 				P1.Er_Player();
-				MsgQueue::Register(SPAWN_PLAYER);	
+				MsgQueue::Register(SPAWN_PLAYER);
 				Just_Dr_Map_Borders();
 				Just_Dr_Heart();
 				Ev_Progress_Bar();
@@ -65,10 +79,11 @@ void Dispatch_Msg_To_Lvl_2()
 			gSkipStory = false;
 			gDayStarted = true;
 		}
+
 		break;
 
 	case PROCEED: 
-		if (gCurrentStage == 4)
+		if (gCurrentStage == 5)
 		{
 			MsgQueue::Register(PLS_INTIALIZE_LVL);	
 			clrscr();
@@ -76,7 +91,7 @@ void Dispatch_Msg_To_Lvl_2()
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
 				gCurrentStage = 0;
-				gCurrentLevel = 2;
+				gCurrentLevel = 3;
 				Ev_Thks_For_Playing();
 			}
 		}

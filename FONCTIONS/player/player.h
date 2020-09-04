@@ -44,6 +44,7 @@ public:
 	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole du joueur
 	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur du joueur
 	void Set_Hp(int HP) { hp = HP; }								// Chane l'hp pour une valeur fixe
+	void Reset_Hp();												// Met l'hp à 3, et réaffiche le coeur
 	void Set_Timeout(int time);										// Freeze le joueur
 
 	// UPDATES

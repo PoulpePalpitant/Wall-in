@@ -10,7 +10,7 @@ ItemSpawnPool ItemSpawner::pool = {};
 bool ItemSpawner::pause = false;	// permet de pauser les updates
 
 
-bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel)	// Bypass la pool et le timer pour faire spawner un item
+bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool noanimation)	// Bypass la pool et le timer pour faire spawner un item
 {
 	Item item;
 	item.itemType = type;	// that's my type
@@ -20,16 +20,18 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel)	// B
 
 	if (!ItemsOnGrid::Reached_Max())
 	{
-		Refresh_Available_Spawn_List();
+		availableLinks.Reset_All_Lists();	// refresh that shit
+		Items_Exclusion();			// Exclut les items déjà présents
 
 		if (Pick_Specific_Coord(crd))
+		{
 			availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
+			if (!linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
+				found = true;
+		}
 
 		while (!found)
 		{
-			if (!linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
-				break;
-
 			if (cancel)
 				return false;	// we don't spawn elsewhere
 			else
@@ -37,11 +39,19 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel)	// B
 					return false;	// we couldn't spawn yo shit
 				else
 					found = true;
+
+			if (linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
+				found = false;
 		}
 
 		item.grdCrd = crd;
 		ItemsOnGrid::Add(item); // Add à la lsite des items sur le grid
-		DrawItemSpawnList::Add(item.itemType, item.grdCrd);	// Add a la list du drawer de spawn
+
+		if (noanimation)
+			DrawItemSpawnList::Draw_Item(item.itemType, item.grdCrd);	// draw l'item sans animation
+		else
+			DrawItemSpawnList::Add(item.itemType, item.grdCrd);	// Add a la list du drawer de spawn
+
 		return true;
 	}
 	else

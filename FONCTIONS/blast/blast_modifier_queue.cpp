@@ -36,6 +36,7 @@ void BlastModifierQueue::Add_Modifier(Modifier mod)
 	if (!DrawModifierQueue::isShown)	// we show it!
 		MsgQueue::Register(SHOW_MOD_QUEUE);
 }
+
 void BlastModifierQueue::Consume_Next_Modifier()
 {
 	static Modifier mod;
@@ -53,9 +54,17 @@ void BlastModifierQueue::Consume_Next_Modifier()
 		DrawModifierQueue::consume.Add_To_Next_Available(mod);		// pour l'animation
 		DrawModifierQueue::addNew.Cancel();
 		
-		P1.Upd_Color();	// couleur du joueur change selon son prochain modifier
 
 		if (BlastModifierQueue::What_Is_Size() == 5)		// quand on redescend en dessous de 6
 			DrawModifierQueue::Hide_Excess();
 	}
+}
+
+
+void BlastModifierQueue::Reset()
+{
+	BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
+	blastP1.Setup_Modifier(REGULAR);	// Aucun modifier
+	P1.Er_Player();
+	DrawModifierQueue::Hide_Queue_UI();
 }

@@ -73,6 +73,12 @@ void DrawItemSpawnList::Find_Item_Sym(ItemType type)
 	}
 }
 
+void DrawItemSpawnList::Draw_Item(ItemType type, GrdCoord crd)	// sans aucune animations
+{
+	Find_Item_Sym(type);
+	ConsoleRender::Add_Char(linkGrid->link[crd.c][crd.r].Get_XY(), sym, clr);	// Pour l'instant, tout les items sont verts
+}
+
 void DrawItemSpawnList::Draw_Item_Spawn()
 {
 	if (!total) return;	// Liste vide
@@ -95,6 +101,12 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 			switch (draw->currStep)
 			{
 			case 0:// emmerde pas l'étape 0, pour cette fois
+				if (!draw->cancelMid)
+				{
+					//sym = ITEM_SYM[(int)draw->type];
+					Find_Item_Sym(draw->type);
+					ConsoleRender::Add_Char({ X,Y }, sym, GRAY);	// Pour l'instant, tout les items sont verts
+				}
 				ConsoleRender::Add_Char({ X + 2,Y + 2 }, 250, GRAY);	
 				ConsoleRender::Add_Char({ X + 2,Y - 2 }, 250, GRAY);	
 				ConsoleRender::Add_Char({ X - 2,Y + 2 }, 250, GRAY);	

@@ -23,9 +23,17 @@ namespace DrawModifierQueue {
 
 	void Set_Mod_Queue_Pos()
 	{
-		titleCrd = { (Find_Ctr_X((int)std::size(queueTitle)) / 2) * 3, 24 };									// La corrd du ttitre principal
-	}
+		//titleCrd = { (Find_Ctr_X((int)std::size(queueTitle)) / 2) * 3, 24 };									// La corrd du ttitre principal
+		//titleCrd ={ (int)((Find_Ctr_X((int)std::size(queueTitle)) / 2) * 1.5f), 24 }; // Essayons à gauche
 
+		titleCrd.x = map.Get_Box_Limit(LEFT) - 13;
+
+		if (map.Get_Height() <= 13)
+			titleCrd.y = map.Get_Box_Limit(UP);
+		else
+			titleCrd.y = map.Get_Box_Limit(UP) + map.Get_Height() / 4;
+
+	}
 
 	void Show_Queue_UI()// Affiche la queue
 	{
@@ -35,8 +43,20 @@ namespace DrawModifierQueue {
 	}
 	void Hide_Queue_UI() // Efface la queue
 	{
-		ConsoleRender::Add_String(queueTitle, titleCrd, WHITE, 50, true);
-		ConsoleRender::Add_String(line,{ titleCrd.x + 3, titleCrd.y + 4 }, WHITE, true);
+		ConsoleRender::Add_String(queueTitle, titleCrd, WHITE, 0, true);
+		
+		// Efface les deux tits points sur les côtés
+		ConsoleRender::Add_Char({ titleCrd.x - 2,titleCrd.y + 3 }, TXT_CONST.SPACE);
+		ConsoleRender::Add_Char({ titleCrd.x + 10,titleCrd.y + 3 }, TXT_CONST.SPACE);
+		ConsoleRender::Add_String(line,{ titleCrd.x + 3, titleCrd.y + 4 }, WHITE,0, true); // Efface ligne
+		ConsoleRender::Add_Char({ titleCrd.x + 4, titleCrd.y + 3 },TXT_CONST.SPACE );
+		ConsoleRender::Add_Char({ titleCrd.x + 4, titleCrd.y + 7 },TXT_CONST.SPACE );
+		ConsoleRender::Add_Char({ titleCrd.x + 4, titleCrd.y + 9 },TXT_CONST.SPACE );
+		ConsoleRender::Add_Char({ titleCrd.x + 4, titleCrd.y + 11 },TXT_CONST.SPACE );
+		ConsoleRender::Add_Char({ titleCrd.x + 4, titleCrd.y + 13 },TXT_CONST.SPACE );
+		Hide_Excess();	// trois tits points
+	
+
 		isShown = false;
 	}
 	void Show_Excess() // Les trois tits points qui apparaissent pour signaler qu'il y a plus que 5 éléments dans la queue

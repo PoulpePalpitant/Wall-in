@@ -16,4 +16,4 @@ extern bool gProceedTime;
 extern bool gMenuInputs;
 extern int gMenuKey;
 
-void Reset_All_Flags();	// Met tout ces trucs à off
+void Reset_Input_Flags();	// Met tout ces trucs à off
