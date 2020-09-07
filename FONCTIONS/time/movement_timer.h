@@ -39,7 +39,7 @@ public:
 	bool Updates_Left();	// Dans un while, fait les updates que ta de besoin selon le le nombre de moves durant une frame
 	
 	void Add_Count(int times) { timeLeft += times * cdDuration; }	// Ajoute du temps
-	void Start_Timer(int speed, int numMove = 1, bool inf = false); //Set la durée de base du CountDown.
+	void Start_Timer(int speed, int numMove = 1, bool inf = false, int duration = 0); //Set la durée de base du CountDown.
 	void Stop() { timeLeft = 0; moving = false; tickedThisFrame = false; infinite = false; }	// Finis abruptement le temps de CountDown
 	void Pause() { moving = false; }	// Pause le temps
 	void Resume() { moving = true; }	// Pause le temps

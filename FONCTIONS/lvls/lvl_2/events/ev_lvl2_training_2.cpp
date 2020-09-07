@@ -47,12 +47,22 @@ static void Block_Prison(bool Remove = false)
 
 static void Refresher()	/// Refresher du stage
 {
-	if (gRefreshStage || P1.Get_HP() < 3)
+	if (gRefreshStage || P1.Get_HP() < 1)
 	{
 		Clear_Map();
-		P1.Set_Position({ 0,1 }); P1.Reset_Hp();
+		Press_R_To_Refresh();
+		Press_X_To_Proceed(3);
+		P1.Set_Position({ 0,1 }); P1.Reset_Hp_And_Heart(1); 
 		P1.Dr_Player();
 		Block_Prison(); // Prison de blockers autours du joueur
+		Just_Dr_Map_Borders();
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 2,1 });
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3,1 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,2 });
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3,3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3,5 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,6 });
 		ev_Lvl2_Training_2.Go_To_X_Step(2);
 		gRefreshStage = false;
 	}
@@ -66,8 +76,10 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 		
 		Press_R_To_Refresh();
 		Press_X_To_Proceed(3);
+		Clear_All_Renders();
 		Clear_Map();	// hope
 		blastP1.Cancel();			 // Cancel le blast
+		P1.Set_Hp(1);
 		// Erase blast
 		// stop drawer queues
 
@@ -95,20 +107,12 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 2:
-				Just_Dr_Map_Borders();
 				ev_Lvl2_Training_2.delay.Stop();
 				ev_Lvl2_Training_2.Advance(0);	// 1000 / 2 = 500.		2 secondes
 				break;
 
 			case 3:
 				gGrids.Make_Chain_Of_Walls({ 3, 11 }, UP, 3);	// Mur que le joueurs va tirés avec les items
-				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, {  1,1 });
-				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, {  2,1 });
-				ItemSpawner::Spawn_This_Item(ItemType::BUFFER, {  3,1 });
-				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, {  3,2 });
-				ItemSpawner::Spawn_This_Item(ItemType::BUFFER, {  3,3 });
-				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, {  3,4 });
-				ItemSpawner::Spawn_This_Item(ItemType::BUFFER, {  3,5 });
 				ev_Lvl2_Training_2.Advance(500);
 				break;
 

@@ -26,7 +26,7 @@
 
 extern bool gPauseUpdates = false;		// le state du jeu
 static std::string pauseMsg = "Hey! You PAUSED the game!";
-static std::string pauseMsg_2 = "Press 'Esc' To Go Back To The Menu ";
+static std::string pauseMsg_2 = "Press 'Space' To Go Back To The Menu ";
 
 void Update_Game()		// Update tout ce qui se passe dans le jeu
 {
@@ -88,6 +88,7 @@ void Update_Player_Action()
 					link = &linkGrid->link[grdCrd.c][grdCrd.r];
 
 					bool cancelBlast = false;
+					bool consumeQueue = true;
 
 					// Action Spéciale: Un transfer
 					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
@@ -97,9 +98,12 @@ void Update_Player_Action()
 						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
 							cancelBlast = true; // rien va se passer
 						else
+						{
 							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+							consumeQueue = false;
+						}
 
-						// SI LE LINK EST D'UN CERTAIN DTYPE, LE BLAST modifier DEVRAIT PRENDRE SA PROPRIÉTÉ!
+						// SI LE LINK EST D'UN CERTAIN DTYPE, LE BLAST modifier DEVRAIT PRENDRE SA PROPRIÉTÉ! le blast ne devrait pas prendre la propriété de la queue
 					}
 
 					if (blastP1.Is_Player_Shooting_Border(keyDirection))
@@ -110,7 +114,7 @@ void Update_Player_Action()
 
 					if (!cancelBlast)
 					{
-						blastP1.Setup_Blast(grdCrd, keyDirection);
+						blastP1.Setup_Blast(grdCrd, keyDirection, consumeQueue);
 					}
 				}
 				else

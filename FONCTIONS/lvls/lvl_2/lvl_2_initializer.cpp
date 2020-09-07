@@ -11,6 +11,7 @@
 #include "../../items/item_spawner.h"
 #include "../../spawns/valid_spwn_intervals.h"
 #include "../lvl_script.h"
+#include "events/ev_build_labyrinth.h"
 
 void Lvl_2_Initializer()
 {
@@ -19,24 +20,31 @@ void Lvl_2_Initializer()
 	if (gSkipStory)
 	{
 		// Pour un normal quick start
-		gCurrentStage = 5; // super fast
+		//gCurrentStage = 5; // super fast
+		gCurrentStage = 0; // wakup
+		//gCurrentStage = 1; // TEST #1
+		//gCurrentStage = 2; // TEST #2
+
+
 		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 	}
 	else
 	{
 		gCurrentStage = 0;
+		Ev_Build_Labyrinth(); // start le level avec ceci :)
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
-	gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
+	gSpwBotTimer.Start_Timer(350 , 1 , true); // DEFUALT
 	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
 	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
 	//gBotMoveTimer.Start_Timer(50200, 1, true);	// TEST
 	
-	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 30, 0);
-	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 20, 50);
+	ItemSpawner::Add_To_Pool(ItemType::BUFFER, 120, 5);
+	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 400, 3);
+	ItemSpawner::Add_To_Pool(ItemType::HEALTH, 1000, 0);
+	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 10, 15);
 	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
-	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 500, 0);
 
 	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); // MUST BE DONE BEFORE WHEN WE START EACH LEVEL BRAH
 
@@ -51,5 +59,7 @@ void Lvl_2_Initializer()
 	
 	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
 	MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
-	MsgQueue::Register(SPAWN_PLAYER);	// It has to be done
+	
+	MsgQueue::Register(DISABLE_ITEM_SPAWN); // items!
+
 }

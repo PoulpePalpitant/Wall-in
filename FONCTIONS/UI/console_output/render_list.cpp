@@ -230,3 +230,56 @@ void ConsoleRender::Render()	// Output tout les charactères dans la console, sel
 	Stop_Queue();		/*Safety*/		// au cas où tu oublis de stop la queue à la fin d'un update
 }
 
+// LAZY COPY-PASTE
+// ***************
+
+void ConsoleRender::Empty_All()
+{
+	// Vide la main queue
+	OutputData toDraw;
+
+	while (mainQueue.size > 0)	// Tant que la liste est non vide
+		Pop_From_Queue(mainQueue, toDraw);	 // Prend un nouvel élément
+
+	mainQueue.first = mainQueue.last = NULL; // Good Practice!
+
+// Vide animation queue
+
+	AnimationQueue* toPop = first;		// Pourrait être null
+	AnimationQueue* prev = NULL;
+
+	while (toPop)	// tant que ta pas finis de traverser tout les listes
+	{
+		while (!Is_Empty(toPop->queue))
+			Pop_From_Queue(toPop->queue, toDraw);
+
+		// Delete la queue Une fois vide	
+
+		if (toPop == first && toPop == last)
+		{
+			delete toPop;	// Delete la queue actuelle
+			toPop = first = last = NULL;
+		}
+		else
+			if (toPop == first)
+			{
+				toPop = toPop->nxtQueue;
+				delete first;
+				first = toPop;	// new first
+				prev = NULL; /*safety*/
+			}
+			else
+				if (toPop == last)
+				{
+					toPop = prev->nxtQueue = NULL;
+					delete last;
+					last = prev;	// new last
+				}
+				else
+				{
+					prev->nxtQueue = toPop->nxtQueue;
+					delete toPop;
+					toPop = prev->nxtQueue;	// Passe au prochain
+				}
+	}
+}

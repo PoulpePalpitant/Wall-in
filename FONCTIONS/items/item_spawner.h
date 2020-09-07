@@ -8,7 +8,7 @@ struct TypeSpawner
 {
 	ItemType type;		// Tout les types d'item dans la pool
 	SpeedTimer timer;// 
-	int rdmAcceleration;	// La variation de temps entre chaque spawn. mon système marche avec la speed et non en seconde. Je peux pas réduire la vitesse facilement pour créer 1 délay d'une seconde:	
+	int rdmDelay;	// La variation de temps entre chaque spawn. mon système marche avec la speed et non en seconde. Je peux pas réduire la vitesse facilement pour créer 1 délay d'une seconde:	
 	int spwSpeed;		// vitesse de spawn																														 // 1000 = 1 sec 2000 = .5 seconde
 };																																								 // 100 = 10 sec
 																																								 // 1000 + 10 != 11 secondes :/
@@ -32,6 +32,7 @@ public:
 
 	// TIMERS
 	static void UPD_Item_Spawn_Timers();
+	static int Add_Delay(TypeSpawner* spawner);
 	static void Pause_Updates() { pause = true; }
 	static void Resume_Updates() { pause = false; }
 

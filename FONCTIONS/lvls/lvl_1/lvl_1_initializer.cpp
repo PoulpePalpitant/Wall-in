@@ -22,17 +22,19 @@ void Lvl_1_Initializer()
 	if (gSkipStory)
 	{
 		// Pour un quick start avec warning
-		//gCurrentStage = 2;
-		//gSkipStory = false;
+		gCurrentStage = 4;
+		gSkipStory = false;
 		
 		// Pour un normal quick start
-		gCurrentStage = 3; // super fast
-		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+		//gCurrentStage = 3; // super fast
 
 
 		//gCurrentStage = 2;	// Skip tout les tutorials
 		//Ev_Bot_Tutorial();	// start tuto avec jerry
 		//gSkipStory = false;
+		
+		
+		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 	}
 	else
 	{

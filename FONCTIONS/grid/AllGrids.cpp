@@ -123,7 +123,13 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 				impactedWall = wall;
 
 			if (nbOfWalls == 1)
+			{
 				child->Activate_Link(blast->modifier);				// On active le Child qu'une fois, car il n'y en a qu'un seul
+				
+				if (parent->Get_Modifier() == blast->modifier)	// Si deux modifiers se rencontrent, le link free est obligatoirement modifié
+					child->Convert_Modifier(blast->modifier);	// Si le link free est modifié, alors on peut pas piler dessus
+				
+			}
 
 			parent->Dsp_Link();	// Draw le link Parent
 
@@ -165,7 +171,7 @@ static GridIndexIncrementor Find_First_Wall_Crd(const WallGrid &grid, const GrdC
 }
 
 // Créer manuellement une chaîne de murs et de Links dans une direction
-void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type)
+void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type, bool multipleRoot)
 {
 	static Wall* wall;						// Wall à activer
 	static Link* child, * parent;			// Link à activer et son child
@@ -216,8 +222,9 @@ void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls,
 
 			if (state == LinkState::FREE)	// LE child ne Peut pas être déjà FREE, Sinon tu connect deux Branches!!!
 			{
-				if (Are_Both_Links_Free(parent, child)) // La fonction est un échec, tu ne peux pas activer 1 mur connectant deux branches existantes
-					return;
+				if(!multipleRoot)
+					if (Are_Both_Links_Free(parent, child)) // La fonction est un échec, tu ne peux pas activer 1 mur connectant deux branches existantes
+						return;
 
 				parent->Activate_Link(type);	// Il faut activer le parent qui n'aura en fait aucun Child
 				parent->Dsp_Link();

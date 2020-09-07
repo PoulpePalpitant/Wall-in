@@ -28,12 +28,17 @@ void SpeedTimer::katch_Up()
 }
 
 // Set la durée de base du CountDown. Quand le count down se termine, 1 mouvement peut être fait
-void SpeedTimer::Start_Timer(int speed, int numMove, bool inf)		// Speed est en millisecondes
+void SpeedTimer::Start_Timer(int speed, int numMove, bool inf, int addDuration)		// Speed est en millisecondes
 {
-	if (speed == 0)
-		timeLeft = cdDuration = (speed * GameLoopClock::Get_Delta_Time());	// Finis instantannément			TEST
+	if (!addDuration)
+	{
+		if (speed == 0)
+			timeLeft = cdDuration = (speed * GameLoopClock::Get_Delta_Time());	// Finis instantannément			TEST
+		else
+			timeLeft = cdDuration = 1000;	// DEFAULT.		1000ms = 1seconde
+	}
 	else
-		timeLeft = cdDuration = 1000;	// DEFAULT.		1000ms = 1seconde
+		timeLeft = cdDuration = 1000 + addDuration;	// J'ai ajouté ceci pour modifier la durée du  timer, mais je crois que ça va exploser. Bref, besoin de tester avec d'utiliser
 
 	if (!inf)
 		cd.Set(numMove);				// Nombre de mouvement à faire

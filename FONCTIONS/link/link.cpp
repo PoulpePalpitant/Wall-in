@@ -85,7 +85,9 @@ void Link::Convert_Modifier(Modifier mod)		// Convertit le modifier d'un link. S
 {
 	modifier = mod;
 	Set_UI();	// affichage
-	Dsp_Link();	// Réaffiche le sym 
+	
+	if(!Are_Equal( P1.Get_XY(),coord))
+		Dsp_Link();	// Réaffiche le sym 
 }
 
 void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier

@@ -34,15 +34,16 @@ static void Block_Prison(bool Remove = false)
 
 static void Refresher()	/// Refresher du stage
 {
-	if (gRefreshStage || P1.Get_HP() < 3)
+	if (gRefreshStage || P1.Get_HP() < 1)
 	{
 		//ItemsOnGrid::Remove_All();	// enlève tout les items spawné
 		//ListsOfChainToModify::Annihilate_All_Links();	// Links
 		//botList.Destroy_All_Bots();	// Bots
 		//P1.Er_Player();
 		Clear_Map();
-		
-		P1.Set_Position({ 2,2 }); P1.Reset_Hp();
+		Press_R_To_Refresh();
+		Press_X_To_Proceed(3);
+		P1.Set_Position({ 2,2 }); P1.Reset_Hp_And_Heart(1);
 		P1.Dr_Player();
 		Block_Prison(); // Prison de blockers autours du joueur
 		ev_Lvl2_Training_1.Go_To_X_Step(2);
@@ -56,8 +57,10 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 	{
 		Press_R_To_Refresh();
 		Press_X_To_Proceed(3);
+		Clear_All_Renders();
 		Clear_Map();	// hope
 		blastP1.Cancel();			 // Cancel le blast
+		P1.Set_Hp(1);
 		//clrscr
 
 		Erase_Right_Text();	// backup
@@ -101,7 +104,7 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 				Spawn_A_Bot(UP, 15);	Spawn_A_Bot(DOWN, 15);
 				Spawn_A_Bot(UP, 14);	Spawn_A_Bot(DOWN, 14);
 				Spawn_A_Bot(UP, 13);	Spawn_A_Bot(DOWN, 13);
-				ev_Lvl2_Training_1.Advance(800);
+				ev_Lvl2_Training_1.Advance(875);
 				break;
 
 			case 5:

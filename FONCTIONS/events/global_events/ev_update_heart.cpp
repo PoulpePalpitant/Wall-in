@@ -28,6 +28,9 @@ static Colors fillClr[2];	// Fait flasher le coueur d'une certaine couleur la pr
 static int drawnOut;	// Nombre de char qui sont draw outside du char actuellement. Quand ça reach, genre 5, on arrête de draw outside
 static int c, r;        // Pour s'orienter dans les string
 static int HP;			// Dicte que stade d'hp on se trouve
+static std::string extraHp;	// Le nombre d'hp en extra, sous forme de string
+static bool erExtra;		// Efface l'extra quand yen à pu
+static int prevHp;	// flag qui permet de savoir si l'event précédant était un extra
 static bool fastDraw = true;	// Vitesse à laquelle on va afficher les coeurs
 static int drawSpeed[2];	/// 2 vitesse d'affichages : 1 pour la première phase, 2 pour la 2e phase
 static const int DFLT_FAST_SPEED[2] = {300000, 100000};	// same logic 
@@ -37,6 +40,7 @@ static const int DFLT_SLOW_SPEED[2] = {60000, 42000};	// same logic
 static Colors clrFlash;	// Fait flasher le coueur d'une certaine couleur 
 static const int distUnderGrid = 4;
 static Event ev_DrHeart(Ev_Dr_Heart, 3);
+static Event ev_DrExtraHp(Ev_Dr_Extra_Hp, 5);
 
 static const std::string heart_4[] = {	// do this now
 "  ,;;;;, ,;;;;,  ",
@@ -130,6 +134,13 @@ Coord Find_Heart_Ori_XY()	 // position de départ pour draw le coeur
 	return { Find_Ctr_String_X(heart_dead[0]), linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y + distUnderGrid };
 }
 
+static Coord Find_Extra_Hp_XY()	 // position de départ pour draw le coeur
+{
+	Coord xy = Find_Heart_Ori_XY();
+	return { xy.x += 17 , xy.y };
+}
+
+
 void Just_Dr_Heart(int hp)
 {
 	// initialisation, la console doit être setté pour utiliser ça, ainsi que le grid
@@ -151,7 +162,7 @@ void Just_Dr_Heart(int hp)
 
 void Exclude_Outside_From_Heart(int hp)
 {
-	if (hp == 4)
+	if (hp >= 4)
 	{
 		inside.Resize(6, 0, 17);	 // Default
 		// la je doit exclure tout le dedans
@@ -262,7 +273,7 @@ void Exclude_Inside(int hp)
 
 	outside.Resize(8, 0, 20);	 // Default
 
-	if (hp == 4)
+	if (hp >= 4)
 	{
 		// Exclusion lignes par lignes des charactères qui composent l'intérieur du coeur
 		outside.Remove_Value(1,2);outside.Remove_Value(1, 17);  outside.Exclude_Interval_From_List(1, 4, 14);
@@ -386,7 +397,7 @@ void Fill_Heart_Randomly(bool rdmChars)
 	}
 	else
 	{
-		if (HP == 4)	// special colors
+		if (HP >= 4)	// special colors
 		{
 			if(allHearts[HP][r][c] == TXT_CONST.DOTDOT)
 				ConsoleRender::Add_Char({ ori.x + c, ori.y + r }, allHearts[HP][r][c], LIGHT_AQUA); // dedans 
@@ -412,22 +423,41 @@ void Set_Up_Drawers(int hp, bool slow)		 // Setup les intervalles pour l'afficha
 	case 1:fillClr[1] = LIGHT_RED; break;
 	case 2:fillClr[1] = LIGHT_YELLOW; break;
 	case 3:fillClr[1] = LIGHT_GREEN; break;
-	case 4:fillClr[1] = LIGHT_GREEN/*LIGHT_AQUA*/; break;
+	default: case 4:fillClr[1] = LIGHT_GREEN/*LIGHT_AQUA*/; break;
+
 	}
 
 	//if (slow)
 	//	fillClr[0] = WHITE;	// Quand c'est slow, on affiche des lignes blanches
 	//else
-		fillClr[0] = fillClr[1];	// same couleur
+	fillClr[0] = fillClr[1];	// same couleur
 
-	
-	HP = hp;
+	if (hp > 4)
+		HP = 4;
+	else
+		HP = hp;
 }
 
 void Start_Ev_Dr_Heart(int hp, bool slow)		 // Setup l'event Précédent
 {
-	if (hp <= 4)
+	if (hp > 4)
 	{
+		erExtra = false;
+		extraHp = std::to_string(hp - 4);
+
+		if (ev_DrExtraHp.Is_Active())
+			ev_DrExtraHp.Cancel(); // Stop l'animation
+		Ev_Dr_Extra_Hp();
+	}
+	else
+	{
+		if (prevHp > 4 && hp <= 4)	// 4 est le nombre d'hp pour un extra. Si on a draw un extra précédamment, on va l'effacer maintenant
+		{
+			erExtra = true;
+			Ev_Dr_Extra_Hp();
+			
+		}
+
 		if (ev_DrHeart.Is_Active())
 			ev_DrHeart.Cancel(); // Stop l'animation
 
@@ -435,6 +465,8 @@ void Start_Ev_Dr_Heart(int hp, bool slow)		 // Setup l'event Précédent
 		Set_Speed_Draw(slow);
 		Ev_Dr_Heart();		// Le nouveau coueur à dessiner
 	}
+
+	prevHp = hp;	// L'Hp pour ce tours-ci
 }
 
 void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
@@ -515,3 +547,75 @@ void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
 			}
 		}
 }
+
+
+void Ev_Dr_Extra_Hp()		 // Affiche le coueur à ses différents stades
+{
+	static Coord start, xy;	// pour afficher
+
+	if (!ev_DrExtraHp.Is_Active())
+	{
+		// La console doit être setté pour utiliser ça
+		xy = start = Find_Extra_Hp_XY();
+		ev_DrExtraHp.Activate();
+		ev_DrExtraHp.Start(0);
+		ev_DrExtraHp.delay.Start_Timer(drawSpeed[0], 4);	// Le coueur sera affiché à cette vitesse
+	}
+	else
+		while (ev_DrExtraHp.delay.Tick())
+		{
+			switch (ev_DrExtraHp.Get_Current_Step())
+			{
+			case 1:
+				ConsoleRender::Add_Char(xy, COOL_CHARS[rand() % NUM_COOL_CHARS], fillClr[0]);
+				xy.x++;
+				ev_DrExtraHp.Advance(0);
+				break;
+
+			case 2: // tit break
+
+				ev_DrExtraHp.delay.Start_Timer(drawSpeed[0], 1, true);
+				if (!ev_DrHeart.Is_Active())
+				{
+					xy = start;
+
+					if (erExtra)
+						ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+					else
+						ConsoleRender::Add_Char(xy, TXT_CONST.PLUS);
+					ev_DrExtraHp.delay.Stop();
+					ev_DrExtraHp.Advance(drawSpeed[0]);
+				}
+				break;
+
+			case 3: // tit break
+				xy.x++;
+				ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+				ev_DrExtraHp.Advance(10000);
+				break;
+
+			case 4: // tit break
+				xy.x++;
+				if (erExtra)
+					ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+				else
+					ConsoleRender::Add_Char(xy, extraHp[0], LIGHT_AQUA);
+				ev_DrExtraHp.Advance(drawSpeed[0]);
+				break;
+
+			case 5: // tit break
+				xy.x++;
+				if (erExtra)
+					ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+				else
+					if (extraHp.size() == 2)	// l'hp actuel est à la dizaine 
+						ConsoleRender::Add_Char(xy, extraHp[1], LIGHT_AQUA);
+					else
+						ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+
+				ev_DrExtraHp.Advance(3000);
+				break;
+			}
+		}
+}
+

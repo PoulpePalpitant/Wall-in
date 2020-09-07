@@ -35,7 +35,7 @@ extern Blast blastP2 = {};
 
 
 // INTIALISATION DES PROPRIÉTÉ DU BLAST
-void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir/* const BlastType &type*/)
+void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir, bool consume)
 {
 	//strength = type.strength;				// Force du blast. Affecte la puissance du wall qui sera créé
 	//linkType = type.linkType;					// type de Link à créer
@@ -48,8 +48,11 @@ void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir/* const Bl
 		Setup_Speed();								// Sa vitesse
 		Setup_Dist_Btw_Links();						// La distance entre chacune des colisions sur le grid de links
 	//}			
-								
-	BlastModifierQueue::Consume_Next_Modifier();	// Faut que le blast franchis une distance pour consommer un modifier
+	if(consume)
+		BlastModifierQueue::Consume_Next_Modifier();	// Faut que le blast franchis une distance pour consommer un modifier
+	else
+		blastP1.Setup_Modifier(REGULAR);	// Aucun modifier
+
 	Setup_Blast_UI();							// Son apparence futur
 	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
 	

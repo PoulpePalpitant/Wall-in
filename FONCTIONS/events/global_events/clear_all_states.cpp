@@ -21,7 +21,7 @@
 #include "../../player/player.h"
 //#include "../../grid/AllGrids.h"
 
-void Clear_All_States(bool eraseLinks)	// Gros reset button()	
+void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()	
 {
 	// PRIME RESETS
 	blastP1.Cancel();			 // Cancel le blast
@@ -30,7 +30,12 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	Reset_Input_Flags();				// Flags
 	gSkipStory = gDayStarted = gRefreshStage = false;	// Other important flags
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
-	SpeedTimer::Stop_All_Timers(); // STOP TOUT LES TIMERS du monde, sauf la gameloop bien entendu
+	
+	if(stopTimers)
+		SpeedTimer::Stop_All_Timers(); // STOP TOUT LES TIMERS du monde, sauf la gameloop bien entendu
+
+	// VIDE LA RENDER QUEUE
+
 
 	//Vide tout les drawers et les queues : item spawns, warnings, wall drawers etc.
 	WarningDrawerList::Remove_All();
@@ -43,6 +48,7 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	if (eraseLinks)	// efface les links et walls
 	{
 		ListsOfChainToModify::Annihilate_All_Links();	// Links
+		DrawWalls::Remove_All();
 	}
 
 
@@ -54,6 +60,7 @@ void Clear_All_States(bool eraseLinks)	// Gros reset button()
 	//MsgQueue::Register(HIDE_MOD_QUEUE);
 	MsgQueue::Register(LOCK_PLAYER);
 	MsgQueue::Register(STOP_BOT_SPAWNS);
+	MsgQueue::Register(DISABLE_ITEM_SPAWN);
 	MsgQueue::Register(RESET_SPW_TOT);
 	//P1.Reset_State();			// 
 }
@@ -68,4 +75,9 @@ void Clear_Map()// Tout ce qui à une influence sur l'interface graphique
 	//MsgQueue::Register(HIDE_MOD_QUEUE);
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
 	Erase_Map_Borders_1();
+}
+
+void Clear_All_Renders()
+{
+	ConsoleRender::Empty_All();
 }

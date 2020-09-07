@@ -4,6 +4,7 @@
 #include "../txtstyle.h"
 #include "../../time/countdown_clock.h"
 #include "../../time/movement_timer.h"
+#include "../../events/global_events/clear_all_states.h"
 
 struct OutputData {
 
@@ -32,6 +33,7 @@ struct AnimationQueue {
 
 class ConsoleRender
 {
+	friend void Clear_All_Renders();
 	static AnimationQueue* first, *last;// Listes contenants tout les output à faire sur une base de temps
 	static AnimationQueue* animationQueue;	// Permet d'ajouter tout les prochains éléments dans la même queue. Ils seront affichés 1 après l'autre avec un certain délai
 	static RenderQueue mainQueue;		// Liste principale. Elle est vidé à chaque render. C'est ta responsabilité de ne pas la overfill et causé du lags avec "cout"
@@ -42,7 +44,7 @@ class ConsoleRender
 	static void Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& queue);// Ajoute un OutputData a la fin de la queue
 	static void Render_Main_Queue();				// Affiche tout les éléments présent dans la main queue
 	static void Render_Animation_Queue();				// Affiche tout les élément qui doivent l'être selon les timer
-
+	static void Empty_All(); // dangerous stuff here
 public:
 	static void Add_String(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0, bool erase = false);
 	static void Add_Char(Coord crd, unsigned char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render

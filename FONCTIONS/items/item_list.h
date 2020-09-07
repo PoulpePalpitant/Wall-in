@@ -11,7 +11,7 @@ class ItemsOnGrid
 {
 public:
 	static Item items[MAX_ITEMS];
-	static int size;			// dimension de la liste
+	static int size;			// quantité d'éléments dans la liste
 
 	static bool Reached_Max() {	return size == MAX_ITEMS;}
 	static bool Is_Item_Here(GrdCoord crd);	// 

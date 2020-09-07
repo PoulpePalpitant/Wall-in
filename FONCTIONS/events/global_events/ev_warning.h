@@ -24,7 +24,7 @@ struct WarningDrawer
 class WarningDrawerList
 {
 	friend void Ev_Draw_Warnings();
-	friend void Clear_All_States(bool eraseMap );	// Gros reset button
+	friend void Clear_All_States(bool eraseMap ,bool stopTimers);	// Gros reset button
 
 
 	static int animationSteps;

@@ -98,7 +98,6 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 
 			case 10:
 				ConsoleRender::Add_Char(crd, 197, LIGHT_GREEN);
-				P1.Set_Sym(197);
 				MsgQueue::Register(PLAYER_SPAWNED);
 				MsgQueue::Register(FREE_PLAYER);
 				ev_SpawnPlayer.Advance(0);

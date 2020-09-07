@@ -4,6 +4,7 @@
 /* LEs LEvels*/
 #include "../menu/menu_script.h"
 #include "lvl_1/lvl_1_spwn_script.h"
+#include "lvl_2/lvl_2_spwn_script.h"
 
 #include "lvl_1/sub_lvl_1_script.h"
 
@@ -20,8 +21,8 @@ void Peek_Lvl_Script()
 	case 0: break;
 	case 1:	
 		Lvl_1_Spwn_Script(); break;	// Détermine quel sera la prochaine wave de spawn
-		/*case 2: Level_2_Script(); break;
-		case 3: Level_3_Script(); break;
+		case 2: Lvl_2_Spwn_Script(); break;
+		/*case 3: Level_3_Script(); break;
 		case 4: Level_4_Script(); break;
 		case 5: Level_5_Script(); break;
 		case 6: Level_6_Script(); break;

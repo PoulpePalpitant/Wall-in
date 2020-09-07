@@ -197,6 +197,7 @@ void Ev_MultiColor_Warnings() // voici un event custom
 			case 2:
 				Ev_Speeding_Up();
 				WarningDrawerList::Add(false, WHITE);
+				WarningDrawerList::Add(false, WHITE);
 				ev_MultiColorWarnings.Cancel();
 				break;
 			}

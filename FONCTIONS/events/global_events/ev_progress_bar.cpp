@@ -22,15 +22,15 @@ static Event ev_DrawWholeBar(Ev_Draw_Whole_Bar, 1);
 // Permet d'inscrire certains "break" dans la progress bar au endroit dans le spawn script ou une certaine longues pause à lieu. J'ai décidé de faire ça manuellement.
 // Cette décision m'oblige à updater continuellement les ce script autant que le spawn script si je souhaite une cohérence entre les deux. Heureusement ya pas grand chose à changer
 
-static const int NUM_BREAKS[] = { 3, 1, 1 ,1 };		// Nombre de break dans chaque lvlv
+static const int NUM_BREAKS[] = { 3, 4, 1 ,1 };		// Nombre de break dans chaque lvlv
 static const int BREAKS_LVL_1[] = { 30, 49, 67 };	// List de tout les moment de repos dans le script de spawn.
-static const int BREAKS_LVL_2[] = { 123 };	
+static const int BREAKS_LVL_2[] = { 20,40,67,80 };	
 static const int BREAKS_LVL_3[] = { 120 };	
 static const int BREAKS_LVL_4[] = { 120 };	
 
 // Par Level
-static const int numWaves[] = { 120 };	// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
-static const int finalhour[] = { 100 };	// À quel wave le final hour aura lieu
+static const int numWaves[] = { 123, 123 };	// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
+static const int finalhour[] = { 100, 100 };	// À quel wave le final hour aura lieu
 
 
 static float ratio;					// Nombre de wave à faire
@@ -45,9 +45,21 @@ static Colors progClr;	// // Est jaune. Devient rouge durant le fianl hour
 
 static bool Is_Break_Here(int lvl, int waveTot)	// Check si un break à lieu ici
 {
+	int const* pBREAKS_LVL;	// le pointeurs vers les données plus haut
+
+	switch (lvl + 1)	// vraiment cave
+	{
+	case 1:pBREAKS_LVL = BREAKS_LVL_1; break;
+	case 2:pBREAKS_LVL = BREAKS_LVL_2; break;
+	case 3:pBREAKS_LVL = BREAKS_LVL_3; break;
+	case 4:pBREAKS_LVL = BREAKS_LVL_4; break;
+	default: return false;
+	}
+
 	for (int i = 0; i < NUM_BREAKS[lvl]; i++)
 	{
-		if (waveTot == BREAKS_LVL_1[i])
+
+		if (waveTot == pBREAKS_LVL[i])
 			return true;
 	}
 	return false;

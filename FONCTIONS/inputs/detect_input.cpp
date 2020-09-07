@@ -214,12 +214,10 @@ void Handle_Input()
 	case 'R':case 'r':	gRefreshStage = true; break;	// Refresh un stage, quand c'est possible
 
 	case 27: /*Esc */
-		if (gPauseUpdates)	// Quand le jeu est en pause, tu va avoir le choix de retourner au menu principal	
-		{
-			MsgQueue::Register(RETURN_TO_MENU);
-			gPauseUpdates = false;
-		}
-
+		if (!gPauseUpdates)
+			action = ActionType::PAUSE;
+		else
+			action = ActionType::UNPAUSE;
 		break;
 
 	case 13:	/* enter */
@@ -237,10 +235,12 @@ void Handle_Input()
 		break;	// 13 = enter
 
 	case ' ':
-		if (!gPauseUpdates)
-			action = ActionType::PAUSE;
-		else
-			action = ActionType::UNPAUSE;
+		if (gPauseUpdates)	// Quand le jeu est en pause, tu va avoir le choix de retourner au menu principal	
+		{
+			MsgQueue::Register(RETURN_TO_MENU);
+			gPauseUpdates = false;
+		}
+
 		break;
 	}
 

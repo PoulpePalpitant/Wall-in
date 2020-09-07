@@ -37,11 +37,11 @@ void Lvl_2_Spwn_Script()
 		
 		switch (numSpawnWaves)
 		{
-		
-		case 1: Erase_Map_Borders_1(84); skip = 4; break; // Erase la border juste si le joueur est pas en mode quickstartS
-		case 2: gBoxSide = DOWN; break;
+		case 1: 
+			gNumSpawnTOT = 0; Erase_Map_Borders_1(84); skip = 4; break; // Erase la border juste si le joueur est pas en mode quickstartS
+		case 2:MsgQueue::Register(ENABLE_ITEM_SPAWN); gBoxSide = DOWN; break;
 		case 3: gBoxSide = DOWN;break;
-		case 4:break;	// it's all random wut?
+		case 4:break;	// it's all random wut? It is
 		case 5:break;
 		case 6:break;
 		case 7:break;
@@ -58,6 +58,7 @@ void Lvl_2_Spwn_Script()
 		case 18:break;
 		case 19:break;
 		case 20:				
+			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
 			gNumSpawnTOT = 0;skip = 6;
 			break;//BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
@@ -84,7 +85,12 @@ void Lvl_2_Spwn_Script()
 		case 37:Add(1);Set_Interval(RIGHT, 5, 9);break;
 		case 38:Add(1);Set_Interval(LEFT, 5, 9);break;
 		case 39:Add(1);Set_Interval(RIGHT, 5, 9); break;
-		case 40: gNumSpawnTOT = 0;skip = 8;
+		case 40: 
+			Ev_MultiColor_Warnings();// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNINGbreak;
+			gSpwBotTimer.Start_Timer(475, 1, true);	// speed is inscreased!!!
+
+			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
+			gNumSpawnTOT = 0;skip = 8;
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 		case 41: break;
@@ -103,23 +109,23 @@ void Lvl_2_Spwn_Script()
 		case 52:Add(1);break;
 		case 53:Add(2);break;
 		case 54:Add(1);break;
-		case 55:Add(2);break;
+		case 55:Add(1);break;
 		case 56:Add(1);break;
 		case 57:Add(2);break;
 		case 58:Add(1);break;
 		case 59:Add(2);break;
 		case 60:Add(1);break;
 		case 61:Add(1);break;
-		case 62:Add(3);break;
-		case 63:Add(3);break;
-		case 64:Add(3);break;
+		case 62:Add(2);break;
+		case 63:Add(2);break;
+		case 64:Add(2);break;
 		case 65:Add(1);break;
 		case 66:Add(1);break;
-		case 67:gNumSpawnTOT = 0; skip = 1;
+		case 67:
+			
+			gNumSpawnTOT = 0; skip = 1;
 
-			// TOOLS SPAWN SPEED INCREASED!
 
-			Ev_MultiColor_Warnings();// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNINGbreak;
 			break;
 
 		case 68:break;
@@ -133,8 +139,12 @@ void Lvl_2_Spwn_Script()
 		case 76:break;
 		case 77:Add(1);break;
 		case 78:break;
-		case 79:Add(1);break;
-		case 80: Set_Interval(LEFT, 4,6);Add(3); break;
+		case 79:Set_Interval(LEFT, 4, 6);Add(3);break;
+		case 80:  
+			// TOOLS SPAWN SPEED INCREASED!
+			Ev_MultiColor_Warnings();// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNINGbreak;
+			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
+			
 			skip = 7;
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 		
@@ -161,6 +171,13 @@ void Lvl_2_Spwn_Script()
 			// FINAL PUSH	
 
 		case 100: 
+			for (int c = 0; c < linkGrid->Get_Cols(); c++)	// Soit ça, ou un gros X en plein milieu
+			{
+				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,4 }, false);
+				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,10 }, false);
+			}
+
+
 			gNumSpawnTOT = 0; MsgQueue::Register(FINAL_PUSH); 
 			gSpwBotTimer.Start_Timer(500, 1, true);	
 			skip = 7;	break;

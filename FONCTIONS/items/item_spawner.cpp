@@ -63,13 +63,17 @@ bool ItemSpawner::Add_To_Pool(ItemType type, int timerSpeed, int rngDelay)
 {
 	TypeSpawner temp;
 
-	for (int i = 0; i < pool.size; i++)
+	for (int i = 0; i < pool.size; i++) // but why?
 	{
-		if (pool.spawner[i].type== type)			// Était déjà dans la pool
+		if (pool.spawner[i].type == type)			// Était déjà dans la pool
+		{
+			Set_Spawner_Timer(pool.spawner[i], timerSpeed, rngDelay);	// set le nouveau timer
 			return false;
+		}
 	}
 
-	for (int i = pool.size; i < MAX_ITEM_TYPE; i++)
+	//for (int i = 0; i < MAX_ITEM_TYPE; i++)
+	for (int i = pool.size; i < MAX_ITEM_TYPE; i++)	// dafuck was this?
 	{
 		if (pool.spawner[i].type == type)
 		{
@@ -115,15 +119,34 @@ bool ItemSpawner::Remove_From_Pool(ItemType type)
 	 for (int type = 0; type < MAX_ITEM_TYPE; type++)
 		 pool.spawner[type].type = (ItemType)type;
  }
+
+ // TIMERS
+ // ------
  void ItemSpawner::Set_Spawner_Timer(TypeSpawner& spawner, int timerduration, int rngDelay)
  {
 	 spawner.spwSpeed = timerduration;
-	 spawner.rdmAcceleration = rngDelay;
+	 spawner.rdmDelay = rngDelay;
 	 spawner.timer.Start_Timer(timerduration);	// start le timer aussi?
  }
 
+ int ItemSpawner::Add_Delay(TypeSpawner * spawner)	// ajoute du délay sur le prochain spawn
+ {
+	 if (!spawner)
+		 return 0 ;	// spawner null? wtf
 
-// TIMERS
+	 float delaySec;	// delay en secondes
+
+	 // Reset timer avec extra sauce(delay random)
+	 if (spawner->rdmDelay)
+		 delaySec = rand() % spawner->rdmDelay;	// prochain timer aura des secondes de plus
+	 else
+		 return 0;
+
+	 // Convert delay from seconds to speed
+	 return (int)(delaySec * 1000);
+ }
+
+
 void ItemSpawner::UPD_Item_Spawn_Timers()
 {
 	static int acceleration; acceleration = 0;
@@ -153,13 +176,8 @@ void ItemSpawner::UPD_Item_Spawn_Timers()
 				}
 			}
 
-			// Reset timer avec extra sauce(delay random)
-			if (pool.spawner[i].rdmAcceleration)
-				acceleration = rand() % pool.spawner[i].rdmAcceleration;	// prochain timer sera accéléré ...
-			else
-				acceleration = 0;
-
-				pool.spawner[i].timer.Start_Timer(pool.spawner[i].spwSpeed + acceleration);
+			// Remplacer ceci par un delay. Donc ajouter du temps, préférablement en secondes
+			pool.spawner[i].timer.Start_Timer(pool.spawner[i].spwSpeed,1, false, Add_Delay(&pool.spawner[i]));
 		}
 	}
 }

@@ -36,9 +36,9 @@ void Player::Player_Gains_HP(int hpGain)
 	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
 }
 
-void Player::Reset_Hp()	// 3 d'hp par défaut
+void Player::Reset_Hp_And_Heart(int HP)	// 3 d'hp par défaut
 {
-	hp = 3;
+	hp = HP;
 	Upd_State();	// Change le state du joueur
 	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
 }

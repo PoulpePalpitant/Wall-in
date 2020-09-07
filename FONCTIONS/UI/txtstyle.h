@@ -50,7 +50,7 @@ const int STANDARD_ASCII_SIZE = 6;
 //"          |___|                                                                    "
 //	};
 //
-//	const std::string DAY_1_V2[STANDARD_ASCII_SIZE] = {
+//	const std::string DAY_1_V2[STANDARD_ASCII_SIZE] = {				// POLICE DE CHAR : SLANT
 //
 //"    ____                 ___                 ___       _   __                    __      __   ",
 //"   / __ \____ ___  __   <  /                /   |     / | / /__ _      __       / /___  / /_  ",
