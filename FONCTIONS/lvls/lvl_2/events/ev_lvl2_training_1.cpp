@@ -13,12 +13,35 @@
 #include "../../../grid/managegrids.h"
 #include "../../../spawns/spawn_bot.h"
 #include "../../../bots/botlist.h"
+#include "../../../spawns/ev_spawn_Jerry.h"	// pour spawner jerry
 
 #include "../../../events/global_events/feedback/ev_draw_map.h"
 #include "../../lvl_script.h"
 
+// WELCOME TO THE SPECIAL TRAINING ROOMS. "Jerry Was Bored Of Wasting His Time Giving This Training To Every Single Employee That Comes Around". "So He Decided  
+// To Make The Process Automated, As He Has Other Things To Do, Like Proving That He Can Be The Best Employee This Company Has Ever Had, By Making Automated Training Rooms"
+// "If You manage To Succeed Here, IT IS GUARANTEED, That You Will Somewhat Be Prepared To Not Die During Your Duty.  - Signed: Me. Jerry -
 
-static Event ev_Lvl2_Training_1(Ev_Lvl2_Training_1, 7);
+// P.S. Please Leave A Review Before You Exit
+
+// Sorry, "Cap Locks" Was On. I Have Designed This Training To Increase Your Inner Employee Potential. 
+// 
+
+std::string jeryyMsg[] = {	// 10
+	"WELCOME TO THE SPECIAL TRAINING ROOMS",
+	"\"Jerry Was Bored Of Wasting His Time Giving This Training",
+"To Every Single Employee That Comes Around.",
+"So He Decided To Make The Process Automated ",
+"As He Has Other Things To Do",
+"Like Proving That He Can Be The Best Employee This Company Has Ever Had",
+"By Making Automated Training Rooms.",
+"If You Manage To Succeed Here, IT IS GUARANTEED, That",
+" You Will Somewhat Be Prepared To Not Die During Your Duty.\"",
+"- Signed: Me. Jerry -"
+};
+
+static int index;
+static Event ev_Lvl2_Training_1(Ev_Lvl2_Training_1, 15);
 
 static void Block_Prison(bool Remove = false)
 {
@@ -55,13 +78,13 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 {
 	if (!ev_Lvl2_Training_1.Is_Active())
 	{
-		Press_R_To_Refresh();
-		Press_X_To_Proceed(3);
+		index = 0;
 		Clear_All_Renders();
 		Clear_Map();	// hope
 		blastP1.Cancel();			 // Cancel le blast
 		P1.Set_Hp(1);
 		//clrscr
+		
 
 		Erase_Right_Text();	// backup
 		ev_Lvl2_Training_1.Activate();
@@ -77,9 +100,11 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 			case 1:
 				if (Resize_Grids_To_Level(gGrids, gCurrentLevel, gCurrentStage))
 				{
-					ev_Lvl2_Training_1.Advance(0);	// 1000 / 2 = 500.		2 secondes
 					MsgQueue::Register(ENABLE_BLAST);
 					MsgQueue::Register(FREE_PLAYER);
+					ev_Lvl2_Training_1.delay.Start_Timer(1000);
+					//ev_Lvl2_Training_1.Go_To_X_Step(8);
+					ev_Lvl2_Training_1.Advance(0);	// 1000 / 2 = 500.		2 secondes
 					gRefreshStage = true;	// lazy shortcut pour tout refresh
 				}
 				else
@@ -100,10 +125,10 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 4 :
-				Spawn_A_Bot(UP, 12);	Spawn_A_Bot(DOWN, 12);
-				Spawn_A_Bot(UP, 15);	Spawn_A_Bot(DOWN, 15);
-				Spawn_A_Bot(UP, 14);	Spawn_A_Bot(DOWN, 14);
-				Spawn_A_Bot(UP, 13);	Spawn_A_Bot(DOWN, 13);
+				Spawn_A_Jerry(UP, 12); 	Spawn_A_Jerry(DOWN, 12);
+				Spawn_A_Jerry(UP, 15);	Spawn_A_Jerry(DOWN, 15);
+				Spawn_A_Jerry(UP, 14);	Spawn_A_Jerry(DOWN, 14);
+				Spawn_A_Jerry(UP, 13);	Spawn_A_Jerry(DOWN, 13);
 				ev_Lvl2_Training_1.Advance(875);
 				break;
 
@@ -117,6 +142,33 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 				ev_Lvl2_Training_1.Advance(0);
 				ev_Lvl2_Training_1.delay.Start_Timer(10000,1,true);
 				break;
+
+
+				// fuck le message de jerry
+				// MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRYS
+			case 8:
+				ConsoleRender::Add_String(jeryyMsg[index], { Jerry_Txt_Crd(jeryyMsg[index],index - 14) }, BRIGHT_WHITE, TXT_SPD_DR);
+				ev_Lvl2_Training_1.Advance(430, 8);
+				break;
+
+			case 9:
+				index++;
+				ConsoleRender::Add_String(jeryyMsg[index], { Jerry_Txt_Crd(jeryyMsg[index],index - 13)}, GRAY, TXT_SPD_DR);
+				ev_Lvl2_Training_1.Advance(300);
+				break;
+
+			case 10:
+				index++;
+				ConsoleRender::Add_String(jeryyMsg[index], { Jerry_Txt_Crd(jeryyMsg[index],index - 12) }, AQUA, 400);
+				ev_Lvl2_Training_1.Advance(300);
+				break;
+
+			case 11:
+				ev_Lvl2_Training_1.Advance(1000);
+				gRefreshStage = true;
+				Refresher();
+				break;
+				// MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRYS
 
 				// EVENT N'EST PAS CANCELLÉ!
 			}

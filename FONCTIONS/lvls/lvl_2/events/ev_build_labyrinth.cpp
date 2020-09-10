@@ -13,11 +13,18 @@
 #include "../../../grid/AllGrids.h"
 #include "../../../events/global_events/feedback/ev_draw_map.h"
 #include "../../../global_types/global_types.h"
+#include "../../../events/global_events/clear_all_states.h"
 
 
-static Event ev_BuildLabyrinth(Ev_Build_Labyrinth, 3); // Def //
+static Event ev_BuildLabyrinth(Ev_Build_Labyrinth, 7); // Def //
 
 static std::string adv = "Adventure Here";
+static std::string moral = "What do you seek?";
+static std::string moral_2 = "An escape?";
+static std::string goal = "- NEW GOAL -";
+
+
+static std::string nxt = "What Next?";
 
 // Tous ce que j'ai de besoin pour constuire le labyrinthe
 static int rootR;	// Row de la root
@@ -279,11 +286,38 @@ void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de mu
 			case 3:
 				if (Are_Equal(P1.Get_Grd_Coord(), { 7,0 }))	// Le goal à reach pour le labyrinthe
 				{
+					Clear_Map();
+					Clear_All_Renders();
+					clrscr();
+					P1.Dr_Player();
 
-					MsgQueue::Register(STAGE_ADVANCE);
-					ev_BuildLabyrinth.Advance(0);
+					//MsgQueue::Register(LOCK_PLAYER);
+					MsgQueue::Register(DISABLE_BLAST);
+					ev_BuildLabyrinth.delay.Stop();
+					ev_BuildLabyrinth.Advance(400);
 				}
 
+				break;
+			case 4:
+				ConsoleRender::Add_String(goal, { Up_Txt_1(goal)}, BRIGHT_WHITE, 300);
+				ev_BuildLabyrinth.Advance(400);
+				break;
+
+			case 5:
+				//ConsoleRender::Add_String(moral, { Find_Ctr_String_X(moral) + 3,gConHeight / 2}, LIGHT_GREEN);
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, { Up_Txt_3(TXT_CONST.DOTDOTDOT)}, BRIGHT_WHITE, 750);
+				ev_BuildLabyrinth.Advance(300);
+				break;
+
+			case 6:
+				ConsoleRender::Add_String(nxt, { Find_Ctr_String_X(nxt), gConHeight / 2 - 5 }, LIGHT_RED, 400);
+				ev_BuildLabyrinth.Advance(400);
+				break;
+
+			case 7:
+				clrscr();
+				MsgQueue::Register(STAGE_ADVANCE);
+				ev_BuildLabyrinth.Advance(0);
 				break;
 			}
 		}

@@ -12,7 +12,7 @@ TextConstant TXT_CONST;	// Symboles constants et souvant utilisés pour l'afficha
 
 extern Colors gCurrentColor = WHITE;	// La couleur actuelle d'output dans la console. 
 Colors gBossClr = LIGHT_RED;
-Colors gJerClr = LIGHT_YELLOW;
+Colors gJerClr = LIGHT_AQUA;
 
 const unsigned short TXT_SPD_DR = 200; // vitesse de défilement du texte par défaut
 const unsigned short TXT_SPD_FAST = 70; // vitesse d'affichage
@@ -98,12 +98,14 @@ Coord Heart_Txt_Crd_Left(std::string txt, int line)
 
 int Boss_Txt_X()
 {
-	return  (gConWidth - (gConWidth / 5));
+	//return  (gConWidth - (gConWidth / 5));	//v1
+	return  map.Get_Box_Limit(RIGHT) + 30;	//v2
 }
 
 int Boss_Txt_Y(int line)
 {
-	return  (gConHeight / 2) - 7 + line;
+	//return  (gConHeight / 2) - 7 + line;
+	return   map.Get_Box_Limit(UP) + 7 + line;
 }
 
 Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplacement du personnage du boss
@@ -114,28 +116,38 @@ Coord Boss_Txt_Crd(std::string txt, int line )	// Affiche du texte à l'emplaceme
 		return { 0,0 };	// hehe
 }
 
-void Erase_All_Boss_Txt()
+void Erase_All_Boss_Txt(bool slow)
 {
+	std::string bigEraser = "                                                                          ";
+
 	for (int i = 0; i < 6; i++)
 	{
-		gotoxy(map.Get_Box_Limit(RIGHT) + 1, Boss_Txt_Y(i));
-		clreol();
+		if (slow)
+			ConsoleRender::Add_String(bigEraser, { map.Get_Box_Limit(RIGHT) + 2, Boss_Txt_Y(i) }, WHITE, 50, true);
+		else
+		{
+			gotoxy(map.Get_Box_Limit(RIGHT) + 2, Boss_Txt_Y(i));
+			clreol();
+		}
 	}
 }
 
 int Jerry_Txt_X()
 {
-	return  (gConWidth - (gConWidth / 5));
+	return  map.Get_Box_Limit(RIGHT) + 18;	//v2
+	//return  (gConWidth - (gConWidth / 5));
 }
 
 int Jerry_Txt_Y(int line)
 {
-	return  (gConHeight / 2) - 12 + line;
+	//return  (gConHeight / 2) - 12 + line;
+	return   map.Get_Box_Limit(UP) + line;// v2
+
 }
 
 Coord Jerry_Txt_Crd(std::string txt, int line)	// Affiche du texte à l'emplacement du personnage de Jimmy
 {
-	if (line < 5)
+	if (line < 15)	// plus que 5 et tu empile sur le boss crd
 		return { Jerry_Txt_X() - ((int)std::size(txt) / 2),Jerry_Txt_Y(line)}; // au trois quart à droite
 	else
 		return { 0,0 };	// hehe

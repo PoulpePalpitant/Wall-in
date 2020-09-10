@@ -10,15 +10,33 @@ static Event ev_SpeedingUp(Ev_Speeding_Up, 1);	// l'event
 
 static Coord crd;	// random crd
 static std::string faster = "- SPAWN SPEED IS INCREASING -";	
+static std::string faster_2 = "- TOOLS SPAWN SPEED IS INCREASING -";	
+static std::string* increase;	// le titre sélectionné
+static Colors clr;	// Couleur sélectionné
 static bool Dr_Er;	// draw or erase
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Set_Event_String(int string)
+{
+	if (string == 1)
+	{
+		increase = &faster;
+		clr = LIGHT_RED;
+	}
+	if (string == 2)
+	{
+		increase = &faster_2;
+		clr = LIGHT_YELLOW;
+	}
+}
 
 void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 {
 	if (!ev_SpeedingUp.Is_Active())
 	{
-		crd = { ((Find_Ctr_X((int)std::size(faster))) / 2) - 20, (gConHeight / 2) };
+		crd = { ((Find_Ctr_X((int)std::size(*increase))) / 2) - 20, (gConHeight / 2) };
 		
 		ev_SpeedingUp.Activate();
 		ev_SpeedingUp.Start(2000, 15);
@@ -32,7 +50,7 @@ void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 			else
 				Dr_Er = true;
 
-			ConsoleRender::Add_String(faster, { Up_Txt_1(faster).x,  Up_Txt_1(faster).y - 1 }, LIGHT_RED, 0, Dr_Er);	// fais clignoter ce titre
+			ConsoleRender::Add_String(*increase, { Up_Txt_1(*increase).x,  Up_Txt_1(*increase).y - 1 }, clr, 0, Dr_Er);	// fais clignoter ce titre
 			//ConsoleRender::Add_String(faster, crd, LIGHT_RED, 0, Dr_Er);	// fais clignoter ce titre
 		}
 	}

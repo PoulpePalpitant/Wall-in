@@ -9,6 +9,7 @@
 #include "../inputs/action_input.h"
 #include "../player/player.h"
 #include "../grid/AllGrids.h"
+#include "../structure_manager/structure_manager.h"
 
 // Choice time static stuff
 Choice ChoiceTime::choiceList[MAX_CHOICES];	// liste des choix
@@ -167,6 +168,7 @@ void ChoiceTime::Start_Choice_Time()	// Signale au joueur qu'il doit faire un ch
 {
 	choiceTime = true;
 	choiceMade = TXT_CONST.EMPTY;	// release le choix précédant
+	ListsOfChainToModify::Annihilate_All_Links();	// Links
 }
 
 

@@ -81,15 +81,14 @@ void Dispatch_Msg_To_Lvl_2()
 
 			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
 			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,4 }, false, true);
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 10,10 }, false, true);
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 10,10 }, false, true);
+			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
+			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
+			ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6,10 }, false, true);
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITE{ 3,3 }MS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
 
 
 			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
 			MsgQueue::Register(START_BOTS); // Here they come baby
-			MsgQueue::Register(ENABLE_ITEM_SPAWN); // items!
 			gSkipStory = false;
 			gDayStarted = true;
 			break;

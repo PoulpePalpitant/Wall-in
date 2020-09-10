@@ -75,24 +75,27 @@ private:
 	friend class LinkGrid;
 	void Set_LinkXY(int col, int row);					// Initialise position X et Y du Link dans la console par rapport à sa position col et row dans son Grid (ne jamais utilisé directement, seul son grid devrait faire ça)
 public:
+	// Link transformation
 	void Corruption_Inheritance(Modifier& mod);			//  le modifier
 	void Convert_Modifier(Modifier mod);
+	bool Set_First_Modifier(Modifier mod);// Assigne le state 	
+	bool Activate_Link(Modifier& mod, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
+	void Deactivate_Link();		// Désactive le Link
+	bool Unbound_Wall_Child(Wall* child);		// change le state/détruit de le lin k si il n'a plus de child
+	void Unbound_All_Child();					// 
 
+	// GETS
 	int Get_Num_Child() { return numChild; }		// À noter qu'un Link Root peut avoir aucun child, il est donc plus sécuritaire d'utiliser cette fonction pour vérifier ce fait
+	Wall* Get_Parent() { return pParent; }			// Le parent WALL immédiat
 	Coord Get_XY() { return coord; }				// Retrouve les Coord XY du Link 
 	LinkState Get_State(){
 		return this->state;
 	}	// Donne l'état du Link pour savoir si il existe	
 	Modifier Get_Modifier() { return modifier; }
-	bool Set_First_Modifier(Modifier mod);// Assigne le state 
 
+	// UI
 	void Dsp_Link();			// Affiche le Link
 	void Er_Link();			// Clear le Link	ne pas utilisé si le link est vivant doe
-	
-	bool Activate_Link(Modifier & mod, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
-	void Deactivate_Link();		// Désactive le Link
-	bool Unbound_Wall_Child(Wall* child);		// change le state/détruit de le link si il n'a plus de child
-	void Unbound_All_Child();					// 
 };
 
 

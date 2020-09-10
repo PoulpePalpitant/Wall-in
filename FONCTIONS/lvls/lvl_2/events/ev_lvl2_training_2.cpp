@@ -15,6 +15,7 @@
 #include "../../../bots/botlist.h"
 #include "../../lvl_script.h"
 #include "../../../events/global_events/feedback/ev_draw_map.h"
+#include "../../../spawns/ev_spawn_Jerry.h"	// pour spawner jerry
 
 
 
@@ -75,7 +76,6 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 	{
 		
 		Press_R_To_Refresh();
-		Press_X_To_Proceed(3);
 		Clear_All_Renders();
 		Clear_Map();	// hope
 		blastP1.Cancel();			 // Cancel le blast
@@ -117,24 +117,24 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 4 :
-					Spawn_A_Bot(LEFT, 7);
-					Spawn_A_Bot(RIGHT, 7);
-					Spawn_A_Bot(RIGHT, 8);
+					Spawn_A_Jerry(LEFT, 7);
+					Spawn_A_Jerry(RIGHT, 7);
+					Spawn_A_Jerry(RIGHT, 8);
 				ev_Lvl2_Training_2.Advance(800);
 				break;
 
 			case 5:
 				Erase_Map_Borders_1();
-				Spawn_A_Bot(LEFT, 8);
-				Spawn_A_Bot(RIGHT, 8);
-				Spawn_A_Bot(LEFT, 9);
+				Spawn_A_Jerry(LEFT, 8);
+				Spawn_A_Jerry(RIGHT, 8);
+				Spawn_A_Jerry(LEFT, 9);
 				ev_Lvl2_Training_2.Advance(800);
 				break;
 
 			case 6:
-				Spawn_A_Bot(LEFT, 9);
-				Spawn_A_Bot(RIGHT, 9);
-				Spawn_A_Bot(RIGHT, 10);
+				Spawn_A_Jerry(LEFT, 9);
+				Spawn_A_Jerry(RIGHT, 9);
+				Spawn_A_Jerry(RIGHT, 10);
 				ev_Lvl2_Training_2.Advance(0);
 				ev_Lvl2_Training_2.delay.Start_Timer(10000,1,true);
 				break;

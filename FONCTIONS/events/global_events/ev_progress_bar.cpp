@@ -22,15 +22,15 @@ static Event ev_DrawWholeBar(Ev_Draw_Whole_Bar, 1);
 // Permet d'inscrire certains "break" dans la progress bar au endroit dans le spawn script ou une certaine longues pause à lieu. J'ai décidé de faire ça manuellement.
 // Cette décision m'oblige à updater continuellement les ce script autant que le spawn script si je souhaite une cohérence entre les deux. Heureusement ya pas grand chose à changer
 
-static const int NUM_BREAKS[] = { 3, 4, 1 ,1 };		// Nombre de break dans chaque lvlv
+static const int NUM_BREAKS[] = { 3, 3, 1 ,1 };		// Nombre de break dans chaque lvlv
 static const int BREAKS_LVL_1[] = { 30, 49, 67 };	// List de tout les moment de repos dans le script de spawn.
-static const int BREAKS_LVL_2[] = { 20,40,67,80 };	
+static const int BREAKS_LVL_2[] = { 20,40,67 };	
 static const int BREAKS_LVL_3[] = { 120 };	
 static const int BREAKS_LVL_4[] = { 120 };	
 
 // Par Level
-static const int numWaves[] = { 123, 123 };	// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
-static const int finalhour[] = { 100, 100 };	// À quel wave le final hour aura lieu
+static const int numWaves[] = { 123, 100 };	// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
+static const int finalhour[] = { 100, 80 };	// À quel wave le final hour aura lieu
 
 
 static float ratio;					// Nombre de wave à faire

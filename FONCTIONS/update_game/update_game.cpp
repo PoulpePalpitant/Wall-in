@@ -90,6 +90,8 @@ void Update_Player_Action()
 					bool cancelBlast = false;
 					bool consumeQueue = true;
 
+					blastP1.Set_Strength(WallStrength::REGULAR);	// dflt
+
 					// Action Spéciale: Un transfer
 					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
 					if (link->Get_State() == LinkState::FREE)
@@ -99,7 +101,8 @@ void Update_Player_Action()
 							cancelBlast = true; // rien va se passer
 						else
 						{
-							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir normal
+							blastP1.Set_Strength(link->Get_Parent()->Get_Strgt());// La force du tir est déterminé par le  wall!!!
+							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir
 							consumeQueue = false;
 						}
 

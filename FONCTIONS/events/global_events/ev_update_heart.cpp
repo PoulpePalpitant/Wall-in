@@ -485,7 +485,7 @@ void Ev_Dr_Heart()		 // Affiche le coueur à ses différents stades
 		}
 		if (HP == 1)
 		{
-			rdmFill * 3;
+			rdmFill *= 3;
 			fastDraw = false;
 			ori.x += 2;
 		}

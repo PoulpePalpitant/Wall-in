@@ -13,6 +13,7 @@ extern bool gBlockInputs;
 extern bool gBlockBlast;
 extern bool gTypeTime;
 extern bool gProceedTime;
+extern bool gSkipTime;
 extern bool gMenuInputs;
 extern int gMenuKey;
 

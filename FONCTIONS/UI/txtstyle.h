@@ -98,7 +98,6 @@ int Half_String(std::string txt);		// Le nombre de charactère qui compose la moi
 int Find_Ctr_Grid(std::string txt);		// Affiche au centre du grid			
 
 
-
 Coord Up_Txt_1(std::string txt);	// Pour afficher du texte en Haut sur la première ligne
 Coord Up_Txt_2(std::string txt);	// Pour afficher du texte en Haut sur la 2e ligne
 Coord Up_Txt_3(std::string txt);	// Pour afficher du texte en Haut sur la 3e ligne
@@ -109,7 +108,7 @@ Coord Heart_Txt_Crd_Left(std::string txt, int line = 0);	// Affiche du texte à l
 Coord Boss_Txt_Crd (std::string txt = TXT_CONST.SPACE_STRING, int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
 int Boss_Txt_X ();	// Affiche du texte à l'emplacement du personnage du boss
 int Boss_Txt_Y (int line = 0);	// Affiche du texte à l'emplacement du personnage du boss
-void Erase_All_Boss_Txt();
+void Erase_All_Boss_Txt(bool slow = false);
 
 Coord Jerry_Txt_Crd(std::string txt, int line = 0);	// Affiche du texte à l'emplacement du personnage de Jimmy
 int Jerry_Txt_X();

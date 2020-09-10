@@ -75,6 +75,7 @@ class Blast
 	void Setup_Dist_Btw_Links();								// Setup la distance qui va séparer chaque élément du Link Grid que le blast va parcourir
 	void Setup_Length();										// Ajuste la longueur du blast qui sera tiré
 	void Setup_Speed();											// La vitesse d'affichage du blast(temps de pause entre chaque)
+	
 
 	// CHANGEMENT DES PROPRIÉTÉS DE BASES
 	void Modify_Max_LengthHor(Distance newLength) { maxlengthHor = newLength; }		// Longueur horizontale
@@ -92,6 +93,8 @@ class Blast
 	int Nb_Of_Links_To_Activate();
 	int Nb_Of_Walls_Per_Blast();		// Calcul le nombre de walls à enregistrer après un blast.
 public:
+	void  Set_Strength(WallStrength strgth) { strength = strgth; }	// Set la strength du blast(surviens généralement lors du transfert d'un wall. la strght sera la même que le wall)
+	
 	// GET UTILES
 	const CoordIncrementor* const Get_Front_XY() { const CoordIncrementor* const copy = &frontXY; return copy; }		// Retourne un pointeur constant vers l'adresse, pour pouvoir copier correctement l'axe, qui est en fait un pointeur vers une crd
 	Direction Get_Dir() { return dir; }

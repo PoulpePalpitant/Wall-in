@@ -131,7 +131,7 @@ void main()	// Le début!
 	// some windows stuff
 	Set_Input_Buffer_Handle();	
 	Set_Dflt_WND();			// Dimension de la window mon gars
-	//CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
+	CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
 
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Initialize_Game();		// Initialize une bunch de crap

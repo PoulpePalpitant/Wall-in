@@ -16,6 +16,7 @@
 #include "../../lvl_script.h"
 #include "../../../events/global_events/feedback/ev_draw_map.h"
 #include "../../../blast/blast_modifier_queue.h"
+#include "../../../spawns/ev_spawn_Jerry.h"	// pour spawner jerry
 
 
 static Event ev_Lvl2_Training_3(Ev_Lvl2_Training_3, 13);
@@ -41,9 +42,9 @@ static void Refresher()	/// Refresher du stage
 	if (gRefreshStage || P1.Get_HP() < 1)
 	{
 		Clear_Map();
-		gGrids.Make_Chain_Of_Walls({ 1, 0 }, DOWN, 1);	// Mur que le joueur va transfert
 		P1.Set_Position({ 1,1 }); P1.Reset_Hp_And_Heart(1);
 		P1.Dr_Player();
+		gGrids.Make_Chain_Of_Walls({ 1, 0 }, DOWN, 1);	// Mur que le joueur va transfert
 		Block_Prison(); // Prison de blockers autours du joueur
 		Press_R_To_Refresh();
 		Press_X_To_Proceed(3);
@@ -55,6 +56,85 @@ static void Refresher()	/// Refresher du stage
 		gRefreshStage = false;
 	}
 }
+// V2
+void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
+{
+
+	if (!ev_Lvl2_Training_3.Is_Active())
+	{
+
+		Clear_All_Renders();
+		Clear_Map();	// hope
+		blastP1.Cancel();			 // Cancel le blast
+		// Erase blast
+		// stop drawer queues
+
+
+		ev_Lvl2_Training_3.Activate();
+		ev_Lvl2_Training_3.Start(1000);
+		MsgQueue::Register(LOCK_PLAYER);
+	}
+	else
+	{
+		Refresher();
+		while (ev_Lvl2_Training_3.delay.Tick())
+			switch (ev_Lvl2_Training_3.Get_Current_Step())
+			{
+			case 1:
+				if (Resize_Grids_To_Level(gGrids, gCurrentLevel, gCurrentStage))
+				{
+					ev_Lvl2_Training_3.Advance(0);	// 1000 / 2 = 500.		2 secondes
+					MsgQueue::Register(ENABLE_BLAST);
+					MsgQueue::Register(FREE_PLAYER);
+					gRefreshStage = true;	// lazy shortcut pour tout refresh
+				}
+				else
+					ev_Lvl2_Training_3.delay.Start_Timer(1000);
+
+				break;
+
+			case 2:
+				ev_Lvl2_Training_3.delay.Stop();
+				ev_Lvl2_Training_3.Advance(500);
+				break;
+
+			case 3:
+				Spawn_A_Jerry(UP, 0);
+				ev_Lvl2_Training_3.Advance(5000);	// 1000 / 2 = 500.		2 secondes
+				break;
+
+			case 4:
+				Erase_Map_Borders_1();
+				ev_Lvl2_Training_3.Advance(800);
+				break;
+
+			case 5:
+				Spawn_A_Jerry(DOWN, 0);
+				ev_Lvl2_Training_3.Advance(500);
+				break;
+
+			case 6:
+				Spawn_A_Jerry(UP, 0);
+				ev_Lvl2_Training_3.Advance(500);
+				break;
+
+			case 7:
+				Spawn_A_Jerry(DOWN, 0);
+				ev_Lvl2_Training_3.Advance(5000);
+				break;
+
+			case 8:
+				ev_Lvl2_Training_3.Advance(0);
+				ev_Lvl2_Training_3.delay.Start_Timer(10000, 1, true);
+				break;
+
+				// EVENT N'EST PAS CANCELLÉ!
+			}
+
+	}
+}
+
+
 // V1
 //void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 //{
@@ -166,81 +246,3 @@ static void Refresher()	/// Refresher du stage
 //
 //	}
 //}
-
-// V2
-void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
-{
-
-	if (!ev_Lvl2_Training_3.Is_Active())
-	{
-
-		Clear_All_Renders();
-		Clear_Map();	// hope
-		blastP1.Cancel();			 // Cancel le blast
-		// Erase blast
-		// stop drawer queues
-
-
-		ev_Lvl2_Training_3.Activate();
-		ev_Lvl2_Training_3.Start(1000);
-		MsgQueue::Register(LOCK_PLAYER);
-	}
-	else
-	{
-		Refresher();
-		while (ev_Lvl2_Training_3.delay.Tick())
-			switch (ev_Lvl2_Training_3.Get_Current_Step())
-			{
-			case 1:
-				if (Resize_Grids_To_Level(gGrids, gCurrentLevel, gCurrentStage))
-				{
-					ev_Lvl2_Training_3.Advance(0);	// 1000 / 2 = 500.		2 secondes
-					MsgQueue::Register(ENABLE_BLAST);
-					MsgQueue::Register(FREE_PLAYER);
-					gRefreshStage = true;	// lazy shortcut pour tout refresh
-				}
-				else
-					ev_Lvl2_Training_3.delay.Start_Timer(1000);
-
-				break;
-
-			case 2:
-				ev_Lvl2_Training_3.delay.Stop();
-				ev_Lvl2_Training_3.Advance(500);
-				break;
-
-			case 3:
-				Spawn_A_Bot(UP, 0);
-				ev_Lvl2_Training_3.Advance(5000);	// 1000 / 2 = 500.		2 secondes
-				break;
-
-			case 4:
-				Erase_Map_Borders_1();
-				ev_Lvl2_Training_3.Advance(800);
-				break;
-
-			case 5:
-				Spawn_A_Bot(DOWN, 0);
-				ev_Lvl2_Training_3.Advance(500);
-				break;
-
-			case 6:
-				Spawn_A_Bot(UP, 0);
-				ev_Lvl2_Training_3.Advance(500);
-				break;
-
-			case 7:
-				Spawn_A_Bot(DOWN, 0);
-				ev_Lvl2_Training_3.Advance(5000);
-				break;
-
-			case 8:
-				ev_Lvl2_Training_3.Advance(0);
-				ev_Lvl2_Training_3.delay.Start_Timer(10000, 1, true);
-				break;
-
-				// EVENT N'EST PAS CANCELLÉ!
-			}
-
-	}
-}

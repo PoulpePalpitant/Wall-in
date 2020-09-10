@@ -30,7 +30,8 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	Reset_Input_Flags();				// Flags
 	gSkipStory = gDayStarted = gRefreshStage = false;	// Other important flags
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
-	
+	Clear_All_Renders();		// Tout les affichages
+
 	if(stopTimers)
 		SpeedTimer::Stop_All_Timers(); // STOP TOUT LES TIMERS du monde, sauf la gameloop bien entendu
 
@@ -66,6 +67,7 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 }
 void Clear_Map()// Tout ce qui à une influence sur l'interface graphique 
 {
+	blastP1.Cancel();			 // Cancel le blast
 	P1.Er_Player();
 	ListsOfChainToModify::Annihilate_All_Links();	// Links
 	botList.Destroy_All_Bots();	// Bots

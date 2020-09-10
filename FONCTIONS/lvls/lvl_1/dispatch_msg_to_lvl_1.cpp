@@ -94,7 +94,7 @@ void Dispatch_Msg_To_Lvl_1()
 			{
 				gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
 				gCurrentLevel = 2;
-				Ev_Thks_For_Playing();
+				gSkipStory = false;
 			}
 		}
 		else
