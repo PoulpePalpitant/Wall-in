@@ -47,6 +47,7 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 
 		// refresh all
 		Clear_All_States();
+		gSkipStory = gDayStarted = true;	// Devient faux dans clr state :(
 		ev_DefeatScreen.Activate();
 		ev_DefeatScreen.Start(0);
 	}

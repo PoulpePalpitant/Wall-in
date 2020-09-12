@@ -19,7 +19,7 @@
 
 
 
-static Event ev_Lvl2_Training_2(Ev_Lvl2_Training_2, 7);
+static Event ev_Lvl2_Training_2(Ev_Lvl2_Training_2, 8);
 static bool leftOrRight = true;
 
 static void Block_Prison(bool Remove = false)
@@ -135,6 +135,11 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 				Spawn_A_Jerry(LEFT, 9);
 				Spawn_A_Jerry(RIGHT, 9);
 				Spawn_A_Jerry(RIGHT, 10);
+				ev_Lvl2_Training_2.Advance(800);
+				break;
+
+			case 7:
+				Spawn_A_Jerry(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);
 				ev_Lvl2_Training_2.Advance(0);
 				ev_Lvl2_Training_2.delay.Start_Timer(10000,1,true);
 				break;

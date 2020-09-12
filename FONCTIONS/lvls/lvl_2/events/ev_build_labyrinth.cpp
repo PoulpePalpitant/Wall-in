@@ -310,7 +310,7 @@ void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de mu
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(nxt, { Find_Ctr_String_X(nxt), gConHeight / 2 - 5 }, LIGHT_RED, 400);
+				ConsoleRender::Add_String(nxt, { Find_Ctr_String_X(nxt), gConHeight / 2 - 5 }, LIGHT_GREEN, 450);
 				ev_BuildLabyrinth.Advance(400);
 				break;
 

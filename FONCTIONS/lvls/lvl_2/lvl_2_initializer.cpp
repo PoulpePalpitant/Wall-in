@@ -46,10 +46,10 @@ void Lvl_2_Initializer()
 	gSpwBotTimer.Start_Timer(SPW_BOT_SPD_LVL2, 1 , true); // DEFUALT
 	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
 	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
-	//gBotMoveTimer.Start_Timer(50200, 1, true);	// TEST
+	//gBotMoveTimer.Start_Timer(10200, 1, true);	// TEST
 	
 	ItemSpawner::Add_To_Pool(ItemType::BUFFER, BUFFER_SPEED_LVL2, 2);
-	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, BLOCKER_SPEED_LVL2, 2);
+	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, BLOCKER_SPEED_LVL2, 3);
 	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 1000, 0);
 	ItemSpawner::Add_To_Pool(ItemType::HEALTH, 20, 15);
 	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);

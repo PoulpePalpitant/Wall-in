@@ -106,7 +106,7 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 
 		ListsOfChainToModify::Annihilate_All_Links();	// Links
 		ev_WakeUp2.Activate();
-		ev_WakeUp2.Start(0);	// 1000 / 2 = 500.		2 secondes
+		ev_WakeUp2.Start(1000);	// 1000 / 2 = 500.		2 secondes
 		MsgQueue::Register(ENABLE_BLAST);
 		MsgQueue::Register(FREE_PLAYER);	// pour debug
 	}
@@ -123,7 +123,7 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 					gGrids.Activate_Blocker({ c,4 });
 				}
 
-				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, 200);
+				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, 300);
 				ev_WakeUp2.Advance(300);
 				break;
 

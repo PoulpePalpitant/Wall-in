@@ -19,6 +19,9 @@
 #include "../../blast/blast.h"
 #include "feedback/ev_draw_map.h"
 #include "../../player/player.h"
+#include "../../spawns/valid_spwn_intervals.h"
+#include "../../spawns/bots_to_spawn.h"
+
 //#include "../../grid/AllGrids.h"
 
 void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()	
@@ -53,8 +56,11 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	}
 
 
-
+	// Bot stuff
 	botList.Destroy_All_Bots();	// Bots
+	ValidSpwnIntervals::Reset_For_Next_Cycle();	// Doit ré-initialiser les listes à chaque cycle de spawn
+	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
+
 	ItemsOnGrid::Remove_All();	// enlève tout les items spawné
 	Reset_Spw_Cycle();			// Reset le nombre de spw cycle à 0
 

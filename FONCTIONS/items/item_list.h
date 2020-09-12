@@ -3,7 +3,7 @@
 #include "items.h"
 #include "../global_types/global_types.h"
 
-const int MAX_ITEMS = 30;
+const int MAX_ITEMS = 100;
 
 
 

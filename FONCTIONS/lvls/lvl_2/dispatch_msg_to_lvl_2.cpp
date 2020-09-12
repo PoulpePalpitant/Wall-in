@@ -60,7 +60,6 @@ void Dispatch_Msg_To_Lvl_2()
 
 		case 6:
 			P1.Set_Hp(3);
-
 			if (gSkipStory)
 			{
 				/*safety*/
@@ -83,7 +82,7 @@ void Dispatch_Msg_To_Lvl_2()
 			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
 			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
 			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
-			ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6,10 }, false, true);
+			ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6,4 }, false, true);
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITE{ 3,3 }MS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
 
 

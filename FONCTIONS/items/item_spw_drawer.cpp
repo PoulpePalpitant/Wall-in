@@ -1,7 +1,7 @@
 
 #include "item_spw_drawer.h"
 
-const int MAX_ANIMATIONS = 20;
+const int MAX_ANIMATIONS = MAX_ITEMS;	// screw it, make this shit laggy if you want
 
 int DrawItemSpawnList::animationSteps = 8;			// Nombre de steps dans cet animation
 ItemDrawer  DrawItemSpawnList::drawer[MAX_ANIMATIONS] = {};		// why not 20?

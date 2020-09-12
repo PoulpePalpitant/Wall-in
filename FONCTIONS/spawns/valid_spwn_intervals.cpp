@@ -294,9 +294,10 @@ void ValidSpwnIntervals::Reset_Secondary_List()
 
 	for (int i = 0; i < 4; i++)	// 4 = nombre de borders
 	{
-		if (bannedSpwn[i] == 0)	// Aucun spawn n'est bannis, l'intervalle de base est déjà setté
-			continue;
-
+		///// BUG CATCHED!
+		//if (bannedSpwn[i] == 0)	// Aucun spawn n'est bannis, l'intervalle de base est déjà setté	// ALERTE: SI TU RESIZE LE GRID, CECI EMPÊCHE DE SETTÉ UN NOUVEL INTERVALLE!
+		//	continue;
+		////
 		if (!Is_Secondary_List_Full(i))		// Tout les coord sont bannies. Il'n'y a donc aucun intervalle de disponible dans la liste
 		{
 			it = scndary.start[i];

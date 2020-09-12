@@ -19,7 +19,7 @@ class DrawItemSpawnList
 	friend void Clear_All_States(bool eraseMap );	// Gros reset button
 		
 	static int animationSteps;
-	static ItemDrawer  drawer[20];
+	static ItemDrawer  drawer[MAX_ITEMS];	// woah tha's way too much buddy
 	static int total;
 
 	//static void Set_Drawer_From_Type(const ItemType& type);

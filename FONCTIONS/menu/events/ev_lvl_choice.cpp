@@ -12,7 +12,7 @@ static Event ev_Dr_ChooseLvl(Ev_Dr_Choose_Lvl, 3);	// Déclaration
 
 static std::string skip = "Select Level";
 static std::string pressNum = "(Press Number)";
-static std::string recom[] = { " 1 " , "More...To Be Announced"};
+static std::string recom[] = { " 1 " , " 2 ", "More...To Be Announced"};
 //static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 "};
 
 static Coord crd;
@@ -44,7 +44,7 @@ void Ev_Dr_Choose_Lvl()
 			//	crd.x = (gConWidth / 2) - (numDist * 8) / 2;	// distance entre chaque char
 				crd.x -= 15; // v2
 				crd.x -= 2;
-				for (int i = 0; i < 2; i++)
+				for (int i = 0; i < 3; i++)
 				{
 					crd.x += numDist;
 					ConsoleRender::Add_String(recom[i], crd, WHITE, 0);

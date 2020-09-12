@@ -125,7 +125,8 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 4 :
-				Spawn_A_Jerry(UP, 12); 	Spawn_A_Jerry(DOWN, 12);
+				Spawn_A_Jerry(UP, 12);
+				Spawn_A_Jerry(DOWN, 12);
 				Spawn_A_Jerry(UP, 15);	Spawn_A_Jerry(DOWN, 15);
 				Spawn_A_Jerry(UP, 14);	Spawn_A_Jerry(DOWN, 14);
 				Spawn_A_Jerry(UP, 13);	Spawn_A_Jerry(DOWN, 13);
