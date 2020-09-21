@@ -22,10 +22,9 @@ void DrawItemSpawnList::Remove(int index)	// On delete rien au final
 void DrawItemSpawnList::Remove_All()
 {
 	for (int i = 0; i < MAX_ANIMATIONS; i++)		// ALL SHALL BE DELETED
-	{
 		drawer[i] = {};
-		total--;
-	}
+	
+	total = 0;
 }
 void DrawItemSpawnList::Cancel(Coord XY)	// Stop l'animation de l'item sur cette position
 {

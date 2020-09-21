@@ -58,17 +58,17 @@ int Find_Ctr_Grid(std::string txt)		// Affiche au centre du grid
 // Le texte en HAUt ava être centré, et sur les lignes 3,4 et 5
 Coord Up_Txt_1(std::string txt)	// Pour afficher du texte en Haut
 {
-	return { Find_Ctr_X((int)std::size(txt)), map.Get_Box_Limit(UP) - 5 };
+	return { Find_Ctr_Grid(txt), map.Get_Box_Limit(UP) - 5 };
 }	
 
 Coord Up_Txt_2(std::string txt) 
 {
-	return { Find_Ctr_X((int)std::size(txt)),map.Get_Box_Limit(UP) - 4 };
+	return { Find_Ctr_Grid(txt),map.Get_Box_Limit(UP) - 4 };
 }	
 
 Coord Up_Txt_3(std::string txt)// Pour afficher du texte en Haut sur la 2e ligne
 {
-	return { Find_Ctr_X((int)std::size(txt)),map.Get_Box_Limit(UP) - 3 };
+	return { Find_Ctr_Grid(txt),map.Get_Box_Limit(UP) - 3 };
 }
 
 // Le text à droite du coeur

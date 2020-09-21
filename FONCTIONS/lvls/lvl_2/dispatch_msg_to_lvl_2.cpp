@@ -11,6 +11,7 @@
 /* Level  events !*/
 #include "../../events/global_events/ev_update_heart.h"
 #include "events/ev_build_labyrinth.h"
+#include "events/ev_lvl2_training.h"
 #include "events/ev_lvl2_training_1.h"
 #include "events/ev_lvl2_training_2.h"
 #include "events/ev_lvl2_training_3.h"
@@ -46,10 +47,11 @@ void Dispatch_Msg_To_Lvl_2()
 		switch (gCurrentStage)
 		{
 		case 1:Ev_Wake_Up_2();break;//gCurrentStage++;
-		case 2:Ev_Lvl2_Training_1();break;
-		case 3:Ev_Lvl2_Training_3();break;	// L'inversion de 3 et 2 n'est pas une erreur. 
+		case 2:Ev_Lvl2_Training();break;
+		case 3:Ev_Lvl2_Training_1();break;
 		case 4:Ev_Lvl2_Training_2();break;
-		case 5: /*gCurrentStage++;*/	// TEMP
+		case 5:Ev_Lvl2_Training_3();break;	// L'inversion de 3 et 2 n'est pas une erreur. Or is it?
+		case 6: /*gCurrentStage++;*/	// TEMP
 			//ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 			//botList.Destroy_All_Bots();
 
@@ -58,7 +60,7 @@ void Dispatch_Msg_To_Lvl_2()
 			Ev_Dr_Day_2();
 			break;
 
-		case 6:
+		case 7:
 			P1.Set_Hp(3);
 			if (gSkipStory)
 			{
@@ -96,7 +98,7 @@ void Dispatch_Msg_To_Lvl_2()
 		break;
 
 	case PROCEED: 
-		if (gCurrentStage == 6)	// Le stage ou à lieu le main game
+		if (gCurrentStage == 7)	// Le stage ou à lieu le main game
 		{
 			MsgQueue::Register(PLS_INTIALIZE_LVL);	
 			clrscr();

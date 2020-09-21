@@ -16,6 +16,7 @@ public:
 	WallGrid wallGrdVer;
 
 	bool areCreated = false;
+
 	// Met tout ça à zéro
 	AllGrids() : wallGrdHor(HOR) , wallGrdVer(VER)	// axe des wallgrid
 	{
@@ -28,7 +29,7 @@ public:
 	WallGrid* Find_Wall_Grid_From_Crd_Incrementor(const GridIndexIncrementor &crd);	// Trouve le grid de wall qui correspond à un axe	
 	GrdCoord Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir);		// Trouve un wall qui possède la même position qu'un Link avec la direction
 	GrdCoord Convert_LinkCrd_To_WallCrd(const GridIndexIncrementor &linkCrd);	// Trouve un wall qui possède la même position qu'un Link avec la polarisation et l'axe
-	void Remove_All_Bots_From_Grid();	// Si tu élimine les bots artificiellement, tu dois aussi les removes
+	void Remove_All_Bots_From_Grid();	// Si tu élimine les bots artificiellement, tu dois aussi les removes du grid
 
 	bool Activate_Walls_And_Links_From_Blast(Blast* blast);	// record tout les walls et links après un blast
 	// Créer manuellement une chaîne de murs et de Links dans une direction

@@ -22,11 +22,11 @@ void Lvl_1_Initializer()
 	if (gSkipStory)
 	{
 		// Pour un quick start avec warning
-		gCurrentStage = 4;
-		gSkipStory = false;
+		//gCurrentStage = 3;
+		//gSkipStory = false;
 		
 		// Pour un normal quick start
-		//gCurrentStage = 3; // super fast
+		gCurrentStage = 3; // super fast
 
 
 		//gCurrentStage = 2;	// Skip tout les tutorials

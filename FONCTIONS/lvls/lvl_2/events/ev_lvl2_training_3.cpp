@@ -30,7 +30,7 @@ static void Block_Prison(bool Remove = false)
 		gGrids.Activate_Blocker({ c,crd.r }, Remove);
 
 	crd.r++;
-	gGrids.Activate_Blocker({ 2,crd.r }, Remove);
+	gGrids.Activate_Blocker({ 0,crd.r }, Remove);
 
 	crd.r++;
 	for (int c = crd.c; c < linkGrid->Get_Cols(); c++)
@@ -44,7 +44,7 @@ static void Refresher()	/// Refresher du stage
 		Clear_Map();
 		P1.Set_Position({ 1,1 }); P1.Reset_Hp_And_Heart(1);
 		P1.Dr_Player();
-		gGrids.Make_Chain_Of_Walls({ 1, 0 }, DOWN, 1);	// Mur que le joueur va transfert
+		gGrids.Make_Chain_Of_Walls({ 2, 1 }, LEFT, 1);	// Mur que le joueur va transfert
 		Block_Prison(); // Prison de blockers autours du joueur
 		Press_R_To_Refresh();
 		Press_X_To_Proceed(3);
@@ -62,7 +62,6 @@ void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 
 	if (!ev_Lvl2_Training_3.Is_Active())
 	{
-
 		Clear_All_Renders();
 		Clear_Map();	// hope
 		blastP1.Cancel();			 // Cancel le blast
@@ -87,6 +86,7 @@ void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 					MsgQueue::Register(ENABLE_BLAST);
 					MsgQueue::Register(FREE_PLAYER);
 					gRefreshStage = true;	// lazy shortcut pour tout refresh
+					ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, 100);
 				}
 				else
 					ev_Lvl2_Training_3.delay.Start_Timer(1000);
@@ -99,7 +99,7 @@ void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 3:
-				Spawn_A_Jerry(UP, 0);
+				Spawn_A_Jerry(UP, 1);
 				ev_Lvl2_Training_3.Advance(5000);	// 1000 / 2 = 500.		2 secondes
 				break;
 
@@ -109,17 +109,17 @@ void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 5:
-				Spawn_A_Jerry(DOWN, 0);
+				Spawn_A_Jerry(DOWN, 1);
 				ev_Lvl2_Training_3.Advance(500);
 				break;
 
 			case 6:
-				Spawn_A_Jerry(UP, 0);
+				Spawn_A_Jerry(UP, 1);
 				ev_Lvl2_Training_3.Advance(500);
 				break;
 
 			case 7:
-				Spawn_A_Jerry(DOWN, 0);
+				Spawn_A_Jerry(DOWN, 1);
 				ev_Lvl2_Training_3.Advance(5000);
 				break;
 

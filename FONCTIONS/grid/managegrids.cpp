@@ -47,9 +47,10 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 		switch (stage)
 		{
 		default:	col = 13, row = 15; break;	// dimension du Level
-		case 2:	col = 17, row = 5; break;		// dimension des training stages
-		case 3:	col = 3, row = 3; break;	// c= 21 r= 3 V1 du tutorial #3	
+		case 2:	col = 21, row = 5; break;		// dimension des training stages
+		case 3:	col = 17, row = 5; break;		// dimension des training stages
 		case 4:	col = 7, row = 14; break;		
+		case 5:	col = 3, row = 3; break;	// c= 21 r= 3 V1 du tutorial #3	
 		}
 		break;
 

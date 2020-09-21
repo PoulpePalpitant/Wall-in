@@ -22,19 +22,18 @@ void Lvl_2_Initializer()
 	if (gSkipStory)
 	{
 		// Pour un normal quick start
-		gCurrentStage = 5; // Normal
+		gCurrentStage = 6; // Normal
 		//gCurrentStage = 0; // wakup
 		//gCurrentStage = 1; // TEST #1
 		//gCurrentStage = 2; // TEST #2
 		//gCurrentStage = 3; // TEST #3
-		//gCurrentStage = 4; // warning
-
-
+		//gCurrentStage = 4; // TEST #4
+		//gCurrentStage = 5; // warning
 		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 	}
 	else
 	{
-		//gCurrentStage = 1;	// Pour choisir le niveau que tu veux pour starter	: 0 = wakeup
+		//gCurrentStage = 0;	// Pour choisir le niveau que tu veux pour starter	: 0 = wakeup
 		//MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 
 

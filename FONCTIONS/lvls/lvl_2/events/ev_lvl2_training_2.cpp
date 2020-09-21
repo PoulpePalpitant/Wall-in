@@ -21,7 +21,7 @@
 
 static Event ev_Lvl2_Training_2(Ev_Lvl2_Training_2, 8);
 static bool leftOrRight = true;
-
+static int dlay = 5;
 static void Block_Prison(bool Remove = false)
 {
 	GrdCoord crd = P1.Get_Grd_Coord();
@@ -37,12 +37,12 @@ static void Block_Prison(bool Remove = false)
 
 	crd.c = linkGrid->Get_Cols() - 3;
 
-	for (int r = 1; r < 5; r++)
+	for (int r = 1; r < linkGrid->Get_Rows(); r++)
 		gGrids.Activate_Blocker({ crd.c ,r }, Remove);
 
 	crd.c = 2;
 
-	for (int r = 2; r < 5; r++)
+	for (int r = 2; r < linkGrid->Get_Rows() ; r++)
 		gGrids.Activate_Blocker({ crd.c ,r }, Remove);
 }
 
@@ -62,8 +62,8 @@ static void Refresher()	/// Refresher du stage
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,2 });
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3,3 });
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,4 });
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3,5 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,6 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,5 });
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3,6 });
 		ev_Lvl2_Training_2.Go_To_X_Step(2);
 		gRefreshStage = false;
 	}
@@ -80,6 +80,7 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 		Clear_Map();	// hope
 		blastP1.Cancel();			 // Cancel le blast
 		P1.Set_Hp(1);
+		
 		// Erase blast
 		// stop drawer queues
 
@@ -100,6 +101,7 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 					MsgQueue::Register(ENABLE_BLAST);
 					MsgQueue::Register(FREE_PLAYER);
 					gRefreshStage = true;	// lazy shortcut pour tout refresh
+					ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, 100);
 				}
 				else
 					ev_Lvl2_Training_2.delay.Start_Timer(1000);
@@ -117,29 +119,29 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 4 :
-					Spawn_A_Jerry(LEFT, 7);
-					Spawn_A_Jerry(RIGHT, 7);
-					Spawn_A_Jerry(RIGHT, 8);
-				ev_Lvl2_Training_2.Advance(800);
+					Spawn_A_Jerry(LEFT, 7, SPWN_DLAY + dlay);
+					Spawn_A_Jerry(RIGHT, 7, SPWN_DLAY + dlay);
+					Spawn_A_Jerry(RIGHT, 8, SPWN_DLAY + dlay);
+				ev_Lvl2_Training_2.Advance(500);
 				break;
 
 			case 5:
 				Erase_Map_Borders_1();
-				Spawn_A_Jerry(LEFT, 8);
-				Spawn_A_Jerry(RIGHT, 8);
-				Spawn_A_Jerry(LEFT, 9);
-				ev_Lvl2_Training_2.Advance(800);
+				Spawn_A_Jerry(LEFT, 8, SPWN_DLAY + dlay);
+				Spawn_A_Jerry(RIGHT, 8, SPWN_DLAY + dlay);
+				Spawn_A_Jerry(LEFT, 9, SPWN_DLAY + dlay);
+				ev_Lvl2_Training_2.Advance(500);
 				break;
 
 			case 6:
-				Spawn_A_Jerry(LEFT, 9);
-				Spawn_A_Jerry(RIGHT, 9);
-				Spawn_A_Jerry(RIGHT, 10);
-				ev_Lvl2_Training_2.Advance(800);
+				Spawn_A_Jerry(LEFT, 9, SPWN_DLAY + dlay);
+				Spawn_A_Jerry(RIGHT, 9, SPWN_DLAY + dlay);
+				Spawn_A_Jerry(RIGHT, 10, SPWN_DLAY + dlay);
+				ev_Lvl2_Training_2.Advance(500);
 				break;
 
 			case 7:
-				Spawn_A_Jerry(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);
+				Spawn_A_Jerry(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1, SPWN_DLAY + dlay);
 				ev_Lvl2_Training_2.Advance(0);
 				ev_Lvl2_Training_2.delay.Start_Timer(10000,1,true);
 				break;

@@ -224,7 +224,7 @@ void ConsoleRender::Render()	// Output tout les charactères dans la console, sel
 {
 	Render_Main_Queue();		// Affiche les éléments de la liste immédiates
 	
-	//if (!GameLoopClock::pause)		// On render pas les animations si le jeu est en pause
+	if (GameLoopClock::Is_Running())		// On render pas les animations si le jeu est en pause
 		Render_Animation_Queue();	// Affiche les éléments des listes d'animation, solution très simplistes pour créer de l'animation linéaire. Beaucoup de bug et d'unforseen consequences. Ex: La détection de colision peut bien sortir par la fenêtre
 	
 	Stop_Queue();		/*Safety*/		// au cas où tu oublis de stop la queue à la fin d'un update
@@ -282,4 +282,6 @@ void ConsoleRender::Empty_All()
 					toPop = prev->nxtQueue;	// Passe au prochain
 				}
 	}
+
+	first = last = NULL; // safety
 }

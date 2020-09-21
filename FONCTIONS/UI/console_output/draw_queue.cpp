@@ -20,7 +20,7 @@ void DrawerQueue::Remove_All()
 		total--;
 	}
 }
-void DrawerQueue::Cancel(Coord XY)	// Stop l'animation de l'item sur cette position
+void DrawerQueue::Cancel(Coord XY)	// Stop l'animation  sur cette position
 {
 	for (int index = 0; index < total; index++)		
 	{

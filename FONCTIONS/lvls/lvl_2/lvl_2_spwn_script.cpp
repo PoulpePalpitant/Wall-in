@@ -160,13 +160,12 @@ void Lvl_2_Spwn_Script()
 			//	ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,10 }, false);
 			//}
 
-			// Remplie la console au complet de blockers :O
+						// Remplie la console au complet de blockers :O
 			for (int c = 0; c < MAX_ITEMS; c++)
 			{
 				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 0,0 });
 			}
-
-
+			// Remplie la console au complet de blockers :O
 			gNumSpawnTOT = 0; MsgQueue::Register(FINAL_PUSH);
 			gSpwBotTimer.Start_Timer(500, 1, true);
 			skip = 7;	break;

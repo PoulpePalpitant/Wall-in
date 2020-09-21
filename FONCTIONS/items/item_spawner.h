@@ -23,11 +23,11 @@ class ItemSpawner
 private:
 	friend void Ev_Resize_From_Grids();	// Permet de resize les available spawns
 	friend void Initialize_Game();		// Initialize la pool de types d'items
-	static Intervals::ManageIntervalLists availableLinks;	// Tout les emplacements disponibles pour spawner un item
 	static void Init_Pool_Types();	// Initialize la pool avec tout les types actuel
 	static bool pause;	// permet de pauser les updates
 
 public:
+	static Intervals::ManageIntervalLists availableLinks;	// Tout les emplacements disponibles pour spawner un item
 	static ItemSpawnPool pool;
 
 	// TIMERS

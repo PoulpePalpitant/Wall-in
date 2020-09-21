@@ -145,7 +145,8 @@ void SpeedTimer::Stop_All_Timers()	// peut seulement marcher si tu delete absolu
 {
 	for (int id = 0; id < idTotal; id++)
 	{
-		if(allTimers[id] != NULL)
-			allTimers[id]->Stop();
+		//if(allTimers[id] != NULL)
+		//allTimers[id]->Stop();
+		allTimers[id] = {};	// je dois reset si non ça crash, je sais pas si ça va bien marché
 	}
 }

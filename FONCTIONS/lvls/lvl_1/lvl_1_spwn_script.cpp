@@ -48,7 +48,7 @@ void Lvl_1_Spwn_Script()
 		switch (numSpawnWaves)
 		{
 		
-		case 1: Erase_Map_Borders_1(84);skip = 4; break; // Erase la border seulement si le joueur est en mode quickstartS
+		case 1: Erase_Map_Borders_1(84);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
 		case 2:Add_Specific(RIGHT, 7); /*MsgQueue::Register(START_BOT_SPAWNS); */break;
 		case 3:Add_Specific(RIGHT, 5); break;// Dessine un pattern de départ
 		case 4:Add_Specific(RIGHT, 9);break;

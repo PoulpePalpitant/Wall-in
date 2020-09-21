@@ -10,6 +10,7 @@
 #include "../player/player.h"
 #include "../grid/AllGrids.h"
 #include "../structure_manager/structure_manager.h"
+#include "../events/global_events/clear_all_states.h"
 
 // Choice time static stuff
 Choice ChoiceTime::choiceList[MAX_CHOICES];	// liste des choix
@@ -17,12 +18,13 @@ bool ChoiceTime::choiceTime = false;
 unsigned short ChoiceTime::numChoices;	// nb de choix actuel
 Choice ChoiceTime::selected;		// Le choix actuellement sélectionné par le joueur
 std::string ChoiceTime::choiceMade;	// Le choix fait lors du choice time précédant
- bool ChoiceTime::enterDrawn = false;
+bool ChoiceTime::enterDrawn = false;
 
 // Pure static stuff
 static Coord XY;	// pour draw
 static GrdCoord crd;
 static std::string enter = "(Press Enter To Select)";
+static std::string choice= "(Make Choice Before You Can Proceed)";
 
 
 // AFFICHAGE
@@ -100,6 +102,13 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 	 enterDrawn = false;
  }
 
+ // lazy copy paste
+ void ChoiceTime::Draw_Alternate_Title(bool erase)
+ {
+	 XY.x = Find_Ctr_Grid(choice);
+	 XY.y = linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 2;
+	 ConsoleRender::Add_String(choice, XY, GRAY, 0, erase); // Efface ce titre
+ }
 
 
 
@@ -168,13 +177,13 @@ void ChoiceTime::Start_Choice_Time()	// Signale au joueur qu'il doit faire un ch
 {
 	choiceTime = true;
 	choiceMade = TXT_CONST.EMPTY;	// release le choix précédant
+	blastP1.Clear_Blast();	// stop and clear
 	ListsOfChainToModify::Annihilate_All_Links();	// Links
 }
 
 
 bool ChoiceTime::Apply_Choice()		// Le joueur fait son choix. Retourn le nom du choix. Met également fin au choice time
 {
-	
 	if (selected.name != TXT_CONST.EMPTY)
 	{
 		choiceMade = selected.name;
@@ -182,7 +191,11 @@ bool ChoiceTime::Apply_Choice()		// Le joueur fait son choix. Retourn le nom du 
 		return true;
 	}
 	else
+	{
+		if (gProceedTime)
+			Draw_Alternate_Title();
 		return false;
+	}
 }
 
 
@@ -227,6 +240,7 @@ void ChoiceTime::Clear_List()	// pu yen
 	}
 
 	Erase_Press_Enter();
+	Draw_Alternate_Title(true);
 }
 
 

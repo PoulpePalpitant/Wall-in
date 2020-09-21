@@ -15,7 +15,6 @@ static bool Chk_Max_Blast_Length(Blast* blast);
 static void Erase_Blast_Tail(Blast* blast);
 static void Erase_Whole_Blast(Blast* blast);
 
-
 protected:	
 friend class Blast;
 static void Animate_Blast(Blast* blast);

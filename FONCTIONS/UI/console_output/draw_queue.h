@@ -38,7 +38,7 @@ public:
 
 	~DrawerQueue()
 	{
-		delete queue;
+		delete [] queue;
 	}
 
 };

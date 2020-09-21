@@ -10,9 +10,6 @@
 #include "../lvls/lvl_2/dispatch_msg_to_lvl_2.h"
 
 
-
-
-
 /* Global Events*/
 #include "global_events/feedback/ev_flash_map_corners.h"
 #include "global_events/feedback/ev_border_splash.h"

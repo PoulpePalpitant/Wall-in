@@ -16,7 +16,7 @@
 #include "../../../events/global_events/clear_all_states.h"
 
 
-static Event ev_BuildLabyrinth(Ev_Build_Labyrinth, 7); // Def //
+static Event ev_BuildLabyrinth(Ev_Build_Labyrinth, 8); // Def //
 
 static std::string adv = "Adventure Here";
 static std::string moral = "What do you seek?";
@@ -25,6 +25,7 @@ static std::string goal = "- NEW GOAL -";
 
 
 static std::string nxt = "What Next?";
+static std::string doing = "What Are You Doing?";
 
 // Tous ce que j'ai de besoin pour constuire le labyrinthe
 static int rootR;	// Row de la root
@@ -310,11 +311,16 @@ void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de mu
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(nxt, { Find_Ctr_String_X(nxt), gConHeight / 2 - 5 }, LIGHT_GREEN, 450);
+				ConsoleRender::Add_String(nxt, { Find_Ctr_Grid(nxt), gConHeight / 2 - 5 }, LIGHT_GREEN, 450);
 				ev_BuildLabyrinth.Advance(400);
+				break;	
+			
+			case 7:
+				ConsoleRender::Add_String(doing, { Find_Ctr_Grid(doing), gConHeight / 2 - 3 }, LIGHT_GREEN, 300);
+				ev_BuildLabyrinth.Advance(250);
 				break;
 
-			case 7:
+			case 8:
 				clrscr();
 				MsgQueue::Register(STAGE_ADVANCE);
 				ev_BuildLabyrinth.Advance(0);

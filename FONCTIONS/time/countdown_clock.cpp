@@ -11,7 +11,7 @@
 	Cette version de timer fonctionne avec le delta time provenant du timer principale de la gameloop de mon jeu. Chaque countdown sera décrémenté en fonction de ce deltatime.
 */
 
-int dbugDelay_Lol = 1;
+float dbugDelay_Lol = 1;
 
 void CDTimer::Set_Debug_Delay_Lol()
 {
@@ -30,8 +30,6 @@ bool CDTimer::Tick_Timer()	// Update le temps écoulé à partir de delta time
 
 	if (this->timeLeft <= 0)
 	{
-		totalCD++;			// 1 cycle de fait de plus
-
 		if (cd.Count())		// Terminé le nombre de countdown à faire, ferme le timer
 		{
 			this->isRunning = false;	// Stop le timer

@@ -5,6 +5,7 @@
 #include "item_spw_drawer.h"
 #include "../events/msg_dispatcher.h"
 #include "../player/player.h"
+#include "item_spawner.h"
 
 Item ItemsOnGrid::items[MAX_ITEMS] = {};
 int ItemsOnGrid::size;	// dimension de la liste
@@ -31,11 +32,13 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
 
  void ItemsOnGrid::Remove_All()
  {
-	 for (int i = 0; i < MAX_ITEMS; i++)		// Décale tout
+	 for (int i = 0; i < MAX_ITEMS; i++)		// Décale tout»
 	 {
-		 if (items[i].Is_Active())
+		 if (!(items[i].grdCrd.c > linkGrid->Get_Cols() || items[i].grdCrd.c < 0 || items[i].grdCrd.r > linkGrid->Get_Rows() || items[i].grdCrd.r < 0)) // hehe, fuck you
 			 linkGrid->link[items[i].grdCrd.c][items[i].grdCrd.r].Er_Link();
-			 
+		 else
+			 throw "hehehe";
+
 		 items[i] = {};	// erase tout anyway
 	 }
 	 size = 0;

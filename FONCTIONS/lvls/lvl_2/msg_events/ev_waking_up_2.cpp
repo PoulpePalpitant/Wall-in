@@ -29,8 +29,8 @@ static Event ev_WakeUp2(Ev_Wake_Up_2, 50);
 static std::string _1 = "Hey, It's......You!";
 static std::string _2 = "You Work Here Right?";
 static std::string _3 = "No?";
-static std::string _4 = "Yes?";
-static std::string _5 = "I Can't Recall You, Or Your Face...";
+static std::string _4 = "I'm Sorry If I Don't Remember You";
+static std::string _5 = "There Is Just, Too Many New Faces";
 static std::string _6 = "What Was Your Name again?";
 static std::string _7 = "empty";
 static std::string _8 = "empty";
@@ -39,10 +39,10 @@ static std::string _10 = "Anyway, Welcome Back, New Employee!";
 static std::string _11 = "Usually, People Tend To Quit On Their First Day";
 static std::string _12 = "I Mean, If They Manage To Survive That Is...";
 static std::string _13 = "That Said, If You Want To Keep Working Here,";
-static std::string _14 = "You Will Have To Use Our Mandatory \"Tools\"";
+static std::string _14 = "You Will Have To Use Our Brand NEW Mandatory \"Tools\"";
 static std::string _15 = "Here They Are";
 static std::string _16 = "Try Them Both";
-static std::string _17 = "Very Useful Right?";
+static std::string _17 = "Very Useful Right?";	// 
 static std::string _18 = "As I Said, These Tools Are MANDATORY";
 static std::string _19 = "If You Don't Use Them, Well...";
 static std::string _20 = "You're Probably Gonna Have A Bad Time";
@@ -81,6 +81,7 @@ void Lvl2_S1_Refresher()	/// Refresher du niveau 2, stage 1
 {
 	if (gRefreshStage)
 	{
+		blastP1.Clear_Blast();
 		ListsOfChainToModify::Annihilate_All_Links();	// Links
 		ItemsOnGrid::Remove_All();	// enlève tout les items spawné
 		P1.Er_Player();

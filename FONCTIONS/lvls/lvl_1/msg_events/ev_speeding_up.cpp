@@ -11,7 +11,7 @@ static Event ev_SpeedingUp(Ev_Speeding_Up, 1);	// l'event
 static Coord crd;	// random crd
 static std::string faster = "- SPAWN SPEED IS INCREASING -";	
 static std::string faster_2 = "- TOOLS SPAWN SPEED IS INCREASING -";	
-static std::string* increase;	// le titre sélectionné
+static std::string* increase = &faster;	// le titre sélectionné
 static Colors clr;	// Couleur sélectionné
 static bool Dr_Er;	// draw or erase
 

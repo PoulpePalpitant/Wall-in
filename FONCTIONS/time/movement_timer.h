@@ -40,7 +40,14 @@ public:
 	
 	void Add_Count(int times) { timeLeft += times * cdDuration; }	// Ajoute du temps
 	void Start_Timer(int speed, int numMove = 1, bool inf = false, int duration = 0); //Set la durée de base du CountDown.
-	void Stop() { timeLeft = 0; moving = false; tickedThisFrame = false; infinite = false; }	// Finis abruptement le temps de CountDown
+	void Stop()
+	{ 
+		timeLeft = 0; 
+		moving = false; 
+		tickedThisFrame = false; 
+		infinite = false;
+	}	// Finis abruptement le temps de CountDown
+
 	void Pause() { moving = false; }	// Pause le temps
 	void Resume() { moving = true; }	// Pause le temps
 	bool Is_On() { return moving;

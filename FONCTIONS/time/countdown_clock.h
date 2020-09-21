@@ -5,7 +5,7 @@
 #include "../math/math_stuff.h"
 #include <string>
 
-extern int dbugDelay_Lol;
+extern float dbugDelay_Lol;
 
 class CDTimer {	// Timer de countdown
 private:
@@ -15,7 +15,6 @@ private:
 	float timeLeft = cdDuration;	// Le temps qui reste avant la fin du CountDown
 	
 	Countdown cd;			// Le nombre de révolution à faire avant d'arrêter de stopper la clock
-	unsigned long totalCD = 0;	// Le nombre de countdown total terminé
 
 	void Restart_CountDown();						// Ré-Enclanche le timer
 public:	

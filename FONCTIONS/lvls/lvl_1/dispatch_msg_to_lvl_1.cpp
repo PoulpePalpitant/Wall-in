@@ -31,6 +31,7 @@
 #include "../../events/global_events/ev_progress_bar.h"
 #include "../../events/global_events/ev_thank_you.h"
 
+
 // C'EST ICI QUE ÇA SE PASSE
 void Dispatch_Msg_To_Lvl_1()
 {
@@ -78,7 +79,6 @@ void Dispatch_Msg_To_Lvl_1()
 			//Just_Dr_Wasd();
 			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
 			MsgQueue::Register(START_BOTS); // Here they come baby
-			MsgQueue::Register(ENABLE_ITEM_SPAWN); // items!
 			gSkipStory = false;
 			gDayStarted = true;
 		}
@@ -95,6 +95,7 @@ void Dispatch_Msg_To_Lvl_1()
 				gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
 				gCurrentLevel = 2;
 				gSkipStory = false;
+				Event::Cancel_All();		// Tout les events
 			}
 		}
 		else

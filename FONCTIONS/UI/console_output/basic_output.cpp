@@ -1,5 +1,5 @@
 
-
+#include <iostream>
 #include "basic_output.h"
 
 // Affiche un charactère

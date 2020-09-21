@@ -103,13 +103,15 @@ public:
 
 	// FONCTIONS PRINCIPALES 
 
-	void Cancel() { active = false; }
 	bool Is_Player_Shooting_Border(Direction dir);			// Si le joueur est collé sur une bordure, et tir dessus, le blast fail
 	bool Is_Active() { return active; }	// is it dow?
 	void Setup_Blast( GrdCoord &startPos, Direction &blastDir, bool consume = true);	// Setup tout les paramètre du blast pour le tir. Consume ou pas les éléments de laqueue(utilisé uniquement si le blast est un transfert)
 	void Setup_Modifier(Modifier mod);							// Le modifier du blast, voir global_types.h
 	void UPD_Blast_Shot();	// le tir du blast...
 
+	// Special: Clear le blast quand on le cancel
+	void Cancel() { active = false; }
+	void Clear_Blast();
 };
 
 // Les objets blasts :D

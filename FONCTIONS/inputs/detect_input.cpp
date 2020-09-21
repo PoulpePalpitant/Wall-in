@@ -212,13 +212,8 @@ void Handle_Input()
 	case 'Q':case 'q':	break;
 	case 'J':case 'j':	lastKey = KeyPressed::JERRY; break;
 	case 'R':case 'r':	gRefreshStage = true; break;	// Refresh un stage, quand c'est possible
-	case 'P':case 'p':
-		if (gProceedTime)
-		{
-			MsgQueue::Register(PROCEED);
-			gProceedTime = false;
-		}
-		break;	//Skip le stage actuel, on avance
+	//case 'P':case 'p':
+		//break;	//Skip le stage actuel, on avance
 
 	case 27: /*Esc */
 		if (!gPauseUpdates)
@@ -228,8 +223,15 @@ void Handle_Input()
 		break;
 
 	case 13:	/* enter */
+		
 		if (ChoiceTime::Is_Choice_Time())
 			ChoiceTime::Apply_Choice();
+		else
+			if (gProceedTime)
+			{
+				MsgQueue::Register(PROCEED);
+				gProceedTime = false;
+			}
 
 		MsgQueue::Register(PRESSED_ENTER);
 		action = ENTER;
@@ -241,6 +243,7 @@ void Handle_Input()
 			MsgQueue::Register(RETURN_TO_MENU);
 			gPauseUpdates = false;
 		}
+
 
 		break;
 	}

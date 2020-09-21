@@ -339,3 +339,22 @@ int Blast::Nb_Of_Walls_Per_Blast()
 		else
 			return nbSteps / (btwLinks + 1); //works
 }
+
+// SPECIAL
+// -- - - -
+
+void Blast::Clear_Blast()	// Permet d'effacer enfin le blast quand tu le cancel
+{
+	int toErase;
+	if (nbSteps >= length)		// La blast à parcouru une distance plus grande ou égale à sa longueur 
+		toErase = length;
+	else
+		toErase = nbSteps;
+	for (int i = 0; i < toErase; i++)
+		UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
+
+	//while(!Are_Equal(this->frontXY.coord,this->tailXY.coord))
+	//	UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
+
+	this->Cancel();
+}

@@ -8,15 +8,16 @@
 //#include < ctime >	// pour utiliser la fonction clock()
 //#include "WinUser.h"
 
+// Pour certains affichages test
 #include "../FONCTIONS/rng/rng.h"
 #include "../FONCTIONS/grid/AllGrids.h"
 #include "../FONCTIONS/grid/managegrids.h"
 #include "../FONCTIONS/time/spawn_cycle.h"
 #include "../FONCTIONS/bots/botmeta.h"
 #include "../FONCTIONS/lvls/lvl_script.h"
+#include "../FONCTIONS/UI/console_output/render_list.h"
 
 #include "../FONCTIONS/update_game/update_game.h"
-#include "../FONCTIONS/UI/console_output/render_list.h"
 #include "../FONCTIONS/inputs/detect_input.h"
 #include "../FONCTIONS/time/clock.h"
 #include "../FONCTIONS/time/timerOP.h"
@@ -119,19 +120,10 @@ void main()	// Le début!
 
 	/*CONCLUSION: C'est impossible. La liste chaîné prend de l'espace mémoire non-sucessive. Ce qui veut dire que chaques adresses peuvent être n'importe où.*/
 
-
-
-	/* test manual wall creation*/
-
-	//gGrids.Activate_Chain_Of_Walls({ 8,6 }, LEFT, 5);
-	//gGrids.Activate_Chain_Of_Walls({ 6,5 }, UP, 6);
-	//gGrids.Activate_Chain_Of_Walls({ 6,7 }, DOWN, 6);
-
-
 	// some windows stuff
 	Set_Input_Buffer_Handle();	
 	Set_Dflt_WND();			// Dimension de la window mon gars
-	CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
+	//CDTimer::Set_Debug_Delay_Lol();	// the dumbest shit i have ever seen. Permet de compenser le manque de lag en mode release vs debugger, car certaines animations sont encore dépendantes du framerate, et vont trop vite en rel
 
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Initialize_Game();		// Initialize une bunch de crap
@@ -156,7 +148,7 @@ void main()	// Le début!
 	int loops = 0;
 	int frames = 0;
 	//GameLoopClock::Stop();
-	GameLoopClock::Reset_Timer();	// Premier reset
+	GameLoopClock::Reset_Timer();	// Premier reset»
 	//thread *inputs = new thread(Input_Thread_Handler);
 
 	while (GameLoopClock::Is_Running())	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)

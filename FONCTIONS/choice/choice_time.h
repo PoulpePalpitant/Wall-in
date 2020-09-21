@@ -54,6 +54,7 @@ class ChoiceTime
 	static void Draw_Dot(int index);
 	static void Draw_Names(int index, Colors clr = BRIGHT_WHITE);
 	static void Draw_Press_Enter();
+	static void Draw_Alternate_Title(bool erase = false);
 	static void Erase_Press_Enter();
 
 public:
