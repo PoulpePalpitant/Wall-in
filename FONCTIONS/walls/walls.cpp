@@ -220,7 +220,7 @@ void Wall::UI_Draw_Or_Erase_Wall(bool inAChain)	// Si inAChain est activé, on gè
 		*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
 
 	if(!inAChain)
-		ConsoleRender::Create_Queue(75);
+		ConsoleRender::Create_Animation_Queue(75);
 
 	for (int i = 0; i < wallSize; i++)
 	{

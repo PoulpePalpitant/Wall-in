@@ -21,10 +21,15 @@ struct RenderQueue {
 };
 
 struct AnimationQueue {
-	CDTimer timer;	// Entre chaque output dans cette liste
+	SpeedTimer* timer;	// Entre chaque output dans cette liste
 	RenderQueue queue;
 	AnimationQueue* nxtQueue = NULL;
 	bool isLinear;		// Linear veut dire que tout les éléments seront affichés l'un après l'autre avec du élai entre chaque, à l'opposé de tout en même temps
+
+	~AnimationQueue()
+	{
+		delete timer;
+	}
 };
 
 
@@ -48,7 +53,7 @@ class ConsoleRender
 public:
 	static void Add_String(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0, bool erase = false);
 	static void Add_Char(Coord crd, unsigned char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render
-	static void Create_Queue(float speed, bool linear = true);			// Créer une nouvelle Queue, tout les char suivant seront ajouté à celle-ci
+	static void Create_Animation_Queue(float speed, bool linear = true);			// Créer une nouvelle Queue, tout les char suivant seront ajouté à celle-ci
 	static void Stop_Queue();											// Stop l'ajout d'élément dans la queue d'animation actuelle
 	static void Render();	// Output tout les charactères dans la console, selon les listes, et les timers de ces listes
 };	

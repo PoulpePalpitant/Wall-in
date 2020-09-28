@@ -36,6 +36,12 @@ void Ev_Dr_Game_Title()
 	ConsoleRender::Add_String("          W:::::W         W:::::W       a:::::aaaa::::::a  l::::::ll::::::l    I::::::::In::::n    n::::n",{x,y}, WHITE);y++;
 	ConsoleRender::Add_String("           W:::W           W:::W         a::::::::::aa:::a l::::::ll::::::l    I::::::::In::::n    n::::n",{x,y}, WHITE);            
 		
+
+
+
+
+
+
 	//ConsoleRender::Add_String("Start", { Find_Ctr_X(sizeof("Start")) ,38 }, BRIGHT_WHITE);
 	//ConsoleRender::Add_String("", { Find_Ctr_X(sizeof("Start")) ,38 }, BRIGHT_WHITE);
 

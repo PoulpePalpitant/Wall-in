@@ -14,18 +14,26 @@
  bool ConsoleRender::addToNewQueue;			// Détermine quelle queue utiliser pour ajouter des charactères à render			
 
  // Ajoute une nouvelle queue d'animation
-void ConsoleRender::Create_Queue(float speed, bool linear)
+void ConsoleRender::Create_Animation_Queue(float speed, bool linear)
 {
-	if (last == NULL)	// Liste vide	
-		first = last = new AnimationQueue;	// Nouvelle queue	
-	else
-		last = last->nxtQueue = new AnimationQueue;	// Nouvelle queue
+	speed /= 10;
 
-	last->timer.Set_Cd_Duration(speed);	 // Set la durée du countdown
-	last->timer.Start_CountDown();	 // mais L'ACTIVE TOUT DE SUITE BRAH
+	if (last == NULL)	// Liste vide	
+		first = last = new AnimationQueue();	// Nouvelle queue	
+	else
+		last = last->nxtQueue = new AnimationQueue();	// Nouvelle queue
+
+	last->timer = new SpeedTimer(false); // dumb fix pour éviter d'utiliser le constructor qui assigne un id
+	last->timer->Start_Timer((int)speed, 1, true);	 // Set la vitesse du countdown	32###we1
+
 	
 	animationQueue = last;
 	animationQueue->isLinear = linear;	// Si l'animation est lineaire, ou pas
+	
+	// petit Tests
+	//if(linear)
+		//last->timer->Start_Timer((int)speed, (int)string.length());	 // Set la vitesse du countdown
+
 	addToNewQueue = true;		// Les prochains output d'animation seront ajouté dans cette queue
 }		
 
@@ -116,7 +124,7 @@ void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , float s
 	if (speed > 0 )	// assignation de la queue
 	{
 		Stop_Queue();	// safety
-		Create_Queue(speed);	
+		Create_Animation_Queue(speed);	
 		toPush = &animationQueue->queue; // Créer une nouvelle animation queue automatiquement
 	}
 	else
@@ -158,12 +166,12 @@ void ConsoleRender::Render_Animation_Queue()
 	playerPos = P1.Get_XY();		
 	
 	while (toPop)	// tant que ta pas finis de traverser tout les listes
-	{	
-		if (toPop->timer.Get_Time_Left() <= 0)	// Le temps est écoulé, On affiche un élément de la queue!
+	{
+		while (toPop->timer->Tick())	// Le temps est écoulé, On affiche un élément de la queue!
 		{
-			Pop_From_Queue(toPop->queue, toDraw);	
+			Pop_From_Queue(toPop->queue, toDraw);
 
-			if(!Are_Equal(toDraw.crd, playerPos))
+			if (!Are_Equal(toDraw.crd, playerPos))
 				UI_Dsp_Char(toDraw.crd, toDraw.symbol, toDraw.clr);	// Affiche du symbole dans la console
 
 			// Delete la queue si elle est vide				Garbo
@@ -172,8 +180,9 @@ void ConsoleRender::Render_Animation_Queue()
 
 				if (toPop == first && toPop == last)
 				{
-					delete toPop;	// Delete la queue actuelle
+					delete toPop;	// Delete la queue actuelle»
 					toPop = first = last = NULL;
+					return;			// tu dois sortir car le timer n'existe plus :O et on a plus rien à updater aussi»
 				}
 				else
 					if (toPop == first)
@@ -189,30 +198,31 @@ void ConsoleRender::Render_Animation_Queue()
 							toPop = prev->nxtQueue = NULL;
 							delete last;
 							last = prev;	// new last
+							return;			// tu dois sortir car le timer n'existe plus :O et on a plus rien à updater aussi»
 						}
 						else
 						{
-							prev->nxtQueue = toPop->nxtQueue;	
+							prev->nxtQueue = toPop->nxtQueue;
 							delete toPop;
 							toPop = prev->nxtQueue;	// Passe au prochain
 						}
 			}
 			else
 			{
-				if(toPop->isLinear)
-					toPop->timer.Start_CountDown();	// Prochain countdown	// Pour l'animation d'une shot, en omet simplement de reset le countdown :)
-
-				prev = toPop;				// please repeat yourself
-				toPop = toPop->nxtQueue;	
+				//if (toPop->isLinear)
+				//	toPop->timer->Start_Timer(toPop->timer->Get_Speed());	// Prochain countdown	
+				//else
+				if(!toPop->isLinear)
+				{
+					//toPop->timer->Start_Timer(0, 1, true);// Pour l'animation d'une shot, ou met le timer en une boucle infini instantannée
+					toPop->timer->Override_Ticks_Per_Frame(); continue;	//on continue à décrémenter le timer pour cette queue pour afficher tout le reste
+				}
 			}
 		}
-		else// Le temps n'est pas encore écoulé
-		{
-			toPop->timer.Tick_Timer();		// Avance le countdown
-			prev = toPop;	// relink
-			toPop = toPop->nxtQueue;	// pass au prochain
-		}
 
+		// Le temps n'est pas encore écoulé pour updater l'affichage ici. On passe donc à la prochain»»e queue
+		prev = toPop;	// relink
+		toPop = toPop->nxtQueue;	// pass au prochain
 	}
 }
 

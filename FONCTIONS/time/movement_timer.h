@@ -35,6 +35,7 @@ public:
 	static void Stop_All_Timers();	// some hardcore stuff, be careful
 
 	// KEY
+	void Override_Ticks_Per_Frame();	// Permet de Tick le timer 1 fois de plus durant 1 frame. Si ta setté le timer à Inifinite, et que tu utilise ça en boucle, il ya des bonnes chance que tu te softlock. Le timer peut tick selon le count restant, ou à l'infinie 
 	bool OLD_Tick();		// Update le temps écoulé à partir de delta time
 	bool Updates_Left();	// Dans un while, fait les updates que ta de besoin selon le le nombre de moves durant une frame
 	
@@ -66,9 +67,17 @@ public:
 		idTotal++;
 	}
 
+	SpeedTimer(bool noId)
+	{
+		id = -1;
+		// n'ajoute pas de id dans lla liste des timers créés
+	}
+
+
 	~SpeedTimer()
 	{
-		allTimers[id] = NULL;
+		if(id  != -1)	// si est présent dans la liste on le delete
+			allTimers[id] = NULL;
 	}
 };
 

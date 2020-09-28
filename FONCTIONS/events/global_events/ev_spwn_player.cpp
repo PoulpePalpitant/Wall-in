@@ -129,7 +129,7 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 	//		case 8:		case 9:		clr = LIGHT_GREEN;
 	//		}
 
-	//		ConsoleRender::Create_Queue(15);	// Draw
+	//		ConsoleRender::Create_Animation_Queue(15);	// Draw
 	//		ConsoleRender::Add_Char({ crd.x, crd.y }, 191, clr);
 	//		ConsoleRender::Add_Char({ crd.x, crd.y }, 192, clr);
 	//		ConsoleRender::Add_Char({ crd.x, crd.y }, 217, clr);

@@ -48,7 +48,7 @@ void Ev_Dr_Map_Borders_1()
 
 			// BORDURE TOP	-> coin gauche vers la droite
 			instXY = { left, up - 1 };
-			//ConsoleRender::Create_Queue(150);
+			//ConsoleRender::Create_Animation_Queue(150);
 
 			for (int i = instXY.x; i <= right; i++)
 			{
@@ -68,7 +68,7 @@ void Ev_Dr_Map_Borders_1()
 			//::Stop_Queue();
 
 			// BORDURE BOT	-> coin droit vers la gauche
-			//ConsoleRender::Create_Queue(150);
+			//ConsoleRender::Create_Animation_Queue(150);
 			instXY = { right , down + 1 };
 
 			for (int i = instXY.x; i >= left; i--)
@@ -104,7 +104,7 @@ void Erase_Map_Borders_1(int speed)
 	int down = map.Get_Box_Limit(DOWN);
 
 	if (speed)
-		ConsoleRender::Create_Queue((float)speed);
+		ConsoleRender::Create_Animation_Queue((float)speed);
 	
 	// BORDURE TOP	-> coin gauche vers la droite
 	instXY = { left, up - 1 };

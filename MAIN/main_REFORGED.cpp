@@ -28,6 +28,7 @@
 // test zone
 #include "../FONCTIONS/lvls/lvl_1/msg_events/ev_arr_keys.h"
 #include "../FONCTIONS/lvls/lvl_1/msg_events/ev_wasd.h"
+#include "../FONCTIONS/UI/console_output/Test.h"
 
 
 using namespace std;
@@ -151,6 +152,12 @@ void main()	// Le début!
 	GameLoopClock::Reset_Timer();	// Premier reset»
 	//thread *inputs = new thread(Input_Thread_Handler);
 
+
+	// Testy!
+	Ev_Test_Affichage();
+
+
+	// testy stuff
 	while (GameLoopClock::Is_Running())	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
 		GameLoopClock::Tick();	// Delta time est en seconde!!!
@@ -179,10 +186,11 @@ void main()	// Le début!
 
 			/* pour tester si ça work for real*/
 			//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
-			if (++frames == 15)	// update les infos à chaque X Frames
+			if (++frames == 10)	// update les infos à chaque X Frames
 			{
 				//ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
-				//ConsoleRender::Add_String(std::to_string((int)(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
+				//ConsoleRender::Add_String("  ", crd);	// efface la dizaine
+				//ConsoleRender::Add_String(std::to_string(/*(int)*/(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
 				//ConsoleRender::Add_String(std::to_string(gSpawnCycleTot), crd3);	// Nombre de cycles fais
 				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
 				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.spawned), { crd3.x + 8, crd3.y });	// Nombre de bot en vie

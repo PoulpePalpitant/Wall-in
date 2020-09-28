@@ -14,7 +14,7 @@ void UI_Draw_Map_Borders_1()
 
 	// BORDURE TOP	-> coin gauche vers la droite
 	crd = { map.Get_Box_Limit(LEFT) - 1 , map.Get_Box_Limit(UP) - 1 };
-	ConsoleRender::Create_Queue(200);
+	ConsoleRender::Create_Animation_Queue(200);
 
 	for (int i = crd.x; i < length; i++)
 	{
@@ -28,7 +28,7 @@ void UI_Draw_Map_Borders_1()
 
 	// BORDURE BOT	-> coin droit vers la gauche
 	crd = { map.Get_Box_Limit(RIGHT) + 1 , map.Get_Box_Limit(DOWN) + 1 };
-	ConsoleRender::Create_Queue(200);
+	ConsoleRender::Create_Animation_Queue(200);
 
 	for (int i = crd.x; i < length; i++)
 	{
@@ -41,7 +41,7 @@ void UI_Draw_Map_Borders_1()
 
 	// BORDURE left-> coin geauche-bas vers up
 	crd = { map.Get_Box_Limit(LEFT) - 1 , map.Get_Box_Limit(DOWN) + 1 };
-	ConsoleRender::Create_Queue(200);
+	ConsoleRender::Create_Animation_Queue(200);
 
 	for (int i = crd.x; i < height; i++)
 	{
@@ -54,7 +54,7 @@ void UI_Draw_Map_Borders_1()
 
 	// BORDURE RIGHT-> coin up vers down
 	crd = { map.Get_Box_Limit(RIGHT) + 1 , map.Get_Box_Limit(UP) + 1 };
-	ConsoleRender::Create_Queue(200);
+	ConsoleRender::Create_Animation_Queue(200);
 
 	for (int i = crd.x; i < height; i++)
 	{
