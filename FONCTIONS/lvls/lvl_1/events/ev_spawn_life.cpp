@@ -243,18 +243,18 @@ void Ev_Spawn_Life()					// Trace un chemin vers le coeur
 
 			case 8:
 				
-				ConsoleRender::Add_String(healthy, Heart_Txt_Crd_Left (healthy), LIGHT_GREEN, 100);
+				ConsoleRender::Add_String(healthy, Heart_Txt_Crd_Left (healthy), LIGHT_GREEN, TXT_SPD_DR);
 				ev_SpawnLife.Advance(700);
 				break;
 
 			case 9:
-				ConsoleRender::Add_String(anything, Heart_Txt_Crd_Right(anything), LIGHT_GREEN, 110);
+				ConsoleRender::Add_String(anything, Heart_Txt_Crd_Right(anything), LIGHT_GREEN, TXT_SPD_DR);
 				ev_SpawnLife.Advance(300);
 				break;
 
 			case 10:
-				ConsoleRender::Add_String(healthy, Heart_Txt_Crd_Left (healthy), WHITE,90, true);
-				ConsoleRender::Add_String(anything, Heart_Txt_Crd_Right(anything), WHITE, 90, true);
+				ConsoleRender::Add_String(healthy, Heart_Txt_Crd_Left (healthy), WHITE, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(anything, Heart_Txt_Crd_Right(anything), WHITE, TXT_SPD_ER, true);
 				ev_SpawnLife.Advance(0);
 				break;
 			}

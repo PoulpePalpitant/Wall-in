@@ -16,7 +16,16 @@
  // Ajoute une nouvelle queue d'animation
 void ConsoleRender::Create_Animation_Queue(float speed, bool linear)
 {
-	speed /= 10;
+
+	////dumb fix right here
+	//if (speed >= 200)
+	//	speed /= 10;
+	//else
+	//	if (speed > 50 && speed <= 100)
+	//		speed /= 2;
+	//	else
+	//		if (speed < 25)
+	//			speed *= 2;
 
 	if (last == NULL)	// Liste vide	
 		first = last = new AnimationQueue();	// Nouvelle queue	

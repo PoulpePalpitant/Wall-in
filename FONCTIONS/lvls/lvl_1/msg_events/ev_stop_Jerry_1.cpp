@@ -20,12 +20,12 @@ void Upd_Jerry_Count()
 	crdCount.x += 7;
 	
 	if(jerCount - deadJerrys == 9)
-		ConsoleRender::Add_String("9 ", crdCount, LIGHT_GREEN, 50);	// Lazy interface stuff
+		ConsoleRender::Add_String("9 ", crdCount, LIGHT_GREEN, TXT_SPD_FAST);	// Lazy interface stuff
 	else
 		if (jerCount - deadJerrys == 99)
-			ConsoleRender::Add_String("99 ", crdCount, LIGHT_GREEN, 50);	// Lazy interface stuff
+			ConsoleRender::Add_String("99 ", crdCount, LIGHT_GREEN, TXT_SPD_FAST);	// Lazy interface stuff
 		else
-			ConsoleRender::Add_String(std::to_string(jerCount - deadJerrys), crdCount, LIGHT_GREEN, 50);	// Update le nombre
+			ConsoleRender::Add_String(std::to_string(jerCount - deadJerrys), crdCount, LIGHT_GREEN, TXT_SPD_FAST);	// Update le nombre
 }
 
 void Stop_Ev_Dr_Stop_Jerry()	// Stopping the jerrys
@@ -42,8 +42,8 @@ void Ev_Dr_Stop_Jerry()			// Le joueur doit arrêter Jerry plusieurs fois
 	{
 		 deadCount = 0;
 
-		ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);
-		ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 50);
+		ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, TXT_SPD_FAST);
+		ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, TXT_SPD_FAST);
 		ev_Dr_StopJerry.Activate();
 		ev_Dr_StopJerry.Start(1500);	// 1000 / 2 = 500.		2 secondes
 	}
@@ -79,6 +79,6 @@ void Ev_Dr_Stop_Jerry()			// Le joueur doit arrêter Jerry plusieurs fois
 
 void Er_Stop_Jerry()
 {
-	ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, 50, true);	// ERASE
-	ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 60, true);
+	ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, TXT_SPD_FAST, true);	// ERASE
+	ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, TXT_SPD_FAST, true);
 }

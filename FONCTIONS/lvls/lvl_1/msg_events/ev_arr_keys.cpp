@@ -31,14 +31,14 @@ void Ev_Dr_Arr_Keys()			// Montre les touches clavier pour tirer
 			switch (ev_Dr_ArrKeys.Get_Current_Step())
 			{
 			case 1:
-				ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, 80);
+				ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_FAST);
 				ev_Dr_ArrKeys.Advance(1000);	// Delay 
 				break;
 				
 			case 2:
-				ConsoleRender::Add_String(_2, { crd.x + 3, crd.y + 2 }, WHITE, 50);	// x -3, y + 2
-				ConsoleRender::Add_String(_3, { crd.x - 1 ,crd.y + 3 }, WHITE, 50);	// x -3, y + 2
-				ConsoleRender::Add_String(_4, { crd.x - 6 ,crd.y + 5 }, GRAY, 50);	// x -3, y + 2
+				ConsoleRender::Add_String(_2, { crd.x + 3, crd.y + 2 }, WHITE, TXT_SPD_FAST);	// x -3, y + 2
+				ConsoleRender::Add_String(_3, { crd.x - 1 ,crd.y + 3 }, WHITE, TXT_SPD_FAST);	// x -3, y + 2
+				ConsoleRender::Add_String(_4, { crd.x - 6 ,crd.y + 5 }, GRAY,  TXT_SPD_FAST);	// x -3, y + 2
 				
 				MsgQueue::Register(ENABLE_BLAST);
 				ev_Dr_ArrKeys.Advance(0);	// finito
@@ -66,8 +66,8 @@ void Ev_Er_Arr_Keys()
 		while (ev_Er_ArrKeys.delay.Tick())
 		{
 			ConsoleRender::Add_String(_1, crd, WHITE, 80, true);						// ERASE
-			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, 50, true);	
-			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, 30, true);
+			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_ER, true);
+			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_ER, true);
 			ev_Er_ArrKeys.Advance(0);
 		}
 }

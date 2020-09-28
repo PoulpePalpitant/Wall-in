@@ -84,7 +84,7 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 					//ev_Lvl2_Training_1.Go_To_X_Step(8);
 					ev_Lvl2_Training_1.Advance(0);	// 1000 / 2 = 500.		2 secondes
 					gRefreshStage = true;	// lazy shortcut pour tout refresh
-					ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, 100);
+					ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, TXT_SPD_DR);
 				}
 				else
 					ev_Lvl2_Training_1.delay.Start_Timer(1000);

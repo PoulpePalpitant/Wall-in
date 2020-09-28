@@ -14,9 +14,9 @@ extern Colors gCurrentColor = WHITE;	// La couleur actuelle d'output dans la con
 Colors gBossClr = LIGHT_RED;
 Colors gJerClr = LIGHT_AQUA;
 
-const unsigned short TXT_SPD_DR = 200; // vitesse de défilement du texte par défaut
-const unsigned short TXT_SPD_FAST = 70; // vitesse d'affichage
-const unsigned short TXT_SPD_ER = 50; // vitesse d'éffacement du texte par défaut
+const unsigned short TXT_SPD_DR = 10; // vitesse de défilement du texte par défaut
+const unsigned short TXT_SPD_FAST = 20; // vitesse d'affichage
+const unsigned short TXT_SPD_ER = 15; // vitesse d'éffacement du texte par défaut
 
 // Changer la couleur
 void Change_Color(int c) {
@@ -134,7 +134,7 @@ void Erase_All_Boss_Txt(bool slow)
 
 int Jerry_Txt_X()
 {
-	return  map.Get_Box_Limit(RIGHT) + 18;	//v2
+	return  map.Get_Box_Limit(RIGHT) + 22;	//v2
 	//return  (gConWidth - (gConWidth / 5));
 }
 

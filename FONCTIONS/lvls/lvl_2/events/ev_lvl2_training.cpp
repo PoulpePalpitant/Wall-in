@@ -71,11 +71,13 @@ static void Block_Prison(bool Remove = false)
 		for (int c = 0; c < linkGrid->Get_Cols() - 3; c++)
 			gGrids.Activate_Blocker({ c ,r }, Remove);	// 1 couloir de la mort!!!			
 	}
-	gGrids.Activate_Blocker({ 0,0 }, 0);	// ferme le corridor
+	//gGrids.Activate_Blocker({ 0,0 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ 0,1 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ 0,2 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ 0,3 }, 0);	// ferme le corridor
-	gGrids.Activate_Blocker({ 0,4 }, 0);	// ferme le corridor
+	//gGrids.Activate_Blocker({ 0,4 }, 0);	// ferme le corridor
+	gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 3,0 }, 0);	
+	gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 3,4 }, 0);
 
 }
 
@@ -136,7 +138,7 @@ void Ev_Lvl2_Training()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 2:
-				ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, 100);
+				ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, TXT_SPD_DR);
 				Just_Dr_Map_Borders();
 				ev_Lvl2_Training.delay.Stop();
 				ev_Lvl2_Training.Advance(1000);	// 1000 / 2 = 500.		2 secondes

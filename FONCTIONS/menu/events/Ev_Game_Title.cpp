@@ -76,22 +76,22 @@ void Ev_Er_Game_Title()
 			switch (ev_Er_GameTitle.Get_Current_Step())
 			{
 			case 1:
-				ConsoleRender::Add_String("WWWWWWWW                           WWWWWWWW                lllllll lllllll     IIIIIIIIII                ", { x,y }, WHITE, 5 , true);y++;
-				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     I::::::::I                ", { x,y }, WHITE, 15, true);y++;
-				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     I::::::::I                ", { x,y }, WHITE, 4 , true);y++;
-				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     II::::::II                ", { x,y }, WHITE, 20, true);y++;
-				ConsoleRender::Add_String(" W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa     l::::l  l::::l       I::::Innnn  nnnnnnnn    ", { x,y }, WHITE, 7 , true);y++;
-				ConsoleRender::Add_String("  W:::::W         W:::::W         W:::::W a::::::::::::a    l::::l  l::::l       I::::In:::nn::::::::nn  ", { x,y }, WHITE, 17, true);y++;
-				ConsoleRender::Add_String("   W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a   l::::l  l::::l       I::::In::::::::::::::nn ", { x,y }, WHITE, 2 , true);y++;
-				ConsoleRender::Add_String("    W:::::W     W:::::::::W     W:::::W            a::::a   l::::l  l::::l       I::::Inn:::::::::::::::n", { x,y }, WHITE, 5 , true);y++;
-				ConsoleRender::Add_String("     W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a   l::::l  l::::l       I::::I  n:::::nnnn:::::n", { x,y }, WHITE, 15, true);y++;
-				ConsoleRender::Add_String("      W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE, 5 , true);y++;
-				ConsoleRender::Add_String("       W:::::W:::::W   W:::::W:::::W     a::::aaaa::::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE, 10, true);y++;
-				ConsoleRender::Add_String("        W:::::::::W     W:::::::::W     a::::a    a:::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE, 20, true);y++;
-				ConsoleRender::Add_String("         W:::::::W       W:::::::W      a::::a    a:::::a  l::::::ll::::::l    II::::::IIn::::n    n::::n", { x,y }, WHITE, 4 , true);y++;
-				ConsoleRender::Add_String("          W:::::W         W:::::W       a:::::aaaa::::::a  l::::::ll::::::l    I::::::::In::::n    n::::n", { x,y }, WHITE, 20, true);y++;
-				ConsoleRender::Add_String("           W:::W           W:::W         a::::::::::aa:::a l::::::ll::::::l    I::::::::In::::n    n::::n", { x,y }, WHITE, 11, true);
-				ConsoleRender::Add_String("                                                                                                         ", { x,y }, WHITE, 11, true);
+				ConsoleRender::Add_String("WWWWWWWW                           WWWWWWWW                lllllll lllllll     IIIIIIIIII                ", { x,y }, WHITE,  80 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     I::::::::I                ", { x,y }, WHITE, 150 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     I::::::::I                ", { x,y }, WHITE,  70 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     II::::::II                ", { x,y }, WHITE, 200 * 2 - 30, true);y++;
+				ConsoleRender::Add_String(" W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa     l::::l  l::::l       I::::Innnn  nnnnnnnn    ", { x,y }, WHITE, 100 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("  W:::::W         W:::::W         W:::::W a::::::::::::a    l::::l  l::::l       I::::In:::nn::::::::nn  ", { x,y }, WHITE, 170 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("   W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a   l::::l  l::::l       I::::In::::::::::::::nn ", { x,y }, WHITE,  50 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("    W:::::W     W:::::::::W     W:::::W            a::::a   l::::l  l::::l       I::::Inn:::::::::::::::n", { x,y }, WHITE,  80 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("     W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a   l::::l  l::::l       I::::I  n:::::nnnn:::::n", { x,y }, WHITE, 150 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("      W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE,  80 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("       W:::::W:::::W   W:::::W:::::W     a::::aaaa::::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE, 100 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("        W:::::::::W     W:::::::::W     a::::a    a:::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE, 200 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("         W:::::::W       W:::::::W      a::::a    a:::::a  l::::::ll::::::l    II::::::IIn::::n    n::::n", { x,y }, WHITE,  70 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("          W:::::W         W:::::W       a:::::aaaa::::::a  l::::::ll::::::l    I::::::::In::::n    n::::n", { x,y }, WHITE, 200 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("           W:::W           W:::W         a::::::::::aa:::a l::::::ll::::::l    I::::::::In::::n    n::::n", { x,y }, WHITE, 110 * 2 - 30, true);
+				ConsoleRender::Add_String("                                                                                                         ", { x,y }, WHITE, 110 * 2 - 30, true);
 				//ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 5 );y++;
 				//ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 15);y++;
 				//ConsoleRender::Add_String("                                                                                                         ", { x,y }, LIGHT_GREEN, 4 );y++;

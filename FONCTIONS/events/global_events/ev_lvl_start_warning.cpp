@@ -67,8 +67,8 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 5:
-				ConsoleRender::Add_String(ready, ori, WHITE, 50, true);
-				ConsoleRender::Add_String(inc, { ori.x, ori.y + 2 }, WHITE, 50, true);
+				ConsoleRender::Add_String(ready, ori, WHITE, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(inc, { ori.x, ori.y + 2 }, WHITE, TXT_SPD_ER, true);
 				ev_LvlStartWarning.Advance(1000);
 				break;
 

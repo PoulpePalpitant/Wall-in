@@ -28,7 +28,6 @@
 // test zone
 #include "../FONCTIONS/lvls/lvl_1/msg_events/ev_arr_keys.h"
 #include "../FONCTIONS/lvls/lvl_1/msg_events/ev_wasd.h"
-#include "../FONCTIONS/UI/console_output/Test.h"
 
 
 using namespace std;
@@ -153,8 +152,6 @@ void main()	// Le début!
 	//thread *inputs = new thread(Input_Thread_Handler);
 
 
-	// Testy!
-	Ev_Test_Affichage();
 
 
 	// testy stuff

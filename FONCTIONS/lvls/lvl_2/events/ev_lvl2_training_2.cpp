@@ -101,7 +101,7 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 					MsgQueue::Register(ENABLE_BLAST);
 					MsgQueue::Register(FREE_PLAYER);
 					gRefreshStage = true;	// lazy shortcut pour tout refresh
-					ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, 100);
+					ConsoleRender::Add_String(GOAL_STOP, Up_Txt_2(GOAL_STOP), BRIGHT_WHITE, TXT_SPD_DR);
 				}
 				else
 					ev_Lvl2_Training_2.delay.Start_Timer(1000);

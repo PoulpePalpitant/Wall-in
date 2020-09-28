@@ -13,6 +13,7 @@
 #include "../inputs/action_input.h"
 
 #include "../events/global_events/ev_update_heart.h" // for testing
+#include "../UI/console_output/Test.h"
 
  int choosenLvl = 0;	
 
@@ -34,8 +35,8 @@ void Dispatch_Msg_To_Menu()
 		if (gCurrentStage == 1)
 		{
 			Ev_Dr_Choose_Lvl();
-
 			/* test de créatio de coeurs*/
+			Ev_Test_Affichage();
 			//Start_Ev_Dr_Heart(3);
 			//Fill_Heart_Randomly(true);
 			//Fill_Outisde_Heart(false);
