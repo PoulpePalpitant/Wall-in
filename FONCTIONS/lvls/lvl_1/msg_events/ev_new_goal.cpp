@@ -30,12 +30,12 @@ void Ev_Dr_New_Goal()			// Accueil Le joueur quand il sort de son répit
 			switch (ev_Dr_NewGoal.Get_Current_Step())
 			{
 			case 1:
-				ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);
+				ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, TXT_SPD_DR);
 				ev_Dr_NewGoal.Advance(600);	// Delay 
 				break;
 
 			case 2:
-				ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 80);
+				ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, TXT_SPD_DR + 1);
 				ev_Dr_NewGoal.Advance(600);	// finito
 				break;
 
@@ -60,8 +60,8 @@ void Ev_Er_New_Goal()
 	else
 		while (ev_Er_NewGoal.delay.Tick())
 		{
-			ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50, true);	// ERASE
-			ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, 60, true);
+			ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, TXT_SPD_ER, true);	// ERASE
+			ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, TXT_SPD_ER, true);
 			ev_Er_NewGoal.Advance(0);
 		}
 }

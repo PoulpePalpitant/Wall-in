@@ -34,7 +34,7 @@ void Map::UI_Draw_Map_Corners()
 
 void Map::UI_Erase_Map_Corners()
 {
-	ConsoleRender::Create_Queue(1500, false);	// false pour animation non-linéaire
+	ConsoleRender::Create_Animation_Queue(1500, false);	// false pour animation non-linéaire
 	ConsoleRender::Add_Char({ limit[LEFT] - 1, limit[UP] - 1 }, TXT_CONST.SPACE);
 	ConsoleRender::Add_Char({ limit[RIGHT] + 1, limit[UP] - 1 }, TXT_CONST.SPACE);
 	ConsoleRender::Add_Char({ limit[LEFT] - 1,limit[DOWN] + 1 }, TXT_CONST.SPACE);

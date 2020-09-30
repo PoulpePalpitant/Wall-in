@@ -172,7 +172,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 	case BLAST_REACHED_BORDER:
 		if (!gBorderShown)
-			Ev_Border_Splash();		// fait un tit splash
+			Add_Border_Splash();		// fait un tit splash
 		break;
 
 

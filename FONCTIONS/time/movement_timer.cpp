@@ -9,6 +9,11 @@
 SpeedTimer* SpeedTimer::allTimers[MAX_TIMERS] = {};
 int SpeedTimer::idTotal = 0;				// Le nombre timer total actuel
 
+void SpeedTimer::Override_Ticks_Per_Frame()	// NE JAMAIS UTILISER
+{
+	resetThisFrame = false;
+}
+
 void SpeedTimer::katch_Up()
 {
 	if (this->timeLeft <= 0)

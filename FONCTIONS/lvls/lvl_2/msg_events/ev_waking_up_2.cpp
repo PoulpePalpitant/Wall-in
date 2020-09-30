@@ -124,12 +124,12 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 					gGrids.Activate_Blocker({ c,4 });
 				}
 
-				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, 300);
+				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_DR -3);
 				ev_WakeUp2.Advance(300);
 				break;
 
 			case 2:
-				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, 50, true);
+				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(500);
 				break;
 
@@ -150,14 +150,14 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr, 50, true);
-				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, 50, true);
-				ConsoleRender::Add_String(_4, Boss_Txt_Crd(_4, 2), gBossClr, 50, true);
+				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr,    TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_4, Boss_Txt_Crd(_4, 2), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(1000);
 				break;
 
 			case 7:
-				ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, 250);
+				ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(300);
 				break;
 
@@ -167,13 +167,13 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 9:
-				ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 1), gBossClr, 250);
+				ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 1), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(900);
 				break;
 
 			case 10:
 				// Début d'un choix pour le joueur
-				ConsoleRender::Add_String(choiceTitle, { Find_Ctr_X((int)choiceTitle.size() / 2) - 5, linkGrid->link[6][4].Get_XY().y + 4 }, gBossClr, 250, true);
+				ConsoleRender::Add_String(choiceTitle, { Find_Ctr_X((int)choiceTitle.size() / 2) - 5, linkGrid->link[6][4].Get_XY().y + 4 }, gBossClr, TXT_SPD_DR, true);
 				ChoiceTime::Add_Choice(choices[0], TXT_CONST.SPACE_STRING, { 3,9 });
 				ChoiceTime::Add_Choice(choices[1], TXT_CONST.SPACE_STRING, { 9,11 });
 				ChoiceTime::Add_Choice(choices[2], TXT_CONST.SPACE_STRING, { 7, 12});
@@ -258,24 +258,24 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 20:
-				ConsoleRender::Add_String(_13, Boss_Txt_Crd(_13), gBossClr, 250);
+				ConsoleRender::Add_String(_13, Boss_Txt_Crd(_13), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(400);
 				break;
 
 			case 21:
-				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14,1), gBossClr, 250);
+				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14,1), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(250);
 				break;
 
 			case 22:
-				ConsoleRender::Add_String(_13, Boss_Txt_Crd(_13), gBossClr, 50, true);
-				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14, 1), gBossClr, 50, true);
-				ConsoleRender::Add_String(_15, Boss_Txt_Crd(_15, 2), gBossClr, 250);
+				ConsoleRender::Add_String(_13, Boss_Txt_Crd(_13), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14, 1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_15, Boss_Txt_Crd(_15, 2), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(800);
 				break;
 
 			case 23:
-				ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16, 3), gBossClr, 250);
+				ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16, 3), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(1000);
 				break;
 
@@ -289,8 +289,8 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				if (!ItemsOnGrid::size && !BlastModifierQueue::What_Is_Size())
 				{
 					// Erase tout les textes
-					ConsoleRender::Add_String(_15, Boss_Txt_Crd(_15, 2), gBossClr, 50, true);
-					ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16, 3), gBossClr, 50, true);
+					ConsoleRender::Add_String(_15, Boss_Txt_Crd(_15, 2), gBossClr, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16, 3), gBossClr, TXT_SPD_ER, true);
 
 					ev_WakeUp2.delay.Stop();
 					ev_WakeUp2.Advance(1000);
@@ -309,8 +309,8 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 28:
-				ConsoleRender::Add_String(_17, Boss_Txt_Crd(_17), gBossClr, 50, true);
-				ConsoleRender::Add_String(_18, Boss_Txt_Crd(_18, 1), gBossClr, 50, true);
+				ConsoleRender::Add_String(_17, Boss_Txt_Crd(_17), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_18, Boss_Txt_Crd(_18, 1), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(1000);
 				break;
 
@@ -325,8 +325,8 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 31:
-				ConsoleRender::Add_String(_19, Boss_Txt_Crd(_19), gBossClr, 50, true);
-				ConsoleRender::Add_String(_20, Boss_Txt_Crd(_20, 1), gBossClr, 50, true);
+				ConsoleRender::Add_String(_19, Boss_Txt_Crd(_19), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_20, Boss_Txt_Crd(_20, 1), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(1000);
 				break;
 
@@ -347,9 +347,9 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 
 
 			case 35:
-				ConsoleRender::Add_String(_21, Boss_Txt_Crd(_21), gBossClr, 50, true);
-				ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22, 1), gBossClr, 50, true);
-				ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 2), gBossClr, 50, true);
+				ConsoleRender::Add_String(_21, Boss_Txt_Crd(_21), gBossClr,    TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22, 1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 2), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(500);
 				break;
 			}

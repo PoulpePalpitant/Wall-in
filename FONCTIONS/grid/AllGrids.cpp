@@ -189,7 +189,7 @@ void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls,
 	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);		// Première Coord de Wall
 	wallCrd.Increment_Coord();
 
-	//ConsoleRender::Create_Queue(100);	// Début de l'animation
+	//ConsoleRender::Create_Animation_Queue(100);	// Début de l'animation
 
 	while (numWalls)
 	{

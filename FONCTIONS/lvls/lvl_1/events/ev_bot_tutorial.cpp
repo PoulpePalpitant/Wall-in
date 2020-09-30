@@ -193,11 +193,11 @@ static std::string recomSub2[] = { "You Are The Worst.", "Pathetic","Terrible", 
 static std::string jerrAnswer[] = { "...", "oh. ok.... I... huh... th-thanks...","Okay. Thanks. I Will Take that", "What?" , "Wow!"};
 static std::string answer[] =
 { 
-	"(You Said That Just To Be Mean. Jerry Felt It. Jerry Doesn't Want To Help You Anymore)",
-	"(You Destroyed Jerry's Self-esteem. He Doesn't Have Any WillPower To Help You)",
+	"(You Said That Just To Be Mean. Jerry Felt It. Jerry Doesn't Want To Help You Practice Anymore)",
+	"(You Destroyed Jerry's Self-esteem. He Doesn't Have Any WillPower To Help You Practice)",
 	"(Jerry Is Satisfied With Your Modest FeedBack. His Self-Esteem Remains Stable, For Now)",
 	"(Jerry Is Confused By Your Answer, But Takes It As A Compliment Anyway)",
-	"(You Boosted Jerry's Self-esteem So Much That He Thinks He Is The Best Now. He, Therefore, Doesn't Want To Waste His Time Helping You Anymore)",
+	"(You Boosted Jerry's Self-esteem So Much That He Thinks He Is The Best Now. He, Therefore, Doesn't Want To Waste His Time Helping You Practice Anymore)",
 };
 
 std::string jerResponse = "There Is No Bug In The Text";
@@ -286,7 +286,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			switch (step)	// STEP 1 à 20 -> On troll le joueur en faisant déplacer un tit point
 			{
 			case 1:
-				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, 100);
+				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(400);
 				break;
 
@@ -332,13 +332,13 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 9:
-				ConsoleRender::Add_String(_8, Jerry_Txt_Crd(_8), gJerClr, 100);
+				ConsoleRender::Add_String(_8, Jerry_Txt_Crd(_8), gJerClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(1000);
 				break;
 
 			case 10:
 				ConsoleRender::Add_String(_8, Jerry_Txt_Crd(_8), gJerClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9, 2), gBossClr, 100);
+				ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9, 2), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(500);
 
 				break;
@@ -346,13 +346,13 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 11:
 				ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9, 2), gBossClr, TXT_SPD_ER, true);
-				Erase_Map_Borders_1(50);	// Erase les borders
+				Erase_Map_Borders_1(TXT_SPD_DR);	// Erase les borders
 				ev_BotTutorial.Advance(700);
 				break;
 
 			case 12:
 				Ev_Dr_Arr_Keys();
-				ConsoleRender::Add_String(_10, Boss_Txt_Crd(_10), gBossClr, 100);
+				ConsoleRender::Add_String(_10, Boss_Txt_Crd(_10), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(50);
 				break;
 
@@ -537,26 +537,26 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 
 			case 34:
-				ConsoleRender::Add_String(jer_1, Jerry_Txt_Crd(jer_1), gJerClr, 200); // jerry wants feedback too :(				
+				ConsoleRender::Add_String(jer_1, Jerry_Txt_Crd(jer_1), gJerClr, TXT_SPD_DR); // jerry wants feedback too :(				
 				ev_BotTutorial.Advance(600);
 				break;
 
 			case 35:
-				ConsoleRender::Add_String(jer_2, Jerry_Txt_Crd(jer_2,1), gJerClr, 200);		
+				ConsoleRender::Add_String(jer_2, Jerry_Txt_Crd(jer_2,1), gJerClr, TXT_SPD_DR);
 				ConsoleRender::Add_String(_20, Boss_Txt_Crd(_20), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_21, Boss_Txt_Crd(_21, 1), gBossClr, TXT_SPD_ER, true);			
 				ev_BotTutorial.Advance(400);
 				break;
 
 			case 36:
-				ConsoleRender::Add_String(jer_3, Boss_Txt_Crd(jer_3), gBossClr, 200);
+				ConsoleRender::Add_String(jer_3, Boss_Txt_Crd(jer_3), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(500);
 				break;		
 			
 			case 37:
 				ConsoleRender::Add_String(jer_1, Jerry_Txt_Crd(jer_1), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(jer_2, Jerry_Txt_Crd(jer_2, 1), gJerClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(jer_4, Jerry_Txt_Crd(jer_4, 2), GRAY, 200); 		
+				ConsoleRender::Add_String(jer_4, Jerry_Txt_Crd(jer_4, 2), GRAY, TXT_SPD_DR);
 				ev_BotTutorial.Advance(300);
 				break;
 
@@ -753,7 +753,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 67:
-				ConsoleRender::Add_String(_37, Jerry_Txt_Crd(_37, 2), gJerClr, 250);
+				ConsoleRender::Add_String(_37, Jerry_Txt_Crd(_37, 2), gJerClr, TXT_SPD_DR - 2);
 				ConsoleRender::Add_String(_33, Boss_Txt_Crd(_33), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_34, Jerry_Txt_Crd(_34), gJerClr, TXT_SPD_ER, true);				
 				ConsoleRender::Add_String(_35, Boss_Txt_Crd(_35, 2), gBossClr, TXT_SPD_ER, true);
@@ -777,7 +777,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 71:
-				ConsoleRender::Add_String(_40, Jerry_Txt_Crd(_40), gJerClr, 300);
+				ConsoleRender::Add_String(_40, Jerry_Txt_Crd(_40), gJerClr, TXT_SPD_DR - 2);
 				ConsoleRender::Add_String(_36, Jerry_Txt_Crd(_36, 1), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_37, Jerry_Txt_Crd(_37, 2), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_38, Jerry_Txt_Crd(_38, 3), gJerClr, TXT_SPD_ER, true);
@@ -785,14 +785,14 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 			
 			case 72:
-				ConsoleRender::Add_String(_39, Boss_Txt_Crd(_39, 1), gBossClr, 50, true);
+				ConsoleRender::Add_String(_39, Boss_Txt_Crd(_39, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_39_1, Boss_Txt_Crd(_39_1, 2), gBossClr, 0, true);
-				ConsoleRender::Add_String(_41, Boss_Txt_Crd(_41, 2), gBossClr, 80);
+				ConsoleRender::Add_String(_41, Boss_Txt_Crd(_41, 2), gBossClr, TXT_SPD_ER);
 				ev_BotTutorial.Advance(500);
 				break;
 
 			case 73:
-				ConsoleRender::Add_String(_42, Jerry_Txt_Crd(_42, 2), gJerClr, 150);
+				ConsoleRender::Add_String(_42, Jerry_Txt_Crd(_42, 2), gJerClr, TXT_SPD_DR - 1);
 				ev_BotTutorial.Advance(400);
 				break;
 
@@ -816,7 +816,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 77:
 
-				ConsoleRender::Add_String(_44, Jerry_Txt_Crd(_44, 1), gJerClr, 150);
+				ConsoleRender::Add_String(_44, Jerry_Txt_Crd(_44, 1), gJerClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(800);
 				break;
 
@@ -827,7 +827,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 79:
 				ConsoleRender::Add_String(_44, Jerry_Txt_Crd(_44, 1), gJerClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_46, Boss_Txt_Crd(_46, 3), gBossClr, 250);
+				ConsoleRender::Add_String(_46, Boss_Txt_Crd(_46, 3), gBossClr, TXT_SPD_DR - 3);
 				ev_BotTutorial.Advance(300);
 				break;
 
@@ -882,7 +882,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				ConsoleRender::Add_String(_50, Boss_Txt_Crd(_50, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_51, Jerry_Txt_Crd(_51, 1), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_53, Boss_Txt_Crd(_53, 2), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_54, Jerry_Txt_Crd(_54, 2), gJerClr, 360);
+				ConsoleRender::Add_String(_54, Jerry_Txt_Crd(_54, 2), gJerClr, TXT_SPD_DR - 5);
 				ev_BotTutorial.Advance(500);
 				break;
 
@@ -893,7 +893,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				
 			case 90:
 				ConsoleRender::Add_String(_55_1, Boss_Txt_Crd(_55_1, 1), gBossClr, TXT_SPD_FAST);
-				ConsoleRender::Add_String(_56, Boss_Txt_Crd(_56, 2), gBossClr, 300);
+				ConsoleRender::Add_String(_56, Boss_Txt_Crd(_56, 2), gBossClr, TXT_SPD_DR - 4);
 				ev_BotTutorial.Advance(400);
 				break;
 				
@@ -903,7 +903,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				ConsoleRender::Add_String(_54, Jerry_Txt_Crd(_54, 2), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_55_1, Boss_Txt_Crd(_55_1, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_56, Boss_Txt_Crd(_56, 2), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_57, Jerry_Txt_Crd(_57), gJerClr, 300);
+				ConsoleRender::Add_String(_57, Jerry_Txt_Crd(_57), gJerClr, TXT_SPD_DR - 3);
 				ev_BotTutorial.Advance(450);
 				break;
 
@@ -916,12 +916,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 93:
 				ConsoleRender::Add_String(_57, Jerry_Txt_Crd(_57), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_58, Boss_Txt_Crd(_58), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_59, Jerry_Txt_Crd(_59, 1), gJerClr, 320);
+				ConsoleRender::Add_String(_59, Jerry_Txt_Crd(_59, 1), gJerClr, TXT_SPD_DR - 3);
 				ev_BotTutorial.Advance(350);
 				break;
 
 			case 94:
-				ConsoleRender::Add_String(_60, Jerry_Txt_Crd(_60, 2), gJerClr, 300);
+				ConsoleRender::Add_String(_60, Jerry_Txt_Crd(_60, 2), gJerClr, TXT_SPD_DR - 3);
 				ev_BotTutorial.Advance(510);
 				break;
 
@@ -931,7 +931,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 96:
-				ConsoleRender::Add_String(_62, Jerry_Txt_Crd(_62), gJerClr, 600);
+				ConsoleRender::Add_String(_62, Jerry_Txt_Crd(_62), gJerClr, TXT_SPD_DR -7);
 				ConsoleRender::Add_String(_59, Jerry_Txt_Crd(_59, 1), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_60, Jerry_Txt_Crd(_60, 2), gJerClr, TXT_SPD_ER, true);
 				ev_BotTutorial.Advance(250);
@@ -978,12 +978,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 104:
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 4), gBossClr, 400);
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 4), gBossClr, TXT_SPD_DR  / 3);
 				ev_BotTutorial.Advance(400);
 				break;
 
 			case 105:
-				ConsoleRender::Add_String(_68, Boss_Txt_Crd(_68, 5), gBossClr, 200);
+				ConsoleRender::Add_String(_68, Boss_Txt_Crd(_68, 5), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(300);
 				break;
 
@@ -1013,7 +1013,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 110:
-				ConsoleRender::Add_String(_72, { Jerry_Txt_X() - 5, Jerry_Txt_Y(3) }, gJerClr, 1000);
+				ConsoleRender::Add_String(_72, { Jerry_Txt_X() - 5, Jerry_Txt_Y(3) }, gJerClr, TXT_SPD_DR / 10);
 				ev_BotTutorial.Advance(300);
 				break;
 
@@ -1035,13 +1035,13 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 114:
 				P1.Set_Hp(3);
 				Start_Ev_Dr_Heart(3);
-				ConsoleRender::Add_String(_75, Boss_Txt_Crd(_75 + _76), gBossClr, 300);
+				ConsoleRender::Add_String(_75, Boss_Txt_Crd(_75 + _76), gBossClr, TXT_SPD_DR - 2);
 				ev_BotTutorial.Advance(350);	
 				break;
 
 			case 115:
 				Erase_All_Jerry_Txt();
-				ConsoleRender::Add_String(_76, { Boss_Txt_X() - 3, Boss_Txt_Y() }, gBossClr, 250);
+				ConsoleRender::Add_String(_76, { Boss_Txt_X() - 3, Boss_Txt_Y() }, gBossClr, TXT_SPD_DR - 1);
 				ev_BotTutorial.Advance(500);
 				break;
 
@@ -1051,12 +1051,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 117:
-				ConsoleRender::Add_String(_77, Boss_Txt_Crd(_77), gBossClr, 250);
+				ConsoleRender::Add_String(_77, Boss_Txt_Crd(_77), gBossClr, TXT_SPD_DR );
 				ev_BotTutorial.Advance(420);
 				break;
 
 			case 118:
-				ConsoleRender::Add_String(_78, Boss_Txt_Crd(_78, 2), gBossClr, 250);
+				ConsoleRender::Add_String(_78, Boss_Txt_Crd(_78, 2), gBossClr, TXT_SPD_DR);
 				//ConsoleRender::Add_String(_79, Jerry_Txt_Crd(_79), gJerClr, 350);
 				ev_BotTutorial.Advance(420);
 				break;
@@ -1065,18 +1065,18 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				ConsoleRender::Add_String(_77, Boss_Txt_Crd(_77), gBossClr, 0, true);
 				ConsoleRender::Add_String(_78, Boss_Txt_Crd(_78, 2), gBossClr, TXT_SPD_ER, true);
 				//ConsoleRender::Add_String(_79, Jerry_Txt_Crd(_79), gJerClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT), gBossClr, 700);
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT), gBossClr, TXT_SPD_DR / 4);
 				ev_BotTutorial.Advance(320);
 				break;
 
 			case 120:
 				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_80, Boss_Txt_Crd(_80, 2), gBossClr, 250);
+				ConsoleRender::Add_String(_80, Boss_Txt_Crd(_80, 2), gBossClr, TXT_SPD_ER);
 				ev_BotTutorial.Advance(400);
 				break;
 
 			case 121:
-				ConsoleRender::Add_String(_81, Boss_Txt_Crd(_81, 3), gBossClr, 250);
+				ConsoleRender::Add_String(_81, Boss_Txt_Crd(_81, 3), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(320);
 				break;
 
@@ -1087,12 +1087,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 123:
-				ConsoleRender::Add_String(_82, Boss_Txt_Crd(_82), gBossClr, 250);
+				ConsoleRender::Add_String(_82, Boss_Txt_Crd(_82), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(700);					 
 				break;
 
 			case 124:
-				ConsoleRender::Add_String(_83, Boss_Txt_Crd(_83, 1), gBossClr, 250);
+				ConsoleRender::Add_String(_83, Boss_Txt_Crd(_83, 1), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(450);
 				break;
 
@@ -1102,7 +1102,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 126:
-				ConsoleRender::Add_String(_85, Boss_Txt_Crd(_85, 4), gBossClr, 500);
+				ConsoleRender::Add_String(_85, Boss_Txt_Crd(_85, 4), gBossClr, TXT_SPD_DR / 2);
 				ev_BotTutorial.Advance(390);
 				break;
 			
@@ -1115,7 +1115,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 128:
-				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, 50);
+				ConsoleRender::Add_String(_86, Boss_Txt_Crd(_86, 3), gBossClr, TXT_SPD_ER);
 				ev_BotTutorial.Advance(700);
 				break;
 
@@ -1130,7 +1130,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 131:
-				ConsoleRender::Add_String(jer_6, Jerry_Txt_Crd(jer_6, 2), gJerClr, 140);
+				ConsoleRender::Add_String(jer_6, Jerry_Txt_Crd(jer_6, 2), gJerClr, TXT_SPD_DR + 2);
 				ev_BotTutorial.Advance(250);
 				break;
 
@@ -1306,12 +1306,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 			
 			case 143:
-				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), gJerClr, 200);
+				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), gJerClr, TXT_SPD_DR -3);
 				ev_BotTutorial.Advance(400);
 				break;
 
 			case 144:
-				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, 120);
+				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, TXT_SPD_DR / 2);
 				ev_BotTutorial.Advance(150);
 				break;
 

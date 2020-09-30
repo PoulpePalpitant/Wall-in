@@ -300,23 +300,23 @@ void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de mu
 
 				break;
 			case 4:
-				ConsoleRender::Add_String(goal, { Up_Txt_1(goal)}, BRIGHT_WHITE, 300);
+				ConsoleRender::Add_String(goal, { Up_Txt_1(goal)}, BRIGHT_WHITE, TXT_SPD_DR);
 				ev_BuildLabyrinth.Advance(400);
 				break;
 
 			case 5:
 				//ConsoleRender::Add_String(moral, { Find_Ctr_String_X(moral) + 3,gConHeight / 2}, LIGHT_GREEN);
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, { Up_Txt_3(TXT_CONST.DOTDOTDOT)}, BRIGHT_WHITE, 750);
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, { Up_Txt_3(TXT_CONST.DOTDOTDOT)}, BRIGHT_WHITE, TXT_SPD_DR / 4);
 				ev_BuildLabyrinth.Advance(300);
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(nxt, { Find_Ctr_Grid(nxt), gConHeight / 2 - 5 }, LIGHT_GREEN, 450);
+				ConsoleRender::Add_String(nxt, { Find_Ctr_Grid(nxt), gConHeight / 2 - 5 }, LIGHT_GREEN, TXT_SPD_DR / 3);
 				ev_BuildLabyrinth.Advance(400);
 				break;	
 			
 			case 7:
-				ConsoleRender::Add_String(doing, { Find_Ctr_Grid(doing), gConHeight / 2 - 3 }, LIGHT_GREEN, 300);
+				ConsoleRender::Add_String(doing, { Find_Ctr_Grid(doing), gConHeight / 2 - 3 }, LIGHT_GREEN, TXT_SPD_DR / 2);
 				ev_BuildLabyrinth.Advance(250);
 				break;
 

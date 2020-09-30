@@ -162,7 +162,7 @@ void Ev_MultiColor_Warnings() // voici un event custom
 	if (!ev_MultiColorWarnings.Is_Active())
 	{
 		ev_MultiColorWarnings.Activate();
-		ev_MultiColorWarnings.Start(2000, 5);
+		ev_MultiColorWarnings.Start(2000, 4);
 	}
 	else
 		while (ev_MultiColorWarnings.delay.Tick())
@@ -195,12 +195,12 @@ void Ev_MultiColor_Warnings() // voici un event custom
 				ev_MultiColorWarnings.Advance(2000); break;	// all the colors
 
 			case 2:
-				Ev_Speeding_Up();
 				WarningDrawerList::Add(false, WHITE);
-				ev_MultiColorWarnings.Advance(500); break;	// all the colors
+				ev_MultiColorWarnings.Advance(5000); break;	// all the colors
 				break;
 
 			case 3:
+				Ev_Speeding_Up();
 				WarningDrawerList::Add(false, WHITE);
 				ev_MultiColorWarnings.Cancel();
 				break;

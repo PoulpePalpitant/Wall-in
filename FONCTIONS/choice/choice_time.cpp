@@ -48,7 +48,7 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 	 // Affiche le nom au dessus du point sur le grid
 	 XY.y -= 4;	// quatres cases plus haut
 	 XY.x = XY.x - ((int)choiceList[index].name.size() / 2);	// nom centré
-	 ConsoleRender::Add_String(choiceList[index].name, XY, clr, 25); // affiche le nomd
+	 ConsoleRender::Add_String(choiceList[index].name, XY, clr, TXT_SPD_FAST); // affiche le nomd
 
 	 if (choiceList[index].subname != TXT_CONST.EMPTY)
 	 {
@@ -74,7 +74,7 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 	 // efface
 	 XY.y -= 4;	// quatres cases plus haut
 	 XY.x = XY.x - (int)choiceList[index].name.size() / 2;	// nom centré
-	 ConsoleRender::Add_String(choiceList[index].name, XY, WHITE, 50, true); // affiche le nom
+	 ConsoleRender::Add_String(choiceList[index].name, XY, WHITE, TXT_SPD_ER, true); // affiche le nom
  
 	 // efface
 	 if (choiceList[index].subname != TXT_CONST.EMPTY) 
@@ -82,7 +82,7 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
 		 XY = linkGrid->link[crd.c][crd.r].Get_XY();	// XY
 		 XY.y -= 2;	// 2 cases plus bas
 		 XY.x = XY.x - (int)choiceList[index].subname.size() / 2;	// nom centré
-		 ConsoleRender::Add_String(choiceList[index].subname, XY, WHITE, 50, true); // affiche le subname
+		 ConsoleRender::Add_String(choiceList[index].subname, XY, WHITE, TXT_SPD_ER, true); // affiche le subname
 	 }
  }
 

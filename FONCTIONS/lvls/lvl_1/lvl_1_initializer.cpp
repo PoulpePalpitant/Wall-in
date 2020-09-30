@@ -26,10 +26,10 @@ void Lvl_1_Initializer()
 		//gSkipStory = false;
 		
 		// Pour un normal quick start
-		gCurrentStage = 3; // super fast
+		gCurrentStage = 3; 
 
 
-		//gCurrentStage = 2;	// Skip tout les tutorials
+		//gCurrentStage = 1;	// Skip tout les tutorials
 		//Ev_Bot_Tutorial();	// start tuto avec jerry
 		//gSkipStory = false;
 		
