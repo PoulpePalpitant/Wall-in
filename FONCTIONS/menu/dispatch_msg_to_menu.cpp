@@ -36,7 +36,7 @@ void Dispatch_Msg_To_Menu()
 		{
 			Ev_Dr_Choose_Lvl();
 			/* test de créatio de coeurs*/
-			Ev_Test_Affichage();
+			//Ev_Test_Affichage();
 			//Start_Ev_Dr_Heart(3);
 			//Fill_Heart_Randomly(true);
 			//Fill_Outisde_Heart(false);

@@ -26,12 +26,12 @@ void Lvl_1_Initializer()
 		//gSkipStory = false;
 		
 		// Pour un normal quick start
-		//gCurrentStage = 3; 
+		gCurrentStage = 3; 
 
 
-		gCurrentStage = 1;	// Skip tout les tutorials
-		Ev_Bot_Tutorial();	// start tuto avec jerry
-		gSkipStory = false;
+		//gCurrentStage = 1;	// Skip tout les tutorials
+		//Ev_Bot_Tutorial();	// start tuto avec jerry
+		//gSkipStory = false;
 		
 		
 		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 

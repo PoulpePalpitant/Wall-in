@@ -82,7 +82,7 @@ void Ev_Er_Game_Title()
 				ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     II::::::II                ", { x,y }, WHITE, 200 * 2 - 30, true);y++;
 				ConsoleRender::Add_String(" W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa     l::::l  l::::l       I::::Innnn  nnnnnnnn    ", { x,y }, WHITE, 100 * 2 - 30, true);y++;
 				ConsoleRender::Add_String("  W:::::W         W:::::W         W:::::W a::::::::::::a    l::::l  l::::l       I::::In:::nn::::::::nn  ", { x,y }, WHITE, 170 * 2 - 30, true);y++;
-				ConsoleRender::Add_String("   W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a   l::::l  l::::l       I::::In::::::::::::::nn ", { x,y }, WHITE,  50 * 2 - 30, true);y++;
+				ConsoleRender::Add_String("   W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a   l::::l  l::::l       I::::In::::::::::::::nn ", { x,y }, WHITE,  75 * 2 - 30, true);y++;
 				ConsoleRender::Add_String("    W:::::W     W:::::::::W     W:::::W            a::::a   l::::l  l::::l       I::::Inn:::::::::::::::n", { x,y }, WHITE,  80 * 2 - 30, true);y++;
 				ConsoleRender::Add_String("     W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a   l::::l  l::::l       I::::I  n:::::nnnn:::::n", { x,y }, WHITE, 150 * 2 - 30, true);y++;
 				ConsoleRender::Add_String("      W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a   l::::l  l::::l       I::::I  n::::n    n::::n", { x,y }, WHITE,  80 * 2 - 30, true);y++;

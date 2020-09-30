@@ -13,7 +13,7 @@ static Coord crd;	// random crd
 static std::string faster = "- SPAWN SPEED IS INCREASING -";	
 static std::string faster_2 = "- TOOLS SPAWN SPEED IS INCREASING -";	
 static std::string* increase = &faster;	// le titre sélectionné
-static Colors clr;	// Couleur sélectionné
+static Colors clr = LIGHT_RED;	// Couleur sélectionné
 static bool Dr_Er;	// draw or erase
 static const int GAP_GRID = 12;	// distance entre texte et grid sur les côtés
 
@@ -40,7 +40,7 @@ void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 		crd = { ((Find_Ctr_X((int)std::size(*increase))) / 2) - 20, (gConHeight / 2) };
 		
 		ev_SpeedingUp.Activate();
-		ev_SpeedingUp.Start(2000, 15);
+		ev_SpeedingUp.Start(1000, 13);
 	}
 	else
 	{
@@ -52,8 +52,8 @@ void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 				Dr_Er = true;
 
 			//ConsoleRender::Add_String(*increase, { Up_Txt_1(*increase).x,  Up_Txt_1(*increase).y - 1 }, clr, 0, Dr_Er);	// fais clignoter ce titre
-			ConsoleRender::Add_String(*increase , { map.Get_Box_Limit(LEFT) - (int)(*increase).size() + GAP_GRID, gConHeight / 2/*(map.Get_Box_Limit(DOWN) - map.Get_Box_Limit(UP)) / 2 */}, clr, 0, Dr_Er);	// fais clignoter ce titre
-			ConsoleRender::Add_String(*increase, { map.Get_Box_Limit(RIGHT) + (int)(*increase).size() - GAP_GRID, gConHeight / 2/*(map.Get_Box_Limit(DOWN) - map.Get_Box_Limit(UP)) / 2 */ }, clr, 0, Dr_Er);	// fais clignoter ce titre
+			ConsoleRender::Add_String(*increase , { map.Get_Box_Limit(LEFT) - (int)(*increase).size() - GAP_GRID,/* gConHeight / 2*/(map.Get_Box_Limit(DOWN)) / 2 }, clr, 0, Dr_Er);	// fais clignoter ce titre
+			ConsoleRender::Add_String(*increase, { map.Get_Box_Limit(RIGHT) + (int)(*increase).size() - GAP_GRID, (map.Get_Box_Limit(DOWN) ) / 2  }, clr, 0, Dr_Er);	// fais clignoter ce titre
 			
 		}
 	}
