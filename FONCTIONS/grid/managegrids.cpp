@@ -4,6 +4,7 @@
 #include "../events/msg_dispatcher.h"
 #include "../console/sweet_cmd_console.h"
 #include "../structure_manager/modify_chain.h"
+#include "../events/global_events/ev_resize_from_grids.h"
 
 // Génère les Grids pour la première fois
 void Create_All_Grids(AllGrids& grid, int col, int row)
@@ -76,6 +77,7 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 	else
 		Create_All_Grids(grid, col, row);
 
-	MsgQueue::Register(GRIDS_RESIZED);
+	Ev_Resize_From_Grids();
+	//MsgQueue::Register(GRIDS_RESIZED);
 	return true;
 }

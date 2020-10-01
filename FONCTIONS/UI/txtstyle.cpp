@@ -15,7 +15,7 @@ Colors gBossClr = LIGHT_RED;
 Colors gJerClr = LIGHT_AQUA;
 
 const unsigned short TXT_SPD_DR = 10; // vitesse de défilement du texte par défaut
-const unsigned short TXT_SPD_FAST = 20; // vitesse d'affichage
+const unsigned short TXT_SPD_FAST = 20 ; // vitesse d'affichage
 const unsigned short TXT_SPD_ER = 15; // vitesse d'éffacement du texte par défaut
 
 // Changer la couleur

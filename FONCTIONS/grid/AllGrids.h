@@ -50,3 +50,74 @@ extern WallGrid *const wallGridVer;
 extern WallGrid *const wallGridHor;		
 extern SpawnGrid* const spawnGrid;
 
+
+// test the all grids
+////------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//char UI; int maxC, maxR;
+
+//// AFFICHE TOUS LES GRIDS 
+//maxC = gGrids.linkGrd.Get_Cols();
+//maxR = gGrids.linkGrd.Get_Rows();
+//UI = LinkSym::PARENT;
+
+//for (int i = 0; i < maxC; i++)	// Affiche Le Link grid
+//{
+//	for (int j = 0; j < maxR; j++)
+//	{
+//		crd = gGrids.linkGrd.link[i][j].Get_XY(); gotoxy(crd.x, crd.y); cout << UI;
+//	}
+//}
+
+//maxC = gGrids.wallGrdHor.Get_Cols();
+//maxR = gGrids.wallGrdVer.Get_Cols();
+
+//for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
+//{
+//	for (int j = 0; j < maxR; j++)
+//	{
+//		UI = gGrids.wallGrdHor.wall[i][j].Get_Sym();crd = gGrids.wallGrdHor.wall[i][j].Get_XY();
+
+//		UI_Dsp_Char(crd, UI, (Colors)j);
+
+
+//	}
+//}
+
+//maxC = gGrids.wallGrdVer.Get_Cols();
+//maxR = gGrids.wallGrdVer.Get_Rows();
+
+//for (int i = 0; i < maxC; i++)	// Affiche le wall Grid
+//{
+//	for (int j = 0; j < maxR; j++)
+//	{
+//		UI = gGrids.wallGrdVer.wall[i][j].Get_Sym();crd = gGrids.wallGrdVer.wall[i][j].Get_XY();	UI_Dsp_Char(crd, UI, (Colors)i);
+
+//	}
+//}
+
+//for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+//{
+//	for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+//	{
+//		//spawnGrid->border[i].spawn[j]->GetSpawnXY(crd); 
+//		crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+//		ConsoleRender::Add_String(std::to_string(j),crd,(Colors)j);
+
+
+//	}
+//}
+
+//Coord XYCOLOR = { 0,0 };
+//for (int i = 0; i < 500; i++)
+//{
+//	Change_Color(i);
+//	XYCOLOR.x++;
+
+//	cout << i;
+
+//	if (XYCOLOR.x == 20)
+//	{
+//		XYCOLOR.x = 0;
+//		XYCOLOR.y++;
+//	}
+//}

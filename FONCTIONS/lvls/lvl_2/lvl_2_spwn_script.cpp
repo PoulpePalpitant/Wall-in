@@ -5,6 +5,7 @@
 #include "../../grid/managegrids.h"
 #include "../../spawns/bots_to_spawn.h"
 #include "../../events/msg_dispatcher.h"
+#include "../lvl_script.h"
 
 //some events Shhh...
 #include "../../items/item_spawner.h"
@@ -40,7 +41,7 @@ void Lvl_2_Spwn_Script()
 		switch (numSpawnWaves)
 		{
 		case 1: 
-			gNumSpawnTOT = 0; Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3); skip = 6; break; // Erase la border juste si le joueur est pas en mode quickstartS
+			gNumSpawnTOT = 0; Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3); skip = 3; break; // Erase la border juste si le joueur est pas en mode quickstartS
 		case 2:	gBoxSide = DOWN; break;
 		case 3: gBoxSide = DOWN;
 			MsgQueue::Register(ENABLE_ITEM_SPAWN);	// Start les spawns là
@@ -64,6 +65,7 @@ void Lvl_2_Spwn_Script()
 		case 20:				
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
 			gNumSpawnTOT = 0;skip = 5;
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			break;//BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 			
@@ -91,14 +93,14 @@ void Lvl_2_Spwn_Script()
 		case 39:Add(2);Set_Interval(RIGHT, 5, 9); break;
 		case 40: 
 
+			gNumSpawnTOT = 0;skip = 8;
 			Set_Event_String(1);	
 			Ev_MultiColor_Warnings();// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNINGbreak;
 			gSpwBotTimer.Start_Timer(SPW_BOT_SPD_LVL2 + 150, 1, true);	// speed is inscreased!!!
 			ItemSpawner::Add_To_Pool(ItemType::BUFFER, BUFFER_SPEED_LVL2 + 15, 4);
 			ItemSpawner::Add_To_Pool(ItemType::BLOCKER, BLOCKER_SPEED_LVL2 + 150, 3);	// woah :O
-
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
-			gNumSpawnTOT = 0;skip = 8;
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 		case 41: break;
@@ -136,6 +138,7 @@ void Lvl_2_Spwn_Script()
 
 			gNumSpawnTOT = 0;
 			skip = 7;
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 		case 68:break;
@@ -153,22 +156,17 @@ void Lvl_2_Spwn_Script()
 		case 80:  
 
 			// FINAL PUSH	
-
-			//for (int c = 0; c < linkGrid->Get_Cols(); c++)	// Soit ça, ou un gros X en plein milieu
-			//{
-			//	ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,4 }, false);
-			//	ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,10 }, false);
-			//}
-
-						// Remplie la console au complet de blockers :O
+			// Remplie la console au complet de blockers :O		
 			for (int c = 0; c < MAX_ITEMS; c++)
-			{
 				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 0,0 });
-			}
 			// Remplie la console au complet de blockers :O
-			gNumSpawnTOT = 0; MsgQueue::Register(FINAL_PUSH);
+
+			gNumSpawnTOT = 0; 
+			skip = 7;	
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			gSpwBotTimer.Start_Timer(500, 1, true);
-			skip = 7;	break;
+			MsgQueue::Register(FINAL_PUSH);
+			break;
 		
 			// Start les quad spawns!!
 		case 81:gVerticalBorder = true; Add(3); break;

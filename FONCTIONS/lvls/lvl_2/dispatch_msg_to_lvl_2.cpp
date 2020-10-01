@@ -7,6 +7,7 @@
 #include "../lvl_script.h"
 #include "../../structure_manager/structure_manager.h"
 #include "../../bots/botlist.h"
+#include "../../time/spawn_cycle.h"
 
 /* Level  events !*/
 #include "../../events/global_events/ev_update_heart.h"
@@ -67,13 +68,23 @@ void Dispatch_Msg_To_Lvl_2()
 				/*safety*/
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 				botList.Destroy_All_Bots();
-
 				P1.Set_Position({ 6,6 });
-				P1.Er_Player();
-				MsgQueue::Register(SPAWN_PLAYER);
-				Just_Dr_Map_Borders();
-				Just_Dr_Heart();
-				Ev_Progress_Bar();
+
+				if (gCurrentCheckPoints[gCurrentLevel + 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
+				{
+					P1.Er_Player();
+					Just_Dr_Map_Borders();
+					Ev_Progress_Bar();
+					MsgQueue::Register(SPAWN_PLAYER);
+				}
+				else
+				{
+					Ev_Progress_Bar();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
+					P1.Dr_Player();
+					MsgQueue::Register(FREE_PLAYER);
+				}
+
+				Ev_Dr_Heart();
 			}
 
 			// Il va y avoir quelques items sur la map déjà :)
@@ -95,6 +106,12 @@ void Dispatch_Msg_To_Lvl_2()
 			break;
 		}
 
+		break;
+
+	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
+		MsgQueue::Register(PLS_INTIALIZE_LVL);
+		clrscr();
+		gSpawnCycleTot = gCurrentCheckPoints[gCurrentLevel + 1] + 1;
 		break;
 
 	case PROCEED: 

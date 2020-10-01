@@ -13,6 +13,18 @@
  AnimationQueue* ConsoleRender::animationQueue;		// Permet d'ajouter des éléments dans la même queue d'animation
  bool ConsoleRender::addToNewQueue;			// Détermine quelle queue utiliser pour ajouter des charactères à render			
 
+ static int animationDelay = 0;
+ int gPlyerTimeoutDelay = 0;
+
+ void  ConsoleRender::Set_Animation_Delay()
+ {
+	 gPlyerTimeoutDelay = 4700;
+	 animationDelay = 18000;
+ }
+
+
+
+
  // Ajoute une nouvelle queue d'animation
 void ConsoleRender::Create_Animation_Queue(float speed, bool linear)
 {
@@ -33,7 +45,7 @@ void ConsoleRender::Create_Animation_Queue(float speed, bool linear)
 		last = last->nxtQueue = new AnimationQueue();	// Nouvelle queue
 
 	last->timer = new SpeedTimer(false); // dumb fix pour éviter d'utiliser le constructor qui assigne un id
-	last->timer->Start_Timer((int)speed, 1, true);	 // Set la vitesse du countdown	32###we1
+	last->timer->Start_Timer((int)speed, 1, true, animationDelay);	 // Set la vitesse du countdown	32###we1
 
 	
 	animationQueue = last;

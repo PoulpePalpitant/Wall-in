@@ -7,8 +7,8 @@
 #include "../../lvls/lvl_script.h"
 
 
-static std::string proceed[4] = { "Press 'Enter' to Continue", "Press 'Enter' to Start Level", "Press 'Enter' to Retry","Press 'Enter' To Proceed To The Next Step " };
-static std::string refresh[] = { "Press 'R' To Refresh Stage" };
+static std::string proceed[4] = { "Press 'Enter' to Continue", "Press 'Enter' to Start Level", "Press 'Enter' to Start Over","Press 'Enter' To Proceed To The Next Step " };
+static std::string refresh[] = { "Press 'R' To Refresh Stage", "Press 'R' To Retry From CheckPoint" };
 
 void Press_X_To_Proceed(int action, bool cancel)	// Active ou désactive le proceed time
 {

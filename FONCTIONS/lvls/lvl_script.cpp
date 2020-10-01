@@ -5,14 +5,26 @@
 #include "../menu/menu_script.h"
 #include "lvl_1/lvl_1_spwn_script.h"
 #include "lvl_2/lvl_2_spwn_script.h"
-
 #include "lvl_1/sub_lvl_1_script.h"
 
-short gCurrentLevel = 0;	// Le niveau actuel!!1
-short gCurrentStage = 0;	// Chaque niveau peut avoir plusieurs stages
+
+
+extern const int NB_LVLS = 2;
+
+const int LVL1_CHECKPOINT[] = { 30, 49, 67, 100 };
+const int LVL2_CHECKPOINT[] = { 20, 40, 67,  80 };
+const int LVL3_CHECKPOINT[] = { 0 };
+const int LVL4_CHECKPOINT[] = { 0 };
+const int LVL5_CHECKPOINT[] = { 0 };
+
+short gCurrentLevel = 0;		// Le niveau actuel!!1
+short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
+short gCurrentCheckPoints[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveaus
+
 bool gDayStarted = false;
 bool gSkipStory = false;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
 bool gRefreshStage = false;		// Refresh un stage
+bool gRetryCheckpoint = false;		// Restart le niveau à partir d'un checkpoint
 
 void Peek_Lvl_Script()
 {

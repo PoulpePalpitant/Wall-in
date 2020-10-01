@@ -123,7 +123,7 @@ void Update_Player_Action()
 				else
 				{
 					Blast_Disabled_While_CD();		// Check si c'est à cause de ça
-					P1.Set_Timeout(300);			// Freeze le joueur pour une durée de temps 
+					P1.Set_Timeout(300 + gPlyerTimeoutDelay);			// Freeze le joueur pour une durée de temps 
 					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		// Really dumb shit
 				}
 					

@@ -5,7 +5,7 @@
 
 // DEVRAIT ÊTRE UN EVENT
 
-
+// int dumb debug delay : 300 : à 5000
 void UI_Invalide_Action()
 {
 	Coord crd = P1.Get_XY();	// Position XY , // unstatic 
@@ -14,6 +14,6 @@ void UI_Invalide_Action()
 	ConsoleRender::Add_Char(crd, sym, LIGHT_PURPLE);		// Premier affichage est tjrs instantanné!	// Le player va flash pendant une fraction de seconde pour montrer qu'il ne peut se déplacer
 	
 	// Faudrait time_out le joueur un ti peu pour lui montrer qui peut pas se déplacer là
-	P1.Set_Timeout(300);
+	P1.Set_Timeout(300 + gPlyerTimeoutDelay);
 	
 }

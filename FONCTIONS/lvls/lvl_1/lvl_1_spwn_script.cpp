@@ -5,6 +5,7 @@
 #include "../../spawns/bots_to_spawn.h"
 #include "../../events/msg_dispatcher.h"
 #include "lvl_1_spwn_script.h"
+#include "../lvl_script.h"
 
 //some events Shhh...
 #include "../../items/item_spawner.h"
@@ -48,7 +49,7 @@ void Lvl_1_Spwn_Script()
 		switch (numSpawnWaves)
 		{
 		
-		case 1: Erase_Map_Borders_1(TXT_SPD_DR * 2);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
+		case 1: Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
 		case 2:Add_Specific(RIGHT, 7); /*MsgQueue::Register(START_BOT_SPAWNS); */break;
 		case 3:Add_Specific(RIGHT, 5); break;// Dessine un pattern de départ
 		case 4:Add_Specific(RIGHT, 9);break;
@@ -80,9 +81,12 @@ void Lvl_1_Spwn_Script()
 		case 28:Add(1); gBoxSide = RIGHT; break;
 		case 29: gNumSpawnTOT = 0; skip = 1;break;
 		case 30: gNumSpawnTOT = 0;skip = 6;
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
+				// Le checkpoint que le joueur à réussie à reach durant le niveau
+
 			Ev_MultiColor_Warnings();	// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 			gSpwBotTimer.Start_Timer(800, 1, true);	// speed is inscreased!!!
-			break;//BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
+			break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 
 		case 31:Add(1); Set_Interval(RIGHT,5,6);break;
 		case 32:Add(1); Set_Interval(RIGHT,5,6);break;
@@ -104,8 +108,9 @@ void Lvl_1_Spwn_Script()
 		case 47: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 5, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
 		case 48: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 6, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
 		case 49: gNumSpawnTOT = 0;skip = 8;
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 1,1 }); // Spawn de la vie ici?
-			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
+			break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 
 			// Random spawns
 		case 50:Add(1);break;
@@ -125,10 +130,10 @@ void Lvl_1_Spwn_Script()
 		case 64:Add(5);break;
 		case 65:Add(1);break;
 		case 66:Add(1);break;
-		case 67:gNumSpawnTOT = 0;
-			skip = 7;
+		case 67:gNumSpawnTOT = 0;skip = 7;
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			gSpwBotTimer.Start_Timer(900, 1, true);	// speed is inscreased!!!	sSShhhhh
-			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
+			break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 		
 			// Start les quad spawns!!
 		case 80: Set_Interval(LEFT, 4,6);Add(3); break;
@@ -152,11 +157,13 @@ void Lvl_1_Spwn_Script()
 		case 99: Add(2); break;
 
 			// FINAL PUSH	
-
 		case 100: 
-			gNumSpawnTOT = 0; MsgQueue::Register(FINAL_PUSH); 
+			gNumSpawnTOT = 0; 	skip = 7;
 			gSpwBotTimer.Start_Timer(500, 1, true);	
-			skip = 7;	break;
+			gCurrentCheckPoints[gCurrentLevel + 1]++;
+			MsgQueue::Register(FINAL_PUSH); 			
+			break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
+
 		case 101: skip = 3; break;
 		case 102:break;
 		case 103:break;

@@ -6,6 +6,8 @@
 #include "../../time/movement_timer.h"
 #include "../../events/global_events/clear_all_states.h"
 
+extern int gPlyerTimeoutDelay ;
+
 struct OutputData {
 
 	Coord crd;		// position
@@ -32,9 +34,10 @@ struct AnimationQueue {
 	}
 };
 
-
-// combine : sym,et clr ensemble si ça te tente
-
+/*
+OPTIMISATION:
+	Ultimement, l'animation queue devrait plutôt être convertit en 1 event qui gère des drawer queues! Ça règlerais le problème de framerate sur tout les affichages de string
+*/
 
 class ConsoleRender
 {
@@ -51,6 +54,7 @@ class ConsoleRender
 	static void Render_Animation_Queue();				// Affiche tout les élément qui doivent l'être selon les timer
 	static void Empty_All(); // dangerous stuff here
 public:
+	static void Set_Animation_Delay();					// Ceci est un fix bâtard et rapide pour conserver des méthodes désuettes. Ça ralentie les animations legacy en mode release.
 	static void Add_String(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0, bool erase = false);
 	static void Add_Char(Coord crd, unsigned char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render
 	static void Create_Animation_Queue(float speed, bool linear = true);			// Créer une nouvelle Queue, tout les char suivant seront ajouté à celle-ci

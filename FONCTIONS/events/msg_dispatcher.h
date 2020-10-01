@@ -39,6 +39,7 @@ enum MsgType
 	, DEFEAT
 	, PRESS_X_TO_PROCEED
 	, PROCEED
+	, LOAD_CHECKPOINT
 	, RETURN_TO_MENU
 
 	/* UI stuff */

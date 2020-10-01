@@ -51,3 +51,5 @@ public:
 };
 
 
+//GameClock LvlClock;
+//LvlClock.clockName = "Swag Clock";crd = { 0,1 };LvlClock.Dsp_Name(crd);
