@@ -25,6 +25,37 @@ static int spw;
 static int warnings = 109;/*112*/ // le - 8 c'est parce que ça pars moins vite somehow quand je debug pas
 const int totalSpw = 72;
 
+
+/*
+
+
+ TES RENDU À CRÉER UN NOUVEAU SCRIPT POUR TESTER LES CHECKPOINTS
+
+
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 bool Ultimate_Test_Time()
 {
 	return ev_UltimateTest.Is_Active();

@@ -62,7 +62,7 @@ void main()	// Le début!
 	// Initialisation du jeu
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Initialize_Game();						// Initialize une bunch de crap
-	ConsoleRender::Set_Animation_Delay();	// Comment en mode debug: Ceci rajoute du delay sur la méthode qui render l'animation queue
+	//ConsoleRender::Set_Animation_Delay();	// Comment en mode debug: Ceci rajoute du delay sur la méthode qui render l'animation queue
 
 
 	// UI TESTING

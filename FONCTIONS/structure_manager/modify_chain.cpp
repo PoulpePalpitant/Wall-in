@@ -326,15 +326,10 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 
 	// Enlève ceci si ça marche pas!
 	ListsOfChainToModify::Remove_All(); // empty list of chain to modify/delete
-	DrawWalls::Remove_All();			// cause des crash 
-	//DrawWalls::Finish_All();
+	DrawWalls::Finish_All();
+	DrawWalls::Remove_All();			 
 
 	annihilating = true;	// empêche la désactivation des links d'envoyer un msg à chaque fois que tu désactive un link
-	 //V2 - Hard way
-
-
-
-
 
 	col = linkGrid->Get_Cols();
 	row = linkGrid->Get_Rows();

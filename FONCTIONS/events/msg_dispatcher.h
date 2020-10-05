@@ -40,6 +40,7 @@ enum MsgType
 	, PRESS_X_TO_PROCEED
 	, PROCEED
 	, LOAD_CHECKPOINT
+	, CHECKPOINT_REACHED
 	, RETURN_TO_MENU
 
 	/* UI stuff */
@@ -80,6 +81,7 @@ enum MsgType
 	/* Ennemy Stuff*/
 	, ENNEMY_KILLED
 	, ENNEMY_SPWN
+	, NO_BOTS_ALIVE
 	, JERRY_DIED
 	, SPECIAL_SPAWN
 	, STOP_BOT_SPAWNS	// n'update plus les spawn

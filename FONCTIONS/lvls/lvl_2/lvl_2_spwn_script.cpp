@@ -8,6 +8,7 @@
 #include "../lvl_script.h"
 
 //some events Shhh...
+#include "../../events/global_events/ev_wait_last_bot.h"
 #include "../../items/item_spawner.h"
 #include "../../events/global_events/ev_warning.h"
 #include "../../events/global_events/feedback/ev_draw_map.h"
@@ -65,7 +66,7 @@ void Lvl_2_Spwn_Script()
 		case 20:				
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
 			gNumSpawnTOT = 0;skip = 5;
-			gCurrentCheckPoints[gCurrentLevel + 1]++;
+			MsgQueue::Register(CHECKPOINT_REACHED);
 			break;//BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 			
@@ -99,7 +100,8 @@ void Lvl_2_Spwn_Script()
 			gSpwBotTimer.Start_Timer(SPW_BOT_SPD_LVL2 + 150, 1, true);	// speed is inscreased!!!
 			ItemSpawner::Add_To_Pool(ItemType::BUFFER, BUFFER_SPEED_LVL2 + 15, 4);
 			ItemSpawner::Add_To_Pool(ItemType::BLOCKER, BLOCKER_SPEED_LVL2 + 150, 3);	// woah :O
-			gCurrentCheckPoints[gCurrentLevel + 1]++;
+			MsgQueue::Register(CHECKPOINT_REACHED);
+
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
@@ -138,7 +140,7 @@ void Lvl_2_Spwn_Script()
 
 			gNumSpawnTOT = 0;
 			skip = 7;
-			gCurrentCheckPoints[gCurrentLevel + 1]++;
+			MsgQueue::Register(CHECKPOINT_REACHED);
 			break; //BREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHERBREAKHERERHERHERHEHREHRHERHEHRHER
 
 		case 68:break;
@@ -166,6 +168,8 @@ void Lvl_2_Spwn_Script()
 			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			gSpwBotTimer.Start_Timer(500, 1, true);
 			MsgQueue::Register(FINAL_PUSH);
+			MsgQueue::Register(CHECKPOINT_REACHED);
+
 			break;
 		
 			// Start les quad spawns!!
@@ -191,7 +195,8 @@ void Lvl_2_Spwn_Script()
 
 		case 100: 		
 			MsgQueue::Register(STOP_BOT_SPAWNS);
-			MsgQueue::Register(WAIT_LAST_BOT); break;
+			Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
+			break;
 
 		//case 101: skip = 3; break;
 		//case 102:break;

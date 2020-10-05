@@ -22,6 +22,7 @@
 #include "../choice/choice_time.h"
 #include "../events/global_events/ev_countdown.h"
 #include "../console/sweet_cmd_console.h"
+#include "../events/global_events/ev_to_proceed.h"
 
 
 extern bool gPauseUpdates = false;		// le state du jeu
@@ -70,6 +71,11 @@ void Update_Player_Action()
 				gPauseUpdates = true;
 				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			// Besoin d'un max screen size
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			// Besoin d'un max screen size
+				if (gDayStarted)
+				{
+					Press_R_To_Retry_On_Pause(1);
+					gRetryCheckpoint = true;
+				}
 				break;
 
 			case CHANGE_BLAST:
@@ -142,7 +148,11 @@ void Update_Player_Action()
 				gPauseUpdates = false;
 				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			// Besoin d'un max screen size / DONE
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);		// 
-
+				if (gDayStarted)
+				{
+					Press_R_To_Retry_On_Pause(1, true);
+					gRetryCheckpoint = true;
+				}
 			}
 	}
 	// Faut reset l'action

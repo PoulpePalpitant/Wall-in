@@ -27,6 +27,8 @@
 #include "global_events/ev_victory_screen.h"
 #include "global_events/ev_defeat_screen.h"
 #include "global_events/ev_back_to_menu.h"
+#include "global_events/ev_checkpoint.h"
+
 
 // other necessities
 #include "../time/cycles.h"
@@ -113,6 +115,9 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		Go_Back_To_Menu();
 		break;
 
+	case CHECKPOINT_REACHED:
+		Ev_Reach_Checkpoint();
+		break;
 
 	case FINAL_PUSH: 
 		Ev_Final_Push(); // Msg que la dernière attaque s'en vient
@@ -127,9 +132,14 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case WAIT_LAST_BOT:
-		Ev_Wait_For_Last_Bot();
+		//Ev_Wait_For_Bot_Deaths();		
 		break;
 	
+	case NO_BOTS_ALIVE:
+		//if(gDayStarted)
+			//Ev_Reach_Checkpoint();
+		break;
+
 	case VICTORY:
 		Ev_Victory_Screen();
 		break;	

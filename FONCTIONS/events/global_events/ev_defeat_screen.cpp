@@ -76,6 +76,7 @@ void Ev_Defeat_Screen()				 // Affiche un écran punitif
 				gSkipStory = true;	// we go fast				
 				Press_X_To_Proceed(2);	// press x to retry
 				Press_R_To_Refresh(1);	// press x to retry
+				gRetryCheckpoint = true;
 				ev_DefeatScreen.Advance(1000);
 				break;
 
