@@ -111,13 +111,14 @@ void Dispatch_Msg_To_Lvl_2()
 	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		clrscr();
-		gSpawnCycleTot = gCurrentCheckPoints[gCurrentLevel + 1] + 1;
+		gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
 		break;
 
 	case PROCEED: 
 		if (gCurrentStage == 7)	// Le stage ou à lieu le main game
 		{
-			MsgQueue::Register(PLS_INTIALIZE_LVL);	
+			gCurrentCheckPoints[gCurrentLevel - 1] = 0;	// Restart le checkpoint
+			MsgQueue::Register(PLS_INTIALIZE_LVL);
 			clrscr();
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!

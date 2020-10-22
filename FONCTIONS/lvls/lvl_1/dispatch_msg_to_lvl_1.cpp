@@ -70,7 +70,7 @@ void Dispatch_Msg_To_Lvl_1()
 
 				P1.Set_Position({ 6,6 });
 
-				if (gCurrentCheckPoints[gCurrentLevel + 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
+				if (gCurrentCheckPoints[gCurrentLevel - 1] == 0)	// Si aucun checkpoint n'été atteint
 				{
 					P1.Er_Player();
 					Just_Dr_Map_Borders();
@@ -79,11 +79,12 @@ void Dispatch_Msg_To_Lvl_1()
 				}
 				else
 				{
+					gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
 					Ev_Progress_Bar();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
 					P1.Dr_Player();
 					MsgQueue::Register(FREE_PLAYER);
 				}
-				Ev_Dr_Heart();
+				Just_Dr_Heart();// Ev_Dr_Heart();
 			}
 
 			//Just_Dr_Arr_Keys(); 
@@ -96,14 +97,16 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 
 	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
+		Clear_All_States();	// Thats a fucking quick reset brah
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
-		clrscr();
-		gSpawnCycleTot = gCurrentCheckPoints[gCurrentLevel + 1] + 1;
+		clrscr();	
+		gSkipStory = true;	// clear state clear aussi ça, qui est agaçant
 		break;
 
 	case PROCEED: 
 		if (gCurrentStage == 4)
 		{
+			gCurrentCheckPoints[gCurrentLevel - 1] = 0;	// Restart le checkpoint
 			MsgQueue::Register(PLS_INTIALIZE_LVL);	
 			clrscr();
 			

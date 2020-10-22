@@ -35,3 +35,16 @@ void Press_R_To_Refresh(int action, bool cancel)	// Active ou désactive le refre
 		ConsoleRender::Add_String(refresh[action], { Find_Ctr_Grid(refresh[action]),gConHeight - 2 }, GREEN);
 	}
 }
+
+
+void Press_R_To_Retry_On_Pause(int action, bool cancel)	// Active ou désactive le refresher
+{
+	if (cancel)
+	{
+		ConsoleRender::Add_String(refresh[action], { Find_Ctr_X((int)refresh[action].size()) - 1,gConHeight - 1 }, WHITE,0, true);
+	}
+	else
+	{
+		ConsoleRender::Add_String(refresh[action], { Find_Ctr_X((int)refresh[action].size()) - 1,gConHeight - 1 }, GREEN);
+	}
+}

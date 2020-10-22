@@ -211,10 +211,13 @@ void Handle_Input()
 	case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
 	case 'Q':case 'q':	break;
 	case 'J':case 'j':	lastKey = KeyPressed::JERRY; break;
-	case 'R':case 'r':	
-		
+	case 'R':case 'r':			
 		if (gDayStarted)
-			gRetryCheckpoint = true;
+		{
+			gRetryCheckpoint = false;
+			gPauseUpdates = false;
+			MsgQueue::Register(LOAD_CHECKPOINT);
+		}
 		else
 			gRefreshStage = true; 
 		break;	// Refresh un stage, quand c'est possible
