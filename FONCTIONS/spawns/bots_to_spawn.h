@@ -25,7 +25,7 @@ namespace bots_to_spawn {
 	bool Set_Interval(Direction border, int min, int max);	// Setup un interval de coordonnée pour 1 seule bordure
 	void Set_Randomness();									// Quand tu change boxside ou SpwNum, cela affecte le randomness, il faut donc changer ça... manuellement
 	void Reset_To_Default();								// Valeurs par défaut du prochain spawn
-	void Add_Specific(Direction boxSide, int crd);			// Ajoute une Coord spécific dans la liste des prochains bot à spawner
+	void Add_Spec(Direction boxSide, int crd);			// Ajoute une Coord spécific dans la liste des prochains bot à spawner
 	bool Pop(SpwCrd& crd);	// "POP" une coord de spawn spécifique de la liste (:à partir du début)
 }
 

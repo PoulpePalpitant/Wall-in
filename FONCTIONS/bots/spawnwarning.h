@@ -29,7 +29,7 @@
 
 
 const char BOT_WRNG_DESIGN[4]{ '^','<','v','>' };
-const static int SPWN_DLAY = 8;		// Le nombre de bot move cycle avant que le bot va commencer à avancer
+const static int SPWN_DLAY = 14;		// Le nombre de bot move cycle avant que le bot va commencer à avancer
 
 class SpawnWarning {
 private:

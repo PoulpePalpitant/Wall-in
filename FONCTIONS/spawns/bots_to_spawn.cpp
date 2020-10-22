@@ -36,7 +36,7 @@ namespace bots_to_spawn {
 	// Ajoute une Coord spécific dans la liste des prochains bot à spawner
 	// -------------------------------------------------------------------
 
-	void Add_Specific(Direction boxSide, int crd)			// spawn script à besoin de ça
+	void Add_Spec(Direction boxSide, int crd)			// spawn script à besoin de ça
 	{
 		if (end == NULL)	// list vide
 			start = end = new SpecificSpawn;

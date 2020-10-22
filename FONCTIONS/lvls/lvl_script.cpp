@@ -12,9 +12,10 @@
 const int NB_LVLS = 2;								// Nombre de niveau que j'ai fais
 const int NUMWAVES[NB_LVLS] = { 123, 100 };			// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
 const int FINALHOUR[NB_LVLS] = { 100, 80 };			// À quel wave le final hour aura lieu
-const int NUM_CHECKPOINT[NB_LVLS] = { 4, 4 };		// Nombre de checkpoint dans chaque lvl
+const int NUM_CHECKPOINT[NB_LVLS] = { 2, 4 };		// Nombre de checkpoint dans chaque lvl
 
-const int LVL1_CHECKPOINT[] = {  30, 49, 67, 100 }; //30
+//const int LVL1_CHECKPOINT[] = {  30, 49, 67, 100 }; //	VERSION 1:LEGACY: 
+const int LVL1_CHECKPOINT[] = {  49, 100 };  //		VERSION à 1 seul checkpoint: + final hour
 const int LVL2_CHECKPOINT[] = {  20, 40, 67,  80 };
 const int LVL3_CHECKPOINT[] = { 0 };
 const int LVL4_CHECKPOINT[] = { 0 };

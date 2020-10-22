@@ -42,7 +42,7 @@ void Lvl_1_Initializer()
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
-	gSpwBotTimer.Start_Timer(500 , 1 , true); // DEFUALT
+	gSpwBotTimer.Start_Timer(600 , 1 , true); // DEFUALT
 	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
 	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
 	//gBotMoveTimer.Start_Timer(50200, 1, true);	// TEST
