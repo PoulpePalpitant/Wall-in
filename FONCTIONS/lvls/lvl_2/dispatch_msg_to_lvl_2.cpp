@@ -83,8 +83,8 @@ void Dispatch_Msg_To_Lvl_2()
 					P1.Dr_Player();
 					MsgQueue::Register(FREE_PLAYER);
 				}
-
-				Ev_Dr_Heart();
+				Just_Dr_Heart();
+				//Ev_Dr_Heart();
 			}
 
 			// Il va y avoir quelques items sur la map déjà :)

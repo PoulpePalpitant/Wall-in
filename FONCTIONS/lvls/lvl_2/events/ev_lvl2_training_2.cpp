@@ -126,7 +126,7 @@ void Ev_Lvl2_Training_2()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 5:
-				Erase_Map_Borders_1();
+				Set_Dr_Map_1();
 				Spawn_A_Jerry(LEFT, 8, SPWN_DLAY + dlay);
 				Spawn_A_Jerry(RIGHT, 8, SPWN_DLAY + dlay);
 				Spawn_A_Jerry(LEFT, 9, SPWN_DLAY + dlay);

@@ -259,16 +259,16 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 	if (!ev_BotTutorial.Is_Active())
 	{
 		MsgQueue::Register(FREE_PLAYER);
-		//Erase_Map_Borders_1(23);	// erase borders
+		//Set_Dr_Map_1(23);	// erase borders
 		ev_BotTutorial.Activate();
 		ev_BotTutorial.Start(400);
 		//ev_BotTutorial.Go_To_X_Step(145);		// jerry time
 		//ev_BotTutorial.Go_To_X_Step(140);		// jerry answer
 		//ev_BotTutorial.Go_To_X_Step(130);		// jerry's is sorry
 		//ev_BotTutorial.Go_To_X_Step(114);		// just survived
-		//ev_BotTutorial.Go_To_X_Step(58);		// now that's a shortcut
+		//ev_BotTutorial.Go_To_X_Step(58);		// ultimate test start
 		//ev_BotTutorial.Go_To_X_Step(41);		// now that's a shortcut
-	//	ev_BotTutorial.Go_To_X_Step(25);		// second trial
+		//ev_BotTutorial.Go_To_X_Step(25);		// second trial
 		//ev_BotTutorial.Go_To_X_Step(18);		// first trial
 	}
 	else	// doin stuff 
@@ -346,7 +346,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			case 11:
 				ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9, 2), gBossClr, TXT_SPD_ER, true);
-				Erase_Map_Borders_1(TXT_SPD_DR);	// Erase les borders
+				Set_Dr_Map_1(TXT_SPD_DR * 3);	// Erase les borders
 				ev_BotTutorial.Advance(700);
 				break;
 
@@ -357,7 +357,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 13:
-				ConsoleRender::Add_String(_10, Boss_Txt_Crd(_10), gBossClr, 50, true);
+				ConsoleRender::Add_String(_10, Boss_Txt_Crd(_10), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_11, Boss_Txt_Crd(_11, 1), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(400);
 				break;
@@ -397,7 +397,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 						//ConsoleRender::Add_String(sorry, Boss_Txt_Crd(sorry, 2), gBossClr, TXT_SPD_ER, true);
 						//ConsoleRender::Add_String(stop, Boss_Txt_Crd(stop, 3), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(LEFT) - Half_String(_15) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
-						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 5), gBossClr, 200, true);
+						ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 5), gBossClr, TXT_SPD_DR, true);
 
 						gBotMoveTimer.Start_Timer(prevMovSpeed, 1, true);	// Rétablit la vitesse précédante
 						ev_BotTutorial.delay.Stop();
@@ -1306,12 +1306,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 			
 			case 143:
-				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), gJerClr, TXT_SPD_DR -3);
+				ConsoleRender::Add_String(jerResponse, Jerry_Txt_Crd(jerResponse), gJerClr, TXT_SPD_DR );
 				ev_BotTutorial.Advance(400);
 				break;
 
 			case 144:
-				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, TXT_SPD_DR / 2);
+				ConsoleRender::Add_String(jerFeelings, Up_Txt_2(jerFeelings), GRAY, TXT_SPD_FAST );
 				ev_BotTutorial.Advance(150);
 				break;
 

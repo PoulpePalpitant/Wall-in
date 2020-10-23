@@ -53,7 +53,7 @@ void Lvl_1_Spwn_Script()
 
 		////PUZZLE START------------------------------------------------------------------
 			// Tirer au milieu!
-		case 1: Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3); skip = 2;
+		case 1: Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 2;
 			break; // Erase la border seulement si le joueur est en mode quickstartS
 			    
 		case 2: Add(1); break;//gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; break;
@@ -226,7 +226,7 @@ void Lvl_1_Spwn_Script()
 //const int LVL1_CHECKPOINT[] = { 30, 49, 67, 100 }; 
 
 
-//case 1: Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
+//case 1: Set_Dr_Map_1(TXT_SPD_DR * 2 + 3);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
 //case 2:Add_Spec(RIGHT, 7); /*MsgQueue::Register(START_BOT_SPAWNS); */break;
 //case 3:Add_Spec(RIGHT, 5); 			break;// Dessine un pattern de départ
 //case 4:Add_Spec(RIGHT, 9);break;
@@ -382,7 +382,7 @@ void Lvl_1_Spwn_Script()
 
 
 /*
-	case 1: Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
+	case 1: Set_Dr_Map_1(TXT_SPD_DR * 2 + 3);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
 		case 2:Add_Spec(RIGHT, 5); /*MsgQueue::Register(START_BOT_SPAWNS); break;
 		case 3:Add_Spec(RIGHT, 5); 			break;// Dessine un pattern de départ
 		case 4:Add_Spec(RIGHT, 5);break;

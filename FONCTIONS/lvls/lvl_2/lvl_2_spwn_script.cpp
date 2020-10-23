@@ -42,7 +42,7 @@ void Lvl_2_Spwn_Script()
 		switch (numSpawnWaves)
 		{
 		case 1: 
-			gNumSpawnTOT = 0; Erase_Map_Borders_1(TXT_SPD_DR * 2 + 3); skip = 3; break; // Erase la border juste si le joueur est pas en mode quickstartS
+			gNumSpawnTOT = 0; Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 3; break; // Erase la border juste si le joueur est pas en mode quickstartS
 		case 2:	gBoxSide = DOWN; break;
 		case 3: gBoxSide = DOWN;
 			MsgQueue::Register(ENABLE_ITEM_SPAWN);	// Start les spawns là

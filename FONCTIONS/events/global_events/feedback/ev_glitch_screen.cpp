@@ -175,7 +175,7 @@ void Ev_Glitch_Map_Retry()			//  Remplis la screen de char cool pendant un bref 
 			case 1:
 				if (!ev_Dr_GlitchMap.Is_Active())
 				{
-					ConsoleRender::Add_String(retry, { map.Get_Box_Limit(LEFT) + map.Get_Length() / 2 - (int)retry.size() / 2 , map.Get_Box_Limit(UP) + map.Get_Height() / 2 }, LIGHT_RED, 400);
+					ConsoleRender::Add_String(retry, { map.Get_Box_Limit(LEFT) + map.Get_Length() / 2 - (int)retry.size() / 2 , map.Get_Box_Limit(UP) + map.Get_Height() / 2 }, LIGHT_RED, TXT_SPD_DR / 3);
 					ev_GlitchMap.delay.Stop();
 					ev_GlitchMap.Advance(500);
 				}

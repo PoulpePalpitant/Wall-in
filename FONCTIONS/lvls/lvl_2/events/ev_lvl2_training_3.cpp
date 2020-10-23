@@ -104,7 +104,7 @@ void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 				break;
 
 			case 4:
-				Erase_Map_Borders_1();
+				Set_Dr_Map_1();
 				ev_Lvl2_Training_3.Advance(800);
 				break;
 
@@ -189,7 +189,7 @@ void Ev_Lvl2_Training_3()			// Le joueur apprend comment tirer sur les modifiers
 //				break;
 //
 //			case 4 :
-//				Erase_Map_Borders_1();
+//				Set_Dr_Map_1();
 //				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 4,1 }, true, true);
 //				//if (!ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,1 }, true))
 //					//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 4,1 }, true);

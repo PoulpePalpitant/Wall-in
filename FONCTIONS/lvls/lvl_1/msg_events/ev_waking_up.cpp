@@ -62,7 +62,8 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 {
 	if (!ev_WakeUp.Is_Active())
 	{
-		Ev_Dr_Map_Borders_1();
+		clrscr();
+		Just_Dr_Map_Borders();
 		ev_WakeUp.Activate();
 		ev_WakeUp.Start(500);	// 1000 / 2 = 500.		2 secondes
 		MsgQueue::Register(STAGE_ADVANCE);
@@ -229,7 +230,7 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 					{
 						ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(_10, Boss_Txt_Crd(_10), gBossClr, TXT_SPD_DR);
-						Erase_Map_Borders_1();	// erase borders
+						Set_Dr_Map_1();	// erase borders
 						ev_WakeUp.delay.Stop();
 						ev_WakeUp.Advance(300);
 					}

@@ -190,7 +190,7 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 				//Spawn_A_Jerry(DOWN, 15);
 				Spawn_A_Jerry(DOWN, 14);
 				Spawn_A_Jerry(DOWN, 13);
-				Erase_Map_Borders_1();
+				Set_Dr_Map_1();
 				Block_Prison(true);	// Le joueur doit tiré!
 				ev_Lvl2_Training_1.Advance(10000);
 				break;
