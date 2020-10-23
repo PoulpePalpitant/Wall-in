@@ -33,13 +33,13 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 			switch (ev_Dr_Wasd.Get_Current_Step())
 			{
 			case 1:
-				ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, 80);
+				ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
 				ev_Dr_Wasd.Advance(1000);	// Delay 
 				break;
 				
 			case 2:
-				ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, 50);	// x -3, y + 2
-				ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, 50);	// x -3, y + 2
+				ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_DR);	// x -3, y + 2
+				ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_DR);	// x -3, y + 2
 				ev_Dr_Wasd.Advance(0);	// finito
 				break;
 			}
@@ -73,8 +73,8 @@ void Ev_Er_Wasd()
 		while (ev_Er_Wasd.delay.Tick())
 		{
 			ConsoleRender::Add_String(_1, crd, WHITE, 80, true);						// ERASE
-			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, 50, true);	
-			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, 30, true);
+			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_DR, true);
+			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_DR, true);
 			ev_Er_Wasd.Advance(0);
 		}
 }

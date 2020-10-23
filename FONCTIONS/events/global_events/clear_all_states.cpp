@@ -88,7 +88,7 @@ void Clear_Map()// Tout ce qui à une influence sur l'interface graphique
 	//BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers			// CECI CRASH
 	//MsgQueue::Register(HIDE_MOD_QUEUE);
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
-	Erase_Map_Borders_1();
+	Set_Dr_Map_1();
 }
 
 void Clear_All_Renders()

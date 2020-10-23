@@ -38,10 +38,10 @@ void Er_Skip_Story_Choice()	// efface le choix de lvl
 	crd.y = 33;
 	crd.x = Find_Ctr_X((int)skip.length());
 	ConsoleRender::Add_String(skip, crd, WHITE, 0, true);
-	ConsoleRender::Add_String(yes, { crd.x - 15, crd.y + 4 }, WHITE,   2 + 40,	true);
-	ConsoleRender::Add_String(no, { crd.x + 18, crd.y + 4 }, WHITE	 ,15 + 40,	true);
-	ConsoleRender::Add_String(yes_2, { crd.x - 20, crd.y + 6 }, WHITE,12 + 40,	true);
-	ConsoleRender::Add_String(no_2, { crd.x + 13, crd.y + 6 }, WHITE, 18 + 40,	true);
+	ConsoleRender::Add_String(yes, { crd.x - 15, crd.y + 4 }, WHITE,  0, true);
+	ConsoleRender::Add_String(no, { crd.x + 18, crd.y + 4 }, WHITE	 ,0,	true);
+	ConsoleRender::Add_String(yes_2, { crd.x - 20, crd.y + 6 }, WHITE,0,	true);
+	ConsoleRender::Add_String(no_2, { crd.x + 13, crd.y + 6 }, WHITE, 0,	true);
 	//ConsoleRender::Add_String(yes, { crd.x - 15, crd.y + 4 }, LIGHT_GREEN, 2,true);
 	//ConsoleRender::Add_String(no, { crd.x + 35, crd.y + 4 }, LIGHT_RED,   15,true);
 	//ConsoleRender::Add_String(notRecom, { crd.x - 25, crd.y + 6 }, GRAY,  12,true);

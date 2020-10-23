@@ -12,6 +12,7 @@ struct Drawer
 	bool cancel = false;		// Permet de canceler l'event
 };
 
+
 class DrawerQueue
 {
 	friend void Clear_All_States(bool eraseMap );	// Gros reset button

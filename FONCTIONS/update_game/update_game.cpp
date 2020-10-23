@@ -23,6 +23,7 @@
 #include "../events/global_events/ev_countdown.h"
 #include "../console/sweet_cmd_console.h"
 #include "../events/global_events/ev_to_proceed.h"
+#include "../events/global_events/feedback/ev_wrong_action.h"
 
 
 extern bool gPauseUpdates = false;		// le state du jeu
@@ -49,6 +50,7 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 
 		DrawWalls::Draw_Them_Walls();	// draw les putains de walls
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
+
 	}
 }
 
@@ -129,7 +131,7 @@ void Update_Player_Action()
 				else
 				{
 					Blast_Disabled_While_CD();		// Check si c'est à cause de ça
-					P1.Set_Timeout(300 + gPlyerTimeoutDelay);			// Freeze le joueur pour une durée de temps 
+					Ev_Wrong_Action_Add();			// Flash le joueur
 					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		// Really dumb shit
 				}
 					

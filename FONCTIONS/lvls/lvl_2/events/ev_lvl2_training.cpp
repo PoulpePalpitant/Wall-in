@@ -176,7 +176,7 @@ void Ev_Lvl2_Training()			// Le joueur apprend comment tirer sur les modifiers
 				Spawn_A_Jerry(DOWN, 4, SPWN_DLAY + 19);
 				Spawn_A_Jerry(UP, 5, SPWN_DLAY   + 19);
 
-				Erase_Map_Borders_1();
+				Set_Dr_Map_1();
 				ev_Lvl2_Training.Advance(10000);
 				break;
 
@@ -229,7 +229,7 @@ void Ev_Lvl2_Training()			// Le joueur apprend comment tirer sur les modifiers
 				// fuck le message de jerry
 				// MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRY MESSAGE DE JERRYS
 			case 11:
-				//Erase_Map_Borders_1();
+				//Set_Dr_Map_1();
 				line = Up_Txt_1(TXT_CONST.EMPTY).y - 4;
 				ConsoleRender::Add_String(jeryyMsg_1, { Up_Txt_1(jeryyMsg_1).x,line - yStart - 1 }, BRIGHT_WHITE, drawSpeed);
 				ev_Lvl2_Training.Advance(lineDelay);

@@ -67,7 +67,7 @@ void Ev_Fill_Map()			//  Fill la map de charactère cools, delete ensuite tout
 			{
 			case 1:
 				Set_Screen_Filler();	// test le screen fill
-				ev_FillMap.Advance(50000000, numChars);
+				ev_FillMap.Advance(2000000, numChars);
 
 			case 2:
 				Fill_Screen_Randomly();	// Remplis la console d'un charactère blanc à la fois

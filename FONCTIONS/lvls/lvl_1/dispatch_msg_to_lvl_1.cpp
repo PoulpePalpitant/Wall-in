@@ -156,7 +156,7 @@ void Dispatch_Msg_To_Lvl_1()
 			Ev_Dr_New_Goal();		// - NEW GOAL -
 			Ev_Spawn_Life();
 		}
-		//Erase_Map_Borders_1();
+		//Set_Dr_Map_1();
 		break;
 
 	case SPAWN_SPECIAL_ITEM: 

@@ -5,7 +5,7 @@
 extern Event ev_DrawMap1;
 
 void Ev_Dr_Map_Borders_1();		// Affiche instantannément
-void Erase_Map_Borders_1(int speed = 0);		// Efface instantanément, ou avec une vitesse
+void Set_Dr_Map_1(int speed = 0,  bool er = true);		// Efface ou affiche instantanément, ou avec une vitesse
 void Just_Dr_Map_Borders();
 
 void Set_Flashy_Border(Direction border, int numFlash = 11);

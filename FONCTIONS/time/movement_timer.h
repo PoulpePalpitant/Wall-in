@@ -77,7 +77,9 @@ public:
 	~SpeedTimer()
 	{
 		if(id  != -1)	// si est présent dans la liste on le delete
-			allTimers[id] = NULL;
+			allTimers[id] = NULL;											// Why? Parce que t'a eu l'idée de mettre une fonction qui stop tout les timers. Et pour que celle-ci marche, elle doit parcourir la liste de tout
+																			// tout les timers dans un array timers immuable. si tu delete un timer, l'id sera associé à du garbage dans l'array,
+																			// ce qui va faire crasher le jeu quand il va essayer d'y accéder. Basically, je suis trop lazy pour gérer une liste de timer dynamic
 	}
 };
 
