@@ -59,7 +59,7 @@ bool CountDown_Cancel() // Permet de savoir quand le contdown est finit
 		if (blastDisabled)
 		{
 			MsgQueue::Register(ENABLE_BLAST);
-			ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 },WHITE, 50, true); 			// erase
+			ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 },WHITE, TXT_SPD_FAST, true); 			// erase
 			 blastDisabled = false;
 		}
 		return true;
@@ -125,7 +125,7 @@ void Ev_CountDown()
 				
 				if (blastDisabled)
 				{
-					ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 }, WHITE, 50, true); 			// erase
+					ConsoleRender::Add_String(blast, { Find_Ctr_X((int)std::size(blast)),gConHeight - 1 }, WHITE, TXT_SPD_FAST, true); 			// erase
 					MsgQueue::Register(ENABLE_BLAST);
 					blastDisabled = false;
 				}

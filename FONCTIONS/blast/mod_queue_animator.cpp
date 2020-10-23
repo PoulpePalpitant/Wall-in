@@ -37,7 +37,7 @@ namespace DrawModifierQueue {
 
 	void Show_Queue_UI()// Affiche la queue
 	{
-		ConsoleRender::Add_String(queueTitle, titleCrd, WHITE, 50);
+		ConsoleRender::Add_String(queueTitle, titleCrd, WHITE, TXT_SPD_FAST);
 		ConsoleRender::Add_String(line, { titleCrd.x + 3, titleCrd.y + 4 });
 		isShown = true;			// si le player vois la queue
 	}

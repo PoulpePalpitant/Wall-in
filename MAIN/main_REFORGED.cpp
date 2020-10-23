@@ -50,6 +50,23 @@ using namespace std;
 
 void main()	// Le début!
 {
+	// SUPRA TESTING PLACE
+	// *******************
+
+	//strList.first = new StringQueue("swag");
+
+	//ConsoleRender::Add_String("fuuuuuuu", { 0,0 },WHITE,100000);
+	//ConsoleRender::Add_String("fuuuuuuuuuuu", { 0,1 },WHITE, 2000);
+	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuasdasdasdasdasdasdakljshg;kaejfbnnaer;bgnrghnzrognz;`rng", { 0,30 },RED, 10000);
+	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,31 }, RED, TXT_SPD_DR);
+	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,32 }, RED, TXT_SPD_ER);
+	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,33 }, RED, TXT_SPD_FAST);
+	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,33 }, RED, 0);
+
+
+
+
+
 	// START STUFF LOOP
 	// ***************
 	Coord crd;
@@ -63,7 +80,6 @@ void main()	// Le début!
 	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
 	Initialize_Game();						// Initialize une bunch de crap
 	//ConsoleRender::Set_Animation_Delay();	// Comment en mode debug: Ceci rajoute du delay sur la méthode qui render l'animation queue
-
 
 	// UI TESTING
 	Coord crd2 = { 45,1 }; ConsoleRender::Add_String("Spawn Waves: ", crd2 );
@@ -103,6 +119,10 @@ void main()	// Le début!
 			
 			// Update le jeu mah dude
 			Update_Game();				
+
+
+			// GARDER ICI POUR PÉNITENCE
+			ConsoleRender::Render_String_Animation();	// Affiche les éléments des listes d'animation, solution très simplistes pour créer de l'animation linéaire, principalement pour les string.
 
 			if (++frames == 10)	// update les infos à chaque X Frames
 			{

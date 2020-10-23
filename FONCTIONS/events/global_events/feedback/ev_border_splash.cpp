@@ -59,7 +59,6 @@ void Ev_Vertical_Splash()
 						ConsoleRender::Add_Char({ x,crd.y - 2 }, line);	// draw										
 						ConsoleRender::Add_Char({ x,crd.y + 2 }, line);
 						ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// Modifie le milieu
-						ConsoleRender::Stop_Queue();
 						Q_ev_VerSplash.Step(i, 25000);
 						break;
 

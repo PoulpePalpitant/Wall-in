@@ -100,7 +100,7 @@ void Ev_Spawn_Jerry()
 	if (!ev_SpawnJerry.Is_Active())
 	{
 		// initialisationa
-		ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 2 }, GRAY, 150); // affiche ce titre
+		ConsoleRender::Add_String(howTo, { Find_Ctr_X((int)howTo.size()) , linkGrid->link[0][linkGrid->Get_Rows() - 1].Get_XY().y - 2 }, GRAY, TXT_SPD_FAST); // affiche ce titre
 		gBotMoveTimer.Start_Timer(prevSpd, 1, true);
 		//Set_Jerry_Time(0);
 		//Ev_Dr_Stop_Jerry();

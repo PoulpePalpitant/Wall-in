@@ -139,19 +139,19 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 				break;
 
 			case 4:
-				ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, 50);	// stop everything or die
-				ConsoleRender::Add_String(_2, {Up_Txt_3(_2).x - Half_String(_3),Up_Txt_3(_2).y} , WHITE, 250);
+				ConsoleRender::Add_String(_1, Up_Txt_1(_1), BRIGHT_WHITE, TXT_SPD_DR);	// stop everything or die
+				ConsoleRender::Add_String(_2, {Up_Txt_3(_2).x - Half_String(_3),Up_Txt_3(_2).y} , WHITE, TXT_SPD_DR);
 				ev_UltimateTest.Advance(220);
 				break;
 
 			case 5:
-				ConsoleRender::Add_String(_3, { Up_Txt_3(_3).x + Half_String(_2),Up_Txt_3(_3).y }, WHITE, 250);
+				ConsoleRender::Add_String(_3, { Up_Txt_3(_3).x + Half_String(_2),Up_Txt_3(_3).y }, WHITE, TXT_SPD_DR);
 				Just_Dr_Heart(3);
 				ev_UltimateTest.Advance(320);
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(_4, Up_Txt_2(_4), WHITE, 80);
+				ConsoleRender::Add_String(_4, Up_Txt_2(_4), WHITE, TXT_SPD_DR);
 				Set_CountDown((botList.bot[0].Get_Warnings() / 2) + 8, { Up_Txt_2(_4).x + 25,Up_Txt_2(_4).y }, false);	// /2 c'est pour la vitesse des bots, le count down se fait par secondes à 1000 frames
 				Ev_CountDown();
 				ev_UltimateTest.Advance(0);
@@ -174,10 +174,10 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 					if (P1.Get_HP())
 						success = true;
 
-					ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, 50, true);	// ERASE
-					ConsoleRender::Add_String(_2, { Up_Txt_3(_2).x - Half_String(_3),Up_Txt_3(_2).y }, WHITE, 60, true);
-					ConsoleRender::Add_String(_3, { Up_Txt_3(_3).x + Half_String(_2),Up_Txt_3(_3).y }, WHITE, 50, true);
-					ConsoleRender::Add_String(_4, Up_Txt_2(_4), WHITE, 50, true);
+					ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, TXT_SPD_FAST, true);	// ERASE
+					ConsoleRender::Add_String(_2, { Up_Txt_3(_2).x - Half_String(_3),Up_Txt_3(_2).y }, WHITE, TXT_SPD_FAST, true);
+					ConsoleRender::Add_String(_3, { Up_Txt_3(_3).x + Half_String(_2),Up_Txt_3(_3).y }, WHITE, TXT_SPD_FAST, true);
+					ConsoleRender::Add_String(_4, Up_Txt_2(_4), WHITE, TXT_SPD_FAST, true);
 					jerryTime = false;
 					ev_UltimateTest.delay.Stop();
 					ev_UltimateTest.Advance(0);

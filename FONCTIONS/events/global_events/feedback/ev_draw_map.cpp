@@ -16,28 +16,10 @@ static Event ev_FlashMapBorder(Ev_Flash_Map_Border, 1);	// das event
 static Direction brderToFlash;
 static int numOfFlash;
 
-static Coord instXY;// crdBot, crdLeft, crdRight;	// oh yeah
 
-// Affiche les bordures TOP BOT, Ensuite LEFT RIGHT
-void Ev_Dr_Map_Borders_1()
- {
-	if (!ev_DrawMap1.Is_Ignored())
-		if (!ev_DrawMap1.Is_Active())
-		{
-			if (P1.Get_XY().x == map.Get_Box_Limit(RIGHT))	// Dès que le joueur touche à la bordure droite, on affiche ça		
-			{
-				ev_DrawMap1.Activate();
-				clrscr();	// fuck that screen
-			}
-		}
-		else
-		{
-			/* Les limites*/
-			int right = map.Get_Box_Limit(RIGHT);
-			int up = map.Get_Box_Limit(UP);
-			int left = map.Get_Box_Limit(LEFT);
-			int down = map.Get_Box_Limit(DOWN);
-
+static Coord crd;
+static int drSpeed;
+static int erase;
 
 			/*
 				Animation va comme suis. Top et bot par et vont en direction opposé. Les deux atteignent un corner et on passe aux bordures left et right
@@ -45,111 +27,118 @@ void Ev_Dr_Map_Borders_1()
 				<-	&&	^
 			*/
 
+// Affiche les bordures TOP BOT, Ensuite LEFT RIGHT
+void Ev_Dr_Map_Borders_1()
+{
+	static int numCharsTot;		// Le nombre de char à draw ou erase au total 
+	static int numCharsDrawn;	// Le nombre de char drawn
+	static char sym;
+	static int right, up, left, down; 	/* Les limites*/
+	static Coord crd;
+	if (!ev_DrawMap1.Is_Active())
+	{
+		numCharsTot = map.Get_Height() * 2 + map.Get_Length() * 2;
 
-			// BORDURE TOP	-> coin gauche vers la droite
-			instXY = { left, up - 1 };
-			//ConsoleRender::Create_Animation_Queue(150);
+		if (erase)
+			sym = TXT_CONST.SPACE;
 
-			for (int i = instXY.x; i <= right; i++)
+		/* Les limites*/
+		right = map.Get_Box_Limit(RIGHT) + 1;
+		up = map.Get_Box_Limit(UP) - 1;
+		left = map.Get_Box_Limit(LEFT) - 1;
+		down = map.Get_Box_Limit(DOWN) + 1;
+		crd = { left + 1, up };
+
+		if (erase)
+			crd.x--;	// Erase le premier coin d'abord
+
+
+		ev_DrawMap1.Activate();
+		ev_DrawMap1.Start(0, 0);
+		ev_DrawMap1.delay.Start_Timer(drSpeed, numCharsTot,true);
+	}
+	else
+	{
+		while (ev_DrawMap1.delay.Tick())
+		{
+			if (crd.y == up && crd.x < right) 			// BORDURE TOP	-> coin gauche vers la droite
 			{
-				ConsoleRender::Add_Char(instXY, 196, BRIGHT_WHITE);
-				instXY.x++;
+				if (!erase)
+					sym = 196;
+
+				ConsoleRender::Add_Char(crd, sym);
+				crd.x++;
 			}
-			ConsoleRender::Add_Char(instXY, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
+			else
+				if (crd.x == right && crd.y < down)	// BORDURE RIGHT-> coin up vers down
+				{
+					if (!erase)
+						if (crd.y == up)	 // TOP-RIGHT CORNER
+							sym = 191;
+						else
+							sym = 179;
 
-			// BORDURE RIGHT-> coin up vers down
 
-			for (int i = ++instXY.y; i <= down; i++)
-			{
-				ConsoleRender::Add_Char(instXY, 179, BRIGHT_WHITE);
-				instXY.y++;
-			}
-			ConsoleRender::Add_Char(instXY, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
-			//::Stop_Queue();
+					ConsoleRender::Add_Char(crd, sym);
+					crd.y++;
+				}
+				else
+					if (crd.y == down && crd.x > left)	// BORDURE RIGHT-> coin right vers left
+					{
+						if (!erase)
+							if (crd.x == right)	 // BOTTOM-RIGHT CORNER
+								sym = 217;
+							else
+								sym = 196;
 
-			// BORDURE BOT	-> coin droit vers la gauche
-			//ConsoleRender::Create_Animation_Queue(150);
-			instXY = { right , down + 1 };
+						ConsoleRender::Add_Char(crd, sym);
+						crd.x--;
+					}
+					else
+						if (crd.x == left && crd.y > up)	// BORDURE LEFT-> coin down vers up
+						{
+							if (crd.y == 8)
+								int coord = 2  +3;
+							if (!erase)
+							{
+							
+								if (crd.y == down)	 // BOTTOM-LEFT CORNER
+									sym = 192;
+								else
+									sym = 179;
+							}
 
-			for (int i = instXY.x; i >= left; i--)
-			{
-				ConsoleRender::Add_Char(instXY, 196, BRIGHT_WHITE);
-				instXY.x--;
-			}
-			ConsoleRender::Add_Char(instXY, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
+							ConsoleRender::Add_Char(crd, sym);
+							crd.y--;
 
-			// BORDURE left-> coin geauche-bas vers up
+							// Le dernier output sera affiché instant pour couvrir un bug logique de paresse
+							if (crd.y == up)	 // TOP-LEFT CORNER
+							{
 
-			for (int i = --instXY.y; i >= up; i--)
-			{
-				ConsoleRender::Add_Char(instXY, 179, BRIGHT_WHITE);
-				instXY.y--;
-			}
-			ConsoleRender::Add_Char(instXY, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
-		//	ConsoleRender::Stop_Queue();
 
-			ev_DrawMap1.Deactivate();	// Finis
-			ev_DrawMap1.Ignore();
+								if (erase)
+									gBorderShown = false;
+								else
+								{
+									sym = 218;
+									gBorderShown = true;	// we see them borders now
+								}
+
+								ConsoleRender::Add_Char(crd, sym);
+								ev_DrawMap1.Cancel();	// Désactive l'event ici
+								return;
+							}
+						}
 		}
-
-	gBorderShown = true;	// we see them borders now
+	}
 }
 
-void Erase_Map_Borders_1(int speed)
+void Set_Dr_Map_1(int speed, bool er)
 {
-			/* Les limites*/
-	int right = map.Get_Box_Limit(RIGHT);
-	int up = map.Get_Box_Limit(UP);
-	int left = map.Get_Box_Limit(LEFT);
-	int down = map.Get_Box_Limit(DOWN);
-
-	if (speed)
-		ConsoleRender::Create_Animation_Queue((float)speed);
-	
-	// BORDURE TOP	-> coin gauche vers la droite
-	instXY = { left, up - 1 };
-
-	for (int i = instXY.x; i <= right; i++)
-	{
-		ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);
-		instXY.x++;
-	}
-	ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);	// TOP-RIGHT CORNER
-
-	// BORDURE RIGHT-> coin up vers down
-
-	for (int i = ++instXY.y; i <= down; i++)
-	{
-		ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);
-		instXY.y++;
-	}
-	ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);	// BOT-RIGHT CORNER
-
-	// BORDURE BOT	-> coin droit vers la gauche
-
-	instXY = { right , down + 1 };
-
-	for (int i = instXY.x; i >= left; i--)
-	{
-		ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);
-		instXY.x--;
-	}
-	ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);	// BOT-LEFT CORNER
-
-	// BORDURE left-> coin geauche-bas vers up
-
-	for (int i = --instXY.y; i >= up; i--)
-	{
-		ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);
-		instXY.y--;
-	}
-	ConsoleRender::Add_Char(instXY, TXT_CONST.SPACE);	// TOP-LEFT CORNER
-
-	if (speed)
-		ConsoleRender::Stop_Queue();
-
-	gBorderShown = false;
-} // soon
+	drSpeed = speed;
+	erase = er;
+	Ev_Dr_Map_Borders_1();
+}
 
 
 
@@ -178,38 +167,38 @@ static void Draw_Or_Erase_Border(bool erase = false)	// Pour faire flasher une b
 	switch (brderToFlash)
 	{
 	case UP:
-		instXY = { map.Get_Box_Limit(LEFT), map.Get_Box_Limit(UP) - 1 };
-		for (int i = instXY.x; i <= map.Get_Box_Limit(RIGHT); i++)
+		crd = { map.Get_Box_Limit(LEFT), map.Get_Box_Limit(UP) - 1 };
+		for (int i = crd.x; i <= map.Get_Box_Limit(RIGHT); i++)
 		{
-			ConsoleRender::Add_Char(instXY, sym, BRIGHT_WHITE);
-			instXY.x++;
+			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
+			crd.x++;
 		}
 		break;
 
 	case RIGHT:
-		instXY = { map.Get_Box_Limit(RIGHT) + 1, map.Get_Box_Limit(UP) /*- 2*/ };
-		for (int i = instXY.y; i <= map.Get_Box_Limit(DOWN); i++)
+		crd = { map.Get_Box_Limit(RIGHT) + 1, map.Get_Box_Limit(UP) /*- 2*/ };
+		for (int i = crd.y; i <= map.Get_Box_Limit(DOWN); i++)
 		{
-			ConsoleRender::Add_Char(instXY, sym, BRIGHT_WHITE);
-			instXY.y++;
+			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
+			crd.y++;
 		}
 		break;
 
 	case DOWN:
-		instXY = { map.Get_Box_Limit(RIGHT), map.Get_Box_Limit(DOWN) + 1 };
-		for (int i = instXY.x; i >= map.Get_Box_Limit(LEFT); i--)
+		crd = { map.Get_Box_Limit(RIGHT), map.Get_Box_Limit(DOWN) + 1 };
+		for (int i = crd.x; i >= map.Get_Box_Limit(LEFT); i--)
 		{
-			ConsoleRender::Add_Char(instXY, sym, BRIGHT_WHITE);
-			instXY.x--;
+			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
+			crd.x--;
 		}
 		break;
 
 	case LEFT:
-		instXY = { map.Get_Box_Limit(LEFT) - 1, map.Get_Box_Limit(DOWN) };
-		for (int i = --instXY.y; i >= map.Get_Box_Limit(UP); i--)
+		crd = { map.Get_Box_Limit(LEFT) - 1, map.Get_Box_Limit(DOWN) };
+		for (int i = --crd.y; i >= map.Get_Box_Limit(UP); i--)
 		{
-			ConsoleRender::Add_Char(instXY, sym, BRIGHT_WHITE);
-			instXY.y--;
+			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
+			crd.y--;
 		}
 		break;
 	}
@@ -273,41 +262,41 @@ void Just_Dr_Map_Borders()
 	*/
 
 	// BORDURE TOP	-> coin gauche vers la droite
-	instXY = { left, up - 1 };
+	crd = { left, up - 1 };
 
-	for (int i = instXY.x; i <= right; i++)
+	for (int i = crd.x; i <= right; i++)
 	{
-		ConsoleRender::Add_Char(instXY, 196, BRIGHT_WHITE);
-		instXY.x++;
+		ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
+		crd.x++;
 	}
-	ConsoleRender::Add_Char(instXY, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
 
 	// BORDURE RIGHT-> coin up vers down
 
-	for (int i = ++instXY.y; i <= down; i++)
+	for (int i = ++crd.y; i <= down; i++)
 	{
-		ConsoleRender::Add_Char(instXY, 179, BRIGHT_WHITE);
-		instXY.y++;
+		ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
+		crd.y++;
 	}
-	ConsoleRender::Add_Char(instXY, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
 	//::Stop_Queue();
 
 	// BORDURE BOT	-> coin droit vers la gauche
-	instXY = { right , down + 1 };
+	crd = { right , down + 1 };
 
-	for (int i = instXY.x; i >= left; i--)
+	for (int i = crd.x; i >= left; i--)
 	{
-		ConsoleRender::Add_Char(instXY, 196, BRIGHT_WHITE);
-		instXY.x--;
+		ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
+		crd.x--;
 	}
-	ConsoleRender::Add_Char(instXY, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
 
 	// BORDURE left-> coin geauche-bas vers up
 
-	for (int i = --instXY.y; i >= up; i--)
+	for (int i = --crd.y; i >= up; i--)
 	{
-		ConsoleRender::Add_Char(instXY, 179, BRIGHT_WHITE);
-		instXY.y--;
+		ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
+		crd.y--;
 	}
-	ConsoleRender::Add_Char(instXY, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
 }
