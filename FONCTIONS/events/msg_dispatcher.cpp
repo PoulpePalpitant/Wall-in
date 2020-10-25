@@ -28,7 +28,7 @@
 #include "global_events/ev_defeat_screen.h"
 #include "global_events/ev_back_to_menu.h"
 #include "global_events/ev_checkpoint.h"
-
+#include "../time/spawn_cycle.h"
 
 // other necessities
 #include "../time/cycles.h"
@@ -146,7 +146,8 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	
 	case DEFEAT:
 		if (gDayStarted)
-			Ev_Defeat_Screen();
+			//Ev_Slow_Defeat_Screen();
+			Ev_Fast_Defeat_Screen();
 		break;
 
 		/* GRIDS*/

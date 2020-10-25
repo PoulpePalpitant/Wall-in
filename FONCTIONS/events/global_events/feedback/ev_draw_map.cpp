@@ -248,7 +248,7 @@ void Ev_Flash_Map_Border()		 // Affiche instantannément
 //}
 
 
-void Just_Dr_Map_Borders()
+void Just_Dr_Map_Borders(Colors clr)
 {
 	/* Les limites*/
 	int right = map.Get_Box_Limit(RIGHT);
@@ -266,19 +266,19 @@ void Just_Dr_Map_Borders()
 
 	for (int i = crd.x; i <= right; i++)
 	{
-		ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 196, clr);
 		crd.x++;
 	}
-	ConsoleRender::Add_Char(crd, (unsigned char)191, BRIGHT_WHITE);	// TOP-RIGHT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)191, clr);	// TOP-RIGHT CORNER
 
 	// BORDURE RIGHT-> coin up vers down
 
 	for (int i = ++crd.y; i <= down; i++)
 	{
-		ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 179, clr);
 		crd.y++;
 	}
-	ConsoleRender::Add_Char(crd, (unsigned char)217, BRIGHT_WHITE);	// BOT-RIGHT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)217, clr);	// BOT-RIGHT CORNER
 	//::Stop_Queue();
 
 	// BORDURE BOT	-> coin droit vers la gauche
@@ -286,17 +286,17 @@ void Just_Dr_Map_Borders()
 
 	for (int i = crd.x; i >= left; i--)
 	{
-		ConsoleRender::Add_Char(crd, 196, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 196, clr);
 		crd.x--;
 	}
-	ConsoleRender::Add_Char(crd, (unsigned char)192, BRIGHT_WHITE);	// BOT-LEFT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)192, clr);	// BOT-LEFT CORNER
 
 	// BORDURE left-> coin geauche-bas vers up
 
 	for (int i = --crd.y; i >= up; i--)
 	{
-		ConsoleRender::Add_Char(crd, 179, BRIGHT_WHITE);
+		ConsoleRender::Add_Char(crd, 179, clr);
 		crd.y--;
 	}
-	ConsoleRender::Add_Char(crd, (unsigned char)218, BRIGHT_WHITE);	// TOP-LEFT CORNER
+	ConsoleRender::Add_Char(crd, (unsigned char)218, clr);	// TOP-LEFT CORNER
 }

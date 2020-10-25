@@ -131,6 +131,16 @@ namespace bots_to_spawn {
 		if (gSpwNum != -1 )
 			gRandomSpwn = false;
 	}
+	void Set_Custom_Bot(int delay, bool fixed , Colors color , int hp )	// Permet de set un bot custom
+	{
+		gCustomBot.health = hp;
+		gCustomBot.clr = color;
+		gCustomBot.fixedColor = fixed;
+		gCustomBot.warningDelay = delay;
+		gCustomBot.is = true;
+	}
+
+
 }
 
 // EN DEHORS DU NAMESPACE

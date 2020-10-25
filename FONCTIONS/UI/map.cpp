@@ -8,6 +8,10 @@ extern bool gBorderShown = false;		// Les bordures de la map sont visibles
 
 extern Map map = {};	// Définition de la class map iciitttttttttteeeeee
 
+Distance Map::Get_Ctr_Y() // Point central en Y
+{
+	return height / 2 + limit[UP];
+}		
 
 void Map::Resize(LinkGrid& linkGrid)	// Resize les dimensions selon la nouvelle dimension du Grid principal(LinkGrid)
 {

@@ -13,6 +13,10 @@ extern const int LVL3_CHECKPOINT[];
 extern const int LVL4_CHECKPOINT[];
 extern const int LVL5_CHECKPOINT[];
 
+// Le nombre de shot de blast que le joueur peut faire dans chacun des checkpoints
+extern const int LVL1_BLAST_AMMO[];
+extern const int LVL2_BLAST_AMMO[];
+
 extern short gCurrentLevel;	// Le niveau actuel!!1
 extern short gCurrentStage;	// Le sous-niveau actuel
 extern short gCurrentCheckPoints[];	// Le checkpoint que le joueur à réussie à reach durant le niveau

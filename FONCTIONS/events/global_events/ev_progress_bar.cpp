@@ -35,7 +35,7 @@ static int waitForNxtSpawn;			// Pendant un break, Si le total de spawn dépasse 
 
 // UI
 static const std::string tip[2] = { "  > "," <  " };
-static const int barLength = 40;	// Dimension de la bar
+static const int barLength = 70;	// Dimension de la bar
 static Coord crd;
 static Colors progClr;	// // Est jaune. Devient rouge durant le fianl hour
 
@@ -149,7 +149,7 @@ void Ev_Draw_Whole_Bar_Fast()	// Happens first
 
 		ev_DrawWholeBarFast.Activate();
 		ev_DrawWholeBarFast.Start(0);
-		ev_DrawWholeBarFast.delay.Start_Timer(100000, NUMWAVES[gCurrentLevel - 1]);
+		ev_DrawWholeBarFast.delay.Start_Timer(200000, NUMWAVES[gCurrentLevel - 1]);
 	}
 	else
 		while (ev_DrawWholeBarFast.delay.Tick())

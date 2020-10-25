@@ -88,9 +88,9 @@ extern Colors gCurrentColor;	// La couleur actuelle d'output dans la console.
 extern Colors gBossClr;
 extern Colors gJerClr;
 
-extern const unsigned short TXT_SPD_DR; // vitesse d'affichage
-extern const unsigned short TXT_SPD_FAST; // vitesse d'affichage
-extern const unsigned short TXT_SPD_ER; // vitesse d'effacement
+extern const int TXT_SPD_DR; // vitesse d'affichage
+extern const int TXT_SPD_FAST; // vitesse d'affichage
+extern const int TXT_SPD_ER; // vitesse d'effacement
 
 
 Colors Get_Current_Color();// Si on veut affiché quoi que ce soit, on utilise ceci pour vérifier si on a besoin, oui ou non de changer la couleur de l'output de la console

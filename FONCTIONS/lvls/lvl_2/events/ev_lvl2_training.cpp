@@ -39,7 +39,7 @@ static Choice tryToIgnore = { {},"Try To Ignore It","(You Can Escape Its Power!)
 static std::string choiceMade;
 
 static int lineDelay = 0;
-static float drawSpeed = 0;
+static int drawSpeed = 0;
 static int yStart = 0;	// on start 16 ligne plus haut
 //std::string jeryyMsg_1 = "WELCOME TO MY SPECIAL TRAINING ROOMS";										// I JERRY, decided to make these training rooms to better our employees at the use of our brand new technology
 //std::string jeryyMsg_2 = "\"I (JERRRY) Was Bored Of Wasting My Time Giving This Training ";			 // I, JERRY, Designed These Rooms All Night To Train The New Employees

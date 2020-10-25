@@ -9,6 +9,7 @@
 #include "../time/countdown_clock.h"
 #include "../time/movement_timer.h"
 #include "../global_types/global_types.h"
+#include "blast_ammo.h"
 
 /*
 	Le blast ça va être la façon pour le joueur de détruire les bots. Quand le joueur blast, il tir un projectile d'une certaine longueur à partir de sa position de départ. Ce projectile va avancé jusqu'à ce qu'il 
@@ -41,6 +42,8 @@ class Blast
 		friend class LinkGrid;		// Pour enregistré des nouveaux Links
 
 	bool active;			// Le blast est actif ou non. Quand il est actif il est en train de se déplacer
+	BlastAmmo ammo;	// Fixe une limit de blast que le joueur peut faire. Si vide, il ne peut tirer
+	
 
 	//UI
 	unsigned char sym;		// Le symbole du blast sera unique et répété(juste une longue ligne)
@@ -100,6 +103,7 @@ public:
 	Direction Get_Dir() { return dir; }
 	Distance Get_Distance_Travelled() { return nbSteps; }
 	Modifier Get_Modifier() { return modifier; }
+	BlastAmmo& Get_Ammo_Manager() { return ammo; }
 
 	// FONCTIONS PRINCIPALES 
 

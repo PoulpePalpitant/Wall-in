@@ -17,7 +17,7 @@
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD_VER = /*1000000*/70000;					
+extern const time_t DFLT_BLAST_SPD_VER = /*1000000*/70000;		// 70000 = CLASSIC				
 extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER * 2;
 //extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER - DFLT_BLAST_SPD_VER / 4;// J'agrandis la vitesse à l'horizontal!			
 
@@ -355,6 +355,7 @@ void Blast::Clear_Blast()	// Permet d'effacer enfin le blast quand tu le cancel
 
 	//while(!Are_Equal(this->frontXY.coord,this->tailXY.coord))
 	//	UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
-
+	
+	ammo.Deactivate();
 	this->Cancel();
 }

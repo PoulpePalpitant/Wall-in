@@ -12,14 +12,18 @@
 const int NB_LVLS = 2;								// Nombre de niveau que j'ai fais
 const int NUMWAVES[NB_LVLS] = { 123, 100 };			// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
 const int FINALHOUR[NB_LVLS] = { 100, 80 };			// À quel wave le final hour aura lieu
-const int NUM_CHECKPOINT[NB_LVLS] = { 2, 4 };		// Nombre de checkpoint dans chaque lvl
+const int NUM_CHECKPOINT[NB_LVLS] = { 4, 4 };		// Nombre de checkpoint dans chaque lvl
 
 //const int LVL1_CHECKPOINT[] = {  30, 49, 67, 100 }; //	VERSION 1:LEGACY: 
-const int LVL1_CHECKPOINT[] = {  49, 100 };  //		VERSION à 1 seul checkpoint: + final hour
+const int LVL1_CHECKPOINT[] = {  10, 25, 46, 100 };  //		VERSION PUZZLE checkpoint: + final hour est le dernier
 const int LVL2_CHECKPOINT[] = {  20, 40, 67,  80 };
 const int LVL3_CHECKPOINT[] = { 0 };
 const int LVL4_CHECKPOINT[] = { 0 };
 const int LVL5_CHECKPOINT[] = { 0 };
+
+// Le joueur possède ce montant d'ammo durant un checkpoint
+const int LVL1_BLAST_AMMO[] = {10,16,16,20};	
+const int LVL2_BLAST_AMMO[] = { 20,20,20,20};
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
@@ -35,8 +39,9 @@ int Get_Lvl_Checkpoint()	// Rapporte le nombre qui correspond au spawncycletot d
 	if (gCurrentCheckPoints[gCurrentLevel - 1] == 0)	// 0 veut dire aucun checkpoint n'aété reach encore
 		return 0;
 	else
-		return LVL1_CHECKPOINT[gCurrentCheckPoints[gCurrentLevel - 1] - 1] + 1;	// > 0: Faut accéder au éléments de la liste LVL1_CHECKPOINT en convertissant le checkpoint 1 en index 0
+		return LVL1_CHECKPOINT[gCurrentCheckPoints[gCurrentLevel - 1] - 1] /*+ 1*/;	// > 0: Faut accéder au éléments de la liste LVL1_CHECKPOINT en convertissant le checkpoint 1 en index 0
 }																			// le + 1 c'est pour commencer 1 spawnscycle plus tard
+																			// +1 pas obligé finalement, on dirait que ça le skip toujours, pt à cause du timer
 void Peek_Lvl_Script()
 {
 	switch (gCurrentLevel)

@@ -44,19 +44,6 @@ const int totalSpw = 72;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 bool Ultimate_Test_Time()
 {
 	return ev_UltimateTest.Is_Active();

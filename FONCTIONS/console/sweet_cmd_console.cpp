@@ -224,6 +224,6 @@ void Center_WND()
 	centerX = (scrWidth - wndWidth) / 2;		// La position LEFT
 	centerY = (scrHeight - wndHeight) / 2;		// La position TOP
 
-	/* Reposition Window to the center of my screen */
+	/* Reposition Window to the ctrSym of my screen */
 	SetWindowPos(GAME_WND, HWND_TOP, centerX, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 }

@@ -16,6 +16,7 @@
 #include "../../items/item_spw_drawer.h"
 #include "../../bots/botmeta.h"
 #include "../../player/player.h"
+#include "feedback/ev_rainbow_borders.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);
 
@@ -44,9 +45,12 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				//DrawItemSpawnList::Remove_All();		 // hardcore
 				//BlastModifierQueue::Reset();
 				Clear_Map();
+				Ev_Rainbow_Borders();		// fait flasher tout de manière gratifiante
+				Checkpoint_Delay();// Delay Next spawn
 				P1.Dr_Player();
-
 				gCurrentCheckPoints[gCurrentLevel - 1]++;	// Le checkpoint est officiellement updaté
+				blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();
+
 				gSpwBotTimer.Resume();
 				ev_ReachCheckpoint.Cancel();
 			}

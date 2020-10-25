@@ -17,9 +17,9 @@ Colors gJerClr = LIGHT_AQUA;
 //const unsigned short TXT_SPD_DR = 10; // vitesse de défilement du texte par défaut
 //const unsigned short TXT_SPD_FAST = 20 ; // vitesse d'affichage
 //const unsigned short TXT_SPD_ER = 15; // vitesse d'éffacement du texte par défaut
-const unsigned short TXT_SPD_DR = 25000; // vitesse de défilement du texte par défaut
-const unsigned short TXT_SPD_ER = 33000; // vitesse d'éffacement du texte par défaut
-const unsigned short TXT_SPD_FAST = 40000; // vitesse d'affichage
+const int TXT_SPD_DR = 25000; // vitesse de défilement du texte par défaut
+const int TXT_SPD_ER = 33000; // vitesse d'éffacement du texte par défaut
+const int TXT_SPD_FAST = 40000; // vitesse d'affichage
 
 
 // Changer la couleur
