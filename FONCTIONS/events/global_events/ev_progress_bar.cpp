@@ -37,7 +37,7 @@ static int waitForNxtSpawn;			// Pendant un break, Si le total de spawn dépasse 
 static const std::string tip[2] = { "  > "," <  " };
 static const int barLength = 70;	// Dimension de la bar
 static Coord crd;
-static Colors progClr;	// // Est jaune. Devient rouge durant le fianl hour
+static Colors barProgClr;	// // Est jaune. Devient rouge durant le fianl hour
 
 static bool Is_Checkpoint_Here(int lvl, int waveTot)	// Check si un checkpoint  à lieu ici
 {
@@ -177,7 +177,7 @@ void Ev_Draw_Whole_Bar_Fast()	// Happens first
 						}
 						else
 						{
-							ConsoleRender::Add_Char(coord, TXT_CONST.DOT, progClr); coord.x++;
+							ConsoleRender::Add_Char(coord, TXT_CONST.DOT, barProgClr); coord.x++;
 						}
 
 						
@@ -205,7 +205,7 @@ static void Progress()
 	if (ev_ProgressAnimation.Is_Active())
 	{
 		ev_ProgressAnimation.Cancel();								// lazy shit
-		ConsoleRender::Add_Char({ crd.x - 1, crd.y }, TXT_CONST.DOT, progClr);	// lazy shit
+		ConsoleRender::Add_Char({ crd.x - 1, crd.y }, TXT_CONST.DOT, barProgClr);	// lazy shit
 	}
 }
 
@@ -218,7 +218,7 @@ void Ev_Progress_Bar()
 		nextWave = 0;
 		ratio = NUMWAVES[gCurrentLevel - 1] / ((float)barLength);	// On se fie à cette valeur pour progresser dans la bar		
 		crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
-		progClr = LIGHT_YELLOW;
+		barProgClr = LIGHT_YELLOW;
 
 		if (gSpawnCycleTot == 0)	// Version normal	
 			Ev_Draw_Whole_Bar();
@@ -246,10 +246,10 @@ void Ev_Progress_Bar()
 
 			if (gSpawnCycleTot == FINALHOUR[gCurrentLevel - 1])
 			{
-				if (progClr != LIGHT_RED) // dumb condition, but understandable
+				if (barProgClr != LIGHT_RED) // dumb condition, but understandable
 				{
 					Progress(); 
-					progClr = LIGHT_RED;	// it's serious time
+					barProgClr = LIGHT_RED;	// it's serious time
 					Ev_Break_Animation();	// start l'animation du drette sur le FINALHOUR
 				}
 
@@ -325,7 +325,7 @@ void Ev_Progress_Animation()
 
 			case 6:
 				// Fin animation qui flash
-				ConsoleRender::Add_Char(crd, TXT_CONST.DOT, progClr);
+				ConsoleRender::Add_Char(crd, TXT_CONST.DOT, barProgClr);
 				ev_ProgressAnimation.Advance(0);
 				break;
 			}

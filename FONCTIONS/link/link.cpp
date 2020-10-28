@@ -119,6 +119,26 @@ bool Link::Activate_Link(Modifier& mod, Wall* child)
 	return true;
 }
 
+// Active un Link et le relie à un Child
+bool Link::Activate_Root_Link(Modifier mod)
+{
+	bool dead = false;
+	if (state == LinkState::DEAD)
+		dead = true;
+
+	Set_State(NULL);				// Set le state de root
+	Set_UI();						// affichage
+
+	if (dead)
+	{
+		meta.Add();
+		MsgQueue::Register(LINK_ACTIVATED);
+	}
+
+	Dsp_Link();
+	return true;
+}
+
 void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 {
 	int children = this->numChild;

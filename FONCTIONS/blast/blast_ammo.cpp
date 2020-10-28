@@ -7,13 +7,12 @@
 #include "blast_ammo_animator.h"
 
 
-static int x = 5;	// case à droite de box limit right
+static int x = 8;	// case à droite de box limit right
 static int y = 2;	// case en dessous de box limit up
 static std::string eraseNum = "    ";	// pour erase un nombre
 
 
-
-/// shoot ou add ne modifie pas le ratio de la bar length
+/// shoot ou add ne modifie pas le ratioBarPerAmmo de la bar length
 // alors si barlength dépasse son max?
 // redraw la bar en vert?
 // fait juste changer le counter en cyan
@@ -28,16 +27,7 @@ bool BlastAmmo::Shoot()
 		else
 		{
 			ammo--;
-
-			//if (!Ammo_Available())
-			//	MsgQueue::Register(DISABLE_BLAST);	// Désactive tout simplement le blast du joueur
-
-			// Signale d'update l'interface
-			Dr_Or_Er_Ammo_Count();
-
-			
-
-
+			DrawBlastAmmo::Dr_Ammo_Used(); // Signale d'update l'interface
 			return true;
 		}
 	}
@@ -56,11 +46,8 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 		active = true;	// devient automatiquement actif
 		MsgQueue::Register(ENABLE_BLAST);	// Conséquamment, le joueur peut tirer!
 
-		// Le ratio et l'ui est activé uniquement quand on utilise la méthode set
+		// Le ratioBarPerAmmo et l'ui est activé uniquement quand on utilise la méthode set
 		DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
-
-
-
 	}
 }
 
@@ -71,7 +58,6 @@ void BlastAmmo::Set_Ammo_For_Checkpoint()	// Set la limite selon le nombre assig
 	else
 		if (gCurrentLevel == 2)
 			Set_Ammo(LVL2_BLAST_AMMO[gCurrentCheckPoints[gCurrentLevel - 1]]);
-
 }
 
 
@@ -88,19 +74,13 @@ void BlastAmmo::Dr_Or_Er_Ammo(bool erase)
 void BlastAmmo::Dr_Or_Er_Ammo_Count(bool erase)
 {
 	Colors clr;
-
-	ConsoleRender::Add_String(eraseNum, { map.Get_Box_Limit(RIGHT) + 2 + x,map.Get_Box_Limit(UP) + y + 2 });	// Erase le nombre précédant
-
+	
 	if (ammo == 0)
 		clr = LIGHT_RED;
 	else 
 		clr = WHITE;
 
-	if(ammo < 9)
-		ConsoleRender::Add_String(std::to_string(ammo), { map.Get_Box_Limit(RIGHT) + 4 + x,map.Get_Box_Limit(UP) + y + 2 }, clr,0,erase);
-	else
-		if (ammo < 99)
-			ConsoleRender::Add_String( std::to_string(ammo),{ map.Get_Box_Limit(RIGHT) + 3 + x,map.Get_Box_Limit(UP) + y + 2 }, clr,0, erase);
-		else
-			ConsoleRender::Add_String(std::to_string(ammo), { map.Get_Box_Limit(RIGHT) + 2 + x,map.Get_Box_Limit(UP) + y + 2 }, clr,0, erase);
+	ConsoleRender::Add_String(eraseNum, { map.Get_Box_Limit(RIGHT) + x,map.Get_Box_Limit(UP) + -1 });	// Erase le nombre précédant
+	ConsoleRender::Add_String(std::to_string(ammo), { map.Get_Box_Limit(RIGHT) + x ,map.Get_Box_Limit(UP) - 1 }, clr,0,erase);
+
 }

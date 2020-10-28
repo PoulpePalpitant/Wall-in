@@ -32,7 +32,7 @@ static std::string retry2 = "(Press 'R' To Retry)";
 
 const int NUM_RESTART_STR = 17;
 static std::string restart[NUM_RESTART_STR] = { " - I CAN DO BETTER -", "- A MINOR SETBACK -", "- I KNOW WHAT DO TO -", "- THIS IS NOT THE END -", "- LET'S GO -", "- JUST A MISTAKE -",
-"- I WAS ALMOST THERE! -","- I CAN DO THIS -", "- I SLIPPED -", "- THAT WON'T STOP ME -", "- FAILURE IS A LESSON -","- I WON'T GIVE UP -", "- AND SO I LEARNED, I THINK... -"
+"- I WAS ALMOST THERE! -","- I CAN DO THIS -", "- I SLIPPED -", "- THAT WON'T STOP ME -", "- FAILURE IS A LESSON -","- I WON'T GIVE UP -", "- AND SO I LEARNED, I THINK... -",
 "- LET'S RETRY -", "- I MUST TRY HARDER -", "- GETTING BETTER -", "- I WON'T BE DEFEATED -"};
 
 // Comment faire du ascii art
@@ -125,7 +125,7 @@ void Ev_Fast_Defeat_Screen()				 // Prompt le joueur à restart!
 				if (Is_Done_Ev_Glitch_Map_Retry())
 				{
 					ev_FastDefeatScreen.delay.Stop();
-					ev_FastDefeatScreen.Advance(1500);
+					ev_FastDefeatScreen.Advance(1200);
 				}
 				break;
 

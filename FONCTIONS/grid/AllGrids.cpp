@@ -371,7 +371,7 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 
 		////if (blastMod != REGULAR)
 		//{
-		//		link->Activate_Link(blastMod);		// créer le link tu seul
+		//		link->Activate_Root_Link(blastMod);		// créer le link tu seul
 		//		link->Convert_Modifier(BLOCKER);	// ensuite le convertit
 		//		eraseBlast = true;
 		//}

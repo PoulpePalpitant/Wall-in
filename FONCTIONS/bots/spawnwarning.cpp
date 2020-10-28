@@ -4,7 +4,7 @@
 #include "bot.h"
 
 
-const int SPWN_DLAY = 32;		// LEGACY = 14    Le nombre de bot move cycle avant que le bot va commencer à avancer
+const int SPWN_DLAY = 38;		// LEGACY = 14    Le nombre de bot move cycle avant que le bot va commencer à avancer
 
 
 C_D SpawnWarning::Show_Spawn_Warning()
