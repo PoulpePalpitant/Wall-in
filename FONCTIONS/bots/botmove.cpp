@@ -97,7 +97,9 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 
 			if (!bot->stepLeft)	// Le bot est sortie de la box!
 			{
-				P1.Player_Lose_HP();	// OUCH
+				// BIG EDIT!	:	Les bot one shot le joueur
+				//**********
+				P1.Player_Lose_HP(P1.Get_HP());	// OUCH
 				bot->Destroy_Bot();
 
 				/* ME RÉPÈTE*/

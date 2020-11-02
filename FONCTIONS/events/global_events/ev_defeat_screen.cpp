@@ -28,7 +28,7 @@ static std::string tips[] = { "Never Stop Building", "Speed Is Key", "Shooting F
 
 static std::string dead[] = { "EMPLOYEE TERMINATED","YOU LOST", "DEFEAT", "NOT VICTORIOUS", "OVERWHELMED" };
 static std::string retry = "Be Replaced?";
-static std::string retry2 = "(Press 'R' To Retry)";
+static std::string retry2 = "(Press 'R' To Retry, Anytime)";
 
 const int NUM_RESTART_STR = 17;
 static std::string restart[NUM_RESTART_STR] = { " - I CAN DO BETTER -", "- A MINOR SETBACK -", "- I KNOW WHAT DO TO -", "- THIS IS NOT THE END -", "- LET'S GO -", "- JUST A MISTAKE -",

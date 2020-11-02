@@ -7,23 +7,25 @@
 #include "lvl_2/lvl_2_spwn_script.h"
 #include "lvl_1/sub_lvl_1_script.h"
 
-
+// Ceci est la conséquence de moi qui est trop lazy pour apprendre à faire des scripts
 
 const int NB_LVLS = 2;								// Nombre de niveau que j'ai fais
 const int NUMWAVES[NB_LVLS] = { 123, 100 };			// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
-const int FINALHOUR[NB_LVLS] = { 100, 80 };			// À quel wave le final hour aura lieu
-const int NUM_CHECKPOINT[NB_LVLS] = { 4, 4 };		// Nombre de checkpoint dans chaque lvl
+const int FINALHOUR[NB_LVLS] = { 2000, 80 };			// À quel wave le final hour aura lieu
+const int NUM_CHECKPOINT[NB_LVLS] = { 10, 4 };		// Nombre de checkpoint dans chaque lvl
 
 //const int LVL1_CHECKPOINT[] = {  30, 49, 67, 100 }; //	VERSION 1:LEGACY: 
-const int LVL1_CHECKPOINT[] = {  10, 24, 46, 67 };  //		VERSION PUZZLE checkpoint: + final hour est le dernier
+const int LVL1_CHECKPOINT[] = {  10, 19, 35, 40, 52,55, 68, 78, 95, 105, 108 };  //		VERSION PUZZLE checkpoint: + final hour est le dernier
 const int LVL2_CHECKPOINT[] = {  20, 40, 67,  80 };
 const int LVL3_CHECKPOINT[] = { 0 };
 const int LVL4_CHECKPOINT[] = { 0 };
 const int LVL5_CHECKPOINT[] = { 0 };
 
 // Le joueur possède ce montant d'ammo durant un checkpoint
-const int LVL1_BLAST_AMMO[] = {9,13,16,22};	
+const int LVL1_BLAST_AMMO[] = {7,7,15,9, 12,  1, 18,0, 10, 18, 10};
 const int LVL2_BLAST_AMMO[] = { 20,20,20,20};
+
+const GrdCoord LVL1_CHECKPOINT_P1_CRD[] = { {6,5}, {6,5} ,{6,5},{6,6} ,{4,7} ,{9,14} ,{11,11}, {4,6} ,{5,12},{11,8},  {6,6}}; // {6,6}
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages

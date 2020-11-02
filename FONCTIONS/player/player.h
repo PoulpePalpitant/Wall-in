@@ -3,6 +3,7 @@
 #include "../UI/txtstyle.h"
 #include "../grid/grid.h"
 #include "../time/countdown_clock.h"
+#include "../teleporter/teleporter.h"
 
 enum PlayerState { DEAD, ALIVE, INVINCIBLE };		// Statut Héro 
 
@@ -11,6 +12,8 @@ const unsigned char AllPlyrSym[5] = { 193,180,194,195,197 };	// Haut, Left, Down
 
 class Player {
 private:
+
+
 	// ATTRIBUTES
 	int hp = 3;								// La vie du joueur. : Le nombre de bots qui peuvent sortir de la bot avant qu'il soit dead
 	PlayerState state = PlayerState::ALIVE; //
@@ -22,6 +25,9 @@ private:
 
 	// POSITION
 	GrdCoord grdCrd = {0,0};						// On utilise le système de coordonnées des grids pour changer la position du joueur
+
+
+	Teleporter teleporter;		// Permet de se téléporter
 
 	// TIMEOUT
 	CDTimer timeout;			// Freeze les actions du player
@@ -36,6 +42,8 @@ public:
 	PlayerState Get_State() { return state; }			// Le state du joueur
 	bool Is_Timeout() { return timeout.Is_Running(); }	// Joueur en timeout
 	Coord Get_XY();										// Retrouva la crd du player dans la console
+	Teleporter& Get_Teleporter() { return teleporter; }
+	
 
 	// SETS 
 	bool Set_On_Grid();												// 
@@ -54,8 +62,10 @@ public:
 	void Upd_Color();													// Change la couleur du joueur quand il pred ou gagne de la vie
 	void Player_Lose_HP(int hpLost = 1);								// En général, le joueur perdra 1hp seulement
 	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
-	
+	void Upd_Teleporter() { teleporter.Upd_Teleporter_State(); }		// Check si yé actif
+
 	// SPÉCIALE
+	void Move_And_Draw_Player(GrdCoord crd);			// Teleporte virtuellement le joueur
 	void Dr_Player();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
 	void Er_Player();									// fait juste effacer
 	void Reset_State();	// health, crd, and state

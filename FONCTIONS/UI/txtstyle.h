@@ -78,7 +78,7 @@ enum Colors
 	PURPLE = 5, LIGHT_PURPLE = 13,
 	YELLOW = 6, LIGHT_YELLOW = 14,
 	WHITE = 7, BRIGHT_WHITE = 15,
-
+	TEST = 155,
 	BG_WH_LIGHT_GREEN = 250,	// BG_WH	= Background White
 	BG_WH_LIGHT_RED = 252,		// BG_WH	= Background White
 	BG_WH_LIGHT_PURPLE = 253,	// BG_WH	= Background White

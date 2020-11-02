@@ -8,9 +8,12 @@
 #include "../UI/console_output/render_list.h"
 #include "../events/global_events/ev_update_heart.h"
 #include "../events/msg_dispatcher.h"
+#include "../blast/blast_ammo.h"
 
 extern Player P1 = {};		// Un joueur! 
 extern Player P2 = {};		// Des joueurs!
+
+
 
 // En général, le joueur perdra 1hp seulement
 void Player::Player_Lose_HP(int hpLost)
@@ -27,6 +30,7 @@ void Player::Player_Lose_HP(int hpLost)
 		Upd_State();
 	}
 }
+
 
 // Gagne 1 point de vie!
 void Player::Player_Gains_HP(int hpGain)
@@ -85,6 +89,7 @@ void Player::Upd_Color()
 	Dr_Player(); // Display le joueur si on update sa couleur booda
 }
 
+
 // Affiche le joueur		
 void Player::Dr_Player()
 {
@@ -97,6 +102,18 @@ void Player::Dr_Player()
 void Player::Er_Player()									// fait juste effacer
 {
 	ConsoleRender::Add_Char(Get_XY(), TXT_CONST.SPACE); 	// display
+}
+
+void Player::Move_And_Draw_Player(GrdCoord crd)			// Teleporte virtuellement le joueur
+{
+	// On teleport le joueur à un endroit probablement ailleurs
+	if (gGrids.linkGrd.link[crd.c][crd.r].Get_State() != LinkState::DEAD)
+		gGrids.linkGrd.link[crd.c][crd.r].Dsp_Link();
+	else
+		P1.Er_Player();
+
+	P1.Set_Position(crd);
+	P1.Dr_Player();
 }
 
 // Change le symbole du joueur lors d'un mouvement

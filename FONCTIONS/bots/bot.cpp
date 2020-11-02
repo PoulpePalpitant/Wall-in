@@ -37,7 +37,7 @@ void Bot::Destroy_Bot()
 
 
 // Création d'un bot
-void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Construit en utilisant d'autre fonctions
+void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised, bool instant)	// Construit en utilisant d'autre fonctions
 {
 	static CustomBotStats customBot;	customBot.is = false;
 
@@ -60,10 +60,13 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised)	// Co
 	Init_Bot_Stats(customBot);						// Le type du Bot doit être initialisé d'abord
 
 	// Le warning de spawn du bot
-	if(customBot.is)
-		this->spwnWarning.Init_Spawn_Warning(dir, customBot.warningDelay);
+	if (instant)
+		this->spwnWarning.Init_Spawn_Warning(dir, 0);
 	else
-		this->spwnWarning.Init_Spawn_Warning(dir, SPWN_DLAY);
+		if (customBot.is)
+			this->spwnWarning.Init_Spawn_Warning(dir, customBot.warningDelay);
+		else
+			this->spwnWarning.Init_Spawn_Warning(dir, SPWN_DLAY);
 
 	// INITIALISE DISTANCE À PARCOURIR
 	Init_Step_Count();								// À besoin de la direction et de la vitesse du bot

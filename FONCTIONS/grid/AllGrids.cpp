@@ -69,6 +69,21 @@ GrdCoord AllGrids::Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir)
 }
 
 
+Wall* AllGrids::Find_Wall_From_Link_Coord_Incrementor(GridIndexIncrementor &incre, Direction dir)					// Trouve le wall selon une pos de link et une direction
+{
+	WallGrid *wallgrid = Find_Wall_Grid_From_Direction(dir);
+	GrdCoord wallCrd = {-1,-1};
+	GridIndexIncrementor crd = incre;  // The stupidest shit I can witness from my own asshole
+	crd.Initialize_Axis(Find_Opposite_Dir(dir));
+	wallCrd = Convert_LinkCrd_To_WallCrd(crd);	// Première Coord de Wall
+
+	// si out of bounds we shoud stop
+	if (wallCrd.c < 0 || wallCrd.r < 0)
+		return NULL;
+
+	return &wallgrid->wall[wallCrd.c][wallCrd.r];
+}
+
 // Activation d'éléments sur les grids:
 // ***********************************
 
@@ -82,6 +97,7 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	static GridIndexIncrementor linkCrd;	// Coord de chaque Link à afficher
 	bool playerOnLink = false;				// N'affiche pas le link child si le player se trouve dessus
 	static bool eraseBlast;			// Ne créer aucun wall. Se produit quand des modifiers se combinent ensemble
+	static Teleporter& tp = P1.Get_Teleporter();			/// le teleporteur du joueur
 
 	// activate walls?
 	// ou juste convert link?
@@ -142,6 +158,11 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 
 		if (impactedWall)
 			botList.bot[impactedWall->Get_Bot_On_Me()].Bot_Impact(impactedWall);	// Im pact. Un mur fut créer par dessus un bot
+		else
+		{
+			if (tp.Validate_Position(*child))
+				tp.Set_Teleport_Location(linkCrd.index);
+		}
 	}
 
 	return eraseBlast;	// Détermine si on doit attendre d'erase le avant de désactivé le blast
@@ -166,12 +187,12 @@ static GridIndexIncrementor Find_First_Wall_Crd(const WallGrid &grid, const GrdC
 	GridIndexIncrementor wallCrd;
 
 	wallCrd.Initialize_All(linkCrd, dir);
-	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd);
+	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(wallCrd.index, dir);
 	return wallCrd;
 }
 
 // Créer manuellement une chaîne de murs et de Links dans une direction
-void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type, bool multipleRoot)
+void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type, GrdCoord movePlayer)
 {
 	static Wall* wall;						// Wall à activer
 	static Link* child, * parent;			// Link à activer et son child
@@ -200,12 +221,13 @@ void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls,
 			parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];
 			state = parent->Get_State();
 
-			//if (state > LinkState::FREE)								//Le parent doit être au maximum free pour activer un link
-			//	return;
+			if (Are_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent
+				if (Are_Equal(movePlayer, {-1,-1}))
+					return; //WE STOP
+				else
+				{
 
-			if (Are_Equal(P1.Get_Grd_Coord(), linkCrd.index))	// Si le joueur est sur le Link parent, WE STOP
-				return;
-
+				}
 		}
 		else
 			return;	// Ta coord n'est pas dans le grid biiiiig
@@ -222,10 +244,6 @@ void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls,
 
 			if (state == LinkState::FREE)	// LE child ne Peut pas être déjà FREE, Sinon tu connect deux Branches!!!
 			{
-				if(!multipleRoot)
-					if (Are_Both_Links_Free(parent, child)) // La fonction est un échec, tu ne peux pas activer 1 mur connectant deux branches existantes
-						return;
-
 				parent->Activate_Link(type);	// Il faut activer le parent qui n'aura en fait aucun Child
 				parent->Dsp_Link();
 				return;
@@ -371,7 +389,7 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 
 		////if (blastMod != REGULAR)
 		//{
-		//		link->Activate_Root_Link(blastMod);		// créer le link tu seul
+		//		link->Activate_Lonely_Link(blastMod);		// créer le link tu seul
 		//		link->Convert_Modifier(BLOCKER);	// ensuite le convertit
 		//		eraseBlast = true;
 		//}
@@ -399,6 +417,32 @@ void AllGrids::Buff_All_Child_Walls()
 
 // SPÉCIAL
 // * ** * * 
+
+void AllGrids::Dr_Spawngrid()// Ceci pourrait est une fonction d'affichage
+{
+	Coord crd;
+	for (int i = 0; i < 4; i++)	// Affiche Le spawn Grid
+	{
+		for (int j = 0; j < gGrids.spawnGrd.border[i].Get_Num_Spawns(); j++)
+		{
+			crd = gGrids.spawnGrd.border[i].spawn[j].Get_XY();
+
+			switch (i)
+			{
+			case 0:crd.y -= 1;break;
+			case 1:crd.x -= 2;break;
+			case 2:crd.y += 2;break;
+			case 3:crd.x += 2;break;
+
+			}
+
+			ConsoleRender::Add_String(std::to_string(j), crd);	
+		}
+	}
+
+}
+
+
 void AllGrids::Remove_All_Bots_From_Grid()	// Si tu élimine les bots artificiellement, tu dois aussi les removes
 {
 	for (int col = 0; col < gGrids.wallGrdHor.Get_Cols(); col++)

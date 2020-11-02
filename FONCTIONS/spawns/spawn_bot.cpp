@@ -27,7 +27,7 @@ static void Spawn_Da_Bot_On_Da_Coord(SpwCrd crd)
 	if (botIndex == -1)
 		throw "There is too many bots, and it's getting buggy over here";
 	else
-		botList.bot[botIndex].Create_Bot(bots_to_spawn::type, crd, gCustomBot.is);	// spawn da bot!!
+		botList.bot[botIndex].Create_Bot(bots_to_spawn::type, crd, gCustomBot.is, bots_to_spawn::instantSpawn);	// spawn da bot!!
 	// SpawnWarning Stuff???
 
 }

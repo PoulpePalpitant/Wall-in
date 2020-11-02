@@ -5,7 +5,7 @@
 #include "../UI/console_output/render_list.h"
 #include "../UI/map.h"
 #include "blast_ammo_animator.h"
-
+#include "../player/player.h"
 
 static int x = 8;	// case à droite de box limit right
 static int y = 2;	// case en dessous de box limit up
@@ -18,24 +18,39 @@ static std::string eraseNum = "    ";	// pour erase un nombre
 // fait juste changer le counter en cyan
 // draw une deuxième bar par dessus comme dans les jeux de fighter
 
+
+void BlastAmmo::Drain_Health_For_Shot()
+{
+	P1.Player_Lose_HP();
+	// ev drain health
+}
+
 bool BlastAmmo::Shoot()
 {
 	if (Is_Active())
 	{
 		if (!Ammo_Available())
-			return false;
-		else
 		{
-			ammo--;
-			DrawBlastAmmo::Dr_Ammo_Used(); // Signale d'update l'interface
+			Drain_Health_For_Shot();
 			return true;
 		}
+		ammo--;
+		DrawBlastAmmo::Dr_Ammo_Used(); // Signale d'update l'interface
+		return true;
 	}
 	else
 		return true;	// on peut tirer sans restrictions si ammo n'est pas actif
 	
 }
 
+void BlastAmmo::Add_Ammo(int amm)
+{
+	if (active == false)
+		active = true;	// devient automatiquement actif
+	
+	ammo += amm;
+	//DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié, mais différement, tu fera une animation plus tard
+}
 
 void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automatiquement le limitateur
 {	

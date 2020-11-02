@@ -324,10 +324,9 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 	int row;
 	WallGrid* wallGrid = NULL;
 
-	// Enlève ceci si ça marche pas!
+
+	DrawWalls::Finish_All();	// Si des walls devait être afficher/ ou effacer, ou finis ça NOW
 	ListsOfChainToModify::Remove_All(); // empty list of chain to modify/delete
-	DrawWalls::Finish_All();
-	DrawWalls::Remove_All();			 
 
 	annihilating = true;	// empêche la désactivation des links d'envoyer un msg à chaque fois que tu désactive un link
 

@@ -24,7 +24,7 @@
 #include "../console/sweet_cmd_console.h"
 #include "../events/global_events/ev_to_proceed.h"
 #include "../events/global_events/feedback/ev_wrong_action.h"
-
+#include "../teleporter/teleporter.h"
 
 extern bool gPauseUpdates = false;		// le state du jeu
 static std::string pauseMsg = "Hey! You PAUSED the game!";
@@ -44,7 +44,7 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 		Do_Stuff_this_Cycle();	// Bouge et spawn les bots. 
 		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
 		ListsOfChainToModify::Update_Chain_Modification();	// Un processus de destruction des murs
-
+		P1.Upd_Teleporter();	// Check si le teleporteur est détruit
 		
 		// Certaines animations 
 		// ********************
@@ -134,7 +134,7 @@ void Update_Player_Action()
 					if (!blastTransfer && !cancelBlast)	// Check si le joueur a assé d'ammo pour tirer
 					{
 						ammo = &blastP1.Get_Ammo_Manager();		// WATCHOUT, va pt retourner l'adresse d'une variable temporaire ou je sais pas trop
-						cancelBlast = !ammo->Shoot();	// Failure to shoot means we cancel that blast
+						cancelBlast = !ammo->Shoot();			// Failure to shoot means we cancel that blast
 					}
 
 					if (!cancelBlast)
@@ -157,7 +157,15 @@ void Update_Player_Action()
 					Move_Player(P1, keyDirection);	// bouge le joueuruu!
 				break;
 
+			case TELEPORT:
+				if(!blastP1.Is_Active())
+					if(!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
+						Ev_Wrong_Action_Add();			// Flash le joueur
+				break;
 			}
+
+
+			
 		}
 		else
 			if (action == UNPAUSE)

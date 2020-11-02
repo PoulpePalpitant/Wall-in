@@ -105,6 +105,7 @@ namespace DrawModifierQueue {
 		case Modifier::COLOR_A:		sym = 176;	clr = LIGHT_YELLOW;	 break;
 		case Modifier::COLOR_B: 	sym = 176;	clr = LIGHT_AQUA;	 break;
 		case Modifier::BLIND_COLOR:	sym = 176;	clr = BRIGHT_WHITE;	 break;
+
 		}
 	}
 

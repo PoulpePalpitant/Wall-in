@@ -37,8 +37,8 @@
 
 // GLOBAL
 
-MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msg qui sera interprété par les event Listeners
-
+static int msgIndex = 0;	// Va chercher l'index dans la queue de messages. Si = à tail, veut dire qu'il a atteint la fin
+MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msgIndex qui sera interprété par les event Listeners
 
 // STATIC
 MsgType MsgQueue::queue[MSG_QUEUE_SIZE];	// La liste de tout les messages enregistré pendant une frame
@@ -72,6 +72,9 @@ void MsgQueue::Register(MsgType msg)	// Ajoute le message à la liste des message
 }
 void MsgQueue::Unregister_All()
 {
+	gCurrentMsg = LITERALLY_NOTHING;	// Annule le message actuel
+	msgIndex = tail;	// Annule le dispatching de message pour cette frame
+
 	for (int i = 0; i < total; i++)
 		Unregister();
 }
@@ -80,9 +83,9 @@ void MsgQueue::Dispatch_Messages()		// Prend un message enregistré de la liste à
 {
 	if (head == tail) return;	// Liste vide
 
-	for (int msg = head; msg != tail; msg = (msg + 1) % MSG_QUEUE_SIZE)
+	for ( msgIndex = head; msgIndex != tail; msgIndex = (msgIndex + 1) % MSG_QUEUE_SIZE)
 	{
-		gCurrentMsg = queue[msg];	// Prend le message
+		gCurrentMsg = queue[msgIndex];	// Prend le message
 
 		Dispatch_To_Global();	// Global first?
 		Dispatch_To_Lvl();		// Lvl second
@@ -199,7 +202,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case SPAWN_PLAYER:	
-		Ev_Spawn_Player();		// Cinématique d'apparition du joueur
+		Set_Ev_Spawn_Player();		// Cinématique d'apparition du joueur
 		break;
 
 	case PLAYER_SPAWNED:

@@ -21,6 +21,8 @@ public:
 	bool Ammo_Available() { return ammo; }	// Can we shoot?
 	bool Shoot();	// Spend un "shot"
 	int Get_Nb_Ammo() { return ammo; }	// that amount
+	void Add_Ammo(int amm = 1);
+	void Drain_Health_For_Shot();	// Si le joueur ne possède plus d'ammo, il peut tirer encore, mais cela va drainer son nombre de vie de 1
 
 	// SET
 	void Set_Ammo(int nbShots); 

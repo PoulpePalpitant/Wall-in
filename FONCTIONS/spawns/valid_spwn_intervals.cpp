@@ -82,8 +82,7 @@ void ValidSpwnIntervals::Destroy_Empty_Interval(IntervalList& list, Interval* in
 	if (intval == list.start[border] && intval == list.end[border])	// 1 élément dans la liste
 	{
 		delete intval;									// on le delete
-
-		list.start[border] = list.end[border] = NULL;	// bonne pratique
+		intval  = list.start[border] = list.end[border] = NULL;	// bonne pratique
 
 		if (isPriority)	// POURRAIT ÊTRE POTENTIELLEMENT ÉRRONÉ
 			allPrimeEmpty = Are_Primary_Lists_Empty();	// Les listes prioritaires sont maintenant vides!
@@ -222,7 +221,7 @@ bool ValidSpwnIntervals::Exclude_Primary_Interval(int border, int min, int max)	
 	int scndaryMax = scndary.start[border]->max;	// backup du max original
 	int scndaryMin = scndary.start[border]->min;	// backup du min original
 
-	if (min == scndaryMin || scndaryMax == max)	// Exclusion de l'intervalle au complet				// Devrait pas être min <= scndaryMin && scndaryMax <= max ??
+	if (min == scndaryMin && scndaryMax == max)	// Exclusion de l'intervalle au complet				// Devrait pas être min <= scndaryMin && scndaryMax <= max ??
 		Destroy_Empty_Interval(scndary, scndary.start[border], border);// On doit détruire l'intervalle
 	else
 	{
@@ -237,6 +236,11 @@ bool ValidSpwnIntervals::Exclude_Primary_Interval(int border, int min, int max)	
 				scndary.start[border]->max = min;	//	INTERVALLE #1
 				prev = scndary.start[border];		// setup le précédant
 				Create_New_Interval(scndary, border, max + 1, scndaryMax);			// INTERVALLE #2
+				
+				if(scndary.end[border] == scndary.start[border])
+					scndary.end[border] = scndary.start[border]->nxt;
+
+				prev = scndary.end[border]->nxt = NULL;	// tout brisait à cause d'un pointeur gloabl dénommée prev. Un pointeur static de class est une véritable idée étron-esque
 			}
 	}
 

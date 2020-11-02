@@ -117,6 +117,15 @@ namespace DrawBlastAmmo {
 
 			Dr_Bar_Tip(1);	// draw them tips
 			Dr_Bar_Tip(0);
+			
+			// Draw pas la bar si ta pas d'ammo
+			if (blastP1.Get_Ammo_Manager().Get_Nb_Ammo() == 0)
+			{
+				Dr_Or_Er_Bar(MAX_BAR_SIZE, WHITE, true);	// Met la bar vide SAFETY
+				Dr_Bar_Tip(1);	// draw them tips
+				Dr_Bar_Tip(0);
+				return;
+			}
 
 			ev_DrFullBar.Activate();
 			ev_DrFullBar.Start(0);
@@ -158,7 +167,7 @@ namespace DrawBlastAmmo {
 	void Ev_Dr_Ammo_Count_From_Scratch()		 // Affiche le nombre d'ammo de manière progressive
 	{
 		static const int DURATION = 3000;	// durée de 3 secondes
-		static const float SPEED_MULTIPLIER = 1.5;	// durée de 3 secondes
+		static const float SPEED_MULTIPLIER = 2.5;	// durée de 3 secondes
 		static const float fractionsSpeed[] = { 2 / 3.f, 1 / 3.f, 1 / 6.f };	// vitesse relative à la progression
 		static const float fractionsSpeed2[] = { 1 / 2.f, 1 / 4.f, 3 / 16.f, 1 / 16.f };	// vitesse relative à la progression
 		static const int fractions = 3;
@@ -177,7 +186,13 @@ namespace DrawBlastAmmo {
 			count = 0;
 			totTime = 0;	// temps à incrémenter
 			nbShots = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();
+			
+			
 			speed = int(nbShots * (1000 * SPEED_MULTIPLIER) / 3);
+			
+			if (nbShots < 3)
+				speed *= 10;
+
 			ev_DrAmmoCountFromScratch.Activate();
 			ev_DrAmmoCountFromScratch.Start(0);
 			ev_DrAmmoCountFromScratch.delay.Start_Timer(speed, 1, true);

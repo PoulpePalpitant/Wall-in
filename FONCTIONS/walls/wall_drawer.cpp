@@ -171,12 +171,10 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 		 {
 			 ConsoleRender::Add_Char(it->xy.coord, it->sym, it->clr);
 			 it->xy.Increment_Coord();
-			 Remove(prev, it);
-			 return;
 		 }
 
-		 prev = it;
-		 it = it->nxt;	// do that
+		 Remove(prev, it);
+		 
 	 }
 
 	 start = end = NULL;

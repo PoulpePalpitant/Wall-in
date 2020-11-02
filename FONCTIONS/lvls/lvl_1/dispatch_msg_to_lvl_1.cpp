@@ -16,6 +16,7 @@
 #include "events/ev_bot_tutorial.h"
 #include "events/ev_build_start_walls.h"
 #include "../../events/global_events/ev_update_heart.h"
+#include "../../events/global_events/ev_spwn_player.h"
 
 /* Msg events*/
 #include "msg_events/ev_new_goal.h"
@@ -66,33 +67,37 @@ void Dispatch_Msg_To_Lvl_1()
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 				botList.Destroy_All_Bots();
 
-				P1.Set_Position({ 6,5 });
 
 				if (gCurrentCheckPoints[gCurrentLevel - 1] == 0)	// Si aucun checkpoint n'été atteint
 				{
+					P1.Set_Position({ 6,5 });
 					Just_Dr_Arr_Keys(); 
 					Just_Dr_Wasd();
 					P1.Er_Player();
 					Just_Dr_Map_Borders();
 					Ev_Progress_Bar();
-					
 					MsgQueue::Register(SPAWN_PLAYER);
 				}
 				else
 				{
+					P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]);
 					gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
 					Checkpoint_Delay();// Delay Next spawn
 					Ev_Progress_Bar();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
-					P1.Dr_Player();
-					MsgQueue::Register(FREE_PLAYER);
+					Set_Ev_Spawn_Player(3);
+
+					// Pour debug
+					gGrids.Dr_Spawngrid();
+
+				//	MsgQueue::Register(FREE_PLAYER);
 				}
 			}
 
-			Just_Dr_Heart();// Ev_Dr_Heart();
+			P1.Reset_Hp_And_Heart(3);// Ev_Dr_Heart();
 			blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();	// nombre de shots
 
 
-			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+			//MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
 			MsgQueue::Register(START_BOTS); // Here they come baby
 			gSkipStory = false;
 			gDayStarted = true;

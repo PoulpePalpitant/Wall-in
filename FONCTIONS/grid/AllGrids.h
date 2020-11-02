@@ -18,23 +18,24 @@ public:
 	bool areCreated = false;
 
 	// Met tout ça à zéro
-	AllGrids() : wallGrdHor(HOR) , wallGrdVer(VER)	// axe des wallgrid
+	AllGrids() : wallGrdHor(HOR), wallGrdVer(VER)	// axe des wallgrid
 	{
 		linkGrd = {};
 		spawnGrd = {};
 	}
 
+	Wall* Find_Wall_From_Link_Coord_Incrementor(GridIndexIncrementor &incre, Direction dir);					// Trouve le wall selon une pos de link et une direction
 	WallGrid* Find_Wall_Grid_From_Axis(Axis ax);								// Trouve le grid de wall qui correspond à un axe
 	WallGrid* Find_Wall_Grid_From_Direction(Direction dir);						// Trouve le grid de wall qui correspond à une direction
-	WallGrid* Find_Wall_Grid_From_Crd_Incrementor(const GridIndexIncrementor &crd);	// Trouve le grid de wall qui correspond à un axe	
+	WallGrid* Find_Wall_Grid_From_Crd_Incrementor(const GridIndexIncrementor& crd);	// Trouve le grid de wall qui correspond à un axe	
 	GrdCoord Convert_LinkCrd_To_WallCrd(GrdCoord linkCrd, Direction dir);		// Trouve un wall qui possède la même position qu'un Link avec la direction
-	GrdCoord Convert_LinkCrd_To_WallCrd(const GridIndexIncrementor &linkCrd);	// Trouve un wall qui possède la même position qu'un Link avec la polarisation et l'axe
+	GrdCoord Convert_LinkCrd_To_WallCrd(const GridIndexIncrementor& linkCrd);	// Trouve un wall qui possède la même position qu'un Link avec la polarisation et l'axe
 	void Remove_All_Bots_From_Grid();	// Si tu élimine les bots artificiellement, tu dois aussi les removes du grid
-
+	void Dr_Spawngrid();
 	bool Activate_Walls_And_Links_From_Blast(Blast* blast);	// record tout les walls et links après un blast
 	// Créer manuellement une chaîne de murs et de Links dans une direction
 	// Par défaut, chaque chaines de murs ne peuvent avoir deux origines, mais tu peux mettre la valeur multipleRoot true  pour que ce soit true... Nope, it odenst work sry
-	void Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength = WallStrength::REGULAR, Modifier mod = Modifier::REGULAR, bool multipleRoot = false);
+	void Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength = WallStrength::REGULAR, Modifier mod = Modifier::REGULAR, GrdCoord movePlayer = {-1,-1});
 
 	bool Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastMod, bool &eraseBlast);
 	void Activate_Blocker(GrdCoord crd, bool deactivate = false);	// Active un blocker sans child

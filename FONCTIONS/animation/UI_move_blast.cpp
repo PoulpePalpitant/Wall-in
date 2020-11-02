@@ -64,7 +64,7 @@ void UI_MoveBlast::Setup_Blast_Eraser(Blast* blast)
 	//{
 	//	length--;		// tu reach la bordure, d'increment 1 dernière fois le frontXY et la tailXY, il faut donc décaler de 1 pour pas effacer le link
 
-	//	//if(linkGrid->Is_Link_Here(blast->grdPos.index))	// et si tu reach la bordure et que tu atteint un blocker aussi, faut reculer encore plus. 
+	//	//if(linkGrid->Is_Link_Alive_Here(blast->grdPos.index))	// et si tu reach la bordure et que tu atteint un blocker aussi, faut reculer encore plus. 
 	//		//length--;
 
 	//}

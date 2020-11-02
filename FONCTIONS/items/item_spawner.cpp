@@ -26,7 +26,7 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool
 		if (Pick_Specific_Coord(crd))
 		{
 			availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
-			if (!linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
+			if (!linkGrid->Is_Link_Alive_Here(crd))	// Un link était sur la coord
 				found = true;
 		}
 
@@ -40,7 +40,7 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool
 				else
 					found = true;
 
-			if (linkGrid->Is_Link_Here(crd))	// Un link était sur la coord
+			if (linkGrid->Is_Link_Alive_Here(crd))	// Un link était sur la coord
 				found = false;
 		}
 
@@ -239,7 +239,7 @@ bool ItemSpawner::Find_Spawn_Location(GrdCoord &itemCrd)
 	{
 		if (Generate_Rdm_Coord(itemCrd))
 		{
-			if (!linkGrid->Is_Link_Here(itemCrd))	// Trouvé une coord !
+			if (!linkGrid->Is_Link_Alive_Here(itemCrd))	// Trouvé une coord !
 				validCrd = true;
 			else
 				availableLinks.Remove_Value(itemCrd.c, itemCrd.r);	// gotta remove it	?

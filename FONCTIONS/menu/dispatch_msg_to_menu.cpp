@@ -16,6 +16,16 @@
 #include "../UI/console_output/Test.h"
 
  int choosenLvl = 0;	
+ 
+ static void Quick_STart(int lvl, bool skip)
+ {
+	 gCurrentLevel = lvl;
+	 gSkipStory = skip;
+	 gMenuInputs = false;
+
+	 clrscr();
+	 MsgQueue::Register(PLS_INTIALIZE_LVL);	// Start le niveau sélectionné mon gars
+ }
 
 void Dispatch_Msg_To_Menu()
 {
@@ -24,7 +34,14 @@ void Dispatch_Msg_To_Menu()
 	switch (gCurrentMsg)
 	{
 						
-	case PLS_INTIALIZE_LVL:Menu_Initializer(); break;	// Initialize plein de choses
+	case PLS_INTIALIZE_LVL:
+		Menu_Initializer(); 
+		
+		// DEBUG
+		//*******
+		Quick_STart(1, true);
+
+		break;	// Initialize plein de choses
 	
 	case LVL_INITIALIZED:	
 		OBS_Draw_Game_Title();
