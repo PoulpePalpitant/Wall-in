@@ -6,6 +6,9 @@
 #include "../UI/map.h"
 #include "blast_ammo_animator.h"
 #include "../player/player.h"
+#include "../events/global_events/feedback/ev_ammo_depleted.h"
+#include "../events/global_events/feedback/ev_drain_health.h"
+
 
 static int x = 8;	// case à droite de box limit right
 static int y = 2;	// case en dessous de box limit up
@@ -22,6 +25,7 @@ static std::string eraseNum = "    ";	// pour erase un nombre
 void BlastAmmo::Drain_Health_For_Shot()
 {
 	P1.Player_Lose_HP();
+	Add_Ev_Drain_Health();
 	// ev drain health
 }
 
@@ -34,8 +38,13 @@ bool BlastAmmo::Shoot()
 			Drain_Health_For_Shot();
 			return true;
 		}
-		ammo--;
-		DrawBlastAmmo::Dr_Ammo_Used(); // Signale d'update l'interface
+
+		if (--ammo == 0)
+			Ev_Ammo_Depleted();	 // Empty!
+		else
+			DrawBlastAmmo::Dr_Ammo_Remove();// Signale d'update l'interface
+				 
+		DrawBlastAmmo::Dr_Bar_Remove();	 // Réduit pt la longueur de la bar
 		return true;
 	}
 	else

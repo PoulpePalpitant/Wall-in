@@ -84,7 +84,9 @@ void Dispatch_Msg_To_Lvl_1()
 					gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
 					Checkpoint_Delay();// Delay Next spawn
 					Ev_Progress_Bar();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
-					Set_Ev_Spawn_Player(3);
+					
+					if(gCurrentCheckPoints[gCurrentLevel - 1] != NUM_CHECKPOINT[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 
 					// Pour debug
 					gGrids.Dr_Spawngrid();

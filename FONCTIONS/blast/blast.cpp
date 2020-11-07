@@ -93,7 +93,8 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 
 	}
 
-
+	//if (ammo.Ammo_Available() == 0 /*&& lifeDrain*/)
+	//	color = Colors::LIGHT_RED;
 
 
 	// Autres types 
@@ -235,10 +236,7 @@ void Blast::UPD_Blast_Shot()
 									continue;
 								}
 								else
-								{
-									lastLinkCrd = grdPos.index;
-									redrawFfLink = true;
-								}
+									ffToRedraw.push_back(grdPos.index);
 							}
 							else
 							{
@@ -259,8 +257,12 @@ void Blast::UPD_Blast_Shot()
 
 				// ANIMATION!!! sort of
 				UI_MoveBlast::Animate_Blast(this); // Bouge le blast!
-				if (redrawFfLink)	// Lazy animation fix
-					linkGrid->link[lastLinkCrd.c][lastLinkCrd.r].Dsp_Link();
+
+				if (!ffToRedraw.empty())	// Lazy animation fix pour les force field: ceci redraw chaque forcefield rencontré par le blast
+					for (int i = 0; i < ffToRedraw.size(); i++)
+						linkGrid->link[ffToRedraw.at(i).c][ffToRedraw.at(i).r].Dsp_Link();
+
+
 
 				// PROCHAINE position XY	
 				frontXY.Increment_Coord();	// (+/- 1 dans une direction X/Y)
@@ -290,6 +292,10 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 	if (active)
 	{
 		UI_MoveBlast::Erase_Blast_Tail(this); 	// Sert principalement à effacer la tail bien franchement 
+
+		while (!ffToRedraw.empty())	// vide cette liste de merde
+			ffToRedraw.pop_back();
+
 
 	   // Après le blast!!
 		P1.Upd_Sym_From_Direction(dir);
@@ -379,7 +385,6 @@ void Blast::Clear_Blast()	// Permet d'effacer enfin le blast quand tu le cancel
 	for (int i = 0; i < toErase; i++)
 		UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
 
-	redrawFfLink = false;
 	ammo.Deactivate();
 	this->Cancel();
 }

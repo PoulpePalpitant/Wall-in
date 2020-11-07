@@ -201,9 +201,9 @@ void ListsOfChainToModify::Delete_Parents(ChainToModify* chain)	// Détruit un él
 
 	// Tous les root qui possèdent un modifiers ne seront jamais détruits...
 	if (!(chain->selectedLink->Get_Modifier() != REGULAR && chain->selectedLink->Get_State() == LinkState::ROOT))
-		chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
-	else
-		throw " im testing this here";
+		if (chain->selectedLink->Get_Modifier() != Modifier::FORCEFIELD)	// forcefields d'ont die i guess
+			chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
+
 
 	chain->parentWall->Deactivate_Wall();		 // Désactive le mur,	ensuite on attend que le mur c'est effacé continuer l'opération			
 	chain->parentWall->Set_Drawer(true);

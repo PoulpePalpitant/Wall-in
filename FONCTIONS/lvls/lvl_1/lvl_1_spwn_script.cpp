@@ -12,6 +12,7 @@
 #include "../../events/global_events/ev_warning.h"
 #include "../../events/global_events/feedback/ev_draw_map.h"
 #include "../../events/global_events/ev_wait_last_bot.h"
+#include "../../events/global_events/ev_spwn_player.h"
 
 // Cheats! sshhhhs
 #include "../../player/player.h"
@@ -143,10 +144,11 @@ void Lvl_1_Spwn_Script()
 
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 2 }, LEFT, linkGrid->Get_Cols() - 6);
 			gGrids.Make_Chain_Of_Walls({ 2, linkGrid->Get_Rows() - 2 }, UP, 3);
+			Add(6); Set_Interval(LEFT, 4, 10);instantSpawn = true;
 			break;
 
-		case 54:Add(6); Set_Interval(LEFT, 4, 10);instantSpawn = true;break;
-		case 55:Add(1);  gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;	Set_Custom_Bot(SPWN_DLAY - 15);	MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 54:Add(1);  gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;	Set_Custom_Bot(SPWN_DLAY - 15);	break;
+		case 55:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 		case 56: break; // breaky break
 
 
@@ -256,19 +258,267 @@ void Lvl_1_Spwn_Script()
 			break;
 
 		case 109:
-		case 110:
-		case 111:
-		case 112:
-		case 113:
-		case 114:
-		case 115:
-		case 116:
-		case 117:
-		case 118:
-		case 119:
-		case 120:
-		case 121:
+			gGrids.Make_Chain_Of_Walls({ 3,7 }, LEFT, 3);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4,7 }, RIGHT, 3);
 			break;
+
+			// EZ Vertical introduction!
+		case 110:Add_Spec(DOWN, spawnGrid->Get_MaxSpwnCrdX() - 1); Add_Spec(DOWN, 2);break;
+		case 111:Add_Spec(DOWN, spawnGrid->Get_MaxSpwnCrdX() - 2); Add_Spec(DOWN, 1);break;
+		case 112:Add_Spec(DOWN, spawnGrid->Get_MaxSpwnCrdX() - 3); Add_Spec(DOWN, 0);break;
+		case 113:Add_Spec(UP, 0); Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 3);break;
+		case 114:Add_Spec(UP, 1); Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 2);break;
+		case 115:Add_Spec(UP, 2); Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);break;
+		case 116:MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 117:break; 
+		
+
+			// redirect couloir au milieu
+		case 118:
+			gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 9);
+			gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 6);	// max = 9[
+			gGrids.Make_Chain_Of_Walls({ 8,10 }, UP, 3);
+			gGrids.Make_Chain_Of_Walls({ 7,10 }, UP, 2);
+			gGrids.Make_Chain_Of_Walls({ 6,10 }, UP, 4);
+			gGrids.Make_Chain_Of_Walls({ 5,10 }, UP, 5);
+			gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 6);
+			break;
+		case 119:Add_Spec(UP, 8);break;
+		case 120:Add_Spec(UP, 4);skip = 1;break;
+		case 121:Add_Spec(UP, 6);skip = 1;break;
+		case 122:Add_Spec(UP, 5);skip = 1;break;
+		case 123:Add_Spec(LEFT, 4);Add_Spec(RIGHT, 4);skip = 2;break;
+		case 124:Add_Spec(UP, 5);skip = 1;break;
+		case 125:Add_Spec(UP, 7);skip = 1;break;
+		case 126:Add_Spec(UP, 7);skip = 1;break;
+		case 127:Add_Spec(UP, 7);skip = 1;break;
+		case 128:Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);skip = 2;break;
+		case 129:Add_Spec(UP, 8);skip = 1;break;
+		case 130:Add_Spec(UP, 4);skip = 1;break;
+		case 131:Add_Spec(UP, 4);skip = 1;break;
+		case 132:Add_Spec(UP, 7);skip = 1;break;
+		case 133:Add_Spec(LEFT, 6);Add_Spec(RIGHT, 6);skip = 4;break;
+		case 134:Add_Spec(UP, 4);skip = 2;break;
+		case 135:Add_Spec(LEFT, 7);Add_Spec(UP, 4);skip = 2;break;
+		case 136:Add_Spec(UP, 8);skip = 1;break;
+		case 137:Add_Spec(LEFT, 9);Add_Spec(RIGHT, 8);Add_Spec(UP, 7);skip = 2;break;
+		case 138:Add_Spec(RIGHT, 9);skip = 3;break;
+		case 139:Add(9);Set_Interval(DOWN, 0, 9); MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
+		case 140:break;
+
+
+			// Challenging teleporting all sides
+		case 141:Add_Spec(LEFT, 2); Set_Custom_Bot(SPWN_DLAY / 2);break;
+		case 142:Add_Spec(UP, 8); Add_Spec(UP, 9); skip = 1; break;
+		case 143:Add_Spec(UP, 1);skip = 1;break;
+		case 144:Add_Spec(LEFT, 1); Add_Spec(LEFT, 2); skip = 4;break;
+		case 145:Add_Spec(LEFT, 13);skip = 1;break;
+		case 146:Add_Spec(DOWN, 1); Add_Spec(DOWN, 2); skip = 4;break;
+		case 147:Add_Spec(DOWN, 11);skip = 2;break;
+		case 148:Add_Spec(DOWN, 8);Add_Spec(DOWN, 9); Add_Spec(RIGHT, 11);skip = 5;break;
+		case 149:Add_Spec(RIGHT, 5); skip = 1; break;
+		case 150:Add_Spec(UP, 11);	skip = 1;break;
+		case 151:Add_Spec(RIGHT, 3);skip = 4; break;
+		case 152:Add_Spec(UP, 11); break;
+		case 153:Add_Spec(RIGHT, 1);break;
+		case 154:Add_Spec(RIGHT, 0);MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 155:break;
+
+
+			// 2 long wall d'obstacle
+		case 156:
+			gGrids.Make_Chain_Of_Walls({ 3,14 }, UP, 14);
+			gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 14);	
+			break;
+
+		case 157:Add_Spec(RIGHT, 0);Add_Spec(RIGHT, 1);break;
+		case 158:Add_Spec(RIGHT, 4);Add_Spec(RIGHT, 5);break;
+		case 159:Add_Spec(UP, 9); Add_Spec(UP, 10); skip = 2; break;
+		case 160:Add_Spec(RIGHT, 0);Add_Spec(RIGHT, 1);skip = 2; break;
+		case 161:Add_Spec(UP, 9);Add_Spec(UP, 10);Add_Spec(UP, 11);break;
+		case 162:Add_Spec(RIGHT, 0);skip = 2;;break;
+		case 163:Add(6);Set_Interval(DOWN, 3, 9); skip = 12;break;
+		case 164:Add_Spec(UP, 0);Add_Spec(UP, 1); break;
+		case 165:Add_Spec(LEFT, 13);break;
+		case 166:Add_Spec(LEFT, 10);Add_Spec(LEFT, 9);skip = 3; break;
+		case 167:Add_Spec(UP, 0);Add_Spec(UP, 1);Add_Spec(UP, 2);break;
+		case 168:Add_Spec(LEFT, 8);Add_Spec(LEFT, 7);skip = 3;break;
+		case 169:Add_Spec(LEFT, 13); skip = 12; break;
+		case 170:Add(12);Set_Interval(UP, 0, linkGrid->Get_Cols() - 1); MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 171:break;
+
+
+			// Super hard: mais différent des autres, juste avant le FINAL HOUR 
+			// Static shoot dans tout les sens
+			// 1-12 LEFT/RIGHT
+			// 1-10	UP/DOWN 
+		case 172:
+			gGrids.Make_Chain_Of_Walls({ 6,1 }, UP, 1);
+			gGrids.Make_Chain_Of_Walls({ 6,13 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ 1,7 }, LEFT, 1);
+			gGrids.Make_Chain_Of_Walls({ 11,7 }, RIGHT, 1);
+			break;
+		case 173:Add_Spec(UP, 10);break;
+		case 174:Add_Spec(LEFT, 1);break;
+		case 175:Add_Spec(DOWN, 1);break;
+		case 176:Add_Spec(RIGHT, 12);skip = 2;break;
+		case 177:Add_Spec(UP, 10);break;
+		case 178:Add_Spec(LEFT, 1);break;
+		case 179:Add_Spec(DOWN, 1);break;
+		case 180:Add_Spec(DOWN, 10);skip = 1;break;
+		case 181:Add_Spec(RIGHT, 1);break;
+		case 182:Add_Spec(UP, 1);break;
+		case 183:Add_Spec(RIGHT, 12);break;
+		case 184:Add_Spec(UP, 1);break;
+		case 185:Add_Spec(UP, 10);break;
+		case 186:Add_Spec(LEFT, 1);break;
+		case 187:Add_Spec(LEFT, 1);break;
+		case 188:Add_Spec(DOWN, 10);break;
+		case 189:Add_Spec(LEFT, 12);break;
+		case 190:Add_Spec(UP, 1);break;
+		case 191:Add_Spec(LEFT, 12); skip = 3;break;
+		case 192:Add_Spec(DOWN, 10);break;
+		case 193:Add_Spec(RIGHT, 12);break;
+		case 194:Add_Spec(LEFT, 2);break;
+		case 195:Add_Spec(UP, 9);break;
+		case 196:Add_Spec(RIGHT, 11);break;
+		case 197:Add_Spec(DOWN, 2);skip = 12; break;
+		case 198:Add_Spec(UP, 4);Add_Spec(DOWN, 7);Add_Spec(LEFT, 5);Add_Spec(RIGHT, 8); MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 199://MsgQueue::Register(FINAL_PUSH); skip = 10;break;
+		case 200:
+			MsgQueue::Register(LOCK_PLAYER);
+			P1.Er_Player();
+			break;	// THE FINAL CHALLENGE IS HERE HAHAHAHAHAH
+			
+			// Mur de forcefield
+		case 201:
+			Set_Ev_Spawn_Player(3);
+			for (int r = 0; r < linkGrid->Get_Rows(); r++)
+				linkGrid->link[6][r].Activate_Lonely_Link(Modifier::FORCEFIELD);	// Créer une root ici
+
+			skip = 15;
+			break;
+
+
+		case 202:Add(1);skip = 4;break;
+		case 203:Add(1);skip = 4;break;
+		case 204:Add(1);skip = 4;break;
+		case 205:Add(1);skip = 4;break;
+		case 206:Add(1);skip = 4;break;
+		case 207:Add(1);skip = 4;break;
+		case 208:Add(1);skip = 4;break;
+		case 209:Add(1);skip = 4;break;
+		case 210:Add(1);skip = 4;break;
+		case 211:Add(1);skip = 4;break;
+		case 212:Add(1);skip = 4;break;
+		case 213:Add(1);skip = 4;break;
+		case 214:Add(1);skip = 4;break;
+		case 215:Add(1);skip = 4;break;
+		case 216:Add(1);skip = 4;break;
+		case 217:Add(1);skip = 4;break;
+		case 218:Add(1);skip = 4;break;
+		case 219:Add(1);skip = 4;break;
+		case 220:Add(1);skip = 4;break;
+		case 221:Add(1);skip = 4;break;
+		case 222:Add(1);skip = 4;break;
+		case 223:Add(1);skip = 4;break;
+		case 224:Add(1);skip = 4;break;
+		case 225:Add(1);skip = 4;break;
+		case 226:Add(1);skip = 4;break;
+		case 227:Add(1);skip = 4;break;
+		case 228:Add(1);skip = 4;break;
+		case 229:Add(1);skip = 4;break;
+		case 230:Add(1);skip = 4;break;
+		case 231:Add(1);skip = 4;break;
+		case 232:Add(1);skip = 4;break;
+		case 233:Add(1);skip = 4;break;
+		case 234:Add(1);skip = 4;break;
+		case 235:Add(1);skip = 4;break;
+		case 236:Add(1);skip = 4;break;
+		case 237:Add(1);skip = 4;break;
+		case 238:Add(1);skip = 4;break;
+		case 239:Add(1);skip = 4;break;
+		case 240:Add(1);skip = 4;break;
+		case 241:Add(1);skip = 4;break;
+		case 242:Add(1);skip = 4;break;
+		case 243:Add(1);skip = 4;break;
+		case 244:Add(1);skip = 4;break;
+		case 245:Add(1);skip = 4;break;
+		case 246:Add(1);skip = 4;break;
+		case 247:Add(1);skip = 4;break;
+		case 248:Add(1);skip = 4;break;
+		case 249:Add(1);skip = 4;break;
+		case 250:	// VICTORY IS OURS HAHAHAHAHAHAH
+			MsgQueue::Register(STOP_BOT_SPAWNS); 
+			Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
+			break;
+																													  
+																													  
+			
+			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
+
+
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			// mix et teleporter
+			// Mix égal entre vertical et horizontal ez
+			// Mix égal entre vertical et horizontal HARD
+			//#2 Pleins de ligne verticales, tu dois redirect pour protéger la base horizontale
+			// 1 autre redirect mais plus hard
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -464,45 +714,6 @@ void Lvl_1_Spwn_Script()
 		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3); Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;	// Spawn Left Now
 		////puzzle end------------------------------------------------------------------
 		
-
-		////PUZZLE START------------------------------------------------------------------
-		//case 19:Add(1);gBoxSide = LEFT; break;
-		//case 20:Add(1);gBoxSide = RIGHT;skip = 1; break;
-		//case 21:Add(1);gBoxSide = LEFT; break;
-		//case 22:Add(1);gBoxSide = RIGHT;skip = 1; break;
-		//case 23:Add(1);gBoxSide = LEFT; break;
-		//case 24:Add(1);gBoxSide = RIGHT; skip = 1;  break;
-		//case 25:Add(1);gBoxSide = LEFT; break;
-		//case 26:Add(1); gBoxSide = RIGHT;skip = 1; break;
-		//case 27:Add(1);gBoxSide = LEFT; break;
-		//case 28:Add(1); gBoxSide = RIGHT;skip = 1; break;
-		//case 29: gNumSpawnTOT = 0;break;
-		////puzzle end------------------------------------------------------------------
-
-		//////PUZZLE START------------------------------------------------------------------
-		//Add(1); Set_Interval(RIGHT,5,6);break;
-		//Add(1); Set_Interval(RIGHT,5,6);break;
-		//Add(1); Set_Interval(RIGHT,5,6);break;
-		//Add(1); Set_Interval(RIGHT, 5, 6); skip = 3; break;
-		//Add(1); Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		//Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break; //Set_Interval(RIGHT, 9,10);
-		//Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		//Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-		//Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 3; break;
-			////puzzle end------------------------------------------------------------------
-
-		////PUZZLE START------------------------------------------------------------------
-		//Set_Interval(LEFT, 2, 3); Add(2); break;
-		//Set_Interval(LEFT, 2,4); Add(2); break;
-		//Set_Interval(LEFT, 2,5); Add(2); break;
-		//Set_Interval(LEFT, 2,6); Add(2); break;
-		//Set_Interval(LEFT, 2, 7); Add(2); skip = 3; break;
-		//Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 3, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(1);break;
-		//Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 4, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(1);break;
-		//Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 5, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
-		//Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 6, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
-		//gNumSpawnTOT = 0; 	MsgQueue::Register(CHECKPOINT_REACHED); break;
-		////puzzle end------------------------------------------------------------------
 
 		//case 50:			
 		//	ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 1,1 }); // Spawn de la vie ici?

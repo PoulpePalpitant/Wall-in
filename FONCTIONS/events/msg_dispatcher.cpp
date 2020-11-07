@@ -18,7 +18,7 @@
 #include "global_events/ev_start_bots.h"
 #include "global_events/ev_block_inputs.h"
 #include "global_events/ev_spwn_player.h"
-#include "global_events/ev_final_push.h"
+#include "global_events/ev_final_hour_1.h"
 #include "global_events/ev_resize_from_grids.h"
 #include "../items/item_spw_drawer.h"			// spawner les items
 #include "../blast/mod_queue_animator.h"
@@ -29,6 +29,10 @@
 #include "global_events/ev_back_to_menu.h"
 #include "global_events/ev_checkpoint.h"
 #include "../time/spawn_cycle.h"
+#include "global_events/feedback/ev_red_borders.h"
+
+
+
 
 // other necessities
 #include "../time/cycles.h"
@@ -123,7 +127,11 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case FINAL_PUSH: 
-		Ev_Final_Push(); // Msg que la dernière attaque s'en vient
+		if (gCurrentLevel < 3)
+		{
+			Ev_Final_Hour_1(); // Msg que la dernière attaque s'en vient
+			//Ev_Red_Borders();	// Threathening!
+		}
 		break;
 
 	case PRESSED_ENTER: 

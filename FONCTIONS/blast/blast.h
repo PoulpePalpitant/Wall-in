@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "../grid/grd_incrementor.h"
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
@@ -45,8 +46,7 @@ class Blast
 	BlastAmmo ammo;	// Fixe une limit de blast que le joueur peut faire. Si vide, il ne peut tirer
 
 	// STUPID FIX
-	bool redrawFfLink = false;	// Doit redraw le link forcefield précédant qui fut raversé
-	GrdCoord lastLinkCrd = {};	// dernier link reach
+	std::vector<GrdCoord> ffToRedraw;
 
 	//UI
 	unsigned char sym;		// Le symbole du blast sera unique et répété(juste une longue ligne)

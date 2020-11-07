@@ -139,7 +139,7 @@ bool Link::Activate_Lonely_Link(Modifier mod)
 	modifier = mod;
 	
 	if (mod == Modifier::FORCEFIELD)
-		state = LinkState::FREE;
+		state = LinkState::ROOT;	// this doesnt matter i think
 	else
 		Set_State(NULL);				// Set le state de root
 

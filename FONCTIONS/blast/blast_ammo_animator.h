@@ -40,47 +40,48 @@ namespace DrawBlastAmmo {
 	//extern int barX;				// Position en x de la bar
 	//extern int yOriBar;			// Le point d'origine d'où va s'afficher la bar
 
-	struct Drawer
-	{
-		unsigned char sym;
-		Colors clr;
-		SpeedTimer timer;
-		int currStep = 0;
-		bool active = false;
-	};
+	//struct Drawer
+	//{
+	//	unsigned char sym;
+	//	Colors clr;
+	//	SpeedTimer timer;
+	//	int currStep = 0;
+	//	bool active = false;
+	//};
 
-	class DrawerQueue
-	{
-		friend void Clear_All_States(bool eraseMap);	// Gros reset button
+	//class DrawerQueue
+	//{
+	//	friend void Clear_All_States(bool eraseMap);	// Gros reset button
 
-		int animationSteps;
-		int MAX_QUEUE = 0;	// devrait être const sérieurx
-		int total = 0;
+	//	int animationSteps;
+	//	int MAX_QUEUE = 0;	// devrait être const sérieurx
+	//	int total = 0;
 
-		void Remove_All();
-	public:
-		Drawer* queue;			// public stuff
-		int Get_Total() { return total; }
-		void Step(int index, int speed = 0, int steps = 1, bool infinite = false);		// Avance l'event d'un step
-		void Cancel(Coord XY);		// Stop l'animation sur cette position
-		bool Add(Coord XY);		// Ajoute un élément à draw
-		void Remove(int index);
+	//	void Remove_All();
+	//public:
+	//	Drawer* queue;			// public stuff
+	//	int Get_Total() { return total; }
+	//	void Step(int index, int speed = 0, int steps = 1, bool infinite = false);		// Avance l'event d'un step
+	//	void Cancel(Coord XY);		// Stop l'animation sur cette position
+	//	bool Add(Coord XY);		// Ajoute un élément à draw
+	//	void Remove(int index);
 
-		DrawerQueue(int MAX, int steps)
-		{
-			MAX_QUEUE = MAX;
-			animationSteps = steps;
-			queue = new Drawer[MAX];
-		}
+	//	DrawerQueue(int MAX, int steps)
+	//	{
+	//		MAX_QUEUE = MAX;
+	//		animationSteps = steps;
+	//		queue = new Drawer[MAX];
+	//	}
 
-		~DrawerQueue()
-		{
-			delete[] queue;
-		}
-	};
+	//	~DrawerQueue()
+	//	{
+	//		delete[] queue;
+	//	}
+	//};
 
 	Colors Get_Bar_Treshold_Color(int barLength);	// Retourne la couleur que la bar aurait selon une longueur
 	Colors Get_Ammo_Treshold_Color(int currAmmo);	// Retourne la couleur que le compteur d'ammo aurait selon le nombre de tir fait
+	Coord Get_Ori();		// Permet de trouver la coord d'origine d'où on va afficher la bar. Cette crd se fit elle même au coin HAUT_DROIT de la map. 
 
 
 

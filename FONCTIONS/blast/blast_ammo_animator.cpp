@@ -1,9 +1,11 @@
+#include <math.h>
 #include "blast_ammo_animator.h"
 #include "../time/timerOP.h"
-#include <math.h>
 
 #include "../UI/map.h"
 #include "../events/events.h"
+#include "../events/global_events/feedback/ev_ammo_depleted.h"
+
 
 namespace DrawBlastAmmo {
 
@@ -27,7 +29,7 @@ namespace DrawBlastAmmo {
 	int barLength = MAX_BAR_SIZE;	// Dimension de la bar actuelle
 
 
-	static Coord Get_Ori()		// Permet de trouver la coord d'origine d'où on va afficher la bar. Cette crd se fit elle même au coin HAUT_DROIT de la map. 
+	Coord Get_Ori()		// Permet de trouver la coord d'origine d'où on va afficher la bar. Cette crd se fit elle même au coin HAUT_DROIT de la map. 
 	{
 		return { map.Get_Box_Limit(RIGHT) + mapToBar, (map.Get_Box_Limit(UP) - 1) };
 	}
@@ -351,7 +353,7 @@ namespace DrawBlastAmmo {
 	void Show_Ammo_UI(bool instant)
 	{
 		int ammo = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();	// Nombre de munitions du joueur
-
+		Cancel_Ev_Ammo_Depleted();
 
 		barLength = MAX_BAR_SIZE;	// Cette size pourrait être relative
 		ratioBarPerAmmo = (ammo / (double)barLength  );

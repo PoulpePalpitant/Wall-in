@@ -6,7 +6,7 @@
 #include "../msg_dispatcher.h"
 #include "../../UI/console_output/render_list.h"
 #include "../../UI/map.h"
-#include "ev_final_push.h"
+#include "ev_final_hour_1.h"
 #include "../../lvls/lvl_script.h"
 
 
@@ -35,7 +35,7 @@ static int waitForNxtSpawn;			// Pendant un break, Si le total de spawn dépasse 
 
 // UI
 static const std::string tip[2] = { "  > "," <  " };
-static const int barLength = 70;	// Dimension de la bar
+static const int barLength = 100;	// Dimension de la bar
 static Coord crd;
 static Colors barProgClr;	// // Est jaune. Devient rouge durant le fianl hour
 
@@ -244,6 +244,7 @@ void Ev_Progress_Bar()
 				return;
 			}
 
+			// if final hour?
 			if (gSpawnCycleTot == FINALHOUR[gCurrentLevel - 1])
 			{
 				if (barProgClr != LIGHT_RED) // dumb condition, but understandable
@@ -256,7 +257,6 @@ void Ev_Progress_Bar()
 				continue;
 			}
 
-			// if final hour?
 			if (ev_BreakAnimation.Is_Active())	// Si l'animation de break est active
 			{
 				if (waitForNxtSpawn != gSpawnCycleTot)	// Faut attendre le prochain spawn

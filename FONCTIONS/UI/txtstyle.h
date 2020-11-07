@@ -120,3 +120,14 @@ int Jerry_Txt_Y(int line = 0);
 void Erase_All_Jerry_Txt();
 
 void Erase_Right_Text();
+
+void Dr_Or_Er_Title(const std::string* title, Coord start, int layers = STANDARD_ASCII_SIZE, Colors clr = WHITE, bool erase = false);	// Affiche 1 title qui à cet forme:
+//"----___________ --_____ ---__--",		espace vide: vont être draw	
+//"---/ ____/  _/ |-/ /   |--/ /--",		tiret	: ne sera pas draw
+//"--/ /_---/ //  |/ / /| |-/ /---",		AScii art generator sur google génère le art, tu remplis les trous avec des tirets, À LA MAIN! 
+//"-/ __/-_/ // /|  / ___ |/ /___-",		Faut avoir le nombre exact de char pour chaque lignes
+//"/_/---/___/_/-|_/_/---|_/_____/|",		si ta deux char comme ça en jaune	\\	= 1 char
+//"--------------------------------"		Why am i doing this to myself? DAMN YOU CONSOLE! 
+
+// Affiche un title à la con, mais juste 1 ligne de celle-ci, et selon une vitesse, et créer 1 string à chaque fois pour effacer les tirets de merde, et semble vraiment slow
+void Dr_Or_Er_Title_Line(const std::string* title, Coord start, int line, Colors clr = WHITE, int speed = 0, bool erase = false);
