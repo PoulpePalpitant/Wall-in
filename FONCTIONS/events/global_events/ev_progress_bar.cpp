@@ -149,7 +149,11 @@ void Ev_Draw_Whole_Bar_Fast()	// Happens first
 
 		ev_DrawWholeBarFast.Activate();
 		ev_DrawWholeBarFast.Start(0);
-		ev_DrawWholeBarFast.delay.Start_Timer(200000, NUMWAVES[gCurrentLevel - 1]);
+
+		//if (gSpawnCycleTot >= FINALHOUR[gCurrentLevel - 1] - 5)
+		//	ev_DrawWholeBarFast.delay.Start_Timer(200000 * 5, NUMWAVES[gCurrentLevel - 1]);
+		//else
+			ev_DrawWholeBarFast.delay.Start_Timer(200000, NUMWAVES[gCurrentLevel - 1]);
 	}
 	else
 		while (ev_DrawWholeBarFast.delay.Tick())

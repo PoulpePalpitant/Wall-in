@@ -10,7 +10,7 @@ ItemSpawnPool ItemSpawner::pool = {};
 bool ItemSpawner::pause = false;	// permet de pauser les updates
 
 
-bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool noanimation)	// Bypass la pool et le timer pour faire spawner un item
+bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool noanimation, bool rdmCoord)	// Bypass la pool et le timer pour faire spawner un item
 {
 	Item item;
 	item.itemType = type;	// that's my type
@@ -23,12 +23,13 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool
 		availableLinks.Reset_All_Lists();	// refresh that shit
 		Items_Exclusion();			// Exclut les items déjà présents
 
-		if (Pick_Specific_Coord(crd))
-		{
-			availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
-			if (!linkGrid->Is_Link_Alive_Here(crd))	// Un link était sur la coord
-				found = true;
-		}
+		if(!rdmCoord)
+			if (Pick_Specific_Coord(crd))
+			{
+				availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
+				if (!linkGrid->Is_Link_Alive_Here(crd))	// Un link était sur la coord
+					found = true;
+			}
 
 		while (!found)
 		{
@@ -128,6 +129,44 @@ bool ItemSpawner::Remove_From_Pool(ItemType type)
 	 spawner.rdmDelay = rngDelay;
 	 spawner.timer.Start_Timer(timerduration);	// start le timer aussi?
  }
+
+ bool ItemSpawner::Set_Spawner_Timer(ItemType type, int timerduration, int rngDelay)
+ {
+	 TypeSpawner* spawner = NULL;
+
+	 for (int i = 0; i < pool.size; i++)
+	 {
+		 if (pool.spawner[i].type == type)
+			 spawner = &pool.spawner[i];
+	 }
+
+	 if (spawner)
+	 {
+		 spawner->spwSpeed = timerduration;
+		 spawner->rdmDelay = rngDelay;
+		 spawner->timer.Start_Timer(timerduration);	// start le timer aussi?
+		 return true;
+	 }
+	 else
+		 return false;
+ }
+
+
+ // Va chercher le spawner selon le type
+ TypeSpawner* ItemSpawner::Get_Spawner(ItemType type) 
+ {
+	 TypeSpawner* spawner = NULL;
+
+	 for (int i = 0; i < pool.size; i++)
+	 {
+		 if (pool.spawner[i].type == type)			
+			 return spawner = &pool.spawner[i];	
+	 }
+
+	return spawner;
+ }
+
+
 
  int ItemSpawner::Add_Delay(TypeSpawner * spawner)	// ajoute du délay sur le prochain spawn
  {

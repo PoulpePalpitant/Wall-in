@@ -126,7 +126,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		Ev_Reach_Checkpoint();
 		break;
 
-	case FINAL_PUSH: 
+	case FINAL_HOUR: 
 		if (gCurrentLevel < 3)
 		{
 			Ev_Final_Hour_1(); // Msg que la dernière attaque s'en vient

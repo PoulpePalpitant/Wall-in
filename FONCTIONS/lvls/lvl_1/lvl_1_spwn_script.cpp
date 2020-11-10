@@ -30,8 +30,13 @@
 
 using namespace bots_to_spawn;
 
+// stupid stuff that should'nt be here, but the convenience is too great
 static int spw;
 static int box;
+static GrdCoord crd;
+static std::string codeRecycling = "(Don't Let The Shapes Reach This Border)";
+static bool seenFinalHour = false;
+
 
 void Lvl_1_Spwn_Script()
 {
@@ -45,14 +50,8 @@ void Lvl_1_Spwn_Script()
 		//	spawnGrid->Get_MaxSpwnCrdY() - 1
 		//Add(300);
 		
-		if (numSpawnWaves < 67) // Tout les spawns seront verticaux jusqu'au final push du level
-		{
-			gVerticalBorder = true;
-		}
-		else
-		{
+		if (numSpawnWaves < 220) // Tout les spawns seront verticaux lors de la moitié du final hour
 			gHorizontalBorder = true;
-		}
 		
 		switch (numSpawnWaves)
 		{	
@@ -60,12 +59,19 @@ void Lvl_1_Spwn_Script()
 
 		////PUZZLE START------------------------------------------------------------------
 			// Tirer au milieu!
-		case 1: Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 2; // Erase la border seulement si le joueur est en mode quickstartS
+		case 1: 
+			Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 2; // Erase la border seulement si le joueur est en mode quickstartS
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 3);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 3);
 			break; 
 			    
-		case 2: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+		case 2: 
+			// Présentation des mécaniques de bases pour le noob qui skip le tutorial
+			Set_Flashy_Border(LEFT);
+			Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
+			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR);
+			Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+
 		case 3: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 4: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 1; break;
 		case 5: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
@@ -74,6 +80,8 @@ void Lvl_1_Spwn_Script()
 		case 8: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2;
+			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR,true);	// erase le message
+
 			MsgQueue::Register(CHECKPOINT_REACHED);
 			break;
 		
@@ -383,51 +391,58 @@ void Lvl_1_Spwn_Script()
 		case 195:Add_Spec(UP, 9);break;
 		case 196:Add_Spec(RIGHT, 11);break;
 		case 197:Add_Spec(DOWN, 2);skip = 12; break;
-		case 198:Add_Spec(UP, 4);Add_Spec(DOWN, 7);Add_Spec(LEFT, 5);Add_Spec(RIGHT, 8); MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-		case 199://MsgQueue::Register(FINAL_PUSH); skip = 10;break;
-		case 200:
-			MsgQueue::Register(LOCK_PLAYER);
-			P1.Er_Player();
-			break;	// THE FINAL CHALLENGE IS HERE HAHAHAHAHAH
-			
-			// Mur de forcefield
-		case 201:
-			Set_Ev_Spawn_Player(3);
-			for (int r = 0; r < linkGrid->Get_Rows(); r++)
-				linkGrid->link[6][r].Activate_Lonely_Link(Modifier::FORCEFIELD);	// Créer une root ici
+		case 198:Add_Spec(UP, 4);Add_Spec(DOWN, 7);Add_Spec(LEFT, 5);Add_Spec(RIGHT, 8); MsgQueue::Register(CHECKPOINT_REACHED);break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 199: break;
+		case 200:MsgQueue::Register(LOCK_PLAYER);P1.Er_Player();break;	
+		case 201:break;
 
-			skip = 15;
+		case 202:
+			// THE FINAL CHALLENGE IS HERE HAHAHAHAHAH
+			if (!seenFinalHour)
+			{
+				MsgQueue::Register(FINAL_HOUR);	// montre ça juste une fois, EVER
+				seenFinalHour = true;
+			}
+			skip = 10;
 			break;
 
+		case 203:
+			Set_Ev_Spawn_Player(3);
+			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,4 });
+			skip = 5;
+			break;
 
-		case 202:Add(1);skip = 4;break;
-		case 203:Add(1);skip = 4;break;
-		case 204:Add(1);skip = 4;break;
-		case 205:Add(1);skip = 4;break;
-		case 206:Add(1);skip = 4;break;
-		case 207:Add(1);skip = 4;break;
-		case 208:Add(1);skip = 4;break;
+		case 204:
+			ItemSpawner::Add_To_Pool(ItemType::HEALTH, 600, 0);
+			MsgQueue::Register(ENABLE_ITEM_SPAWN);
+			skip = 7;
+			break;
+
+		case 205:Add(1);skip = 1;break;
+		case 206:Add(1);skip = 2;break;
+		case 207:Add(1);skip = 2;break;
+		case 208:Add(1);skip = 3;break;
 		case 209:Add(1);skip = 4;break;
-		case 210:Add(1);skip = 4;break;
-		case 211:Add(1);skip = 4;break;
-		case 212:Add(1);skip = 4;break;
-		case 213:Add(1);skip = 4;break;
-		case 214:Add(1);skip = 4;break;
-		case 215:Add(1);skip = 4;break;
+		case 210:Add(1);skip = 1;break;
+		case 211:Add(1);skip = 1;break;
+		case 212:Add(1);skip = 1;break;
+		case 213:Add(1);skip = 1;break;
+		case 214:Add(1);skip = 1;break;
+		case 215:Add(1);skip = 1;break;
 		case 216:Add(1);skip = 4;break;
 		case 217:Add(1);skip = 4;break;
 		case 218:Add(1);skip = 4;break;
 		case 219:Add(1);skip = 4;break;
-		case 220:Add(1);skip = 4;break;
-		case 221:Add(1);skip = 4;break;
-		case 222:Add(1);skip = 4;break;
-		case 223:Add(1);skip = 4;break;
-		case 224:Add(1);skip = 4;break;
-		case 225:Add(1);skip = 4;break;
-		case 226:Add(1);skip = 4;break;
-		case 227:Add(1);skip = 4;break;
-		case 228:Add(1);skip = 4;break;
-		case 229:Add(1);skip = 4;break;
+		case 220:ItemSpawner::Set_Spawner_Timer(ItemType::HEALTH, 1000, 0);break;	// Augmente vitesse des spawnsAdd(1);skip = 3;break;
+		case 221:Add(1);skip = 3;break;
+		case 222:Add(1);skip = 3;break;
+		case 223:Add(1);skip = 3;break;
+		case 224:Add(1);skip = 3;break;
+		case 225:Add(1);skip = 3;break;
+		case 226:Add(1);skip = 3;break;
+		case 227:Add(1);skip = 3;break;
+		case 228:Add(1);skip = 3;break;
+		case 229:Add(1);skip = 3;break;
 		case 230:Add(1);skip = 4;break;
 		case 231:Add(1);skip = 4;break;
 		case 232:Add(1);skip = 4;break;
@@ -435,19 +450,19 @@ void Lvl_1_Spwn_Script()
 		case 234:Add(1);skip = 4;break;
 		case 235:Add(1);skip = 4;break;
 		case 236:Add(1);skip = 4;break;
-		case 237:Add(1);skip = 4;break;
-		case 238:Add(1);skip = 4;break;
-		case 239:Add(1);skip = 4;break;
-		case 240:Add(1);skip = 4;break;
-		case 241:Add(1);skip = 4;break;
-		case 242:Add(1);skip = 4;break;
-		case 243:Add(1);skip = 4;break;
-		case 244:Add(1);skip = 4;break;
-		case 245:Add(1);skip = 4;break;
-		case 246:Add(1);skip = 4;break;
-		case 247:Add(1);skip = 4;break;
-		case 248:Add(1);skip = 4;break;
-		case 249:Add(1);skip = 4;break;
+		case 237:Add(1);skip = 3;break;
+		case 238:Add(1);skip = 3;break;
+		case 239:Add(1);skip = 3;break;
+		case 240:Add(1);skip = 3;break;
+		case 241:Add(1);skip = 3;break;
+		case 242:Add(1);skip = 3;break;
+		case 243:Add(1);skip = 2;break;
+		case 244:Add(1);skip = 2;break;
+		case 245:Add(1);skip = 2;break;
+		case 246:Add(1);skip = 1;break;
+		case 247:Add(1);skip = 1;break;
+		case 248:Add(1);skip = 1;break;
+		case 249:Add(1);break;
 		case 250:	// VICTORY IS OURS HAHAHAHAHAHAH
 			MsgQueue::Register(STOP_BOT_SPAWNS); 
 			Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
