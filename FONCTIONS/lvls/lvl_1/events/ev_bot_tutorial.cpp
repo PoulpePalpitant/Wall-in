@@ -80,8 +80,6 @@ static std::string _9 =  "Will Help Us With The Demonstration";
 	#idée ta très peu de temps pour arrêter des bots, et il faut que tu te stack perpendiculairement pour le faire et non spammer
 */
 
-
-
 static std::string _10 = "Now Try To Build Some Walls";
 static std::string _11 = "Jerry It's Your Turn Now";
 static std::string _12 = "You Got This Jerry!";

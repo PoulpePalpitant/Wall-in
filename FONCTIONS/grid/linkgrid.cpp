@@ -46,7 +46,7 @@ void LinkGrid::Resize(int col, int row)
 
 
 // CHECK: si la position actuelle sur le grid contient un Link vivant
-int LinkGrid::Is_Link_Here(GrdCoord crd)			// WHERE IS LINK? I CAN'T FIND HIM!?
+int LinkGrid::Is_Link_Alive_Here(GrdCoord crd)			// WHERE IS LINK? I CAN'T FIND HIM!?
 {																									
 	if (!Is_Inbound(crd))	// Doit tjrs vérifier si la crd est INBOUND	
 		return -1;

@@ -10,7 +10,7 @@
 //const int START_Y = 8;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du MAIN grid
 
 int START_X = 54;	// Dépend de l'écran du joueur mon gars!!!!
-int START_Y = 8;	// Dépend de l'écran du joueur mon gars!!!!
+int START_Y = 9;	// Dépend de l'écran du joueur mon gars!!!!
 
 const int DELTA_X = 5;	// Distance séparant chaque point du du Main Grid en X 
 const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer sur cette distance

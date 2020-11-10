@@ -26,7 +26,7 @@ public:
 	Drawer * queue;			// public stuff
 	int Get_Total() { return total; }
 	void Step(int index, int speed = 0, int steps = 1, bool infinite = false);		// Avance l'event d'un step
-	void Cancel(Coord XY);		// Stop l'animation de l'item sur cette position
+	void Cancel(Coord XY);		// Stop l'animation sur cette position
 	bool Add(Coord XY);		// Ajoute un élément à draw
 	void Remove(int index);
 
@@ -41,5 +41,4 @@ public:
 	{
 		delete [] queue;
 	}
-
 };

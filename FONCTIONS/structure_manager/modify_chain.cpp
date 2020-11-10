@@ -201,9 +201,9 @@ void ListsOfChainToModify::Delete_Parents(ChainToModify* chain)	// Détruit un él
 
 	// Tous les root qui possèdent un modifiers ne seront jamais détruits...
 	if (!(chain->selectedLink->Get_Modifier() != REGULAR && chain->selectedLink->Get_State() == LinkState::ROOT))
-		chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
-	else
-		throw " im testing this here";
+		if (chain->selectedLink->Get_Modifier() != Modifier::FORCEFIELD)	// forcefields d'ont die i guess
+			chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
+
 
 	chain->parentWall->Deactivate_Wall();		 // Désactive le mur,	ensuite on attend que le mur c'est effacé continuer l'opération			
 	chain->parentWall->Set_Drawer(true);
@@ -324,10 +324,9 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 	int row;
 	WallGrid* wallGrid = NULL;
 
-	// Enlève ceci si ça marche pas!
+
+	DrawWalls::Finish_All();	// Si des walls devait être afficher/ ou effacer, ou finis ça NOW
 	ListsOfChainToModify::Remove_All(); // empty list of chain to modify/delete
-	DrawWalls::Finish_All();
-	DrawWalls::Remove_All();			 
 
 	annihilating = true;	// empêche la désactivation des links d'envoyer un msg à chaque fois que tu désactive un link
 

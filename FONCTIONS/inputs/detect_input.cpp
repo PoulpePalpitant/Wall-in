@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <thread>
-
+#include "../UI/console_output/render_list.h"
 // ceci
 #include "action_input.h"
 
@@ -214,15 +214,17 @@ void Handle_Input()
 	case 'R':case 'r':			
 		if (gDayStarted)
 		{
+			
 			gRetryCheckpoint = false;
 			gPauseUpdates = false;
 			MsgQueue::Register(LOAD_CHECKPOINT);
 		}
 		else
 			gRefreshStage = true; 
-		break;	// Refresh un stage, quand c'est possible
+		break;	
+	// Refresh un stage, quand c'est possible
 	//case 'P':case 'p':
-		//break;	//Skip le stage actuel, on avance
+	//break;	//Skip le stage actuel, on avance
 
 	case 27: /*Esc */
 		if (!gPauseUpdates)
@@ -252,6 +254,8 @@ void Handle_Input()
 			MsgQueue::Register(RETURN_TO_MENU);
 			gPauseUpdates = false;
 		}
+		else
+			action = TELEPORT;
 
 
 		break;

@@ -52,16 +52,16 @@ void ConsoleRender::Add_Char(Coord crd, unsigned char sym, Colors clr)
 {
 	Push_To_Queue(crd, sym, clr, mainQueue); // Ajoute un OutputData a la fin de la queue
 }
-void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , float speed, bool erase)
+void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , int speed, bool erase)
 {
 	if (text == "")
 		throw "Pas de string vide dans mon salon";
 	
 	// Création d'une nouvelle queue pour la string
 	if (strList.last == NULL)	// Liste vide	
-		strList.first = strList.last = new StringQueue((int)text.length(), (int)speed);	// Nouvelle queue	
+		strList.first = strList.last = new StringQueue((int)text.length(), speed);	// Nouvelle queue	
 	else
-		strList.last = strList.last->nxt = new StringQueue((int)text.length(), (int)speed);	// Nouvelle queue
+		strList.last = strList.last->nxt = new StringQueue((int)text.length(), speed);	// Nouvelle queue
 
 	strList.last->Add_String(crd, text, clr,erase);
 }
@@ -152,6 +152,7 @@ void ConsoleRender::Empty_All()
 				{
 					delete queueToPop;	// Delete la queue actuelle»
 					queueToPop = strList.first = strList.last = NULL;
+					continue;
 				}
 				else
 					if (queueToPop == strList.first)
@@ -167,6 +168,7 @@ void ConsoleRender::Empty_All()
 							queueToPop = prev->nxt = NULL;
 							delete strList.last;
 							strList.last = prev;	// new last
+							continue;
 						}
 						else
 						{

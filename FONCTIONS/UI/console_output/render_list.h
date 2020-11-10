@@ -41,7 +41,7 @@ class ConsoleRender
 
 public:
 	static void Render_String_Animation();			// Affiche tout les strings selon des timers
-	static void Add_String(std::string text, Coord crd,  Colors clr = WHITE, float speed = 0, bool erase = false);
+	static void Add_String(std::string text, Coord crd,  Colors clr = WHITE, int speed = 0, bool erase = false);
 	static void Add_Char(Coord crd, unsigned char sym, Colors clr = WHITE);	// Ajoute un charactère à afficher pour le prochain render
 	static void Render();	// Output tout les charactères dans la console, selon les listes, et les timers de ces listes
 };	

@@ -33,7 +33,7 @@ enum MsgType
 	, PLS_INTIALIZE_LVL
 	, STAGE_ADVANCE			// Passe au prochain stage dans le niveau
 	, LVL_INITIALIZED
-	, FINAL_PUSH
+	, FINAL_HOUR
 	, WAIT_LAST_BOT			// attend que le dernier bot meurt avant de progress
 	, VICTORY
 	, DEFEAT

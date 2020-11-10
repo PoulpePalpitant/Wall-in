@@ -43,6 +43,7 @@ void Link::Set_UI()
 			clr = GRAY;
 		}
 		break;
+
 	case BUFFER:
 		sym = 254;		
 		clr = LIGHT_YELLOW;
@@ -63,9 +64,14 @@ void Link::Set_UI()
 		else*/
 			clr = LIGHT_PURPLE;
 		break;
+
+	case Modifier::FORCEFIELD:
+		sym = 176;
+		clr = Colors::TEST;
+		break;
 	}
 
-	if (state == LinkState::ROOT)
+	if (state == LinkState::ROOT && modifier != Modifier::FORCEFIELD)
 		sym = (char)LinkSym::ROOT;
 }
 
@@ -83,11 +89,14 @@ bool Link::Set_First_Modifier(Modifier mod)		// Ne convertit pas le modifier si 
 }
 void Link::Convert_Modifier(Modifier mod)		// Convertit le modifier d'un link. Si le link était free, on affiche son symbole de modifier, ce faisant, il devient impassable pour le joueur
 {
-	modifier = mod;
-	Set_UI();	// affichage
-	
-	if(!Are_Equal( P1.Get_XY(),coord))
-		Dsp_Link();	// Réaffiche le sym 
+	if (mod != Modifier::REGULAR)	// I guess qu'on convertit pas en regular: Je fais ça uniquement pour ne pas convertir un forcefield en regular............
+	{
+		modifier = mod;
+		Set_UI();	// affichage
+
+		if (!Are_Equal(P1.Get_XY(), coord))
+			Dsp_Link();	// Réaffiche le sym 
+	}
 }
 
 void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier
@@ -101,10 +110,11 @@ void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier
 bool Link::Activate_Link(Modifier& mod, Wall* child)
 {
 	// INTÉRACTIONS
-	if (modifier == REGULAR)
-		Corruption_Inheritance(mod);
+	if(modifier != Modifier::FORCEFIELD)
+		if (modifier == REGULAR)
+			Corruption_Inheritance(mod);
 
-	if (this->state == LinkState::DEAD || this->state == LinkState::FREE)		// error brah, le link était pas libre ou DEAD
+	if (this->state == LinkState::DEAD || this->state == LinkState::FREE || modifier == Modifier::FORCEFIELD)		// error brah, le link était pas libre ou DEAD
 	{
 		Set_State(child);				// Set le state selon le fait qu'il a un child ou non, ou si ya pas de parent
 	}
@@ -116,6 +126,32 @@ bool Link::Activate_Link(Modifier& mod, Wall* child)
 
 	meta.Add();
 	MsgQueue::Register(LINK_ACTIVATED);
+	return true;
+}
+
+// Active un Link et le relie à un Child
+bool Link::Activate_Lonely_Link(Modifier mod)
+{
+	bool dead = false;
+	if (state == LinkState::DEAD)
+		dead = true;
+	
+	modifier = mod;
+	
+	if (mod == Modifier::FORCEFIELD)
+		state = LinkState::ROOT;	// this doesnt matter i think
+	else
+		Set_State(NULL);				// Set le state de root
+
+	Set_UI();						// affichage
+
+	if (dead)
+	{
+		meta.Add();
+		MsgQueue::Register(LINK_ACTIVATED);
+	}
+
+	Dsp_Link();
 	return true;
 }
 

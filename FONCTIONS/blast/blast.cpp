@@ -17,7 +17,7 @@
 
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X + 1;	// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		// La hauteur par défaut du blast
-extern const time_t DFLT_BLAST_SPD_VER = /*1000000*/70000;					
+extern const time_t DFLT_BLAST_SPD_VER = /*1000000*/85000;		// 70000 = CLASSIC				
 extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER * 2;
 //extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER - DFLT_BLAST_SPD_VER / 4;// J'agrandis la vitesse à l'horizontal!			
 
@@ -93,7 +93,8 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 
 	}
 
-
+	//if (ammo.Ammo_Available() == 0 /*&& lifeDrain*/)
+	//	color = Colors::LIGHT_RED;
 
 
 	// Autres types 
@@ -225,14 +226,26 @@ void Blast::UPD_Blast_Shot()
 						grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
 						ItemsOnGrid::Pickup_Item_Here(grdPos.index);	// Grab that item, by SHOOTING IT!
 
-						if (linkGrid->Is_Link_Here(grdPos.index))			// Vérifie la présence d'un link 
+						if (linkGrid->Is_Link_Alive_Here(grdPos.index))			// Vérifie la présence d'un link 
 						{
-							Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
-							continue;
+							if (linkGrid->link[grdPos.index.c][grdPos.index.r].Get_Modifier() == Modifier::FORCEFIELD)	// Blast peut passé à travers les forcefield
+							{
+ 								if (Is_Next_Wall_Active())
+								{
+									Stop_Blast();	// Blast ne peut passé à travers le link. Car 1 mur se trouve derrière
+									continue;
+								}
+								else
+									ffToRedraw.push_back(grdPos.index);
+							}
+							else
+							{
+								Stop_Blast();	// Doit vérifier son type aussi! si c'est un loner, le blast devrait complètement ...			Devrait quoi?
+								continue;
+							}
 						}
 					}
 					Reset_Countdown_Till_Nxt_Link();	// Reset le temps que ça va prendre avant le prochaine fois que le blast va être sur le grid de Links
-
 				}
 				else
 				{
@@ -244,6 +257,12 @@ void Blast::UPD_Blast_Shot()
 
 				// ANIMATION!!! sort of
 				UI_MoveBlast::Animate_Blast(this); // Bouge le blast!
+
+				if (!ffToRedraw.empty())	// Lazy animation fix pour les force field: ceci redraw chaque forcefield rencontré par le blast
+					for (int i = 0; i < ffToRedraw.size(); i++)
+						linkGrid->link[ffToRedraw.at(i).c][ffToRedraw.at(i).r].Dsp_Link();
+
+
 
 				// PROCHAINE position XY	
 				frontXY.Increment_Coord();	// (+/- 1 dans une direction X/Y)
@@ -273,6 +292,10 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 	if (active)
 	{
 		UI_MoveBlast::Erase_Blast_Tail(this); 	// Sert principalement à effacer la tail bien franchement 
+
+		while (!ffToRedraw.empty())	// vide cette liste de merde
+			ffToRedraw.pop_back();
+
 
 	   // Après le blast!!
 		P1.Upd_Sym_From_Direction(dir);
@@ -307,6 +330,15 @@ bool Blast::Has_Reached_Limit()		// Ça c'est la prochaine limite, c'est pas cell
 		return false;					
 }										
 
+bool Blast::Is_Next_Wall_Active()	// Check si le prochain wall que le blast va traversé est alive
+{
+	Wall* wall = gGrids.Find_Wall_From_Link_Coord_Incrementor(this->grdPos, dir); // Trouve le wall qui se trouve derrière le link sur lequel le blast se trouve
+
+	if (wall == NULL)
+		return false;
+	else
+		return wall->Get_State() != WallState::DEAD;	// The dead ain't active? wa you kno?
+}
 
 // POST-BLAST
 // **********
@@ -353,8 +385,6 @@ void Blast::Clear_Blast()	// Permet d'effacer enfin le blast quand tu le cancel
 	for (int i = 0; i < toErase; i++)
 		UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
 
-	//while(!Are_Equal(this->frontXY.coord,this->tailXY.coord))
-	//	UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
-
+	ammo.Deactivate();
 	this->Cancel();
 }

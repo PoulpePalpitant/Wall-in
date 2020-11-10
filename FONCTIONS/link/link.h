@@ -80,6 +80,8 @@ public:
 	void Convert_Modifier(Modifier mod);
 	bool Set_First_Modifier(Modifier mod);// Assigne le state 	
 	bool Activate_Link(Modifier& mod, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
+	bool Activate_Lonely_Link(Modifier mod = REGULAR);					// Active un link, sans le lier à aucun wall
+
 	void Deactivate_Link();		// Désactive le Link
 	bool Unbound_Wall_Child(Wall* child);		// change le state/détruit de le lin k si il n'a plus de child
 	void Unbound_All_Child();					// 

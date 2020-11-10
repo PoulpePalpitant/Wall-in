@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "../grid/grd_incrementor.h"
 #include "../UI/coord.h"
 #include "../UI/txtstyle.h"
@@ -9,6 +10,7 @@
 #include "../time/countdown_clock.h"
 #include "../time/movement_timer.h"
 #include "../global_types/global_types.h"
+#include "blast_ammo.h"
 
 /*
 	Le blast ça va être la façon pour le joueur de détruire les bots. Quand le joueur blast, il tir un projectile d'une certaine longueur à partir de sa position de départ. Ce projectile va avancé jusqu'à ce qu'il 
@@ -41,6 +43,10 @@ class Blast
 		friend class LinkGrid;		// Pour enregistré des nouveaux Links
 
 	bool active;			// Le blast est actif ou non. Quand il est actif il est en train de se déplacer
+	BlastAmmo ammo;	// Fixe une limit de blast que le joueur peut faire. Si vide, il ne peut tirer
+
+	// STUPID FIX
+	std::vector<GrdCoord> ffToRedraw;
 
 	//UI
 	unsigned char sym;		// Le symbole du blast sera unique et répété(juste une longue ligne)
@@ -84,6 +90,7 @@ class Blast
 	void Modify_SpeedVer(unsigned int spd) { speedVer = spd; }			// Vitesse verticale
 
 	// MISE EN ACTION DU BLAST
+	bool Is_Next_Wall_Active();	// Check si le prochain wall que le blast va traversé est alive. Le blast devrait stoppé si c'est le cas
 	bool Has_Reached_Limit();		// Vérifie si le blast à atteint la fin de son périple
 	bool Blast_Is_On_LinkGrid();	// Vérifie si la "tête" du projectile est sur une case du link Grid
 	void Reset_Countdown_Till_Nxt_Link() { movesTillNxtLink = btwLinks; }		// Reset le temps que ça va prendre pour rencontrer un autre Link
@@ -100,6 +107,7 @@ public:
 	Direction Get_Dir() { return dir; }
 	Distance Get_Distance_Travelled() { return nbSteps; }
 	Modifier Get_Modifier() { return modifier; }
+	BlastAmmo& Get_Ammo_Manager() { return ammo; }
 
 	// FONCTIONS PRINCIPALES 
 

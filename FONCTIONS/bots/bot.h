@@ -100,7 +100,7 @@ public:
 	// INTÉRACTIONS
 	bool Is_Dead();		// vérifie si un bot est mort
 	void Destroy_Bot();	// Destruction d'un bot
-	void Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised);	// Construit en utilisant d'autre fonctions
+	void Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised,  bool instant = false);	// Construit en utilisant d'autre fonctions
 	bool Bot_Impact(Wall* wall);					// Quand un bot rentre dans un wall
 
 	// GESTION DE LA LISTE DES BOTS

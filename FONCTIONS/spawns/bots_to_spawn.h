@@ -14,6 +14,9 @@ namespace bots_to_spawn {
 	extern Direction gBoxSide;	// Le côté de la box 
 	extern int gSpwNum;			// Le combientieme spawn sur la bordure
 
+	extern bool instantSpawn;	// Aucun warning de la part des bots
+
+
 	// Random coordonnées		/ Si aucune boxside// coord n'est spécifié, le spawn sera random
 	extern bool gRandomSpwn, gRandomBoxSide;	// Le prochain bot spawnera sur une COORD Aléatoire
 	extern bool gHorizontalBorder, gVerticalBorder, gAllSides;		// Le prochain spawn sera vertical, ou horizontal	
@@ -27,6 +30,8 @@ namespace bots_to_spawn {
 	void Reset_To_Default();								// Valeurs par défaut du prochain spawn
 	void Add_Spec(Direction boxSide, int crd);			// Ajoute une Coord spécific dans la liste des prochains bot à spawner
 	bool Pop(SpwCrd& crd);	// "POP" une coord de spawn spécifique de la liste (:à partir du début)
+	void Set_Custom_Bot(int delay, bool fixed = false, Colors color = WHITE, int hp = 1);	// Permet de set un bot custom
+
 }
 
 

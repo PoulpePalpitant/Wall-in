@@ -24,11 +24,12 @@
 #include "../console/sweet_cmd_console.h"
 #include "../events/global_events/ev_to_proceed.h"
 #include "../events/global_events/feedback/ev_wrong_action.h"
-
+#include "../teleporter/teleporter.h"
 
 extern bool gPauseUpdates = false;		// le state du jeu
 static std::string pauseMsg = "Hey! You PAUSED the game!";
 static std::string pauseMsg_2 = "Press 'Space' To Go Back To The Menu ";
+
 
 void Update_Game()		// Update tout ce qui se passe dans le jeu
 {
@@ -40,15 +41,17 @@ void Update_Game()		// Update tout ce qui se passe dans le jeu
 
 		UPD_Cycles_Stuff();		// Mouvement et spawn des bots
 		Peek_Lvl_Script();		// En ce moment, ça sert pas mal juste à peek le spawnscript...
-		Do_Stuff_this_Cycle();	// Bouge et spawn les bots
+		Do_Stuff_this_Cycle();	// Bouge et spawn les bots. 
 		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
-
-		//ItemSpawner::UPD_Item_Spawn_Timers(); // est déjà dans upd cycles stuff
-		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent
-		ListsOfChainToModify::Update_Chain_Modification();	//
-		DrawModifierQueue::Update_Modifier_Queue();			//
-
+		ListsOfChainToModify::Update_Chain_Modification();	// Un processus de destruction des murs
+		P1.Upd_Teleporter();	// Check si le teleporteur est détruit
+		
+		// Certaines animations 
+		// ********************
+		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent	// J'AI INVERSÉ UPDATE CHAIN MODIF AVEC ÇA
+		DrawModifierQueue::Update_Modifier_Queue();			// Une animation quelconque
 		DrawWalls::Draw_Them_Walls();	// draw les putains de walls
+
 		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
 
 	}
@@ -87,8 +90,6 @@ void Update_Player_Action()
 			case BLAST:
 				if (!blastP1.Is_Active() && !ChoiceTime::Is_Choice_Time() && !gBlockBlast)
 				{
-					//static Blast* blast; 		blast = &blastP1;	// da blast
-
 					static GrdCoord grdCrd;	// Position du joueur
 					grdCrd = P1.Get_Grd_Coord();
 
@@ -97,6 +98,11 @@ void Update_Player_Action()
 
 					bool cancelBlast = false;
 					bool consumeQueue = true;
+					bool blastTransfer = false; // Transfer ne compte pas comme un tir normal. C'est plutôt une destruction d'un wall existant, suivi d'un tir dans une autre direction. 
+					BlastAmmo *ammo;	
+
+
+
 
 					blastP1.Set_Strength(WallStrength::REGULAR);	// dflt
 
@@ -104,6 +110,7 @@ void Update_Player_Action()
 					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
 					if (link->Get_State() == LinkState::FREE)
 					{
+
 						// Si on tir dans la même direction que son parent wall		
 						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
 							cancelBlast = true; // rien va se passer
@@ -112,6 +119,7 @@ void Update_Player_Action()
 							blastP1.Set_Strength(link->Get_Parent()->Get_Strgt());// La force du tir est déterminé par le  wall!!!
 							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir
 							consumeQueue = false;
+							blastTransfer = true;	// it is true!
 						}
 
 						// SI LE LINK EST D'UN CERTAIN DTYPE, LE BLAST modifier DEVRAIT PRENDRE SA PROPRIÉTÉ! le blast ne devrait pas prendre la propriété de la queue
@@ -123,10 +131,17 @@ void Update_Player_Action()
 						cancelBlast = true; // rien va se passer
 					}
 
-					if (!cancelBlast)
+					if (!blastTransfer && !cancelBlast)	// Check si le joueur a assé d'ammo pour tirer
 					{
-						blastP1.Setup_Blast(grdCrd, keyDirection, consumeQueue);
+						ammo = &blastP1.Get_Ammo_Manager();		// WATCHOUT, va pt retourner l'adresse d'une variable temporaire ou je sais pas trop
+						cancelBlast = !ammo->Shoot();			// Failure to shoot means we cancel that blast
 					}
+
+					if (!cancelBlast)
+						blastP1.Setup_Blast(grdCrd, keyDirection, consumeQueue);
+					else
+						Ev_Wrong_Action_Add();			// Flash le joueur
+
 				}
 				else
 				{
@@ -142,7 +157,15 @@ void Update_Player_Action()
 					Move_Player(P1, keyDirection);	// bouge le joueuruu!
 				break;
 
+			case TELEPORT:
+				if(!blastP1.Is_Active())
+					if(!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
+						Ev_Wrong_Action_Add();			// Flash le joueur
+				break;
 			}
+
+
+			
 		}
 		else
 			if (action == UNPAUSE)

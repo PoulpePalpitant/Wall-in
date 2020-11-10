@@ -41,6 +41,12 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	gSkipStory = gDayStarted = gRefreshStage = false;	// Other important flags
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
 
+	if (eraseLinks)	// efface les links et walls
+	{
+		ListsOfChainToModify::Annihilate_All_Links();	// Links
+		DrawWalls::Remove_All();
+	}
+
 	//Vide tout les drawers et les queues : item spawns, warnings, wall drawers etc.
 	WarningDrawerList::Remove_All();
 	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
@@ -50,11 +56,6 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	//BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
 	BlastModifierQueue::Reset();
 
-	if (eraseLinks)	// efface les links et walls
-	{
-		ListsOfChainToModify::Annihilate_All_Links();	// Links
-		DrawWalls::Remove_All();
-	}
 
 
 	// Bot stuff

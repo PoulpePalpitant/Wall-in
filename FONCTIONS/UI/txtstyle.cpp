@@ -17,9 +17,9 @@ Colors gJerClr = LIGHT_AQUA;
 //const unsigned short TXT_SPD_DR = 10; // vitesse de défilement du texte par défaut
 //const unsigned short TXT_SPD_FAST = 20 ; // vitesse d'affichage
 //const unsigned short TXT_SPD_ER = 15; // vitesse d'éffacement du texte par défaut
-const unsigned short TXT_SPD_DR = 25000; // vitesse de défilement du texte par défaut
-const unsigned short TXT_SPD_ER = 33000; // vitesse d'éffacement du texte par défaut
-const unsigned short TXT_SPD_FAST = 40000; // vitesse d'affichage
+const int TXT_SPD_DR = 25000; // vitesse de défilement du texte par défaut
+const int TXT_SPD_ER = 33000; // vitesse d'éffacement du texte par défaut
+const int TXT_SPD_FAST = 40000; // vitesse d'affichage
 
 
 // Changer la couleur
@@ -170,4 +170,52 @@ void Erase_Right_Text()
 {
 	Erase_All_Jerry_Txt();
 	Erase_All_Boss_Txt();
+}
+
+
+// Affiche un title à la con
+void Dr_Or_Er_Title(const std::string* title, Coord start, int layers, Colors clr, bool erase)
+{
+	Coord crd;
+	int size = (int)title[0].length();
+	char symbol = 0;
+
+	for (int line = 0; line < STANDARD_ASCII_SIZE; line++)
+	{
+		crd = start;
+
+		for (int sym = 0; sym < size; sym++, crd.x++)
+		{
+
+			if (title[line][sym] == TXT_CONST.MINUS)
+				continue;//symbol = 250;			
+			else
+			{
+				if (erase)
+					symbol = TXT_CONST.SPACE;
+				else
+					symbol = title[line][sym];
+			}
+
+			ConsoleRender::Add_Char({ crd.x, crd.y + line }, symbol, clr);
+		}
+	}
+}
+
+// Affiche un title à la con, mais juste 1 ligne de celle-ci, et selon une vitesse, et créer 1 string à chaque fois pour effacer les tirets de merde, et semble vraiment slow
+void Dr_Or_Er_Title_Line(const std::string* title, Coord start, int line, Colors clr, int speed, bool erase)
+{
+	int size = (int)title[0].length();
+	char symbol = 0;
+	std::string txt = "";	// nouvelle string sans les tirets de merde
+
+	for (int sym = 0; sym < size; sym++)
+	{
+		if (title[line][sym] == TXT_CONST.MINUS || erase)
+			txt += TXT_CONST.SPACE;//symbol = 250;			
+		else
+			txt += title[line][sym];
+	}
+
+	ConsoleRender::Add_String(txt, { start.x, start.y + line }, clr, speed, erase);
 }

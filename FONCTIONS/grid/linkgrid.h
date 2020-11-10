@@ -14,7 +14,7 @@ public:
 	void Create(int col, int row);	// Créer le Grid. Persistera jusqu'au prochain Resize. Assignent une valeur XY pour chacun des éléments du Grid
 	void Resize(int col, int row);	// Redimensionne.... Mais détruit aussi le grid...
 	// Vérification de la présence d'un Link(vivant) dans le grid
-	int Is_Link_Here(GrdCoord crd);			// WHERE IS LINK? I CAN'T FIND HIM!?
+	int Is_Link_Alive_Here(GrdCoord crd);			// WHERE IS LINK? I CAN'T FIND HIM!?
 	bool Is_Link_On_Border(GrdCoord crd);		// Pour déterminer un si le Link pourrait être un ROOT
 	// Créer une chaîne de link à partir d'un blast
 	//void Activate_Links_From_Blast(Blast* blast, bool drawLastLink);

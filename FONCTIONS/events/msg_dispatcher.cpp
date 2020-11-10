@@ -18,7 +18,7 @@
 #include "global_events/ev_start_bots.h"
 #include "global_events/ev_block_inputs.h"
 #include "global_events/ev_spwn_player.h"
-#include "global_events/ev_final_push.h"
+#include "global_events/ev_final_hour_1.h"
 #include "global_events/ev_resize_from_grids.h"
 #include "../items/item_spw_drawer.h"			// spawner les items
 #include "../blast/mod_queue_animator.h"
@@ -28,6 +28,10 @@
 #include "global_events/ev_defeat_screen.h"
 #include "global_events/ev_back_to_menu.h"
 #include "global_events/ev_checkpoint.h"
+#include "../time/spawn_cycle.h"
+#include "global_events/feedback/ev_red_borders.h"
+
+
 
 
 // other necessities
@@ -37,8 +41,8 @@
 
 // GLOBAL
 
-MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msg qui sera interprété par les event Listeners
-
+static int msgIndex = 0;	// Va chercher l'index dans la queue de messages. Si = à tail, veut dire qu'il a atteint la fin
+MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msgIndex qui sera interprété par les event Listeners
 
 // STATIC
 MsgType MsgQueue::queue[MSG_QUEUE_SIZE];	// La liste de tout les messages enregistré pendant une frame
@@ -72,6 +76,9 @@ void MsgQueue::Register(MsgType msg)	// Ajoute le message à la liste des message
 }
 void MsgQueue::Unregister_All()
 {
+	gCurrentMsg = LITERALLY_NOTHING;	// Annule le message actuel
+	msgIndex = tail;	// Annule le dispatching de message pour cette frame
+
 	for (int i = 0; i < total; i++)
 		Unregister();
 }
@@ -80,9 +87,9 @@ void MsgQueue::Dispatch_Messages()		// Prend un message enregistré de la liste à
 {
 	if (head == tail) return;	// Liste vide
 
-	for (int msg = head; msg != tail; msg = (msg + 1) % MSG_QUEUE_SIZE)
+	for ( msgIndex = head; msgIndex != tail; msgIndex = (msgIndex + 1) % MSG_QUEUE_SIZE)
 	{
-		gCurrentMsg = queue[msg];	// Prend le message
+		gCurrentMsg = queue[msgIndex];	// Prend le message
 
 		Dispatch_To_Global();	// Global first?
 		Dispatch_To_Lvl();		// Lvl second
@@ -119,8 +126,12 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		Ev_Reach_Checkpoint();
 		break;
 
-	case FINAL_PUSH: 
-		Ev_Final_Push(); // Msg que la dernière attaque s'en vient
+	case FINAL_HOUR: 
+		if (gCurrentLevel < 3)
+		{
+			Ev_Final_Hour_1(); // Msg que la dernière attaque s'en vient
+			//Ev_Red_Borders();	// Threathening!
+		}
 		break;
 
 	case PRESSED_ENTER: 
@@ -146,7 +157,8 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	
 	case DEFEAT:
 		if (gDayStarted)
-			Ev_Defeat_Screen();
+			//Ev_Slow_Defeat_Screen();
+			Ev_Fast_Defeat_Screen();
 		break;
 
 		/* GRIDS*/
@@ -198,7 +210,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case SPAWN_PLAYER:	
-		Ev_Spawn_Player();		// Cinématique d'apparition du joueur
+		Set_Ev_Spawn_Player();		// Cinématique d'apparition du joueur
 		break;
 
 	case PLAYER_SPAWNED:

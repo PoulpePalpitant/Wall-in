@@ -2,6 +2,7 @@
 #include "ev_glitch_screen.h"
 
 #include "../../../UI/console_output/render_list.h"
+
 #include "../../../console/sweet_cmd_console.h"
 #include "../../../events/events.h"
 #include "../../../events/msg_dispatcher.h"
@@ -28,6 +29,10 @@ static Event ev_Er_GlitchMap(Ev_Er_Glitch_Map);	// l'event
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool Is_Done_Ev_Glitch_Map_Retry()
+{
+	return !ev_GlitchMap.Is_Active();
+}
 
 void Set_Screen_Filler(bool erase, int speed, Colors color)
 {

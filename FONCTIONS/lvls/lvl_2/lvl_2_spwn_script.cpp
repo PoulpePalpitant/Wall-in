@@ -159,6 +159,9 @@ void Lvl_2_Spwn_Script()
 
 			// FINAL PUSH	
 			// Remplie la console au complet de blockers :O		
+						//for (int r = 0; r < linkGrid->Get_Rows(); r++)
+			//	linkGrid->link[6][r].Activate_Lonely_Link(Modifier::FORCEFIELD);	
+
 			for (int c = 0; c < MAX_ITEMS; c++)
 				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 0,0 });
 			// Remplie la console au complet de blockers :O
@@ -167,9 +170,8 @@ void Lvl_2_Spwn_Script()
 			skip = 7;	
 			gCurrentCheckPoints[gCurrentLevel + 1]++;
 			gSpwBotTimer.Start_Timer(500, 1, true);
-			MsgQueue::Register(FINAL_PUSH);
+			MsgQueue::Register(FINAL_HOUR);
 			MsgQueue::Register(CHECKPOINT_REACHED);
-
 			break;
 		
 			// Start les quad spawns!!

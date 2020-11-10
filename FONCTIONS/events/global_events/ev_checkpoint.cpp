@@ -16,6 +16,9 @@
 #include "../../items/item_spw_drawer.h"
 #include "../../bots/botmeta.h"
 #include "../../player/player.h"
+#include "feedback/ev_rainbow_borders.h"
+#include "ev_spwn_player.h"
+#include "ev_update_heart.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);
 
@@ -43,10 +46,24 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				//DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
 				//DrawItemSpawnList::Remove_All();		 // hardcore
 				//BlastModifierQueue::Reset();
-				Clear_Map();
-				P1.Dr_Player();
+				
+				// Pour debug
+				gGrids.Dr_Spawngrid();
 
+				P1.Reset_Hp_And_Heart(3);	// Restore la vie du joueur
+				Clear_Map();
+				Ev_Rainbow_Borders();		// fait flasher tout de manière gratifiante
 				gCurrentCheckPoints[gCurrentLevel - 1]++;	// Le checkpoint est officiellement updaté
+				
+				if (!Are_Equal(P1.Get_Grd_Coord(), LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]))	// déplace le joueur si il ne se trouve pas sur le bon spawn point
+				{
+					P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]);
+					Set_Ev_Spawn_Player(3);
+				}
+				else
+					P1.Dr_Player();
+
+				blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();
 				gSpwBotTimer.Resume();
 				ev_ReachCheckpoint.Cancel();
 			}

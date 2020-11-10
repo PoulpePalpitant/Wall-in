@@ -18,10 +18,12 @@ static SpecificSpawn* start = NULL, * end = NULL, * it = NULL;	// Pour créer une
 
 namespace bots_to_spawn {
 
+
 	Direction gBoxSide = NONE;	// ou int
 	int gSpwNum = -1;			// le numéro
 	GrdCoord nxtSpawn = {};		//ou ça
-   
+
+	bool instantSpawn = false;	// Aucun warning de la part des bots
 	bool gRandomSpwn = true;
 	bool gRandomBoxSide = true;	// Le prochain bot spawnera sur une COORD Aléatoire
 	bool gHorizontalBorder = false, gVerticalBorder = false, gAllSides = false;		// Le prochain spawn sera vertical, ou horizontal	
@@ -84,7 +86,8 @@ namespace bots_to_spawn {
 	{
 		 gBoxSide = NONE;	// -1	(0 est déjà pris)
 		 gSpwNum = -1;		// -1
-
+		 
+		 instantSpawn = false;
 		 gRandomSpwn = true;		// Spawn random
 		 gRandomBoxSide = true;		// BoxSide random
 		 gHorizontalBorder = false;	// Le prochain spawn sera horizontal	
@@ -102,7 +105,7 @@ namespace bots_to_spawn {
 	// --------------------------------
 	bool Set_Interval(Direction border, int min, int max)		// NOTE: Un interval peut être invalide si il est plus grand que le nombre de spawn sur une bordure
 	{		
-		if (spawnGrid->Is_Inbound(border, max))			// Ne vérifira pas si le min est valide.	:			Peut bugger si min < 0
+		if (spawnGrid->Is_Inbound(border, max - 1))			// Ne vérifira pas si le min est valide.	:			Peut bugger si min < 0
 		{
 			ValidSpwnIntervals::Add_Primary_Interval(border, min, max);
 			return true;	// valid stuf
@@ -131,6 +134,16 @@ namespace bots_to_spawn {
 		if (gSpwNum != -1 )
 			gRandomSpwn = false;
 	}
+	void Set_Custom_Bot(int delay, bool fixed , Colors color , int hp )	// Permet de set un bot custom
+	{
+		gCustomBot.health = hp;
+		gCustomBot.clr = color;
+		gCustomBot.fixedColor = fixed;
+		gCustomBot.warningDelay = delay;
+		gCustomBot.is = true;
+	}
+
+
 }
 
 // EN DEHORS DU NAMESPACE

@@ -1,5 +1,5 @@
 #pragma once 
 
 
-void Ev_Spawn_Player();		// Animation de spawnage du joueur
-void Ev_Spawn_Player_Slow();		// Animation de spawnage du joueur
+void Set_Ev_Spawn_Player(float speed = 1);		// Set l'animation, mais avec un ration de vitesse custom
+void Ev_Spawn_Player();						// Animation de spawnage du joueur

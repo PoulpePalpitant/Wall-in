@@ -9,6 +9,7 @@
 
 static Event ev_SpawnPlayer(Ev_Spawn_Player, 10);
 static Coord crd;
+static float speedRatio = 1;	// Vitesse de l'animation
 
 void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 {
@@ -20,11 +21,14 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 		// initialisation
 		crd = P1.Get_XY();	// Le player doit être setté sur le grid avant de le spawn
 		ev_SpawnPlayer.Activate();
-		ev_SpawnPlayer.Start(650);
+		ev_SpawnPlayer.Start(650 * speedRatio > 1 ? 0 : 1);
 	}
 	else
 		while (ev_SpawnPlayer.delay.Tick())
 		{
+
+			crd = P1.Get_XY();	// si le player change de position on est foutu
+
 			switch (ev_SpawnPlayer.Get_Current_Step())
 			{
 			case 1:
@@ -32,14 +36,14 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 				ConsoleRender::Add_Char({ crd.x + 3, crd.y }, 250, GRAY);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, 250, GRAY);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, 250, GRAY);
-				ev_SpawnPlayer.Advance(3000);break;
+				ev_SpawnPlayer.Advance(3000 * speedRatio);break;
 
 			case 2:
 				ConsoleRender::Add_Char({ crd.x - 2, crd.y }, 196, WHITE);
 				ConsoleRender::Add_Char({ crd.x + 2, crd.y }, 196, WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 2 }, 179, WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 2 }, 179, WHITE);
-				ev_SpawnPlayer.Advance(7000);break;
+				ev_SpawnPlayer.Advance(7000 * speedRatio);break;
 			case 3:
 				ConsoleRender::Add_Char({ crd.x, crd.y }, 250, GRAY);
 
@@ -51,7 +55,7 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 				ConsoleRender::Add_Char({ crd.x + 3, crd.y }, 250, GRAY);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, 250, GRAY);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, 250, GRAY);
-				ev_SpawnPlayer.Advance(9000);break;
+				ev_SpawnPlayer.Advance(9000 * speedRatio);break;
 			case 4:
 				ConsoleRender::Add_Char({ crd.x - 3, crd.y }, TXT_CONST.SPACE);	// Erase
 				ConsoleRender::Add_Char({ crd.x + 3, crd.y }, TXT_CONST.SPACE);
@@ -61,7 +65,7 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 				ConsoleRender::Add_Char({ crd.x + 2, crd.y }, 250, WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 2 }, 250, WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 2 }, 250, WHITE);
-				ev_SpawnPlayer.Advance(9000);break;
+				ev_SpawnPlayer.Advance(9000 * speedRatio);break;
 			case 5:
 				ConsoleRender::Add_Char({ crd.x - 2, crd.y }, TXT_CONST.SPACE);	// erase
 				ConsoleRender::Add_Char({ crd.x + 2, crd.y }, TXT_CONST.SPACE);
@@ -71,29 +75,29 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 				ConsoleRender::Add_Char({ crd.x + 1, crd.y }, 250, BRIGHT_WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 1 }, 250, BRIGHT_WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 1 }, 250, BRIGHT_WHITE);
-				ev_SpawnPlayer.Advance(5000);break;
+				ev_SpawnPlayer.Advance(5000 * speedRatio);break;
 			case 6:
 				ConsoleRender::Add_Char({ crd.x - 1, crd.y }, TXT_CONST.SPACE);	// ERASE
 				ConsoleRender::Add_Char({ crd.x + 1, crd.y }, TXT_CONST.SPACE);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 1 }, TXT_CONST.SPACE);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 1 }, TXT_CONST.SPACE);
 				ConsoleRender::Add_Char(crd, '+', GRAY);
-				ev_SpawnPlayer.Advance(2000);
+				ev_SpawnPlayer.Advance(2000 * speedRatio);
 				break;
 
 			case 7:
 				ConsoleRender::Add_Char(crd, 197, GRAY);
-				ev_SpawnPlayer.Advance(2000);
+				ev_SpawnPlayer.Advance(2000 * speedRatio);
 				break;
 
 			case 8:
 				ConsoleRender::Add_Char(crd, 197, WHITE);
-				ev_SpawnPlayer.Advance(2500);
+				ev_SpawnPlayer.Advance(2500 * speedRatio);
 				break;
 
 			case 9:
 				ConsoleRender::Add_Char(crd, 197, BRIGHT_WHITE);
-				ev_SpawnPlayer.Advance(4000);
+				ev_SpawnPlayer.Advance(4000 * speedRatio);
 				break;
 
 			case 10:
@@ -139,9 +143,9 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 
 	//}
 }
-void Ev_Spawn_Player_Slow()		// Animation de spawnage du joueur
+
+void Set_Ev_Spawn_Player(float speed)		// Animation de spawnage du joueur
 {
-
-
-
+	speedRatio = speed;
+	Ev_Spawn_Player();	// Ne cancel pas l'animation
 }
