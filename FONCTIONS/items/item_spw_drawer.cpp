@@ -31,7 +31,7 @@ void DrawItemSpawnList::Cancel(Coord XY)	// Stop l'animation de l'item sur cette
 	for (int index = 0; index < total; index++)		
 	{
 		if (Are_Equal(drawer[index].XY, XY))
-			drawer[index].cancelMid = true;
+			drawer[index].cancel = true;
 	}
 }
 
@@ -101,7 +101,7 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 			switch (draw->currStep)
 			{
 			case 0:// emmerde pas l'étape 0, pour cette fois
-				if (!draw->cancelMid)
+				if (!draw->cancel)
 				{
 					//sym = ITEM_SYM[(int)draw->type];
 					Find_Item_Sym(draw->type);
@@ -151,7 +151,7 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 				break;
 
 			case 4:
-				if(!draw->cancelMid)
+				if(!draw->cancel)
 					ConsoleRender::Add_Char({ X,Y }, 250, GRAY);
 
 				ConsoleRender::Add_Char({ X + 1,Y + 1 }, TXT_CONST.SPACE, GRAY);
@@ -163,42 +163,48 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 				break;
 
 			case 5:
-				if (!draw->cancelMid)
+				if (!draw->cancel)
+				{
 					ConsoleRender::Add_Char({ X,Y }, '-', WHITE);
-
-				ConsoleRender::Add_Char({ X - 1,Y}, 250, GRAY);
-				ConsoleRender::Add_Char({ X + 1,Y}, 250, GRAY);
+					//ConsoleRender::Add_Char({ X - 1,Y }, 250, GRAY);
+					//ConsoleRender::Add_Char({ X + 1,Y }, 250, GRAY);
+				}
 				draw->timer.Start_Timer(spd);
 				draw->currStep++;
 				break;
 
 			case 6:
-				if (!draw->cancelMid)
+				if (!draw->cancel)
 				{
-					//sym = ITEM_SYM[(int)draw->type];
 					Find_Item_Sym(draw->type);
-					ConsoleRender::Add_Char({ X,Y }, sym, clr);	// Pour l'instant, tout les items sont verts
+					ConsoleRender::Add_Char({ X,Y }, sym, clr);
+					//ConsoleRender::Add_Char({ X - 2,Y }, 250, GRAY);
+					//ConsoleRender::Add_Char({ X + 2,Y }, 250, GRAY);
+					//ConsoleRender::Add_Char({ X - 1,Y }, '-', WHITE);
+					//ConsoleRender::Add_Char({ X + 1,Y }, '-', WHITE);
 				}
-				ConsoleRender::Add_Char({ X - 1,Y }, '-', WHITE);
-				ConsoleRender::Add_Char({ X + 1,Y }, '-', WHITE);
-				ConsoleRender::Add_Char({ X - 2,Y }, 250, GRAY);
-				ConsoleRender::Add_Char({ X + 2,Y }, 250, GRAY);
 				draw->timer.Start_Timer(spd);
 				draw->currStep++;
 				break;
 
 			case 7:
-				ConsoleRender::Add_Char({ X - 1,Y }, TXT_CONST.SPACE);
-				ConsoleRender::Add_Char({ X + 1,Y }, TXT_CONST.SPACE);
-				ConsoleRender::Add_Char({ X - 2,Y }, '-', GRAY);
-				ConsoleRender::Add_Char({ X + 2,Y }, '-', GRAY);
+				if (!draw->cancel)
+				{
+					//ConsoleRender::Add_Char({ X - 1,Y }, TXT_CONST.SPACE);
+					//ConsoleRender::Add_Char({ X + 1,Y }, TXT_CONST.SPACE);
+					//ConsoleRender::Add_Char({ X - 2,Y }, '-', GRAY);
+					//ConsoleRender::Add_Char({ X + 2,Y }, '-', GRAY);
+				}
 				draw->timer.Start_Timer(spd);
 				draw->currStep++;
 				break;
 
 			case 8:
-				ConsoleRender::Add_Char({ X - 2,Y }, TXT_CONST.SPACE);
-				ConsoleRender::Add_Char({ X + 2,Y }, TXT_CONST.SPACE);
+				if (!draw->cancel)
+				{
+					//ConsoleRender::Add_Char({ X - 2,Y }, TXT_CONST.SPACE);
+					//ConsoleRender::Add_Char({ X + 2,Y }, TXT_CONST.SPACE);
+				}
 				Remove(index);	// we done here
 			}
 		}

@@ -9,9 +9,16 @@
 #include "../events/global_events/ev_update_heart.h"
 #include "../events/msg_dispatcher.h"
 #include "../blast/blast_ammo.h"
+#include "../inputs/action_input.h"
 
 extern Player P1 = {};		// Un joueur! 
 extern Player P2 = {};		// Des joueurs!
+
+
+
+bool Player::Cant_Do_Stuff() {
+	return gBlockInputs;
+}
 
 
 

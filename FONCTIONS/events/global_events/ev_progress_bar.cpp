@@ -92,7 +92,7 @@ void Ev_Draw_Whole_Bar()	// Happens first
 
 		ev_DrawWholeBar.Activate();
 		ev_DrawWholeBar.Start(0);
-		ev_DrawWholeBar.delay.Start_Timer(50000, NUMWAVES[gCurrentLevel - 1]);
+		ev_DrawWholeBar.delay.Start_Timer(100000, NUMWAVES[gCurrentLevel - 1]);
 	}
 	else
 		while (ev_DrawWholeBar.delay.Tick())

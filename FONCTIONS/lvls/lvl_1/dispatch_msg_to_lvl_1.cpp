@@ -89,7 +89,7 @@ void Dispatch_Msg_To_Lvl_1()
 						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 
 					// Pour debug
-					gGrids.Dr_Spawngrid();
+					//gGrids.Dr_Spawngrid();
 
 				//	MsgQueue::Register(FREE_PLAYER);
 				}
@@ -122,10 +122,14 @@ void Dispatch_Msg_To_Lvl_1()
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
-				gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
-				gCurrentLevel = 2;
-				gSkipStory = false;
-				Event::Cancel_All();		// Tout les events
+				// Ferme le jeu
+				Ev_Thks_For_Playing();
+
+				// Prochain level
+				//gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
+				//gCurrentLevel = 2;
+				//gSkipStory = false;
+				//Event::Cancel_All();		// Tout les events
 			}
 		}
 		else

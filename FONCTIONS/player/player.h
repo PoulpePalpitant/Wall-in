@@ -43,6 +43,7 @@ public:
 	bool Is_Timeout() { return timeout.Is_Running(); }	// Joueur en timeout
 	Coord Get_XY();										// Retrouva la crd du player dans la console
 	Teleporter& Get_Teleporter() { return teleporter; }
+	bool Cant_Do_Stuff();
 	
 
 	// SETS 

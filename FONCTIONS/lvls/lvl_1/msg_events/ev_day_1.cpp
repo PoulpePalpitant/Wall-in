@@ -161,7 +161,7 @@ void Ev_Dr_Day_1()			//  Message d'avertissement que les bots s'en viennent et q
 		MsgQueue::Register(LOCK_PLAYER);
 		Ev_Fill_Map();	// fill la map
 		ev_Dr_Day1.Activate();
-		ev_Dr_Day1.Start(250);	
+		ev_Dr_Day1.Start(200);	
 	}
 	else
 	{
@@ -178,13 +178,7 @@ void Ev_Dr_Day_1()			//  Message d'avertissement que les bots s'en viennent et q
 				Dr_Job();
 				ev_Dr_Day1.Advance(160);
 				break;
-				//if (ev_Dr_Day1.delay.Get_Moves_Left() % 2 == 0)
-				//	Dr_Or_Er_Day_1();
-				//else
-				//	Dr_Or_Er_Day_1(true);
-				
-				//if(ev_Dr_Day1.delay.Get_Moves_Left() == 1)
-				//	Set_Screen_Filler();
+
 			case 3:
 				Ev_Lvl_Start_Warning();
 				ev_Dr_Day1.Advance(0);

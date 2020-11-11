@@ -31,7 +31,9 @@
 #include "../time/spawn_cycle.h"
 #include "global_events/feedback/ev_red_borders.h"
 
-
+// for testing
+#include "global_events/feedback/ev_good_job.h"
+#include "global_events/feedback/ev_rainbow_borders.h"
 
 
 // other necessities
@@ -173,6 +175,9 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case WALL_ACTIVATED:
+		// Permet des tests rapides
+		//Ev_Good_Job();				// Félicite le joueur
+		//Ev_Rainbow_Borders();		// fait flasher tout de manière gratifiante
 		break;
 
 	case WALL_DEACTIVATED:

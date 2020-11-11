@@ -38,7 +38,9 @@ void ChoiceTime::Draw_Choice(int index, Colors clr)	// Affiche le choix
  {
 	 crd = choiceList[index].crd;
 	 XY = linkGrid->link[crd.c][crd.r].Get_XY();	// XY
-	 ConsoleRender::Add_Char(XY, TXT_CONST.DOT, BRIGHT_WHITE);	// affiche le tit dot
+	 
+	 if (!Are_Equal(P1.Get_XY(),XY))	// draw pas par dessu le joueur
+		ConsoleRender::Add_Char(XY, TXT_CONST.DOT, BRIGHT_WHITE);	// affiche le tit dot
  }
  void ChoiceTime::Draw_Names(int index, Colors clr)
  {

@@ -28,11 +28,12 @@ void Lvl_1_Initializer()
 		// Pour un normal quick start
 		gCurrentStage = 3; 
 
+
 		//gCurrentStage = 1;	// Skip tout les tutorials
-		//Ev_Bot_Tutorial();	// start tuto avec jerry
+		//Ev_Bot_Tutorial();	// TEST EVENT TUTORIAL AVEC JERRY
 		//gSkipStory = false;
-		
-		
+
+
 		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
 
 		// TEST DU SPAWN SCRIPT ICI
@@ -44,6 +45,7 @@ void Lvl_1_Initializer()
 	}
 	else
 	{
+		//Ev_Wake_Up();		// TEST EVENT WAKEUP
 		gCurrentStage = 0;
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}

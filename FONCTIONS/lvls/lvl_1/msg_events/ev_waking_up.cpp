@@ -16,7 +16,17 @@
 #include "../../lvl_script.h"
 #include "../../../UI/console_output/dsp_string.h"
 
+static void Ev_Dumb_Dialogue_Fixer();
+
 static Event ev_WakeUp(Ev_Wake_Up, 30);
+static Event ev_DumbDialogueFixer(Ev_Dumb_Dialogue_Fixer, 30);
+
+
+static std::string fix_1 = "If You Manage To Survive Your Training For 3 Days";
+static std::string fix_2 = "You Will Be Officially Hired";
+static std::string fix_3 = "Now Let Me Ask You";
+static std::string fix_4 = "Do You Even Know What The Job Is?";
+
 
 static std::string _1 = "Hey, Are You Listening !?"; 
 static std::string _2 = "Could You Not Sleep When";
@@ -62,11 +72,18 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 {
 	if (!ev_WakeUp.Is_Active())
 	{
+
+
+
 		clrscr();
 		Just_Dr_Map_Borders();
 		ev_WakeUp.Activate();
 		ev_WakeUp.Start(500);	// 1000 / 2 = 500.		2 secondes
 		MsgQueue::Register(STAGE_ADVANCE);
+
+		// FOR TESTING PURPOSE
+//*************************
+		//ev_WakeUp.Go_To_X_Step(12);
 	}
 	else
 	{
@@ -90,7 +107,7 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 
 			case 4:
 				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, TXT_SPD_DR);
-				ev_WakeUp.Advance(340);
+				ev_WakeUp.Advance(400);
 				break;
 
 			case 5:
@@ -98,8 +115,8 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr, TXT_SPD_FAST, true);
+				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, TXT_SPD_FAST, true);
 				ConsoleRender::Add_String(_4, Boss_Txt_Crd(_4), gBossClr, TXT_SPD_DR);
 				ev_WakeUp.Advance(400);
 				break;
@@ -144,25 +161,36 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				ConsoleRender::Add_String(_15, Boss_Txt_Crd(_15, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16, 2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_17, Boss_Txt_Crd(_17, 3), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, TXT_SPD_DR);
-				//ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 1), gBossClr, 400);
-				ev_WakeUp.Advance(900);
+				
+				Ev_Dumb_Dialogue_Fixer();
+				ev_WakeUp.Advance(0);
+				ev_WakeUp.delay.Start_Timer(10000, 1, true);
+
+
+				//ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, TXT_SPD_DR); // Keep
+				//ev_WakeUp.Advance(900);
 				break;
 
 			case 13:
-				ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 2), gBossClr, TXT_SPD_DR);
-				//ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 2), gBossClr, 400);
-				ev_WakeUp.Advance(300);
-				break;
+				if (!ev_DumbDialogueFixer.Is_Active())
+				{
+					ConsoleRender::Add_String(fix_3, Boss_Txt_Crd(fix_3), gBossClr, TXT_SPD_ER, true);
+					ev_WakeUp.delay.Stop();
+					ev_WakeUp.Advance(0);
+				}
+
+				//ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 2), gBossClr, TXT_SPD_DR); // keep
+				
+					break;
 
 			case 14:
-				ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 2), gBossClr, TXT_SPD_ER, true);
-				//ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 2), gBossClr, TXT_SPD_ER, true);
-				//ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 1), gBossClr, TXT_SPD_ER, true);
-				//ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 0), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_DR);
-				ev_WakeUp.Advance(400);
+				//ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, TXT_SPD_ER, true);
+				//ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 2), gBossClr, TXT_SPD_ER, true);
+				//ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_DR);
+				//ev_WakeUp.Advance(400);
+
+				ev_WakeUp.Advance(0);
+
 				break;
 
 			case 15:
@@ -176,6 +204,7 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 			case 16:
 				if (ChoiceTime::Get_Choice_Made() == yes_1)
 				{
+					ConsoleRender::Add_String(fix_4, Boss_Txt_Crd(fix_4, 1), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_ER, true);
 					Ev_Bot_Tutorial();	// start tuto avec jerry
 					ev_WakeUp.Cancel();	// Stop l'event right now
@@ -183,6 +212,7 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				else
 					if (ChoiceTime::Get_Choice_Made() == no_1) // start second choice					
 					{
+						ConsoleRender::Add_String(fix_4, Boss_Txt_Crd(fix_4, 1), gBossClr, TXT_SPD_ER, true);
 						ConsoleRender::Add_String(_7, Boss_Txt_Crd(_7), gBossClr, TXT_SPD_ER, true);
 						ev_WakeUp.delay.Stop();
 						ev_WakeUp.Advance(500);
@@ -221,8 +251,9 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 
 				if (ChoiceTime::Get_Choice_Made() == yes_2)
 				{
-					ev_WakeUp.Go_To_X_Step(28);						// Stop l'event right now
-					ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9), gBossClr, TXT_SPD_ER, true);
+					Ev_Bot_Tutorial();	// start tuto avec jerry
+					//ev_WakeUp.Go_To_X_Step(28);						// Stop l'event right now
+					ConsoleRender::Add_String(_9, Boss_Txt_Crd(_9), gBossClr, TXT_SPD_FAST, true);
 
 				}
 				else
@@ -293,5 +324,33 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				break;
 			}
 
+	}
+}
+
+
+// Sert uniquement à fix ma méthode de poubelle d'utilisation de switch pour écrire des dialogues. Permet de ne pas avoir à réagencer tout les cases 
+
+void Ev_Dumb_Dialogue_Fixer()
+{
+	if (!ev_DumbDialogueFixer.Is_Active())
+	{
+		ev_DumbDialogueFixer.Activate();
+		ev_DumbDialogueFixer.Start(500);
+	}
+	else
+	{
+		while (ev_DumbDialogueFixer.delay.Tick())
+			switch (ev_DumbDialogueFixer.Get_Current_Step())
+			{
+			case 1:	ConsoleRender::Add_String(fix_1, Boss_Txt_Crd(fix_1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(400);break;
+			case 2:	ConsoleRender::Add_String(fix_2, Boss_Txt_Crd(fix_2, 1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(375);break;
+			case 3:
+				ConsoleRender::Add_String(fix_1, Boss_Txt_Crd(fix_1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(fix_2, Boss_Txt_Crd(fix_2, 1), gBossClr, TXT_SPD_ER, true); ev_DumbDialogueFixer.Advance(600);break;
+
+			case 4:	ConsoleRender::Add_String(fix_3, Boss_Txt_Crd(fix_3), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(400);break;
+			case 5:	ConsoleRender::Add_String(fix_4, Boss_Txt_Crd(fix_4, 1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(500);break;
+			case 6:ev_DumbDialogueFixer.Cancel();break;
+			}
 	}
 }

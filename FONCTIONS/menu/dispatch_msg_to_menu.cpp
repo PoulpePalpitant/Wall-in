@@ -39,7 +39,7 @@ void Dispatch_Msg_To_Menu()
 		
 		// DEBUG
 		//*******
-		Quick_STart(1, true);
+		//Quick_STart(1, 1);
 
 		break;	// Initialize plein de choses
 	
@@ -52,7 +52,6 @@ void Dispatch_Msg_To_Menu()
 		if (gCurrentStage == 1)
 		{
 			Ev_Dr_Choose_Lvl();
-
 		}
 		else
 			if (gCurrentStage == 3)
@@ -74,14 +73,14 @@ void Dispatch_Msg_To_Menu()
 			switch (gMenuKey)	// Input de charactères
 			{
 			case 49:	/* Les numéros de 1 à 9 */
-			case 50:	
+			//case 50:	
 			//case 51:
 			//case 52:
 			//case 53:
 			//case 54:
 			//case 55: 
 				choosenLvl = gMenuKey - 48;
-				MsgQueue::Unregister_All();	// répare un bug de merde
+				//MsgQueue::Unregister_All();	// répare un bug de merde, lequel? lol
 				MsgQueue::Register(STAGE_ADVANCE);
 				Ev_Er_Choose_Lvl();
 				//

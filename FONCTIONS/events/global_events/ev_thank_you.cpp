@@ -91,8 +91,8 @@ void Ev_Thks_For_Playing()				 // Affiche un écran  gratifiant
 		crdTy.x = Find_Ctr_X((int)ty.size());		
 		crdTy.y = 31;
 		clrscr();
-		Clear_All_States(false);
-		ConsoleRender::Add_String(ty, crdTy, BRIGHT_WHITE, 450);
+		Clear_All_States();
+		ConsoleRender::Add_String(ty, crdTy, BRIGHT_WHITE, TXT_SPD_DR);
 		ev_ThksForPlaying.Activate();
 		ev_ThksForPlaying.Start(300);
 	}
