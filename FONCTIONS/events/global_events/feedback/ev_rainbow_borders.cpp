@@ -14,7 +14,7 @@ const int NUM_COLOR = 6;	// nombre de couleurs
 const int NUM_COLOR_EXTRA = 8;	// nombre de couleurs
 static Colors clr;	// Pour colorier chaque bordures
 
-static Event ev_RainbowBorders(Ev_Rainbow_Borders, NUM_COLOR * 3);	// l'event. Fait flasher un certain nombre de fois tout les couleur du pattern ci-dessous
+static Event ev_RainbowBorders(Ev_Rainbow_Borders, NUM_COLOR * 4);	// l'event. Fait flasher un certain nombre de fois tout les couleur du pattern ci-dessous
 static Event ev_RainbowBordersExtra(Ev_Rainbow_Borders_Extra, NUM_COLOR_EXTRA * 5);	//	EXTRA! OUAIS!
 
 /*

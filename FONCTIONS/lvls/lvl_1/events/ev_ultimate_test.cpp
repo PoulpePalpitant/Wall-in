@@ -23,7 +23,7 @@ static bool success = false;
 
 static int spw;
 static int warnings = 109;/*112*/ // le - 8 c'est parce que ça pars moins vite somehow quand je debug pas
-const int totalSpw = 72;
+const int totalSpw = 50;
 
 
 /*
@@ -76,7 +76,7 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 		Ev_Dr_Stop_Jerry();
 		ev_UltimateTest.Activate();
 		//ev_UltimateTest.Start(1500);	
-		ev_UltimateTest.Start(3000, totalSpw / 4);
+		ev_UltimateTest.Start(3000, 12);
 
 	}
 	else
@@ -110,11 +110,11 @@ void Ev_Ultimate_Test()			// Le joueur doit arrêter Jerry plusieurs fois
 				Spawn_A_Jerry(RIGHT, 6, warnings);	Spawn_A_Jerry(RIGHT, 8, warnings);
 				Add_Jerrys_To_Stop(4);
 				Upd_Jerry_Count();
-				ev_UltimateTest.Advance(4000, 7);
+				ev_UltimateTest.Advance(4000, 2);
 				break;
 
 			case 2:
-				Add_Jerrys_To_Stop(4);
+				Add_Jerrys_To_Stop(1);
 				Upd_Jerry_Count();			
 				ev_UltimateTest.Advance(55);
 				break;

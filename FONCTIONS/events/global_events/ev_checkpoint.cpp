@@ -19,6 +19,7 @@
 #include "feedback/ev_rainbow_borders.h"
 #include "ev_spwn_player.h"
 #include "ev_update_heart.h"
+#include "feedback/ev_good_job.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);
 
@@ -48,7 +49,7 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				//BlastModifierQueue::Reset();
 				
 				// Pour debug
-				gGrids.Dr_Spawngrid();
+				//gGrids.Dr_Spawngrid();
 
 				P1.Reset_Hp_And_Heart(3);	// Restore la vie du joueur
 				Clear_Map();
@@ -65,6 +66,8 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 
 				blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();
 				gSpwBotTimer.Resume();
+				gSpwBotTimer.Add_Count(5);	// Ajoute une tite pause à chaque fois que le checkpoint à été atteint!
+				//Ev_Good_Job();	// Félicite le joueur
 				ev_ReachCheckpoint.Cancel();
 			}
 		}

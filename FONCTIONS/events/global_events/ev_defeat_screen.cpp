@@ -140,7 +140,7 @@ void Ev_Fast_Defeat_Screen()				 // Prompt le joueur à restart!
 				ConsoleRender::Add_String(retry2, { Find_Ctr_Grid(retry2), ori.y + 2 }, GREEN);
 				//ConsoleRender::Add_String(retry2, { Find_Ctr_Grid(retry2), ori.y + 3 }, GREEN, TXT_SPD_FAST,true);	// erase en bas, pour rendre le txt plus lisible
 
-				Press_X_To_Proceed(2);	// press x to go back to menu
+				//Press_X_To_Proceed(2);	// press x to go back to menu
 				gRetryCheckpoint = true;
 				ev_FastDefeatScreen.Advance(1000);
 				break;

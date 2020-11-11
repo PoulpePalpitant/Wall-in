@@ -2,6 +2,7 @@
 
 #include "ev_bot_tutorial.h"
 
+// That is a lot of includes my dudes
 #include "../../lvl_script.h"
 #include "../../../events/events.h"
 #include "../../../events/msg_dispatcher.h"
@@ -24,6 +25,13 @@
 #include "../events/ev_build_start_walls.h"
 #include "ev_ultimate_test.h"
 #include "../../../events/global_events/ev_to_proceed.h"
+#include "../../../events/global_events/feedback/ev_ammo_depleted.h"
+#include "../../../blast/blast_ammo_animator.h"
+
+
+
+static void Ev_Dumb_Dialogue_Fixer();
+static Event ev_DumbDialogueFixer(Ev_Dumb_Dialogue_Fixer, 30);	
 
 static Event ev_BotTutorial(Ev_Bot_Tutorial, 150);
 
@@ -35,16 +43,23 @@ static Event ev_BotTutorial(Ev_Bot_Tutorial, 150);
 	- Les Bots, leurs déplacement et leur destination
 	- Tirer, comment stacker perpendiculairement
 	- Détuire les bots, en utilisant la méthode de tirer, ne peut pas tirer directement dessus(en fait techniquement oui)
-	- Tu dois survivre le niveau, qui à une fin
-
+	- La notion d'ammo limité
+	- Enticiper les déplacements
+	- Apprécier Jerry
 */
 
 static Coord XY;			// Pour tout les XY
 static GrdCoord choiceCrd;
+static bool overShot = false;
 
 // A shit load of texte
 
-static std::string _1 = "Alright Then, Let's Get You Started";
+static std::string fix_1 = "Your Job Here Is To Stop";
+static std::string fix_2 = "These Awful 'T' Like Shapes!";
+static std::string fix_3 = "It's a 2 Step Process Really";
+
+
+static std::string _1 = "Didn't Expect Much, Let's Get You Started";
 static std::string _2 = "Step #1";
 static std::string _3 = "Build Some Walls";
 static std::string _4 = "Step #2";
@@ -93,12 +108,12 @@ static std::string _18 = "A Little Bit Too Easy";
 static std::string _19 = "Let's Bring The Difficulty Up A Notch";
 static std::string _20 = "Nicely done!";
 static std::string _21 = "You Are Getting Better By the Second!";
-static std::string _22 = "Now, A Tip For The Next Step:";
-static std::string _23 = "Big Structures Are Easily Breakable";
-static std::string _24 = "Try To Build Smaller Walls!";
+static std::string _22 = "Now Unfortunatly These Walls Aren't Cheap";//"Now, A Tip For The Next Step:";
+static std::string _23 = "So We're Gonna Have To Fix A Limit";		 //"Big Structures Are Easily Breakable";
+static std::string _24 = "If You Try To OverShoot, You Will Get Hurt";//"Try To Build Smaller Walls!";
 static std::string _25 = "(<-- Try this)";
-static std::string _26 = "Smaller Chain Of Walls";
-static std::string _27 = "Are Less Easy To Destroy!";
+static std::string _26 = "- AMMO";
+//static std::string _27 = "Are Less Easy To Destroy!";
 static std::string _28 = "Good Job, You're Almost Ready To Get To Work";
 static std::string _29 = "To Proceed, However, You Must Accomplish Sucessfully...";
 static std::string _30 = "THE";
@@ -111,14 +126,14 @@ static std::string _36 = "Yes I Know Boss But...";
 static std::string _37 = "With All The Positive Feedbacks You Gave...";
 static std::string _38 = "I Thought... \"Why Not Push The Limit To The Max?\" ";
 static std::string _39 = "What Is This? We Can't Even Stop Them!";
-static std::string _39_1 = "The Employee's Gonna Die!";
+static std::string _39_1 = "The Trainee is Gonna Die!";
 static std::string _40 = "Yeah, Huh, No? But, I Mean.... Really?";
 static std::string _41 = "What The Hell Were You Thinking You Doofus!";
 static std::string _42 = "Hey Don't Call Me That!";
 static std::string _43 = "I Know I Shouldn't Call You That!";
 static std::string _43_1 = "But You Ruined Everything, Damn It!";
 static std::string _44 = "But!.... There Is A Chance th-";
-static std::string _45 = "Now Our Brand New Employee Here";
+static std::string _45 = "Now Our Brand New Futur Employee Here";
 static std::string _46 = "Is Gonna Die A Horrible Death Because Of You!";
 static std::string _47 = "I'm Sorry Boss!";
 // v2 
@@ -158,8 +173,8 @@ static std::string _77 = "Well Done, Yes We Expected That";
 static std::string _78 = "It Was All Planned After All Hahh..";
 //static std::string _79 = "Good Job";
 static std::string _80 = "Anyway Since You Survived This Test";
-static std::string _81 = "I Think You Are Finally Ready";
-static std::string _82 = "I Have To Go, Now. But";
+static std::string _81 = "I Think You Are Finally Ready For Your First Day Of Training";
+static std::string _82 = "I Have To Go Now But...";
 static std::string _83 = "If You Think You Need More Practice";
 //static std::string _84 = "If You Want...";
 static std::string _85 = "Just Ask...Jerry";
@@ -219,8 +234,9 @@ static bool Retry_If_Fail()
 		Cancel_Ultimate_Test();		// idem
 		if(stepToSendBack > 100)
 			Press_X_To_Proceed(0, true);// idem
-
 		P1.Set_Hp(3);
+		Cancel_Ev_Ammo_Depleted();
+		blastP1.Get_Ammo_Manager().Deactivate();
 
 		ev_BotTutorial.delay.Stop();
 		ev_BotTutorial.delay.Start_Timer(200);
@@ -240,6 +256,7 @@ void Finish_Ultimate_Test()
 {
 	if (Ultimate_Test_Succeed())	// SUCESS
 	{
+		blastP1.Get_Ammo_Manager().Deactivate();
 		Restore_Prev_Bot_Speed();
 		Erase_Right_Text();
 		ev_BotTutorial.delay.Stop();
@@ -256,11 +273,12 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 {
 	if (!ev_BotTutorial.Is_Active())
 	{
+		prevMovSpeed = 10000;
 		MsgQueue::Register(FREE_PLAYER);
 		//Set_Dr_Map_1(23);	// erase borders
 		ev_BotTutorial.Activate();
-		ev_BotTutorial.Start(400);
-		//ev_BotTutorial.Go_To_X_Step(145);		// jerry time
+		ev_BotTutorial.Start(350);
+		ev_BotTutorial.Go_To_X_Step(145);		// jerry time
 		//ev_BotTutorial.Go_To_X_Step(140);		// jerry answer
 		//ev_BotTutorial.Go_To_X_Step(130);		// jerry's is sorry
 		//ev_BotTutorial.Go_To_X_Step(114);		// just survived
@@ -285,17 +303,24 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 			{
 			case 1:
 				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_DR);
-				ev_BotTutorial.Advance(400);
+				ev_BotTutorial.Advance(300);
 				break;
 
 			case 2:
-				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_FAST, true);
 				ev_BotTutorial.Advance(500);
+
+				Ev_Dumb_Dialogue_Fixer();
+				ev_BotTutorial.delay.Start_Timer(10000, 1, true);
 				break;
 
 			case 3:
-				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr, TXT_SPD_DR);
-				ev_BotTutorial.Advance(600);
+				if (!ev_DumbDialogueFixer.Is_Active())
+				{
+					ev_BotTutorial.delay.Stop();
+					ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr, TXT_SPD_DR);
+					ev_BotTutorial.Advance(600);
+				}
 				break;
 
 			case 4:
@@ -559,7 +584,6 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 38:
-				Free_Das_Player();
 				ConsoleRender::Add_String(jer_4, Jerry_Txt_Crd(jer_4, 2), gJerClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(jer_3, Boss_Txt_Crd(jer_3), gBossClr, TXT_SPD_ER, true);
 				ev_BotTutorial.Advance(1000);
@@ -571,31 +595,35 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 40:
-				ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 1), gBossClr, TXT_SPD_DR);				
+				MsgQueue::Register(DISABLE_BLAST);		/// Si le joueur tir avant, le blast ne sera pas cancelé
+				ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 1), gBossClr, TXT_SPD_DR);
 				ev_BotTutorial.Advance(500);
 				break;
 
-
 			case 41:
+				P1.Dr_Player();
+				MsgQueue::Register(FREE_PLAYER);
 				ConsoleRender::Add_String(_24, Boss_Txt_Crd(_24, 2), gBossClr, TXT_SPD_DR);			
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
-				Set_CountDown(13);
+				Set_CountDown(10);
 				Ev_CountDown();	// Countdown
+				blastP1.Get_Ammo_Manager().Set_Ammo(10);
+				ConsoleRender::Add_String(_26, { (map.Get_Box_Limit(RIGHT) + 12),(map.Get_Box_Limit(UP) - 1) }, GRAY, TXT_SPD_DR);	// AMMO
 				ev_BotTutorial.Advance(420);
 				break;
 
 			case 42:
+				MsgQueue::Register(DISABLE_BLAST);		/// Si le joueur tir avant, le blast ne sera pas cancelé
 				ConsoleRender::Add_String(_25, { map.Get_Box_Limit(RIGHT)  + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, GRAY, TXT_SPD_DR);	// lols
 				Build_Lvl_1_Walls();			// Builder un wall qui se fait destroy LOCK le jeu indéfinimment
 				ev_BotTutorial.Advance(350);
 				break;
 
 			case 43:
-				stepToSendBack = 38;	// si le joueur fail ce test, il sera send back icitte
-				Set_Jerry_Time(10);
+				stepToSendBack = 41;	// si le joueur fail ce test, il sera send back icitte
+				Set_Jerry_Time(5);
 				Ev_Dr_Stop_Jerry();
 				P1.Set_Hp(3); Just_Dr_Heart(); Just_Dr_Arr_Keys();	// réaffichage et redonne de la vie	BACKUP
-				MsgQueue::Register(DISABLE_BLAST);		/// Si le joueur tir avant, le blast ne sera pas cancelé
 				ev_BotTutorial.Advance(400);
 				break;						
 
@@ -640,31 +668,32 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 50:
-				Spawn_A_Jerry(LEFT, 3, SPWN_DLAY); // spawn Jerrry!			
-				ev_BotTutorial.Advance(300);
+				//Spawn_A_Jerry(LEFT, 3, SPWN_DLAY); // spawn Jerrry!			
+				ev_BotTutorial.Advance(0);
 				break;
 
 			case 51:
-				Spawn_A_Jerry(LEFT, 5, SPWN_DLAY); // spawn Jerrry!
-				Spawn_A_Jerry(LEFT, 8, SPWN_DLAY); // spawn Jerrry!
-				ev_BotTutorial.Advance(1000);
+				//Spawn_A_Jerry(LEFT, 5, SPWN_DLAY); // spawn Jerrry!
+				//Spawn_A_Jerry(LEFT, 9, SPWN_DLAY); // spawn Jerrry!
+				ev_BotTutorial.Advance(0);
 				break;
 
 			case 52:
-				Spawn_A_Jerry(LEFT, 7, SPWN_DLAY); // spawn Jerrry!
-				ev_BotTutorial.Advance(1000);
+				//Spawn_A_Jerry(LEFT, 7, SPWN_DLAY); // spawn Jerrry!
+				ev_BotTutorial.Advance(0);
 				break;
 
 			case 53:
-				Spawn_A_Jerry(LEFT, 7, SPWN_DLAY); // spawn Jerrry!
+				//Spawn_A_Jerry(LEFT, 7, SPWN_DLAY); // spawn Jerrry!
 				ev_BotTutorial.Advance(0);
 				ev_BotTutorial.delay.Start_Timer(10000, 1, true);
-
 				break;
 
 			case 54:
 				if (!jerryTime)
 				{
+					blastP1.Get_Ammo_Manager().Deactivate();
+					ConsoleRender::Add_String(_26, { (map.Get_Box_Limit(RIGHT) + 12),(map.Get_Box_Limit(UP) - 1) }, GRAY, TXT_SPD_DR,true);	// <- AMMO
 					ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 1), gBossClr, TXT_SPD_ER, true);
 					ConsoleRender::Add_String(_24, Boss_Txt_Crd(_24, 2), gBossClr, TXT_SPD_ER, true);
@@ -697,6 +726,8 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 58:
+				P1.Dr_Player();
+				blastP1.Get_Ammo_Manager().Set_Ammo(100);
 				ConsoleRender::Add_String(_30, { Boss_Txt_X() - 10, Boss_Txt_Y()}, gBossClr, 0);
 				ev_BotTutorial.Advance(550);
 				break;
@@ -711,14 +742,13 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 				MsgQueue::Register(ENABLE_BLAST);	// réactive le blast
 				Temporary_Bot_Speed_Switch(2000);	// vitesse de déplacement 
 				Ev_Ultimate_Test();
-
 				ConsoleRender::Add_String(_32, { Boss_Txt_X() + 7 ,Boss_Txt_Y() }, gBossClr, 0);
 				ev_BotTutorial.Advance(400);
 				break;
 
 
 			case 61:
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 2), gBossClr, 300);
+				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, Boss_Txt_Crd(TXT_CONST.DOTDOTDOT, 2), gBossClr, TXT_SPD_DR / 2);
 				ev_BotTutorial.Advance(320);
 				break;
 
@@ -771,7 +801,7 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 
 			case 70:
 				ConsoleRender::Add_String(_39_1, Boss_Txt_Crd(_39_1, 2), gBossClr, TXT_SPD_DR);
-				ev_BotTutorial.Advance(250);
+				ev_BotTutorial.Advance(350);
 				break;
 
 			case 71:
@@ -1360,3 +1390,29 @@ void Ev_Bot_Tutorial()// Trace un chemin vers une fausse porte de sortie
 //        _\/\\\______________\///\\\\\\\\\/______\////\\\\\\\\\_\/\\\______\//\\\_______________/\\\____ 
 //         _\///_________________\/////////___________\/////////__\///________\///_______________\///_____
                                                                                                        
+// Sert uniquement à fix ma méthode de poubelle d'utilisation de switch pour écrire des dialogues. Permet de ne pas avoir à réagencer tout les cases 
+
+void Ev_Dumb_Dialogue_Fixer()
+{
+	if (!ev_DumbDialogueFixer.Is_Active())
+	{
+		ev_DumbDialogueFixer.Activate();
+		ev_DumbDialogueFixer.Start(400);
+	}
+	else
+	{
+		while (ev_DumbDialogueFixer.delay.Tick())
+			switch (ev_DumbDialogueFixer.Get_Current_Step())
+			{
+			case 1:	ConsoleRender::Add_String(fix_1, Boss_Txt_Crd(fix_1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(800);break;
+			case 2:	ConsoleRender::Add_String(fix_2, Boss_Txt_Crd(fix_2, 1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(300);break;
+			case 3:
+				ConsoleRender::Add_String(fix_1, Boss_Txt_Crd(fix_1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(fix_2, Boss_Txt_Crd(fix_2, 1), gBossClr, TXT_SPD_ER, true); ev_DumbDialogueFixer.Advance(600);break;
+
+			case 4:	ConsoleRender::Add_String(fix_3, Boss_Txt_Crd(fix_3), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(400);break;
+			case 5:ConsoleRender::Add_String(fix_3, Boss_Txt_Crd(fix_3), gBossClr, TXT_SPD_ER,1);ev_DumbDialogueFixer.Advance(500);break;
+			case 6:ev_DumbDialogueFixer.Cancel();break;
+			}
+	}
+}

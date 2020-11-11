@@ -238,7 +238,7 @@ namespace DrawBlastAmmo {
 
 	void Dr_Or_Er_Bar(int length, Colors clr, bool erase) // Affiche la bar, selon une couleur
 	{
-		if (length == 0)
+		if (length == 0 && !erase)
 			Dr_Bar_Tip(false, GREEN, erase, false);	// bot tip
 		else
 		{
@@ -248,6 +248,10 @@ namespace DrawBlastAmmo {
 			if (length == MAX_BAR_SIZE)
 			{
 				Dr_Bar_Tip(true, clr, erase, true);	// top tip
+
+				if(erase)
+					Dr_Bar_Tip(false, WHITE, erase, false);	// efface le tip si on veut effacer la bar bot tip
+
 			}
 		}
 	}

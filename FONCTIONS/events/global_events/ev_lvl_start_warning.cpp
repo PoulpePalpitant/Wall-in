@@ -48,7 +48,6 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 
 			case 2:
 				MsgQueue::Register(FREE_PLAYER);
-				MsgQueue::Register(ENABLE_BLAST);
 				stringProgress = 0;
 				crd = ori;
 				ev_LvlStartWarning.Advance(30000, (int)inc.size());

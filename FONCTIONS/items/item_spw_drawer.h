@@ -11,7 +11,8 @@ struct ItemDrawer
 	ItemType type;
 	SpeedTimer timer;	
 	int currStep = 0;
-	bool cancelMid = false;		// empêche de draw le symbole du milieu. Survient que le joueur se déplace dessus, ou qu'un blast passe à travers
+	bool cancel = false;		// empêche de draw le symbole du milieu. Survient que le joueur se déplace dessus, ou qu'un blast passe à travers
+								// FIX: 1 blast peut s'arrêter dessus, il faut donc tout canceler les output sur les axes
 };
 
 class DrawItemSpawnList

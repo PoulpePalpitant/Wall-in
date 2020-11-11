@@ -60,7 +60,9 @@ void Lvl_1_Spwn_Script()
 		////PUZZLE START------------------------------------------------------------------
 			// Tirer au milieu!
 		case 1: 
-			Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 2; // Erase la border seulement si le joueur est en mode quickstartS
+			MsgQueue::Register(ENABLE_BLAST);
+
+			Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; // Erase la border seulement si le joueur est en mode quickstartS
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 3);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 3);
 			break; 
@@ -80,7 +82,7 @@ void Lvl_1_Spwn_Script()
 		case 8: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2;
-			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR,true);	// erase le message
+			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR,true);	// erase le message
 
 			MsgQueue::Register(CHECKPOINT_REACHED);
 			break;
@@ -393,7 +395,12 @@ void Lvl_1_Spwn_Script()
 		case 197:Add_Spec(DOWN, 2);skip = 12; break;
 		case 198:Add_Spec(UP, 4);Add_Spec(DOWN, 7);Add_Spec(LEFT, 5);Add_Spec(RIGHT, 8); MsgQueue::Register(CHECKPOINT_REACHED);break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 		case 199: break;
-		case 200:MsgQueue::Register(LOCK_PLAYER);P1.Er_Player();break;	
+		case 200:
+			if (!seenFinalHour)
+			{
+				MsgQueue::Register(LOCK_PLAYER);P1.Er_Player();
+			}
+			break;
 		case 201:break;
 
 		case 202:
@@ -402,18 +409,20 @@ void Lvl_1_Spwn_Script()
 			{
 				MsgQueue::Register(FINAL_HOUR);	// montre ça juste une fois, EVER
 				seenFinalHour = true;
+				skip = 10;
 			}
-			skip = 10;
 			break;
 
 		case 203:
-			Set_Ev_Spawn_Player(3);
+			if (P1.Cant_Do_Stuff())
+				Set_Ev_Spawn_Player(3);
+
 			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,4 });
 			skip = 5;
 			break;
 
 		case 204:
-			ItemSpawner::Add_To_Pool(ItemType::HEALTH, 600, 0);
+			ItemSpawner::Add_To_Pool(ItemType::HEALTH, 700, 0);
 			MsgQueue::Register(ENABLE_ITEM_SPAWN);
 			skip = 7;
 			break;

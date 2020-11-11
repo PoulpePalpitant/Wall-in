@@ -21,6 +21,13 @@ static std::string eraseNum = "    ";	// pour erase un nombre
 // fait juste changer le counter en cyan
 // draw une deuxième bar par dessus comme dans les jeux de fighter
 
+void BlastAmmo::Deactivate() {
+	active = false;
+	DrawBlastAmmo::Dr_Or_Er_Bar(DrawBlastAmmo::MAX_BAR_SIZE, WHITE,true);
+	DrawBlastAmmo::Er_Ammo_Count();
+	Cancel_Ev_Ammo_Depleted();	// efface ammo depleted si c'est le cas
+
+}
 
 void BlastAmmo::Drain_Health_For_Shot()
 {

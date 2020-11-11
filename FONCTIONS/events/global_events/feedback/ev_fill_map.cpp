@@ -71,7 +71,7 @@ void Ev_Fill_Map()			//  Fill la map de charactère cools, delete ensuite tout
 
 			case 2:
 				Fill_Screen_Randomly();	// Remplis la console d'un charactère blanc à la fois
-				ev_FillMap.Advance(2000);
+				ev_FillMap.Advance(2500);
 				break;
 
 			case 3:
@@ -95,7 +95,7 @@ void Ev_Fill_Map()			//  Fill la map de charactère cools, delete ensuite tout
 				break;
 
 			case 7:
-				clrscr();					// Efface les borders
+				//clrscr();					// Efface les borders
 				ev_FillMap.Advance(300);
 				break;
 

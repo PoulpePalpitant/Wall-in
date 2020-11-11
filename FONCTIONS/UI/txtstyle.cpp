@@ -17,9 +17,9 @@ Colors gJerClr = LIGHT_AQUA;
 //const unsigned short TXT_SPD_DR = 10; // vitesse de défilement du texte par défaut
 //const unsigned short TXT_SPD_FAST = 20 ; // vitesse d'affichage
 //const unsigned short TXT_SPD_ER = 15; // vitesse d'éffacement du texte par défaut
-const int TXT_SPD_DR = 25000; // vitesse de défilement du texte par défaut
-const int TXT_SPD_ER = 33000; // vitesse d'éffacement du texte par défaut
-const int TXT_SPD_FAST = 40000; // vitesse d'affichage
+const int TXT_SPD_DR = 27000; // vitesse de défilement du texte par défaut
+const int TXT_SPD_ER = 35000; // vitesse d'éffacement du texte par défaut
+const int TXT_SPD_FAST = 42000; // vitesse d'affichage
 
 
 // Changer la couleur
@@ -93,6 +93,10 @@ Coord Heart_Txt_Crd_Left(std::string txt, int line)
 	int txtSize = (int)txt.size();
 
 	Coord crd = Find_Heart_Ori_XY();
+	if (txt.length() > 14)
+	{
+		crd.x -= txt.length() - 14;
+	}
 
 	if (line < 10)
 		return { (crd.x + (txtSize / 2)) - 37 , crd.y + 2 + line };
@@ -138,7 +142,7 @@ void Erase_All_Boss_Txt(bool slow)
 
 int Jerry_Txt_X()
 {
-	return  map.Get_Box_Limit(RIGHT) + 22;	//v2
+	return  map.Get_Box_Limit(RIGHT) + 35;	//v2
 	//return  (gConWidth - (gConWidth / 5));
 }
 

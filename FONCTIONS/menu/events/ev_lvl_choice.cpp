@@ -41,14 +41,12 @@ void Ev_Dr_Choose_Lvl()
 				ConsoleRender::Add_String(pressNum, { crd.x - 1, crd.y + 1 }, GRAY, 0);
 
 				crd.y += 5;
-			//	crd.x = (gConWidth / 2) - (numDist * 8) / 2;	// distance entre chaque char
 				crd.x -= 15; // v2
 				crd.x -= 2;
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < 1; i++)
 				{
 					crd.x += numDist;
 					ConsoleRender::Add_String(recom[i], crd, WHITE, 0);
-
 				}
 				ev_Dr_ChooseLvl.Advance(7000);
 				break;
