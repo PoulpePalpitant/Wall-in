@@ -82,7 +82,8 @@ void main()	// Le début!
 	//ConsoleRender::Set_Animation_Delay();	// Comment en mode debug: Ceci rajoute du delay sur la méthode qui render l'animation queue
 
 	// UI TESTING
-	Coord crd2 = { 45,1 }; ConsoleRender::Add_String("Spawn Waves: ", crd2 );
+	Coord crd2 = { 45,1 }; 
+	//ConsoleRender::Add_String("Spawn Waves: ", crd2 );
 	Coord crd3 = { 61,1 };	// Update la combientième wave
 	crd = { 13,1 };
 

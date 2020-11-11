@@ -67,7 +67,7 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();
 				gSpwBotTimer.Resume();
 				gSpwBotTimer.Add_Count(5);	// Ajoute une tite pause à chaque fois que le checkpoint à été atteint!
-				//Ev_Good_Job();	// Félicite le joueur
+				Ev_Good_Job();	// Félicite le joueur
 				ev_ReachCheckpoint.Cancel();
 			}
 		}
