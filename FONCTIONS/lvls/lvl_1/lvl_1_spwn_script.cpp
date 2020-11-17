@@ -67,8 +67,15 @@ void Lvl_1_Spwn_Script()
 			MsgQueue::Register(ENABLE_BLAST);
 
 			Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; // Erase la border seulement si le joueur est en mode quickstartS
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 3);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 3);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 2);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 2);
+
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 1,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 -1,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+
 			break; 
 			    
 		case 2: 
@@ -79,13 +86,13 @@ void Lvl_1_Spwn_Script()
 			Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 
 		case 3: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 4: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 1; break;
+		case 4: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 5: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 6: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 7: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 1; break;
-		case 8: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2;
+		case 6: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 15; break;
+		case 7: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+		case 8: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+		case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+		case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;
 			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR,true);	// erase le message
 			MsgQueue::Register(CHECKPOINT_REACHED);
 			break;
@@ -157,42 +164,22 @@ void Lvl_1_Spwn_Script()
 		case 52:Add_Spec(RIGHT, 1);	MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHEREbreak;
 		
 		
-		case 53: 		// TELEPORTATION TUTORIAL!	Introduit wall transfer à la place?
-			P1.Move_And_Draw_Player({ 9,14 });	// ouins, last resort
-						// Very Temporary! Doit être remove
-			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
-			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
-			
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, linkGrid->Get_Rows() - 1 }, UP, linkGrid->Get_Rows() - 3);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, 2 }, LEFT, linkGrid->Get_Cols() - 5);
-			gGrids.Make_Chain_Of_Walls({ 2, 2 }, DOWN, 2);
-
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 2 }, LEFT, linkGrid->Get_Cols() - 6);
-			gGrids.Make_Chain_Of_Walls({ 2, linkGrid->Get_Rows() - 2 }, UP, 3);
-			Add(3); Set_Interval(LEFT, 6, 9);skip = -1;
-			skip = 5;
-			break;
-
-		case 54:Add(1);  gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;	Set_Custom_Bot(SPWN_DLAY - 15);	break;
-		case 55:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-		case 56: 
-			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR,1);
-			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR,1);break; // breaky break
-
-
-			// EZ ONE FOR PACING AND LESSON - Montre l'utilité du teleporter. NOPE, to the trash! Fais un call back à la place
-		case 57:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	instantSpawn = true;break;
-		case 58:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
-		case 59:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
-		case 60:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
-		case 61:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);instantSpawn = true; skip = 7; break;
-		case 62:Add_Spec(RIGHT, 0);	Add_Spec(LEFT, 0);Add_Spec(LEFT, 1);	break;
-		case 63:Add_Spec(RIGHT, 0);Add_Spec(LEFT, 0);instantSpawn = true;break;
-		case 64:Add_Spec(LEFT, 0);	break;
-		case 65:Add_Spec(RIGHT, 0);Add_Spec(LEFT, 0);	break;
-		case 66:Add_Spec(LEFT, 0);Add_Spec(RIGHT, 1);	break;
-		case 67:Add_Spec(RIGHT, 0);	break;
-		case 68:Add_Spec(RIGHT, 0); MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 53: 		
+		case 54:
+		case 55:
+		case 56:  MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 57:
+		case 58:
+		case 59:
+		case 60:
+		case 61:
+		case 62:
+		case 63:
+		case 64:
+		case 65:
+		case 66:
+		case 67:
+		case 68: MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 
 
 			// SATISFAISANT! Montre les walls transfer...	FUCKING HARD
@@ -227,7 +214,6 @@ void Lvl_1_Spwn_Script()
 
 
 			// SATISFAISANT! EXPAND les walls transfer. TROP HARD
-			
 		case 79:ConsoleRender::Add_String(" - EVERY WALL COUNTS -", { (Find_Ctr_X((int)std::size(" - EVERY WALL COUNTS -")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_ER, 1);break; // small pause
 		case 80:
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, 1 }, LEFT, 5);
@@ -532,27 +518,35 @@ void Lvl_1_Spwn_Script()
 
 
 
-
-
-
-
-
-
-			// mix et teleporter
-			// Mix égal entre vertical et horizontal ez
-			// Mix égal entre vertical et horizontal HARD
-			//#2 Pleins de ligne verticales, tu dois redirect pour protéger la base horizontale
-			// 1 autre redirect mais plus hard
-
-
-
 		
 
 
+			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
+			// TELEPORTATION TUTORIAL
 
+			/*
+			P1.Move_And_Draw_Player({ 9,14 });	// ouins, last resort
+						// Very Temporary! Doit être remove
+			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
+			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
 
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, linkGrid->Get_Rows() - 1 }, UP, linkGrid->Get_Rows() - 3);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, 2 }, LEFT, linkGrid->Get_Cols() - 5);
+			gGrids.Make_Chain_Of_Walls({ 2, 2 }, DOWN, 2);
 
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 2 }, LEFT, linkGrid->Get_Cols() - 6);
+			gGrids.Make_Chain_Of_Walls({ 2, linkGrid->Get_Rows() - 2 }, UP, 3);
+			Add(3); Set_Interval(LEFT, 6, 9);skip = -1;
+			skip = 5;
+			break;
 
+			Add(1);  gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;	Set_Custom_Bot(SPWN_DLAY - 15);	break;
+			MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+
+			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR, 1);
+			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR, 1);break; // breaky break
+			*/
+			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 
 
 
@@ -838,10 +832,26 @@ void Lvl_1_Spwn_Script()
 	}
 }
 
-//void Script_Patch()
-//{
-//	if(gSpawnCycleTot == 69)
-//
-//
-//
-//}
+void Script_Patch()
+{
+	int currPuzzle = gCurrentCheckPoints[gCurrentLevel - 1];
+	int puzzleStep = 5;
+
+	switch (gSpawnCycleTot)
+	{
+	default:
+		break;
+	}
+
+	puzzleStep++;
+	int numpuzzle;
+	for (int i = 0; i < numpuzzle; i++)
+
+	{
+
+	}
+
+
+
+
+}

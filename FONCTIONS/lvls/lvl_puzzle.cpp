@@ -1,5 +1,5 @@
 
-#include "lvl_script.h"
+#include "lvl_puzzle.h"
 
 /* LEs LEvels*/
 #include "../menu/menu_script.h"

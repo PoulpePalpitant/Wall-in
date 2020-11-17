@@ -38,7 +38,7 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 	{
 		if (!gAllBotMeta.alive && P1.Get_HP())
 		{
-			if (gSpawnCycleTot == LVL1_CHECKPOINT[gCurrentCheckPoints[gCurrentLevel - 1]])	// On a bel et bien reach le checkpoint
+			if (gSpawnCycleTot == LVL1_CHECKPOINT[gCurrentPuzzle[gCurrentLevel - 1]])	// On a bel et bien reach le checkpoint
 			{
 				// Pour debug
 				//gGrids.Dr_Spawngrid();
@@ -47,11 +47,13 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				P1.Reset_Hp_And_Heart(3);	// Restore la vie du joueur
 				Clear_Map();
 				Ev_Rainbow_Borders();		// fait flasher tout de manière gratifiante
-				gCurrentCheckPoints[gCurrentLevel - 1]++;	// Le checkpoint est officiellement updaté
+				gCurrentPuzzle[gCurrentLevel - 1]++;	// Le checkpoint est officiellement updaté
 				
-				if (!Are_Equal(P1.Get_Grd_Coord(), LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]))	// déplace le joueur si il ne se trouve pas sur le bon spawn point
+				if (!Are_Equal(P1.Get_Grd_Coord(), LVL1_CHECKPOINT_P1_CRD[gCurrentPuzzle[gCurrentLevel - 1]]))	// déplace le joueur si il ne se trouve pas sur le bon spawn point
 				{
-					P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]);
+					// Start next puzzle
+
+					P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentPuzzle[gCurrentLevel - 1]]);
 					Set_Ev_Spawn_Player(.7f);
 					P1.Er_Player();
 				}
