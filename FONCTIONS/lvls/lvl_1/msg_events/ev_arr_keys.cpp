@@ -46,13 +46,13 @@ void Ev_Dr_Arr_Keys()			// Montre les touches clavier pour tirer
 			}
 	}
 }
-void Just_Dr_Arr_Keys()		// Les touches pour tirer des walls
+void Just_Dr_Arr_Keys(bool erase)		// Les touches pour tirer des walls
 {
 	crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) };
-	ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE);
-	ConsoleRender::Add_String(_2, { crd.x + 3, crd.y + 2 }, WHITE);	// x -3, y + 2
-	ConsoleRender::Add_String(_3, { crd.x - 1 ,crd.y + 3 }, WHITE);	// x -3, y + 2
-	ConsoleRender::Add_String(_4, { crd.x - 6 ,crd.y + 5 }, GRAY);	// x -3, y + 2
+	ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE,0,erase);
+	ConsoleRender::Add_String(_2, { crd.x + 3, crd.y + 2 }, WHITE,0,erase);	// x -3, y + 2
+	ConsoleRender::Add_String(_3, { crd.x - 1 ,crd.y + 3 }, WHITE,0,erase);	// x -3, y + 2
+	ConsoleRender::Add_String(_4, { crd.x - 6 ,crd.y + 5 }, GRAY ,0,erase);	// x -3, y + 2
 }
 
 void Ev_Er_Arr_Keys()

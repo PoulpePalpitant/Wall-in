@@ -46,20 +46,12 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 	}
 }
 
-void Just_Dr_Wasd()// Draw fast
+void Just_Dr_Wasd(bool erase)// Draw fast
 {
 	static Coord crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2 };
-	ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE);
-	ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE);	
-	ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE);	
-}
-
-void Just_Er_Wasd()// erase fast
-{
-	static Coord crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2 };
-	ConsoleRender::Add_String(_1, crd, WHITE, true);
-	ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, true);
-	ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, true);
+	ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE,0, erase);
+	ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE,0, erase);	
+	ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE,0, erase);	
 }
 
 void Ev_Er_Wasd()

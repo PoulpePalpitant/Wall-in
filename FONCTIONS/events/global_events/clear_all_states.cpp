@@ -22,6 +22,7 @@
 #include "../../spawns/valid_spwn_intervals.h"
 #include "../../spawns/bots_to_spawn.h"
 #include "../../items/item_spw_drawer.h"
+#include "feedback/ev_drain_health.h"
 
 //#include "../../grid/AllGrids.h"
 
@@ -90,6 +91,7 @@ void Clear_Map()// Tout ce qui à une influence sur l'interface graphique
 	//MsgQueue::Register(HIDE_MOD_QUEUE);
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
 	Set_Dr_Map_1();
+	Stop_Ev_Hp_Drain_Msg();
 }
 
 void Clear_All_Renders()

@@ -13,6 +13,9 @@
 #include "../../events/global_events/feedback/ev_draw_map.h"
 #include "../../events/global_events/ev_wait_last_bot.h"
 #include "../../events/global_events/ev_spwn_player.h"
+#include "msg_events/ev_wasd.h"
+#include "msg_events/ev_arr_keys.h"
+
 
 // Cheats! sshhhhs
 #include "../../player/player.h"
@@ -36,7 +39,8 @@ static int box;
 static GrdCoord crd;
 static std::string codeRecycling = "(Don't Let The Shapes Reach This Border)";
 static bool seenFinalHour = false;
-
+static std::string tip_01 = "tip: Shooting 3 times without";
+static std::string tip_01_1 = "ammo will kill you";
 
 void Lvl_1_Spwn_Script()
 {
@@ -83,11 +87,12 @@ void Lvl_1_Spwn_Script()
 		case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 		case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2;
 			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR,true);	// erase le message
-
 			MsgQueue::Register(CHECKPOINT_REACHED);
 			break;
 		
 		case 11: /*Set_Custom_Bot(SPWN_DLAY * 1.3f); skip = 3;*/ 
+			Just_Dr_Arr_Keys(true);
+			Just_Dr_Wasd(true);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2  - 1,0 }, DOWN, 1);
 			Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2);  
 			break;
@@ -102,7 +107,10 @@ void Lvl_1_Spwn_Script()
 		case 19: MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 		
 		
-		case 20: linkGrid->link[9][7].Activate_Lonely_Link(Modifier::REGULAR); break;// Créer une root ici
+		case 20:
+				ConsoleRender::Add_String(tip_01, { (Find_Ctr_X((int)std::size(tip_01)) / 2) / 2, (gConHeight / 2) / 2 }, WHITE, TXT_SPD_DR);gGrids.Make_Chain_Of_Walls({ 9,7 }, RIGHT, 1);
+				ConsoleRender::Add_String(tip_01_1, { (Find_Ctr_X((int)std::size(tip_01_1)) / 2) / 2 + 4, (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
+				break;// Créer une root ici
 		case 21:Add(1);gBoxSide = LEFT; gSpwNum = 0;break;			
 		case 22:Add(1);gBoxSide = LEFT; gSpwNum = 1; break;			
 		case 23:Add(1);gBoxSide = LEFT; gSpwNum = 2; break;			
@@ -117,24 +125,30 @@ void Lvl_1_Spwn_Script()
 		case 32:Add(1);gBoxSide = LEFT; gSpwNum = 4; break;
 		case 33:Add(1);gBoxSide = LEFT; gSpwNum = 5; break;
 		case 34:Add(1);gBoxSide = LEFT; gSpwNum = 6; skip = 1; break;
-		case 35: MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 35:ConsoleRender::Add_String(tip_01, { (Find_Ctr_X((int)std::size(tip_01)) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_ER ,1); 
+				ConsoleRender::Add_String(tip_01_1, { (Find_Ctr_X((int)std::size(tip_01_1)) / 2) / 2 + 4, (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR , 1);
+				MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 		
 			
 			// Ez one with a lesson: les root meurt quand ils ne sont plus attachés
-		case 36:gGrids.Make_Chain_Of_Walls({ 3, 4 }, DOWN, 3);Add(3);Set_Interval(LEFT, 4, 7);skip = 2;break;
-		case 37:Add(2);Add_Spec(LEFT, 3);Set_Interval(RIGHT, 0, 2);break;
-		case 38:Add(2);Set_Interval(RIGHT, 12, 14);	break;
-		case 39:Add(4);Set_Interval(RIGHT, 3, 7);break;
+			
+		case 36:gGrids.Make_Chain_Of_Walls({ 5, 7 }, DOWN, 3);Add(3);Set_Interval(LEFT, 7, 10);skip = 2;break;
+		case 37:Add_Spec(LEFT, 6); skip = 6; break;
+		case 38:skip = 2;break;
+		case 39:Add(4);Set_Interval(RIGHT, 6, 10);break;
 		case 40:MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 			
 
-		// Easy one for pacing
-		case 41:gGrids.Make_Chain_Of_Walls({ 0, 8 }, RIGHT, 1);	gGrids.Make_Chain_Of_Walls({ 0, 5 }, RIGHT, 1);	gGrids.Make_Chain_Of_Walls({ 0, 2 }, RIGHT, 1);	break;
+		// Easy one for pacing, still was too hard, and too long
+		case 41:
+			gGrids.Make_Chain_Of_Walls({ 0, 9 }, RIGHT, 1);	
+			gGrids.Make_Chain_Of_Walls({ 0, 7 }, UP, 1);	gGrids.Make_Chain_Of_Walls({ 0, 7 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ 0, 4 }, RIGHT, 1);	gGrids.Make_Chain_Of_Walls({ 1, 4 }, DOWN, 1);		break;
 		case 42:Add(1);gBoxSide = RIGHT; gSpwNum = 7; skip = 2;break;
 		case 43:Add(1);gBoxSide = RIGHT; gSpwNum = 4; skip = 2;break;
-		case 44:Add(1);gBoxSide = RIGHT; gSpwNum = 1; skip = 2;break;
+		case 44:Add(1);gBoxSide = RIGHT; gSpwNum = 1; skip = 5;break;
 		case 45:Add(1);gBoxSide = RIGHT; gSpwNum = 2; skip = 1;break;
-		case 46:Add(1);gBoxSide = RIGHT; gSpwNum = 5; skip = 1; break;
+		case 46:Add(1);gBoxSide = RIGHT; gSpwNum = 5; skip = 1;break;
 		case 47:Add_Spec(RIGHT, 8); skip = 1; break;
 		case 48:Add_Spec(RIGHT, 11);skip = 4;break;
 		case 49:Add_Spec(RIGHT, 10);break;
@@ -143,42 +157,49 @@ void Lvl_1_Spwn_Script()
 		case 52:Add_Spec(RIGHT, 1);	MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHEREbreak;
 		
 		
-		case 53: 		// TELEPORTATION TUTORIAL!
-			// Very Temporary! Doit être remove
-			ConsoleRender::Add_String("TELEPORT", { (Find_Ctr_X((int)std::size("TELEPORT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
-			ConsoleRender::Add_String("(Shoot , then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 - 5, (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
-
+		case 53: 		// TELEPORTATION TUTORIAL!	Introduit wall transfer à la place?
+			P1.Move_And_Draw_Player({ 9,14 });	// ouins, last resort
+						// Very Temporary! Doit être remove
+			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
+			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
+			
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, linkGrid->Get_Rows() - 1 }, UP, linkGrid->Get_Rows() - 3);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, 2 }, LEFT, linkGrid->Get_Cols() - 5);
 			gGrids.Make_Chain_Of_Walls({ 2, 2 }, DOWN, 2);
 
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 2 }, LEFT, linkGrid->Get_Cols() - 6);
 			gGrids.Make_Chain_Of_Walls({ 2, linkGrid->Get_Rows() - 2 }, UP, 3);
-			Add(6); Set_Interval(LEFT, 4, 10);instantSpawn = true;
+			Add(3); Set_Interval(LEFT, 6, 9);skip = -1;
+			skip = 5;
 			break;
 
 		case 54:Add(1);  gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;	Set_Custom_Bot(SPWN_DLAY - 15);	break;
 		case 55:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-		case 56: break; // breaky break
+		case 56: 
+			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR,1);
+			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR,1);break; // breaky break
 
 
-			// EZ ONE FOR PACING AND LESSON - Montre l'utilité du teleporter
+			// EZ ONE FOR PACING AND LESSON - Montre l'utilité du teleporter. NOPE, to the trash! Fais un call back à la place
 		case 57:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	instantSpawn = true;break;
 		case 58:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
 		case 59:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
 		case 60:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
-		case 61:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);instantSpawn = true;break;
-		case 62:Add_Spec(RIGHT, 0);	Add_Spec(LEFT, 0);	break;
+		case 61:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);instantSpawn = true; skip = 7; break;
+		case 62:Add_Spec(RIGHT, 0);	Add_Spec(LEFT, 0);Add_Spec(LEFT, 1);	break;
 		case 63:Add_Spec(RIGHT, 0);Add_Spec(LEFT, 0);instantSpawn = true;break;
 		case 64:Add_Spec(LEFT, 0);	break;
 		case 65:Add_Spec(RIGHT, 0);Add_Spec(LEFT, 0);	break;
-		case 66:Add_Spec(LEFT, 0);	break;
+		case 66:Add_Spec(LEFT, 0);Add_Spec(RIGHT, 1);	break;
 		case 67:Add_Spec(RIGHT, 0);	break;
 		case 68:Add_Spec(RIGHT, 0); MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 
 
-			// SATISFAISANT! Montre les walls transfer
+			// SATISFAISANT! Montre les walls transfer...	FUCKING HARD
 		case 69:// Quelque mur en forme de L sur la bordure left
+			ConsoleRender::Add_String(" - EVERY WALL COUNTS -", { (Find_Ctr_X((int)std::size(" - EVERY WALL COUNTS -")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
+
+
 			gGrids.Make_Chain_Of_Walls({ 0, 5 }, RIGHT, 1);
 			gGrids.Make_Chain_Of_Walls({ 1, 5 }, DOWN, 1);
 
@@ -194,51 +215,53 @@ void Lvl_1_Spwn_Script()
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 9 }, LEFT, 1);
 			break;
 
-		case 70:Add_Spec(LEFT, 6);	break;
-		case 71:Add_Spec(LEFT, 8);break;
+		case 70:Add_Spec(LEFT, 6);break;
+		case 71:Add_Spec(LEFT, 8);skip = 4;break;
 		case 72:Add_Spec(LEFT, 9);skip = 2;break;
 		case 73:Add_Spec(LEFT, 9);break;
-		case 74:Add_Spec(LEFT, 5);break;
+		case 74:Add_Spec(LEFT, 5);skip = 5;break;
 		case 75:Add_Spec(LEFT, 7);skip = 2;break;
 		case 76:Add_Spec(LEFT, 9);skip = 3;break;
 		case 77:Add_Spec(LEFT, 5);break;
 		case 78:MsgQueue::Register(CHECKPOINT_REACHED);			break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 
 
-			// SATISFAISANT! EXPAND les walls transfer
-		case 79:break; // small pause
+			// SATISFAISANT! EXPAND les walls transfer. TROP HARD
+			
+		case 79:ConsoleRender::Add_String(" - EVERY WALL COUNTS -", { (Find_Ctr_X((int)std::size(" - EVERY WALL COUNTS -")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_ER, 1);break; // small pause
 		case 80:
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 1 }, LEFT, 6);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 9 }, LEFT, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 10 }, LEFT, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 11 }, LEFT, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 12 }, LEFT, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 13 }, LEFT, 1);
-			gGrids.Make_Chain_Of_Walls({ 6, 13 }, RIGHT, 4);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, 1 }, LEFT, 5);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, 1 }, DOWN, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 4 }, LEFT, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 5 }, LEFT, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 6 }, LEFT, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 7 }, LEFT, 1);
+			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 8 }, LEFT, 1);
+			/*gGrids.Make_Chain_Of_Walls({ 6, 13 }, RIGHT, 4);*/
 			break;
 
-		case 81:Add(1);gBoxSide = LEFT; gSpwNum = 6; Add_Spec(RIGHT, 0);break;			
-		case 82:Add(1);gBoxSide = LEFT; gSpwNum = 5;Add_Spec(RIGHT, 0);break;
-		case 83:Add(1);gBoxSide = LEFT; gSpwNum = 4;Add_Spec(RIGHT, 0);break;
-		case 84:Add(1);gBoxSide = LEFT; gSpwNum = 3;Add_Spec(RIGHT, 0);break;
-		case 85:Add(1);gBoxSide = LEFT; gSpwNum = 2;Add_Spec(RIGHT, 0);break;
-		case 86:Add(1);gBoxSide = LEFT; gSpwNum = 1; skip = 1;break;
-		case 87:Add_Spec(RIGHT, 0); skip = 10;break;
-		case 88:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 );Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 89:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 1);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 90:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 2);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 91:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 3);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 92:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 4);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 93:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 5);skip = 1; Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-		case 94:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 81:Add_Spec(RIGHT, 0);break;					//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 );Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 82:Add_Spec(RIGHT, 0);skip = 1;break;					//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 1);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 83:Add_Spec(RIGHT, 0);skip = 1;break;					//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 2);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 84:Add_Spec(RIGHT, 0);skip = 1;break;					//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 3);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 85:Add_Spec(RIGHT, 0);skip = 4;break;					//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 4);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 86:Add(1);gBoxSide = LEFT; gSpwNum = 6;break;				 // Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2 + 5);skip = 1; Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
+		case 87:Add(1);gBoxSide = LEFT; gSpwNum = 5;break;
+		case 88:Add(1);gBoxSide = LEFT; gSpwNum = 4;break;
+		case 89:Add(1);gBoxSide = LEFT; gSpwNum = 3;break;
+		case 90:Add(1);gBoxSide = LEFT; gSpwNum = 2;break;
+		case 91:Add(1);gBoxSide = LEFT; gSpwNum = 1; skip = 1;break;
+		case 92:break;
+		case 93:break;
+		case 94:break;
 		case 95:MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 		case 96:break;
-		
+			
 		
 			// COOL ONE AT THE END OF FIRST HALF
-		case 97: Add(1); gBoxSide = RIGHT; gSpwNum = 9; break;
-		case 98: Add(4); Set_Interval(LEFT, 0, 2);  Set_Interval(RIGHT, 7, 9);	skip = 3;	break;
-		case 99: Add(2);Set_Interval(RIGHT, 1, 3); skip = 1;break;
+		case 97: Add(1); gBoxSide = LEFT; gSpwNum = 9; break;
+		case 98: Add(2);Set_Interval(LEFT, 7, 9);	skip = 10;	break;
+		case 99: Add(4);Set_Interval(LEFT, 0, 2);Set_Interval(RIGHT, 1, 3); skip = 5;break;
 		case 100:Add(2);Set_Interval(LEFT, 3, 5);  skip = 3;break;
 		case 101:Add(2);Set_Interval(LEFT, 7, 9);  skip = 3; break;
 		case 103:Add(2);Set_Interval(RIGHT, 3, 5); skip = 3;break;
@@ -253,7 +276,7 @@ void Lvl_1_Spwn_Script()
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, 3 }, DOWN, 1);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, 4 }, LEFT, 5);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2 - 5, 4 }, DOWN, 1);
-			break;
+			skip = 6; break;
 
 		case 107:
 			Add(10);
@@ -268,7 +291,7 @@ void Lvl_1_Spwn_Script()
 			break;
 
 		case 109:
-			gGrids.Make_Chain_Of_Walls({ 3,7 }, LEFT, 3);
+			gGrids.Make_Chain_Of_Walls({ 3,6 }, LEFT, 3);
 			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4,7 }, RIGHT, 3);
 			break;
 
@@ -280,18 +303,17 @@ void Lvl_1_Spwn_Script()
 		case 114:Add_Spec(UP, 1); Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 2);break;
 		case 115:Add_Spec(UP, 2); Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);break;
 		case 116:MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-		case 117:break; 
+		case 117:gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 9);
+			gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 6);	// max = 9[
+			gGrids.Make_Chain_Of_Walls({ 8,10 }, UP, 3);
+			gGrids.Make_Chain_Of_Walls({ 7,10 }, UP, 3);
+			gGrids.Make_Chain_Of_Walls({ 6,10 }, UP, 4);
+			gGrids.Make_Chain_Of_Walls({ 5,10 }, UP, 5);
+			gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 6);break;
 		
 
 			// redirect couloir au milieu
 		case 118:
-			gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 9);
-			gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 6);	// max = 9[
-			gGrids.Make_Chain_Of_Walls({ 8,10 }, UP, 3);
-			gGrids.Make_Chain_Of_Walls({ 7,10 }, UP, 2);
-			gGrids.Make_Chain_Of_Walls({ 6,10 }, UP, 4);
-			gGrids.Make_Chain_Of_Walls({ 5,10 }, UP, 5);
-			gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 6);
 			break;
 		case 119:Add_Spec(UP, 8);break;
 		case 120:Add_Spec(UP, 4);skip = 1;break;
@@ -319,13 +341,13 @@ void Lvl_1_Spwn_Script()
 
 			// Challenging teleporting all sides
 		case 141:Add_Spec(LEFT, 2); Set_Custom_Bot(SPWN_DLAY / 2);break;
-		case 142:Add_Spec(UP, 8); Add_Spec(UP, 9); skip = 1; break;
+		case 142:Add_Spec(UP, 8); Add_Spec(UP, 9); skip = 4; break;
 		case 143:Add_Spec(UP, 1);skip = 1;break;
-		case 144:Add_Spec(LEFT, 1); Add_Spec(LEFT, 2); skip = 4;break;
-		case 145:Add_Spec(LEFT, 13);skip = 1;break;
+		case 144:Add_Spec(LEFT, 1); Add_Spec(LEFT, 2); skip = 6;break;
+		case 145:Add_Spec(LEFT, 13);skip = 2;break;
 		case 146:Add_Spec(DOWN, 1); Add_Spec(DOWN, 2); skip = 4;break;
-		case 147:Add_Spec(DOWN, 11);skip = 2;break;
-		case 148:Add_Spec(DOWN, 8);Add_Spec(DOWN, 9); Add_Spec(RIGHT, 11);skip = 5;break;
+		case 147:Add_Spec(DOWN, 11);skip = 1;break;
+		case 148:Add_Spec(DOWN, 8);Add_Spec(DOWN, 9); Add_Spec(RIGHT, 11);skip = 1;break;
 		case 149:Add_Spec(RIGHT, 5); skip = 1; break;
 		case 150:Add_Spec(UP, 11);	skip = 1;break;
 		case 151:Add_Spec(RIGHT, 3);skip = 4; break;
@@ -816,164 +838,10 @@ void Lvl_1_Spwn_Script()
 	}
 }
 
-
-// VERSION 1: Jugé trop difficile
-// Voici les checkpoints dans le lvl script
-//const int LVL1_CHECKPOINT[] = { 30, 49, 67, 100 }; 
-
-
-//case 1: Set_Dr_Map_1(TXT_SPD_DR * 2 + 3);skip = 2; break; // Erase la border seulement si le joueur est en mode quickstartS
-//case 2:Add_Spec(RIGHT, 7); /*MsgQueue::Register(START_BOT_SPAWNS); */break;
-//case 3:Add_Spec(RIGHT, 5); 			break;// Dessine un pattern de départ
-//case 4:Add_Spec(RIGHT, 9);break;
-//case 5:Add_Spec(RIGHT, 7);break;
-//case 6:Add(1);gBoxSide = RIGHT; break;
-//case 7:Add(1);gBoxSide = RIGHT; break;
-//case 8:Add(1);gBoxSide = RIGHT; break;
-//case 9:Add(1);gBoxSide = RIGHT; break;
-//case 10:Add(1); Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;	// Premier Double. Spawn Left Now
-//case 11:Add(1); gBoxSide = LEFT; break;
-//case 12:Add(1); gBoxSide = LEFT; gSpwNum = 0; break;
-//case 13:gBoxSide = LEFT; gSpwNum = 1; break;
-//case 14:Add(1); gBoxSide = LEFT; gSpwNum = 2; break;
-//case 15:gBoxSide = LEFT; gSpwNum = 3; break;
-//case 16:gBoxSide = LEFT; gSpwNum = 0; Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2); Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;		// Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; // CETTE FORMULE CRASH 100% DU TEMPS
-//case 17:gBoxSide = LEFT;Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2); break;
-//case 18:gBoxSide = LEFT; Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() / 2);break;
-//	// Start les doubles spawns left and Right
-//
-//case 19:Add(1);gBoxSide = LEFT; break;
-//case 20:Add(1);gBoxSide = RIGHT; break;
-//case 21:Add(1);gBoxSide = LEFT; break;
-//case 22:Add(1);gBoxSide = RIGHT;  break;
-//case 23:Add(1);gBoxSide = LEFT; break;
-//case 24:Add(1);gBoxSide = RIGHT;  break;
-//case 25:Add(1);gBoxSide = LEFT; break;
-//case 26:Add(1); gBoxSide = RIGHT; break;
-//case 27:Add(1);gBoxSide = LEFT; break;
-//case 28:Add(1); gBoxSide = RIGHT; break;
-//case 29: gNumSpawnTOT = 0; skip = 1;break;
-//case 30: gNumSpawnTOT = 0;skip = 6;
-//
-//	// Le checkpoint que le joueur à réussie à reach durant le niveau
-//	MsgQueue::Register(CHECKPOINT_REACHED);
+//void Script_Patch()
+//{
+//	if(gSpawnCycleTot == 69)
 //
 //
-//	Ev_MultiColor_Warnings();	// WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
-//	gSpwBotTimer.Start_Timer(800, 1, true);	// speed is inscreased!!!
-//	break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 //
-//case 31:Add(1); Set_Interval(RIGHT, 5, 6);break;
-//case 32:Add(1); Set_Interval(RIGHT, 5, 6);break;
-//case 33:Add(1); Set_Interval(RIGHT, 5, 6);break;
-//case 34:Add(1); Set_Interval(RIGHT, 5, 6); break;
-//case 35:Add(1); Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
-//case 36:Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break; //Set_Interval(RIGHT, 9,10);
-//case 37:Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-//case 38:Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); break;
-//case 39:Add_Spec(LEFT, 0); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);  break;
-//
-//case 40: Set_Interval(LEFT, 2, 3); Add(1); break;
-//case 41: Set_Interval(LEFT, 2, 4); Add(1); break;
-//case 42: Set_Interval(LEFT, 2, 5); Add(1); break;
-//case 43: Set_Interval(LEFT, 2, 6); Add(1); break;
-//case 44: Set_Interval(LEFT, 2, 7); Add(1); break;
-//case 45: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 3, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(1);break;
-//case 46: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 4, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(1);break;
-//case 47: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 5, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
-//case 48: Set_Interval(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 6, spawnGrid->Get_MaxSpwnCrdY() - 1);Add(3); break;
-//case 49: gNumSpawnTOT = 0;skip = 8;
-//
-//	ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 1,1 }); // Spawn de la vie ici?
-//	MsgQueue::Register(CHECKPOINT_REACHED);
-//	break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
-//
-//	// Random spawns
-//case 50:Add(1);break;
-//case 51:Add(2);break;
-//case 52:Add(1);break;
-//case 53:Add(2);break;
-//case 54:Add(1);break;
-//case 55:Add(2);break;
-//case 56:Add(1);break;
-//case 57:Add(2);break;
-//case 58:Add(1);break;
-//case 59:Add(2);break;
-//case 60:Add(1);break;
-//case 61:Add(1);break;
-//case 62:Add(3);break;
-//case 63:Add(4);break;
-//case 64:Add(5);break;
-//case 65:Add(1);break;
-//case 66:Add(1);break;
-//case 67:gNumSpawnTOT = 0;skip = 7;
-//
-//	gSpwBotTimer.Start_Timer(900, 1, true);	// speed is inscreased!!!	sSShhhhh
-//	MsgQueue::Register(CHECKPOINT_REACHED);
-//	break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
-//
-//	// Start les quad spawns!!
-//case 80: Set_Interval(LEFT, 4, 6);Add(3); break;
-//case 81: Set_Interval(RIGHT, 4, 8);Add(3); break;
-//case 83: Set_Interval(LEFT, 8, 12);Add(3); break;
-//case 84: Set_Interval(LEFT, 4, 6);Add(3); break;
-//case 87: Set_Interval(RIGHT, 4, 8);Add(3); break;
-//
-//	// Biggest rush of all time
-//case 88: Set_Interval(LEFT, 8, 12);Add(2); break;
-//case 89: Set_Interval(LEFT, 7, 12);Add(2); break;
-//case 90: Set_Interval(LEFT, 6, 12);Add(2); break;
-//case 91: Set_Interval(LEFT, 5, 12);Add(2); break;
-//case 92: Set_Interval(LEFT, 4, 12);Add(2); break;
-//case 93: Set_Interval(LEFT, 3, 12);Add(2); break;
-//case 94: Set_Interval(RIGHT, 7, 12);Add(2); break;
-//case 95: Set_Interval(RIGHT, 6, 12);Add(2); break;
-//case 96: Set_Interval(RIGHT, 5, 12);Add(2); break;
-//case 97: Set_Interval(RIGHT, 4, 12);Add(2); break;
-//case 98: Set_Interval(RIGHT, 3, 12);Add(2); break;
-//case 99: Add(2); break;
-//
-//	// FINAL PUSH	
-//case 100:
-//	gNumSpawnTOT = 0; 	skip = 7;
-//	gSpwBotTimer.Start_Timer(500, 1, true);
-//
-//	MsgQueue::Register(CHECKPOINT_REACHED);
-//	MsgQueue::Register(FINAL_PUSH);
-//	break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
-//
-//case 101: skip = 3; break;
-//case 102:break;
-//case 103:break;
-//case 104:break;
-//case 105:gBoxSide = LEFT;  Add(1);break;
-//case 106:gBoxSide = LEFT;  Add(1);break;
-//case 107:break;
-//case 108:Add_Spec(LEFT, -1);  break;
-//case 109:break;
-//case 110:Add_Spec(RIGHT, -1);  Add(1);break;
-//case 111:Add_Spec(RIGHT, -1);  Add(1); skip = 1;break;
-//case 112:Add_Spec(RIGHT, -1);  Add(1);skip = 1; break;
-//case 113:Add_Spec(LEFT, -1);  Add(1);skip = 2; break;
-//case 114:Add_Spec(LEFT, -1);  Add(1);skip = 1;break;
-//case 115:Add_Spec(LEFT, -1);  Add(1);skip = 2;break;
-//case 116:gBoxSide = LEFT;  Add(1);break;
-//case 117:  Add(1);break;
-//case 118:  Add(1);break;
-//case 119:  Add(1);break;
-//case 120:  Add(1); break;
-//case 121:  Add(1); break;
-//case 122:  Add(1); break;
-//case 123:  Add(1);
-//	MsgQueue::Register(STOP_BOT_SPAWNS);
-//	Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
-//	break;
-
-
-
-
-/*
-	/////////////////////////////////////////////////////////////////////// Version avec 1 checkpoint au milieu
-
-	J'ai abandonné celle-là, parce que je trouvais ça franchement lame
-*/
+//}

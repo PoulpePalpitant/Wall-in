@@ -219,7 +219,10 @@ void WarningDrawerList::Remove_All()
 void WarningDrawerList::Remove(int index)	// On delete rien au final
 {
 	for (int i = index; i < total; i++)		// Décale tout
+	{
+		drawer[i].timer.~SpeedTimer();	// yo, delete your shits
 		drawer[i] = drawer[i + 1];
+	}
 
 	if (!--total)
 		ev_DrawWarnings.Cancel();

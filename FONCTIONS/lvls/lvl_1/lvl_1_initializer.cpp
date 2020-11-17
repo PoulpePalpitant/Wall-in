@@ -38,10 +38,9 @@ void Lvl_1_Initializer()
 
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
-		int checkpointTest = 0;/*16 = max*/
+		int checkpointTest = 5;/*16 = max*/
 		if(gCurrentCheckPoints[gCurrentLevel - 1] < checkpointTest)
 			gCurrentCheckPoints[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
-
 	}
 	else
 	{

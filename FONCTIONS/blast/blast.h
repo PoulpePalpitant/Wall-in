@@ -42,6 +42,7 @@ class Blast
 		friend class AllGrids;
 		friend class LinkGrid;		// Pour enregistré des nouveaux Links
 
+
 	bool active;			// Le blast est actif ou non. Quand il est actif il est en train de se déplacer
 	BlastAmmo ammo;	// Fixe une limit de blast que le joueur peut faire. Si vide, il ne peut tirer
 

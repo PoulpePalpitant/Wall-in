@@ -3,14 +3,17 @@
 #include "../UI/txtstyle.h"	// UI
 #include "../UI/coord.h"
 #include "../math/math_stuff.h"
-#include <string>
+#include <vector>
 
-const int MAX_TIMERS = 50000;
+const int MAX_TIMERS = 10000;
 
 class SpeedTimer {	// Timer qui me permet de bouger des affaires dans mon jeu
 private:
-	static SpeedTimer* allTimers[MAX_TIMERS];
-	static int idTotal;				// Le nombre d'id total
+	// Liste liÉ DE TIMERS
+	static SpeedTimer* start, * end;
+	SpeedTimer * nxt = NULL;
+
+	static unsigned long long idTotal;				// Le nombre d'id total
 	int id;							// l'id de chaque timers
 
 	bool moving = false;			// Pause le countdown
@@ -60,34 +63,22 @@ public:
 	// Doit être absolument utilisé avec un while
 	bool Tick();	// Update le temps écoulé à partir de delta time
 
-	SpeedTimer()
-	{
-		id = idTotal;
-		allTimers[id] = this;
-		idTotal++;
-	}
-
-	SpeedTimer(bool noId)
-	{
-		id = -1;
-		// n'ajoute pas de id dans lla liste des timers créés
-	}
-
-
-	~SpeedTimer()
-	{
-		if(id  != -1)	// si est présent dans la liste on le delete
-			allTimers[id] = NULL;											// Why? Parce que t'a eu l'idée de mettre une fonction qui stop tout les timers. Et pour que celle-ci marche, elle doit parcourir la liste de tout
-																			// tout les timers dans un array timers immuable. si tu delete un timer, l'id sera associé à du garbage dans l'array,
-																			// ce qui va faire crasher le jeu quand il va essayer d'y accéder. Basically, je suis trop lazy pour gérer une liste de timer dynamic
-	}
+	// CONSTRUCTORINOS
+	SpeedTimer();
+	SpeedTimer(bool noId);	//		// n'ajoute pas de id dans lla liste des timers créés
+	~SpeedTimer();
+																
 };
 
 
 
+//		TO FIX
+// ********
 
-
-
+// Why? Parce que t'a eu l'idée de mettre une fonction qui stop tout les timers. Et pour que celle-ci marche, elle doit parcourir la liste de tout
+// tout les timers dans un array timers immuable. si tu delete un timer, l'id sera associé à du garbage dans l'array,
+// ce qui va faire crasher le jeu quand il va essayer d'y accéder. Basically, je suis trop lazy pour gérer une liste de timer dynamic
+// shit
 
 
 

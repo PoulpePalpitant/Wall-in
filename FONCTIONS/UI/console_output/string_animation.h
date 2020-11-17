@@ -39,7 +39,7 @@ public:
 	StringQueue(int stringLength, int speed = 100)
 	{
 		queue = new CharData[stringLength];
-		timer = new SpeedTimer(false); // dumb fix pour éviter d'utiliser le constructor qui assigne un id
+		timer = new SpeedTimer(false);				// dumb fix pour éviter d'utiliser le constructor qui assigne un id
 		timer->Start_Timer(speed, stringLength);	// Le timer va reset pour le nb de char présent dans la string
 	}
 

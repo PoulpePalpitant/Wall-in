@@ -22,7 +22,10 @@ void DrawItemSpawnList::Remove(int index)	// On delete rien au final
 void DrawItemSpawnList::Remove_All()
 {
 	for (int i = 0; i < MAX_ANIMATIONS; i++)		// ALL SHALL BE DELETED
+	{
+		drawer[i].timer.~SpeedTimer();	// we shall see if it works
 		drawer[i] = {};
+	}
 	
 	total = 0;
 }

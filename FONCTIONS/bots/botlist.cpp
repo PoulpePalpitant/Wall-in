@@ -2,6 +2,7 @@
 #include "botlist.h"
 #include "botmeta.h"
 #include "../grid/AllGrids.h"
+#include "../events/global_events/ev_back_to_menu.h"
 
 Bot BotList::bot[MAX_NUM_BOTS];	// LISTE DE TOUT LES BOTS
 
@@ -54,7 +55,10 @@ void BotList::Destroy_All_Bots()
 		return;
 	}
 	else
-		throw "This Shit ain't working";
+	{
+		//throw "This Shit ain't working";	// pls don't
+		Go_Back_To_Menu();
+	}
 }
 
 

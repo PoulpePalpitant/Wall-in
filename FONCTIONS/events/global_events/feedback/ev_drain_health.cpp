@@ -7,14 +7,18 @@
 #include "../../events.h"
 #include "../../../UI/console_output/draw_queue.h"
 #include "../../../blast/blast_ammo_animator.h"
+#include "../../../player/player.h"
 
 using namespace DrawBlastAmmo;
 
 static Event ev_DrainHealth(Ev_Drain_Health); // Def //
+static Event ev_HpDrainMsg(Ev_Hp_Drain_Msg,2); // Def //
 DrawerQueue Q_ev_DrainHealth(8, 9);		
 
 static unsigned char dr = 179;
 static unsigned char er = TXT_CONST.SPACE;
+
+static std::string drained = "- HP DRAINED FOR AMMO -";
 
 void Ev_Drain_Health()
 {
@@ -22,9 +26,16 @@ void Ev_Drain_Health()
 	static Coord crd; 
 	static int y; 
 	static int step;
-
+	
 	if (!ev_DrainHealth.Is_Active())
 	{
+		// Re do it! But with another color probably
+		if (ev_HpDrainMsg.Is_Active()) {
+			ev_HpDrainMsg.Cancel();
+		}
+
+		Ev_Hp_Drain_Msg();
+
 		ev_DrainHealth.Activate();
 		ev_DrainHealth.Start(0);	// On ne tick pas ce timer
 	}
@@ -50,68 +61,10 @@ void Ev_Drain_Health()
 							Q_ev_DrainHealth.Step(i, 25000);
 					}
 					else
+					{
+
 						Q_ev_DrainHealth.Remove(i);
-
-					//if(step < MAX_BAR_SIZE + 1)
-					//	ConsoleRender::Add_Char({ crd.x,crd.y + step }, dr, LIGHT_RED);
-					//else
-					//	ConsoleRender::Add_Char({ crd.x,crd.y + step - MAX_BAR_SIZE }, er);
-
-					//if(step > MAX_BAR_SIZE * 2 )
-					//	Q_ev_DrainHealth.Remove(i);
-					//else
-					//	Q_ev_DrainHealth.Step(i, 100000);
-
-
-					//switch (Q_ev_DrainHealth.queue[i].currStep)
-					//{
-					//case 1:
-					//	ConsoleRender::Add_Char(crd, line);
-					//	Q_ev_DrainHealth.Step(i, 100000);
-					//	break;
-					//case 2:
-					//	ConsoleRender::Add_Char({ y,crd.y - 1 }, line);	//																 
-					//	ConsoleRender::Add_Char({ y,crd.y + 1 }, line);	//																 
-					//	Q_ev_DrainHealth.Step(i, 80000);
-					//	break;
-
-					//case 3:
-					//	ConsoleRender::Add_Char(crd, tear);			// Modifie le milieu								    			 
-					//	Q_ev_DrainHealth.Step(i, 40000);
-					//	break;
-
-					//case 4:
-					//	ConsoleRender::Add_Char({ y,crd.y - 1 }, TXT_CONST.SPACE);		// efface										
-					//	ConsoleRender::Add_Char({ y,crd.y + 1 }, TXT_CONST.SPACE);
-					//	ConsoleRender::Add_Char({ y,crd.y - 2 }, line);	// draw										
-					//	ConsoleRender::Add_Char({ y,crd.y + 2 }, line);
-					//	ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// Modifie le milieu
-					//	Q_ev_DrainHealth.Step(i, 25000);
-					//	break;
-
-					//case 5:
-					//	ConsoleRender::Add_Char({ y,crd.y - 2 }, TXT_CONST.SPACE);	// erase																							
-					//	ConsoleRender::Add_Char({ y,crd.y + 2 }, TXT_CONST.SPACE);
-					//	ConsoleRender::Add_Char({ y,crd.y - 3 }, line, GRAY); // draw
-					//	ConsoleRender::Add_Char({ y,crd.y + 3 }, line, GRAY);
-					//	Q_ev_DrainHealth.Step(i, 15000);
-					//	break;
-
-					//case 6:
-					//	ConsoleRender::Add_Char({ y,crd.y - 3 }, TXT_CONST.SPACE);
-					//	ConsoleRender::Add_Char({ y,crd.y + 3 }, TXT_CONST.SPACE);
-					//	ConsoleRender::Add_Char({ y,crd.y - 4 }, tear, GRAY);
-					//	ConsoleRender::Add_Char({ y,crd.y + 4 }, tear, GRAY);
-					//	Q_ev_DrainHealth.Step(i, 10000);
-					//	break;
-
-					//case 7:
-					//	ConsoleRender::Add_Char({ y,crd.y - 4 }, TXT_CONST.SPACE);
-					//	ConsoleRender::Add_Char({ y,crd.y + 4 }, TXT_CONST.SPACE);
-					//	Q_ev_DrainHealth.Step(i);
-					//	Q_ev_DrainHealth.Remove(i);
-					//	break;
-					//}
+					}
 				}
 			}
 			
@@ -133,5 +86,37 @@ void Add_Ev_Drain_Health()	// Fait une animation de splash quand tu tir sur la b
 	Ev_Drain_Health();  
 }
 
+void Ev_Hp_Drain_Msg()
+{
+	static Colors clr;
 
+	if (!ev_HpDrainMsg.Is_Active())
+	{
+		if (P1.Get_HP() == 2)
+			clr = YELLOW;
+		else
+			if (P1.Get_HP() == 1)
+				clr = RED;
+			else
+				clr = GREEN;
 
+		ConsoleRender::Add_String(drained, Heart_Txt_Crd_Left(drained), clr);
+		ConsoleRender::Add_String(drained, Heart_Txt_Crd_Right(drained), clr);
+
+		ev_HpDrainMsg.Activate();
+		ev_HpDrainMsg.Start(700);
+	}
+	else
+		while (ev_HpDrainMsg.delay.Tick())
+		{
+			ConsoleRender::Add_String(drained, Heart_Txt_Crd_Left(drained), clr, 0, 1);
+			ConsoleRender::Add_String(drained, Heart_Txt_Crd_Right(drained), clr, 0, 1);
+			ev_HpDrainMsg.Cancel();
+		}
+}
+void Stop_Ev_Hp_Drain_Msg()		// C'était pas assé clair finalement
+{
+	ev_HpDrainMsg.Cancel();
+	ConsoleRender::Add_String(drained, Heart_Txt_Crd_Left(drained), WHITE, 0, 1);
+	ConsoleRender::Add_String(drained, Heart_Txt_Crd_Right(drained), WHITE, 0, 1);
+}

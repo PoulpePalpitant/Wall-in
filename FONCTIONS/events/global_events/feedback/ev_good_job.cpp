@@ -56,7 +56,7 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 			}
 
 				ConsoleRender::Add_String(grats, Heart_Txt_Crd_Left(grats), clr);
-				ConsoleRender::Add_String(grats, { Heart_Txt_Crd_Right(grats).x + 14, crd.y }, clr);
+				ConsoleRender::Add_String(grats, { Heart_Txt_Crd_Right(grats).x, crd.y }, clr);
 
 				if (erOrDr)
 					erOrDr = false;
@@ -68,7 +68,7 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 				if (!ev_GoodJob.Is_Active())
 				{
 					ConsoleRender::Add_String(grats, Heart_Txt_Crd_Left(grats), clr,0,1);
-					ConsoleRender::Add_String(grats, { Heart_Txt_Crd_Right(grats).x + 14, crd.y }, clr,0,1);
+					ConsoleRender::Add_String(grats, { Heart_Txt_Crd_Right(grats).x, crd.y }, clr,0,1);
 				}
 		}
 }

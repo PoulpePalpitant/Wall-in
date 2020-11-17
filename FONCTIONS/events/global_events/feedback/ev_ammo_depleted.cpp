@@ -6,6 +6,8 @@
 #include "../../../UI/console_output/render_list.h"
 #include "../../events.h"
 #include "../../../blast/blast_ammo_animator.h"
+#include "ev_rainbow_borders.h"
+#include "../../../events/global_events/feedback/ev_draw_map.h"
 
 using namespace DrawBlastAmmo;
 
@@ -21,7 +23,6 @@ void Ev_Ammo_Depleted()	// Affiche 1 warning que le joueur n'a plus d'ammo
 
 	if (!ev_AmmoDepleted.Is_Active())
 	{
-
 		crd = Get_Ori();
 		crd.x += barToCount;
 		erOrDr = false;

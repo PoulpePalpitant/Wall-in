@@ -22,10 +22,10 @@ const int LVL4_CHECKPOINT[] = { 0 };
 const int LVL5_CHECKPOINT[] = { 0 };
 
 // Le joueur possède ce montant d'ammo durant un checkpoint
-const int LVL1_BLAST_AMMO[] = {7,7,15,9, 12,  1, 18,0, 10, 18, 10/*vertical start*/, 6, 0, 19, 37,41, 20  };
+const int LVL1_BLAST_AMMO[] = {7,7,14,5, 12,  1, 20, 0, 0, 18, 10/*vertical start*/, 6, 0, 19, 37,41, 20  };
 const int LVL2_BLAST_AMMO[] = { 20,20,20,20};
 
-const GrdCoord LVL1_CHECKPOINT_P1_CRD[] = { {6,5}, {6,5} ,{6,5},{6,6} ,{4,7} ,{9,14} ,{11,11}, {4,6} ,{5,12},{11,8},  {6,6}/*vertical start*/,{6,6},{6,4} ,{10,1}, {12,13},{6,7},{3,7} }; // {6,6}
+const GrdCoord LVL1_CHECKPOINT_P1_CRD[] = { {6,5}, {6,5} ,{6,5},{6,6} ,{4,7} ,{9,14} ,{11,11}, {4,6} ,{4,1},{10,10},  {6,6}/*vertical start*/,{6,6},{6,4} ,{10,1}, {12,13},{6,7},{3,7} }; // {6,6}
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages

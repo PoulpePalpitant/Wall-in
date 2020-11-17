@@ -6,8 +6,70 @@
 
 #include "movement_timer.h"
 
-SpeedTimer* SpeedTimer::allTimers[MAX_TIMERS] = {};
-int SpeedTimer::idTotal = 0;				// Le nombre timer total actuel
+SpeedTimer* SpeedTimer::start;
+SpeedTimer* SpeedTimer::end;	// La liste de tous les timers
+
+//SpeedTimer* SpeedTimer::allTimers[MAX_TIMERS] = {};
+unsigned long long  SpeedTimer::idTotal = 0;				// Le nombre timer total actuel
+
+
+SpeedTimer::SpeedTimer()
+{
+	if (end)
+	{
+		end = end->nxt = this;
+		end->nxt = NULL;
+	}
+	else
+	{
+		start = end = this;
+		start->nxt = end->nxt = NULL;
+	}
+
+	id = ++idTotal;
+}
+
+SpeedTimer::SpeedTimer(bool noId)
+{
+	id = -1;
+	// n'ajoute pas de id dans lla liste des timers créés
+}
+
+
+SpeedTimer::~SpeedTimer()	// Reconnecte les éléments de la liste
+{
+	static SpeedTimer* it, * prev;
+
+	if (id != -1)	// si est présent dans la liste on le delete
+	{
+		it = start;
+		prev = NULL;
+
+		while (it)
+		{
+			if (it == this)
+			{
+				if (it == start && start == end)	// Liste unique
+					start = end = NULL;
+				else
+					if (it == start)				// Reset le start
+						start = start->nxt;
+					else
+						if (it == end)				// Reset la fin
+						{
+							end = prev;
+								end->nxt = NULL;
+						}
+						else
+							prev = it->nxt;	// Reconnection au milieu de la liste
+				return;
+			}
+
+			prev = it;
+			it = it->nxt;
+		}
+	}
+}
 
 void SpeedTimer::Override_Ticks_Per_Frame()	// NE JAMAIS UTILISER
 {
@@ -146,12 +208,15 @@ bool SpeedTimer::Tick()	// Update le temps écoulé à partir de delta time
 
 	return false;	// we NO update
 }
-void SpeedTimer::Stop_All_Timers()	// peut seulement marcher si tu delete absolument aucun timer
+void SpeedTimer::Stop_All_Timers()	// Stop tout les timers qui sont listés.		// La seule exception à date c'est les timer des affichages de strings
 {
-	for (int id = 0; id < idTotal; id++)
+	static SpeedTimer* it;
+	it = start;
+	
+	while (it)
 	{
-		//if(allTimers[id] != NULL)
-		//allTimers[id]->Stop();
-		allTimers[id] = {};	// je dois reset si non ça crash, je sais pas si ça va bien marché
+		it->Stop();
+		it = it->nxt;
 	}
+
 }

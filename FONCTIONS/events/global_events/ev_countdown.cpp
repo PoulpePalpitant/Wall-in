@@ -4,7 +4,6 @@
 #include "../msg_dispatcher.h"
 #include "../../UI/console_output/render_list.h"
 #include "../../structure_manager/modify_chain.h"
-#include "../../grid/AllGrids.h"
 #include "../../console/sweet_cmd_console.h"
 
 static Event ev_CountDown(Ev_CountDown, 3);

@@ -79,6 +79,9 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 
 		// Le ratioBarPerAmmo et l'ui est activé uniquement quand on utilise la méthode set
 		DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
+
+		if(!nbShots)
+			Ev_Ammo_Depleted();	 // Pas de ammo
 	}
 }
 

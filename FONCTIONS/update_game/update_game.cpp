@@ -158,9 +158,13 @@ void Update_Player_Action()
 				break;
 
 			case TELEPORT:
-				if(!blastP1.Is_Active())
-					if(!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
+				if (!blastP1.Is_Active())
+				{
+					if (!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
 						Ev_Wrong_Action_Add();			// Flash le joueur
+				}
+				else
+					return;	// Conserve l'action de téléporter
 				break;
 			}
 

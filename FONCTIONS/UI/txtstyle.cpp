@@ -83,7 +83,7 @@ Coord Heart_Txt_Crd_Right(std::string txt ,int line)
 	Coord crd = Find_Heart_Ori_XY();
 
 	if(line < 10)
-		return { (crd.x - (txtSize / 2)) + 26 , crd.y + 2 + line };
+		return { (crd.x - (txtSize / 2)) + 40 , crd.y + 2 + line };
 	else
 		return { 0,0 };	// hehe
 }

@@ -40,17 +40,10 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 		{
 			if (gSpawnCycleTot == LVL1_CHECKPOINT[gCurrentCheckPoints[gCurrentLevel - 1]])	// On a bel et bien reach le checkpoint
 			{
-				//ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
-				//blastP1.Clear_Blast();					 // stop and clear
-				//ItemsOnGrid::Remove_All();				 // enlève tout les items spawné
-				//DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
-				//DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
-				//DrawItemSpawnList::Remove_All();		 // hardcore
-				//BlastModifierQueue::Reset();
-				
 				// Pour debug
 				//gGrids.Dr_Spawngrid();
 
+				MsgQueue::Register(LOCK_PLAYER);	// It has to be done
 				P1.Reset_Hp_And_Heart(3);	// Restore la vie du joueur
 				Clear_Map();
 				Ev_Rainbow_Borders();		// fait flasher tout de manière gratifiante
@@ -59,7 +52,8 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				if (!Are_Equal(P1.Get_Grd_Coord(), LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]))	// déplace le joueur si il ne se trouve pas sur le bon spawn point
 				{
 					P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]);
-					Set_Ev_Spawn_Player(3);
+					Set_Ev_Spawn_Player(.7f);
+					P1.Er_Player();
 				}
 				else
 					P1.Dr_Player();
