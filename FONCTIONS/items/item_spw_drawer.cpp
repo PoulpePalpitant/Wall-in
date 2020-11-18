@@ -10,10 +10,10 @@ int DrawItemSpawnList::total;
 
 void DrawItemSpawnList::Remove(int index)	// On delete rien au final
 {
-	// ITS GRID TIME MOTHERFUCKER
-
 	for (int i = index; i < total; i++)		// Décale tout
+	{
 		drawer[i] = drawer[i + 1];
+	}
 
 	total--;
 }
@@ -23,8 +23,12 @@ void DrawItemSpawnList::Remove_All()
 {
 	for (int i = 0; i < MAX_ANIMATIONS; i++)		// ALL SHALL BE DELETED
 	{
-		drawer[i].timer.~SpeedTimer();	// we shall see if it works
-		drawer[i] = {};
+		//drawer[i] = { {0,0},ItemType::REGULAR, 0, 1};	// dafuck, ceci créer et détruit l'objet timer, même si je fais aucune assignation?!!?
+		drawer[i].cancel = true;
+		drawer[i].currStep = 0;
+		drawer[i].type = ItemType::REGULAR;
+		drawer[i].XY = {};
+		drawer[i].timer.Stop();
 	}
 	
 	total = 0;
@@ -40,15 +44,12 @@ void DrawItemSpawnList::Cancel(Coord XY)	// Stop l'animation de l'item sur cette
 
 bool DrawItemSpawnList::Add(ItemType type, GrdCoord crd)		// Ajoute l'item à draw dans la list
 {
-	static ItemDrawer tempDrawer = {};
-
 	if (total < MAX_ANIMATIONS)
 	{
-		tempDrawer.type = type;
-		tempDrawer.XY = linkGrid->link[crd.c][crd.r].Get_XY();
-		tempDrawer.timer.Start_Timer(0);		// First step de l'animation
+		drawer[total].type = type;
+		drawer[total].XY = linkGrid->link[crd.c][crd.r].Get_XY();
+		drawer[total].timer.Start_Timer(0);		// First step de l'animation
 
-		drawer[total] = tempDrawer;
 		total++;	
 		return true;
 	}

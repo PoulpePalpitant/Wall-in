@@ -17,8 +17,10 @@
 #include "msg_events/ev_arr_keys.h"
 
 
+
 // Cheats! sshhhhs
 #include "../../player/player.h"
+#include "../../items/item_spw_drawer.h"
 
 // TO REMOVE
 #include "../../console/sweet_cmd_console.h"
@@ -33,21 +35,67 @@
 
 using namespace bots_to_spawn;
 
+
+// Puzzles du lvl1: DISCLAIMER: le nom de la méthode ne veut pas dire que ce puzzle sera joué dans cet ordre
+void Puzzle_1_0();
+void Puzzle_1_1();
+void Puzzle_1_2();
+void Puzzle_1_3();
+void Puzzle_1_4();
+void Puzzle_1_5();
+void Puzzle_1_6();
+void Puzzle_1_7();
+void Puzzle_1_8();
+void Puzzle_1_9();
+void Puzzle_1_10();
+void Puzzle_1_11();
+void Puzzle_1_12();
+void Puzzle_1_13();
+void Puzzle_1_14();
+void Puzzle_1_15();
+void Puzzle_1_16();
+void Puzzle_1_17();
+
+
+// VOICI  l'ordre dans lequel sera joué les puzzles
+void (*LVL1_PUZZLES[])() = {	// definition 
+Puzzle_1_0,
+Puzzle_1_1,
+Puzzle_1_2,
+Puzzle_1_3,
+Puzzle_1_4,
+Puzzle_1_5,
+Puzzle_1_6,
+Puzzle_1_7,
+Puzzle_1_8,
+Puzzle_1_9,
+Puzzle_1_10,
+Puzzle_1_11,
+Puzzle_1_12,
+Puzzle_1_13,
+Puzzle_1_14,
+Puzzle_1_15,
+Puzzle_1_16,
+Puzzle_1_17
+};		
+
+
 // stupid stuff that should'nt be here, but the convenience is too great
 static int spw;
 static int box;
 static GrdCoord crd;
 static std::string codeRecycling = "(Don't Let The Shapes Reach This Border)";
 static bool seenFinalHour = false;
-static std::string tip_01 = "tip: Shooting 3 times without";
-static std::string tip_01_1 = "ammo will kill you";
+static std::string tip_01 = "Drain Hp For Ammo ->";
+static std::string tip_01_1 = "Shoot to drain hp ";
+static int skip;
 
 void Lvl_1_Spwn_Script()
 {
 	if (gSpawnThisCycle)
 	{
 		int numSpawnWaves = gSpawnCycleTot;	// Pour aller dans la switch et déterminé quel va être le spawn
-		int skip = 0;						// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
+		skip = 0;						// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
 		
 		// POUR GET LE MAX
 		//	spawnGrid->Get_MaxSpwnCrdX() - 1
@@ -57,61 +105,30 @@ void Lvl_1_Spwn_Script()
 		if (numSpawnWaves < 220) // Tout les spawns seront verticaux lors de la moitié du final hour
 			gHorizontalBorder = true;
 		
-		switch (numSpawnWaves)
+		LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
+
+
+
+		switch (10000)
 		{	
 
 
-		////PUZZLE START------------------------------------------------------------------
-			// Tirer au milieu!
-		case 1: 
-			MsgQueue::Register(ENABLE_BLAST);
-
-			Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; // Erase la border seulement si le joueur est en mode quickstartS
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 2);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 2);
-
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, DOWN, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 1,linkGrid->Get_Rows() / 2 }, DOWN, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2,linkGrid->Get_Rows() / 2 }, DOWN, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 -1,linkGrid->Get_Rows() / 2 }, DOWN, 1);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2,linkGrid->Get_Rows() / 2 }, DOWN, 1);
-
-			break; 
-			    
-		case 2: 
-			// Présentation des mécaniques de bases pour le noob qui skip le tutorial
-			Set_Flashy_Border(LEFT);
-			Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
-			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR);
-			Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-
-		case 3: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 4: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 5: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-		case 6: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 15; break;
-		case 7: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
-		case 8: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
-		case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
-		case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;
-			ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR,true);	// erase le message
-			MsgQueue::Register(CHECKPOINT_REACHED);
-			break;
 		
-		case 11: /*Set_Custom_Bot(SPWN_DLAY * 1.3f); skip = 3;*/ 
-			Just_Dr_Arr_Keys(true);
-			Just_Dr_Wasd(true);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2  - 1,0 }, DOWN, 1);
-			Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2);  
-			break;
+		case 11:
+				
+				
+				
+				
+				
 
-		case 12: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 1);break;
-		case 13: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 2);break;
-		case 14: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 3);break;
-		case 15: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 4);break;
-		case 16: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 5);break;
-		case 17: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 6);break;
-		case 18: Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 7);break;
-		case 19: MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		case 12:
+		case 13:
+		case 14:
+		case 15:
+		case 16:
+		case 17:
+		case 18:
+		case 19:
 		
 		
 		case 20:
@@ -829,29 +846,142 @@ void Lvl_1_Spwn_Script()
 		// Ceci ajoute du temps entre le spawn actuel et le prochain
 		if(skip)
 			gSpwBotTimer.Add_Count(skip);
+		
+		gCurrPuzzleStep++;	// Prochain step du puzzle!
 	}
 }
 
-void Script_Patch()
-{
-	int currPuzzle = gCurrentCheckPoints[gCurrentLevel - 1];
-	int puzzleStep = 5;
+/* TEMPLATE DE PUZZLE SCRIPT*/
 
-	switch (gSpawnCycleTot)
+/*
+
+void Puzzle_1_0(){
+	switch (gCurrPuzzleStep)
 	{
-	default:
+	case 0:
+		P1.Set_Position({ 6, 6 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
+		gCurrPuzzleStepMax = 11;
+		break;
+
+
+	case 1:	break;
+	case 2:	break;
+	case 3:	break;
+	case 4:	break;
+	case 5:	break;
+	case 6:	break;
+	case 7:	break;
+	case 8:	break;
+	case 9:	break;
+	case 10:break;
+	case 11:MsgQueue::Register(CHECKPOINT_REACHED);	break;
+	}
+}
+*/
+
+
+// Voici les puzzles du niveau
+// da first
+void Puzzle_1_0(){
+	static int y = Heart_Txt_Crd_Right("  ").y - 3;
+
+	switch (gCurrPuzzleStep)
+	{
+	case 0:
+		P1.Set_Position({ 6, 5 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(8);// Quantité d'ammo
+		gCurrPuzzleStepMax = 18;
+		DrawItemSpawnList::Add(ItemType::AMMO,{0,0});
+		break;
+
+
+	case 1:	MsgQueue::Register(ENABLE_BLAST);
+		Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; // Erase la border au cas où le joueur est pas en mode quickstartS
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 2);
+
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 1,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 1,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2,linkGrid->Get_Rows() / 2 }, DOWN, 1);
+		break;
+
+	case 2:
+		// Présentation des mécaniques de bases pour le noob qui skip le tutorial
+		Set_Flashy_Border(LEFT);
+		Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
+		ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR);
+		Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+
+	case 3: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+	case 4: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+	case 5: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
+	case 6: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 8; break;
+	case 7: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+	case 8: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+	case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+	case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
+	case 11:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; skip = 13;break;
+	case 12:ConsoleRender::Add_String(tip_01, { Heart_Txt_Crd_Left(TXT_CONST.DOTDOTDOT).x + 11 ,y }, WHITE, TXT_SPD_DR); break;
+	case 13:/*ConsoleRender::Add_String(tip_01_1, { Heart_Txt_Crd_Right(tip_01_1).x ,y }, WHITE, TXT_SPD_DR); */skip = 3;break;
+
+	case 14:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;break;
+	case 15:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;break;
+	case 16:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;break;
+	case 17:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;break;
+	case 18:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1;
+		ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR, true);	// erase le message
+		ConsoleRender::Add_String(tip_01, { Heart_Txt_Crd_Left(TXT_CONST.DOTDOTDOT).x + 11 ,y }, WHITE, TXT_SPD_ER,1);
+		MsgQueue::Register(CHECKPOINT_REACHED);
 		break;
 	}
-
-	puzzleStep++;
-	int numpuzzle;
-	for (int i = 0; i < numpuzzle; i++)
-
-	{
-
-	}
-
-
-
-
 }
+
+
+
+// Puzzle de ligne verticale à faire en haut
+void Puzzle_1_1(){
+	switch (gCurrPuzzleStep)
+	{
+	case 0:
+		P1.Set_Position({ 6, 5 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(7);// Quantité d'ammo
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 1,0 }, DOWN, 1);
+		gCurrPuzzleStepMax = 9;
+		break;
+
+
+	case 1:
+		Just_Dr_Arr_Keys(true);
+		Just_Dr_Wasd(true);
+		Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2);
+		break;
+
+	case 2:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 1);break;	
+	case 3:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 2);break;	
+	case 4:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 3);break;	
+	case 5:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 4);break;	
+	case 6:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 5);break;	
+	case 7:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 6);break;	
+	case 8:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2 - 7);break;	
+	case 9:MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE	break;
+	}
+}
+void Puzzle_1_2(){}
+void Puzzle_1_3(){}
+void Puzzle_1_4(){}
+void Puzzle_1_5(){}
+void Puzzle_1_6(){}
+void Puzzle_1_7(){}
+void Puzzle_1_8(){}
+void Puzzle_1_9(){}
+void Puzzle_1_10(){}
+void Puzzle_1_11(){}
+void Puzzle_1_12(){}
+void Puzzle_1_13(){}
+void Puzzle_1_14(){}
+void Puzzle_1_15(){}
+void Puzzle_1_16(){}
+void Puzzle_1_17(){}

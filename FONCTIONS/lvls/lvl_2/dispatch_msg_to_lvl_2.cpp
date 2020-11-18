@@ -70,7 +70,7 @@ void Dispatch_Msg_To_Lvl_2()
 				botList.Destroy_All_Bots();
 				P1.Set_Position({ 6,6 });
 
-				if (gCurrentCheckPoints[gCurrentLevel + 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
+				if (gCurrentPuzzle[gCurrentLevel + 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
 				{
 					P1.Er_Player();
 					Just_Dr_Map_Borders();
@@ -117,7 +117,7 @@ void Dispatch_Msg_To_Lvl_2()
 	case PROCEED: 
 		if (gCurrentStage == 7)	// Le stage ou à lieu le main game
 		{
-			gCurrentCheckPoints[gCurrentLevel - 1] = 0;	// Restart le checkpoint
+			gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
 			MsgQueue::Register(PLS_INTIALIZE_LVL);
 			clrscr();
 			

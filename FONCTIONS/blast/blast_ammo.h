@@ -22,7 +22,7 @@ public:
 	bool Shoot();	// Spend un "shot"
 	int Get_Nb_Ammo() { return ammo; }	// that amount
 	void Add_Ammo(int amm = 1);
-	void Drain_Health_For_Shot();	// Si le joueur ne possède plus d'ammo, il peut tirer encore, mais cela va drainer son nombre de vie de 1
+	bool Drain_Health_For_Shot();	// Si le joueur ne possède plus d'ammo, il peut tirer encore, mais cela va drainer son nombre de vie de 1. Si pu assé d'hp, provoque un warning
 
 	// SET
 	void Set_Ammo(int nbShots); 

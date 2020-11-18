@@ -145,19 +145,18 @@ namespace DrawModifierQueue {
 	}
 	bool DrawerQueue::Add_To_Next_Available(Modifier modifier)	// Ajoute un item à draw
 	{
-		static Drawer tempDrawer = {};
-
 		if (total < MAX_QUEUE_SIZE)
 		{
 			for (int index = 0; index < MAX_QUEUE_SIZE; index++)
 			{
 				if (drawer[index].active == false)
 				{
-					Set_Char_From_Mod(modifier, tempDrawer.sym, tempDrawer.clr);
-					tempDrawer.timer.Start_Timer(0);		// First step de l'animation
-					tempDrawer.active = true;	// se fait à chaque fois pour rien
+					Set_Char_From_Mod(modifier, drawer[index].sym, drawer[index].clr);
+					drawer[index].timer.Start_Timer(0);		// First step de l'animation
+					drawer[index].currStep = 0;
+					drawer[index].cancel = false;
+					drawer[index].active = true;	// se fait à chaque fois pour rien
 
-					drawer[index] = tempDrawer;
 					total++;
 					return true;
 				}
@@ -171,18 +170,18 @@ namespace DrawModifierQueue {
 
 	bool DrawerQueue::Add_To_Index(Modifier modifier, int index)		// Ajoute l'item à draw à la fin de la liste
 	{
-		static Drawer tempDrawer = {};
 
 		if (Is_Active(index))	// temp solution
 			Remove(index);
 
 		if (index < MAX_QUEUE_SIZE)
 		{
-			Set_Char_From_Mod(modifier, tempDrawer.sym, tempDrawer.clr);
-			tempDrawer.timer.Start_Timer(0);		// First step de l'animation
-			tempDrawer.active = true;	// se fait à chaque fois pour rien
+			Set_Char_From_Mod(modifier, drawer[index].sym, drawer[index].clr);
+			drawer[index].timer.Start_Timer(0);		// First step de l'animation
+			drawer[index].active = true;	// se fait à chaque fois pour rien
+			drawer[index].cancel = false;
+			drawer[index].currStep = 0;
 
-			drawer[index] = tempDrawer;
 			total++;
 			return true;
 		}

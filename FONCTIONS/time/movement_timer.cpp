@@ -12,6 +12,22 @@ SpeedTimer* SpeedTimer::end;	// La liste de tous les timers
 //SpeedTimer* SpeedTimer::allTimers[MAX_TIMERS] = {};
 unsigned long long  SpeedTimer::idTotal = 0;				// Le nombre timer total actuel
 
+// Overload l'opérateur égal! =
+SpeedTimer& SpeedTimer::operator= (const SpeedTimer& speedTimer)
+{
+	// Copie toute. Sauf le pointeur nxt et l'id
+	this->tickedThisFrame = speedTimer.tickedThisFrame;
+	this->movesThisFrame = speedTimer.movesThisFrame;
+	this->moving = speedTimer.moving;
+	this->cd = speedTimer.cd;
+	this->cdDuration = speedTimer.cdDuration;
+	this->infinite = speedTimer.infinite;
+	this->timeLeft = speedTimer.timeLeft;
+	this->totalSteps = speedTimer.totalSteps;
+	this->spd = speedTimer.spd;
+	
+	return *this;
+}
 
 SpeedTimer::SpeedTimer()
 {
@@ -26,27 +42,35 @@ SpeedTimer::SpeedTimer()
 		start->nxt = end->nxt = NULL;
 	}
 
+	if (this != end)
+		throw "dafuck is this";
+
 	id = ++idTotal;
 }
 
 SpeedTimer::SpeedTimer(bool noId)
 {
+	// n'ajoute pas de id dans la liste des timers créés
 	id = -1;
-	// n'ajoute pas de id dans lla liste des timers créés
 }
 
 
 SpeedTimer::~SpeedTimer()	// Reconnecte les éléments de la liste
 {
 	static SpeedTimer* it, * prev;
+	static bool found;
 
 	if (id != -1)	// si est présent dans la liste on le delete
 	{
 		it = start;
 		prev = NULL;
+		found = false;
 
 		while (it)
 		{
+			if (it->id >= 2160)
+				found = true;
+
 			if (it == this)
 			{
 				if (it == start && start == end)	// Liste unique
@@ -58,16 +82,21 @@ SpeedTimer::~SpeedTimer()	// Reconnecte les éléments de la liste
 						if (it == end)				// Reset la fin
 						{
 							end = prev;
-								end->nxt = NULL;
+							end->nxt = NULL;
 						}
 						else
-							prev = it->nxt;	// Reconnection au milieu de la liste
-				return;
+  							prev->nxt = it->nxt;	// Reconnection au milieu de la liste
+				
+ 				return;
 			}
 
 			prev = it;
 			it = it->nxt;
 		}
+
+		if (!found)
+			throw "how?";
+
 	}
 }
 
@@ -215,6 +244,9 @@ void SpeedTimer::Stop_All_Timers()	// Stop tout les timers qui sont listés.		// 
 	
 	while (it)
 	{
+		if (it == NULL)
+			throw "How is that even possible?";
+
 		it->Stop();
 		it = it->nxt;
 	}

@@ -39,8 +39,8 @@ void Lvl_1_Initializer()
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
 		int checkpointTest = 0;/*16 = max*/
-		if(gCurrentCheckPoints[gCurrentLevel - 1] < checkpointTest)
-			gCurrentCheckPoints[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
+		if(gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
+			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
 	else
 	{
@@ -49,13 +49,11 @@ void Lvl_1_Initializer()
 		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
-	//gSpwBotTimer.Start_Timer(600 , 1 , true); // DEFUALT
-	gSpwBotTimer.Start_Timer(1700, 1 , true); // TEST
+	gSpwBotTimer.Start_Timer(1700, 1 , true); //  DEFUALT
 	//gSpwBotTimer.Start_Timer(7000, 1 , true); // DEBUG
 
 
-	//gBotMoveTimer.Start_Timer(6200, 1, true);		//DEFAULT
-	gBotMoveTimer.Start_Timer(10000, 1, true);		//TEST : Faster bots
+	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
 	//gBotMoveTimer.Start_Timer(50200, 1, true);	// DEBUG
 
 	

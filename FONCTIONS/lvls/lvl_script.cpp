@@ -29,7 +29,12 @@ const GrdCoord LVL1_CHECKPOINT_P1_CRD[] = { {6,5}, {6,5} ,{6,5},{6,6} ,{4,7} ,{9
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
-short gCurrentCheckPoints[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
+short gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
+
+
+int gCurrPuzzleStep = 0;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
+int gCurrPuzzleStepMax = 0;
+
 
 bool gDayStarted = false;
 bool gSkipStory = false;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
@@ -38,10 +43,10 @@ bool gRetryCheckpoint = false;		// Restart le niveau à partir d'un checkpoint
 
 int Get_Lvl_Checkpoint()	// Rapporte le nombre qui correspond au spawncycletot d'où le checkpoint à été fixé
 {
-	if (gCurrentCheckPoints[gCurrentLevel - 1] == 0)	// 0 veut dire aucun checkpoint n'aété reach encore
+	if (gCurrentPuzzle[gCurrentLevel - 1] == 0)	// 0 veut dire aucun checkpoint n'aété reach encore
 		return 0;
 	else
-		return LVL1_CHECKPOINT[gCurrentCheckPoints[gCurrentLevel - 1] - 1] /*+ 1*/;	// > 0: Faut accéder au éléments de la liste LVL1_CHECKPOINT en convertissant le checkpoint 1 en index 0
+		return LVL1_CHECKPOINT[gCurrentPuzzle[gCurrentLevel - 1] - 1] /*+ 1*/;	// > 0: Faut accéder au éléments de la liste LVL1_CHECKPOINT en convertissant le checkpoint 1 en index 0
 }																			// le + 1 c'est pour commencer 1 spawnscycle plus tard
 																			// +1 pas obligé finalement, on dirait que ça le skip toujours, pt à cause du timer
 void Peek_Lvl_Script()
@@ -76,5 +81,14 @@ void Peek_Sub_Lvl_Script()
 	}
 
 
+
+}
+
+void Init_Puzzle() {
+	gCurrPuzzleStep = 0;
+	if (gCurrentLevel == 1)
+		LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
+
+	gCurrPuzzleStep++;
 
 }

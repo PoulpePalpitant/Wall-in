@@ -53,18 +53,7 @@ void main()	// Le début!
 	// SUPRA TESTING PLACE
 	// *******************
 
-	//strList.first = new StringQueue("swag");
-
-	//ConsoleRender::Add_String("fuuuuuuu", { 0,0 },WHITE,100000);
-	//ConsoleRender::Add_String("fuuuuuuuuuuu", { 0,1 },WHITE, 2000);
-	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuasdasdasdasdasdasdakljshg;kaejfbnnaer;bgnrghnzrognz;`rng", { 0,30 },RED, 10000);
-	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,31 }, RED, TXT_SPD_DR);
-	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,32 }, RED, TXT_SPD_ER);
-	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,33 }, RED, TXT_SPD_FAST);
-	//ConsoleRender::Add_String("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuufuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu-", { 0,33 }, RED, 0);
-
-
-
+	//LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
 
 
 	// START STUFF LOOP

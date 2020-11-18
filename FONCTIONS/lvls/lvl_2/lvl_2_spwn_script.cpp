@@ -168,7 +168,7 @@ void Lvl_2_Spwn_Script()
 
 			gNumSpawnTOT = 0; 
 			skip = 7;	
-			gCurrentCheckPoints[gCurrentLevel + 1]++;
+			gCurrentPuzzle[gCurrentLevel + 1]++;
 			gSpwBotTimer.Start_Timer(500, 1, true);
 			MsgQueue::Register(FINAL_HOUR);
 			MsgQueue::Register(CHECKPOINT_REACHED);

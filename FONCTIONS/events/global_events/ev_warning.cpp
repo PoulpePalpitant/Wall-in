@@ -211,7 +211,10 @@ void Ev_MultiColor_Warnings() // voici un event custom
 void WarningDrawerList::Remove_All()
 {
 	for (int i = 0; i < MAX_WAR_DRAWERS; i++)		// ALL SHALL BE DELETED
-		drawer[i] = {};
+	{
+		//drawer[i] = {};	// Faire ça va créer 1 nouvel objet timer somehow
+		drawer[i].timer.Stop();
+	}
 	total = 0;
 }
 
@@ -220,7 +223,7 @@ void WarningDrawerList::Remove(int index)	// On delete rien au final
 {
 	for (int i = index; i < total; i++)		// Décale tout
 	{
-		drawer[i].timer.~SpeedTimer();	// yo, delete your shits
+		//drawer[i].timer.~SpeedTimer();	// don't!  c'est pas 1 pointeur!
 		drawer[i] = drawer[i + 1];
 	}
 
@@ -230,16 +233,14 @@ void WarningDrawerList::Remove(int index)	// On delete rien au final
 
 bool WarningDrawerList::Add(bool dr_Er, Colors clr, int speed)		// Ajoute un drawer à la liste
 {
-	static WarningDrawer tempDrawer = {};
-
 	if (total < MAX_WAR_DRAWERS)
 	{
-		tempDrawer.dr_Er = dr_Er;
-		tempDrawer.clr = clr;
-		tempDrawer.timer.Start_Timer(speed, numWarnings);		// First step de l'animation
-
-		drawer[total] = tempDrawer;
+		drawer[total].dr_Er = dr_Er;
+		drawer[total].clr = clr;
+		drawer[total].timer.Start_Timer(speed, numWarnings);		// First step de l'animation
+		drawer[total].currStep = 0;
 		total++;
+
 
 		if (!ev_DrawWarnings.Is_Active())	// start l'event qui draw
 			Ev_Draw_Warnings();
