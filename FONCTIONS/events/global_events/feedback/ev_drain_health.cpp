@@ -18,6 +18,9 @@ DrawerQueue Q_ev_DrainHealthWarning(8, 9);
 static unsigned char dr = 179;
 static unsigned char er = TXT_CONST.SPACE;
 
+
+
+
 static std::string drained = "- LOW HP -";
 
 void Ev_Drain_Health_Warning()
@@ -95,6 +98,7 @@ void Add_Ev_Drain_Health()
 void Ev_Hp_Drain_Msg()
 {
 	static Colors clr;
+	static int y = Heart_Txt_Crd_Left("").y;
 
 	if (!ev_HpDrainMsg.Is_Active())
 	{
@@ -102,12 +106,12 @@ void Ev_Hp_Drain_Msg()
 			clr = YELLOW;
 		else
 			if (P1.Get_HP() == 1)
-				clr = RED;
+				clr = LIGHT_RED;
 			else
 				clr = GREEN;
 
-		ConsoleRender::Add_String(drained, Heart_Txt_Crd_Left(drained), clr);
-		ConsoleRender::Add_String(drained, Heart_Txt_Crd_Right(drained), clr);
+		ConsoleRender::Add_String(drained, { Heart_Txt_Crd_Left(drained).x + 14, y }, clr);
+		ConsoleRender::Add_String(drained, {Heart_Txt_Crd_Right(drained).x - 14, y}, clr);
 
 		ev_HpDrainMsg.Activate();
 		ev_HpDrainMsg.Start(700);
@@ -115,14 +119,17 @@ void Ev_Hp_Drain_Msg()
 	else
 		while (ev_HpDrainMsg.delay.Tick())
 		{
-			ConsoleRender::Add_String(drained, Heart_Txt_Crd_Left(drained), clr, 0, 1);
-			ConsoleRender::Add_String(drained, Heart_Txt_Crd_Right(drained), clr, 0, 1);
+
+			ConsoleRender::Add_String(drained, { Heart_Txt_Crd_Left(drained).x + 14,  y }, clr ,0,1);
+			ConsoleRender::Add_String(drained, { Heart_Txt_Crd_Right(drained).x - 14, y }, clr,0,1);
 			ev_HpDrainMsg.Cancel();
 		}
 }
 void Stop_Ev_Hp_Drain_Msg()		// C'était pas assé clair finalement
 {
+	static int y = Heart_Txt_Crd_Left("").y;
+
 	ev_HpDrainMsg.Cancel();
-	ConsoleRender::Add_String(drained, Heart_Txt_Crd_Left(drained), WHITE, 0, 1);
-	ConsoleRender::Add_String(drained, Heart_Txt_Crd_Right(drained), WHITE, 0, 1);
+	ConsoleRender::Add_String(drained, { Heart_Txt_Crd_Left(drained).x + 14, y }, WHITE, 0, 1);
+	ConsoleRender::Add_String(drained, { Heart_Txt_Crd_Right(drained).x - 14,y }, WHITE, 0, 1);
 }

@@ -20,6 +20,7 @@
 #include "ev_spwn_player.h"
 #include "ev_update_heart.h"
 #include "feedback/ev_good_job.h"
+#include "../../events/global_events/feedback/ev_drain_health.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);
 
@@ -43,7 +44,6 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				// Initialize le prochain puzzle et clear la map
 				MsgQueue::Register(LOCK_PLAYER);	// It has to be done
 				P1.Er_Player();						// Efface son char
-				Clear_Map();						// et la map
 				Init_Puzzle();
 				Set_Ev_Spawn_Player(3);	// Spawn le joueru
 				MsgQueue::Register(ENABLE_BLAST);
@@ -86,6 +86,9 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 						//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 						// Nouvelle version avec plusieurs scripts
+						Stop_Ev_Hp_Drain_Msg();				
+						Clear_Map();						// Effacer la map est satisfaisant
+						P1.Dr_Player();						// doit redraw le joueur quand on fait ça
 						Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
 						Ev_Good_Job();						// Félicite le joueur
 						P1.Reset_Hp_And_Heart(3);			// Restore la vie du joueur
