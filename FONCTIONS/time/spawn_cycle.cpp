@@ -57,3 +57,8 @@ void Checkpoint_Delay()	// Délay après chaque checkpoint
 {
 	gSpwBotTimer.Add_Count(CHECKPOINT_DELAY);
 }
+
+void Cancel_Checkpoint_Delay()	// Undo le delay après chaque checkpoint xD
+{
+	gSpwBotTimer.Add_Count(-CHECKPOINT_DELAY);
+}

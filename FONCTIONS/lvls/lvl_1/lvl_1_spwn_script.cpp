@@ -36,16 +36,16 @@
 using namespace bots_to_spawn;
 
 
-// Puzzles du lvl1: DISCLAIMER: le nom de la méthode ne veut pas dire que ce puzzle sera joué dans cet ordre
+// Puzzles du lvl1:
 void Puzzle_1_0();
 void Puzzle_1_1();
 void Puzzle_1_2();
 void Puzzle_1_3();
 void Puzzle_1_4();
-void Puzzle_1_5();
+void Puzzle_1_5();	//
 void Puzzle_1_6();
 void Puzzle_1_7();
-void Puzzle_1_8();
+void Puzzle_1_8();	// Peut être utilisé, mais va bcp trop vite
 void Puzzle_1_9();
 void Puzzle_1_10();
 void Puzzle_1_11();
@@ -107,6 +107,11 @@ void Lvl_1_Spwn_Script()
 		
 		LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
 
+		// Ceci ajoute du temps entre le spawn actuel et le prochain
+		if (skip)
+			gSpwBotTimer.Add_Count(skip);
+
+		gCurrPuzzleStep++;	// Prochain step du puzzle!
 
 			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 			// TELEPORTATION TUTORIAL
@@ -216,6 +221,7 @@ void Lvl_1_Spwn_Script()
 			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 
 
+
 			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 //// FORCEFIELD INTRODUCTION
 //linkGrid->link[6][linkGrid->Get_Rows() - 6].Activate_Lonely_Link(Modifier::FORCEFIELD);	// Créer une root ici
@@ -233,171 +239,6 @@ void Lvl_1_Spwn_Script()
 //break;
 // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 
-
-
-			//////PUZZLE START------------------------------------------------------------------	 Ligne blockante en bas
-			//spw = spawnGrid->Get_MaxSpwnCrdY() - 2;
-			//gGrids.Make_Chain_Of_Walls({ 0,linkGrid->Get_Rows() - 3 }, RIGHT, 12);
-			//break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = LEFT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1); gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spw - 1; break;
-			//gNumSpawnTOT = 0;skip = 7;
-			//////puzzle end------------------------------------------------------------------
-
-			//
-			
-		
-
-
-			////PUZZLE START------------------------------------------------------------------	top mid bot, top mid bot
-			//gGrids.Make_Chain_Of_Walls({ 2,0 }, DOWN, 2);
-			//gGrids.Make_Chain_Of_Walls({ 0, (linkGrid->Get_Rows() - 1) / 2 }, RIGHT, 2);
-			//Add(1);gBoxSide = RIGHT; gSpwNum = 0; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = 0; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; break;
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; skip = 1; break;	
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;break;			
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;			
-			//Add(1);gBoxSide = RIGHT; gSpwNum = 0; break;											
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;break;			
-			//Add(1);gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;			
-			//Add(1);gBoxSide = RIGHT; gSpwNum = 0; skip = 2; break;
-			//Add(1);gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;break;
-			//Add(1);gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-			//Add(1);gBoxSide = LEFT; gSpwNum = 0;  break;
-			//Add(1);gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;break;
-			//Add(1);gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
-			//Add(1);gBoxSide = LEFT; gSpwNum = 0; skip = 1; break;
-
-			//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);
-			//Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);
-			//Add_Spec(LEFT, 0);
-			//Add_Spec(RIGHT, 0);
-			//MsgQueue::Register(CHECKPOINT_REACHED);
-			//break;
-			////puzzle end------------------------------------------------------------------
-
-				
-				
-				
-				
-
-
-		////PUZZLE START------------------------------------------------------------------
-		// Doubles spawns left and Right!
-		//gGrids.Make_Chain_Of_Walls({ 0, linkGrid->Get_Rows() - 4 }, RIGHT, 8);
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3); /*MsgQueue::Register(START_BOT_SPAWNS); */break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3); 			break;// Dessine un pattern de départ
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3);break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3);break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 4);break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 4);break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 4);break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3);break;
-		//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3); Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;	// Spawn Left Now
-		////puzzle end------------------------------------------------------------------
-		
-
-		//case 50:			
-		//	ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 1,1 }); // Spawn de la vie ici?
-		//	gNumSpawnTOT = 0; skip = 5;
-		//	gSpwBotTimer.Start_Timer(800, 1, true);	// speed is inscreased!!!
-		//	break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE break;
-
-		//	// Le joueur va voir la chaine des mur et va tout de suite la renforcer, MAIS! Un bot vertical va venir la détruire mouhahaha!
-		//	gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 6 }, LEFT, 4);
-		//	Add_Spec(UP, spawnGrid->Get_Cols() - 1);
-		//	Add_Spec(DOWN, spawnGrid->Get_Cols() - 1);
-
-		//// Random spawns
-		//case 51:Add(1);break;
-		//case 52:Add(1);break;
-		//case 53:Add(1);break;
-		//case 54:Add(1);break;
-		//case 55:Add(1);break;
-		//case 56:Add(1);break;
-		//case 57:Add(2);break;
-		//case 58:Add(1);break;
-		//case 59:Add(2);break;
-		//case 60:Add(1);break;
-		//case 61:Add(2);break;
-		//case 62:Add(1);break;
-		//case 63:Add(1); skip = 2; break;
-		//case 64:Add(3);break;
-		//case 65:Add(4);break;
-		//case 66:Add(5);break;
-		//case 67:gNumSpawnTOT = 0;skip = 7;
-		//	
-
-		//
-		
-
-		//	// FINAL PUSH	
-		//case 100: 
-		//	gNumSpawnTOT = 0; 	skip = 7;
-		//	gSpwBotTimer.Start_Timer(500, 1, true);	
-		//	
-		//	MsgQueue::Register(CHECKPOINT_REACHED);
-		//	//MsgQueue::Register(FINAL_PUSH);
-		//	break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
-
-		//case 101: skip = 3; break;
-		//case 102:break;
-		//case 103:break;
-		//case 104:break;
-		//case 105:gBoxSide = LEFT;  Add(1);break;
-		//case 106:gBoxSide = LEFT;  Add(1);break;
-		//case 107:break;
-		//case 108:Add_Spec(LEFT, -1);  break;
-		//case 109:break;
-		//case 110:Add_Spec(RIGHT, -1);  Add(1);break;
-		//case 111:Add_Spec(RIGHT, -1);  Add(1); skip = 1;break;
-		//case 112:Add_Spec(RIGHT, -1);  Add(1);skip = 1; break;
-		//case 113:Add_Spec(LEFT, -1);  Add(1);skip = 2; break;
-		//case 114:Add_Spec(LEFT, -1);  Add(1);skip = 1;break;
-		//case 115:Add_Spec(LEFT, -1);  Add(1);skip = 2;break;
-		//case 116:gBoxSide = LEFT;  Add(1);break;
-		//case 117:  Add(1);break;
-		//case 118:  Add(1);break;
-		//case 119:  Add(1);break;
-		//case 120:  Add(1); break;
-		//case 121:  Add(1); break;
-		//case 122:  Add(1); break;
-		//case 123:  Add(1);
-		//	MsgQueue::Register(STOP_BOT_SPAWNS); 
-		//	Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
-
-		// Ceci ajoute du temps entre le spawn actuel et le prochain
-		if(skip)
-			gSpwBotTimer.Add_Count(skip);
-		
-		gCurrPuzzleStep++;	// Prochain step du puzzle!
 	}
 }
 
@@ -430,7 +271,7 @@ void Lvl_1_Spwn_Script()
 */
 //}
 
-
+//                                DISCLAIMER: l'ordre des définitions de méthodes suivantes ne veut pas dire que ce puzzle sera joué dans cet ordre
 // Voici les puzzles du niveau
 // da first
 void Puzzle_1_0(){
@@ -538,11 +379,31 @@ void Puzzle_1_1() {
 	}
 }
 
+
 void Puzzle_1_3(){
 	switch (gCurrPuzzleStep)
 	{
 	case 0:
-		P1.Set_Position({ 6, 5 });				// Coord de départ du jouer
+		P1.Set_Position({ 6, 6 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(5);// Quantité d'ammo
+		gCurrPuzzleStepMax = 5;
+		gGrids.Make_Chain_Of_Walls({ 5, 7 }, DOWN, 3);
+		break;
+
+	// Ez one with a lesson: les root meurt quand ils ne sont plus attachés
+	case 1:Add(3);Set_Interval(LEFT, 7, 10); skip = 2;break;
+	case 3:Add_Spec(LEFT, 6); skip = 9; break;
+	case 4:Add(4);Set_Interval(RIGHT, 6, 10);break;
+	case 5:MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
+
+
+void Puzzle_1_4() {
+	switch (gCurrPuzzleStep)
+	{
+	case 0:
+		P1.Set_Position({ 9, 0 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(14);// Quantité d'ammo
 		gCurrPuzzleStepMax = 11;
 		gGrids.Make_Chain_Of_Walls({ 9,7 }, RIGHT, 1);
@@ -570,95 +431,114 @@ void Puzzle_1_3(){
 	}
 }
 
-void Puzzle_1_4(){
+void Puzzle_1_5()
+{
 	switch (gCurrPuzzleStep)
 	{
-	case 0:
-		P1.Set_Position({ 6, 6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(5);// Quantité d'ammo
-		gCurrPuzzleStepMax = 5;
-		gGrids.Make_Chain_Of_Walls({ 5, 7 }, DOWN, 3);
+	case 0:P1.Set_Position({ 12,8 });			// Coord de départ du joueur
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		gCurrPuzzleStepMax = 13;
+		Cancel_Checkpoint_Delay();	// Si le joueur spawn à côté d'un mur, on veut pas effacer le mur, alors on enlève le delay entre la prochaine wave, et on spawn les murs APRÈS l'animation
 		break;
 
-	// Ez one with a lesson: les root meurt quand ils ne sont plus attachés
-	case 1:Add(3);Set_Interval(LEFT, 7, 10);break;
-	case 3:Add_Spec(LEFT, 6); skip = 9; break;
-	case 4:Add(4);Set_Interval(RIGHT, 6, 10);break;
-	case 5:MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+
+	case 1:
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,7 }, LEFT, linkGrid->Get_Cols() - 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,9 }, LEFT, linkGrid->Get_Cols() - 1);
+
+		// Wall du milieu à transfer
+		gGrids.Make_Chain_Of_Walls({ 0,8 }, RIGHT, 11);
+		break;
+
+	case 2:	  Add_Spec(LEFT, 7);skip = 4;break;
+	case 3:	  Add_Spec(LEFT, 8);skip = 1;break;
+	case 4:	  Add_Spec(LEFT, 7);skip = 1;break;
+	case 5:	  Add_Spec(LEFT, 8);skip = 1;break;
+	case 6:	  Add_Spec(LEFT, 7);skip = 1;break;
+	case 7:	  Add_Spec(LEFT, 8);skip = 1;break;
+	case 8:	  Add_Spec(LEFT, 7);skip = 1;break;
+	case 9:	  Add_Spec(LEFT, 8);skip = 1;break;
+	case 11:  Add_Spec(LEFT, 7);skip = 1;break;
+	case 12:  Add_Spec(LEFT, 8); skip = 1;break;
+	case 13:  Add_Spec(LEFT, 7);MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 	}
 }
 
-// Easy one for pacing, still was too hard, and too long
-void Puzzle_1_5(){
+
+void Puzzle_1_6() {
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ 1,5 });		   // Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		gCurrPuzzleStepMax = 12;
+		Cancel_Checkpoint_Delay();
+		break;
+
+
+	case 1:
+		gGrids.Make_Chain_Of_Walls({ 3,5 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ 2,6 }, RIGHT, 1);
+
+		gGrids.Make_Chain_Of_Walls({ 5,5 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ 4,6 }, RIGHT, 1);
+
+		gGrids.Make_Chain_Of_Walls({ 8,8 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ 7,7 }, RIGHT, 1);
+
+		gGrids.Make_Chain_Of_Walls({ 10,8 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ 9,7 }, RIGHT, 1);
+
+		// Wall du milieu à transfer
+		//gGrids.Make_Chain_Of_Walls({ 4,11 }, LEFT, 1);
+		//gGrids.Make_Chain_Of_Walls({ 4,10 }, RIGHT, 1);
+		//gGrids.Make_Chain_Of_Walls({ 5,9 }, LEFT, 1);
+		//gGrids.Make_Chain_Of_Walls({ 5,8 }, RIGHT, 1);
+		//gGrids.Make_Chain_Of_Walls({ 6,7 }, LEFT, 1);
+		//gGrids.Make_Chain_Of_Walls({ 6,6 }, RIGHT, 1);
+		break;
+
+	case 2:Add_Spec(RIGHT, 0); skip = 2; break;
+	case 3:Add_Spec(RIGHT, 0); skip = 2; break;
+	case 4:Add_Spec(RIGHT, 0); skip = 2; break;
+	case 5:Add_Spec(RIGHT, 0); skip = 2; break;
+	case 6:Add_Spec(LEFT, 13); skip = 2; break;
+	case 7:Add_Spec(LEFT, 13); skip = 2; break;
+	case 8:Add_Spec(LEFT, 13); skip = 2; break;
+	case 9:Add_Spec(LEFT, 13); skip = 2; break;
+	case 11:
+	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
+	}
+}
+
+// REPRISE: root qui meurt au milieu
+void Puzzle_1_7(){
 	switch (gCurrPuzzleStep)
 	{
 	case 0:
 		P1.Set_Position({ 4,7 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(12);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
-		gGrids.Make_Chain_Of_Walls({ 0, 9 }, RIGHT, 1);
-		gGrids.Make_Chain_Of_Walls({ 0, 7 }, UP, 1);	gGrids.Make_Chain_Of_Walls({ 0, 7 }, DOWN, 1);
-		gGrids.Make_Chain_Of_Walls({ 0, 4 }, RIGHT, 1);	gGrids.Make_Chain_Of_Walls({ 1, 4 }, DOWN, 1);	
+		gGrids.Make_Chain_Of_Walls({ 6, 7 }, UP, 2);
+		gGrids.Make_Chain_Of_Walls({ 6, 7 }, DOWN, 2);
 		break;
 
+		// Ez one with a lesson: les root meurt quand ils ne sont plus attachés
+	case 1:Add(2);Set_Interval(RIGHT, 7, 9); skip = 2;break;
+	case 2:Add(2);Set_Interval(LEFT, 5, 7); skip = 4;break;
 
-	case 1:	Add(1);gBoxSide = RIGHT; gSpwNum = 7; skip = 2;break;
-	case 2:	Add(1);gBoxSide = RIGHT; gSpwNum = 4; skip = 2;break;
-	case 3:	Add(1);gBoxSide = RIGHT; gSpwNum = 1; skip = 5;break;
-	case 4:	Add(1);gBoxSide = RIGHT; gSpwNum = 2; skip = 1;break;
-	case 5:	Add(1);gBoxSide = RIGHT; gSpwNum = 5; skip = 1;break;
-	case 6:	Add_Spec(RIGHT, 8); skip = 1; break;
-	case 7:	Add_Spec(RIGHT, 11);skip = 4;break;
-	case 8:	Add_Spec(RIGHT, 10);break;
-	case 9:	Add_Spec(RIGHT, 7);break;
-	case 11:Add_Spec(RIGHT, 4);break;
-	case 12:Add_Spec(RIGHT, 1);	MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
+	case 3:Add(3);Set_Interval(RIGHT, 7, 10); skip = 4;break;
+	case 4:Add_Spec(LEFT, 6); skip = 9; break;
+
+	case 5:Add(3);Set_Interval(RIGHT, 4, 7); skip = 3;break;
+	case 6:Add_Spec(RIGHT, 7); skip = 9; break;
+	case 7:Add(4);Set_Interval(LEFT, 5, 7);Set_Interval(RIGHT, 7, 9); break;
+	case 8:MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
 
 
 
-
-
-// SATISFAISANT! Montre les walls transfer...	FUCKING HARD
-void Puzzle_1_8() {
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position( {4,7} );				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(1);// Quantité d'ammo
-		gCurrPuzzleStepMax = 9;
-
-		// Quelque mur en forme de L sur la bordure left
-		gGrids.Make_Chain_Of_Walls({ 0, 5 }, RIGHT, 1);
-		gGrids.Make_Chain_Of_Walls({ 1, 5 }, DOWN, 1);
-
-		gGrids.Make_Chain_Of_Walls({ 0, 7 }, RIGHT, 1);
-		gGrids.Make_Chain_Of_Walls({ 1, 7 }, DOWN, 1);
-
-		gGrids.Make_Chain_Of_Walls({ 0, 10 }, RIGHT, 1);
-		gGrids.Make_Chain_Of_Walls({ 1, 10 }, UP, 1);
-
-		// Quelques lignes sur la bordure right
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 6 }, LEFT, 1);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 8 }, LEFT, 1);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 9 }, LEFT, 1);
-		break;
-
-
-	case 1:Add_Spec(LEFT, 6);break;
-	case 2:Add_Spec(LEFT, 8);skip = 4;break;
-	case 3:Add_Spec(LEFT, 9);skip = 2;break;
-	case 4:Add_Spec(LEFT, 9);break;
-	case 5:Add_Spec(LEFT, 5);skip = 5;break;
-	case 6:Add_Spec(LEFT, 7);skip = 2;break;
-	case 7:Add_Spec(LEFT, 9);skip = 3;break;
-	case 8:Add_Spec(LEFT, 5);break;
-	case 9:MsgQueue::Register(CHECKPOINT_REACHED);			break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
-
-
-void Puzzle_1_6(){
+void Puzzle_1_8(){
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 4,1 });				// Coord de départ du jouer
@@ -698,7 +578,8 @@ void Puzzle_1_6(){
 	case 13:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 	}
 }
-void Puzzle_1_7()
+
+void Puzzle_1_9()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -718,7 +599,45 @@ void Puzzle_1_7()
 	}
 }
 
-void Puzzle_1_9()
+
+// SATISFAISANT! Montre les walls transfer...	FUCKING HARD
+void Puzzle_1_10() {
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ 4,7 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(1);// Quantité d'ammo
+		gCurrPuzzleStepMax = 9;
+
+		// Quelque mur en forme de L sur la bordure left
+		gGrids.Make_Chain_Of_Walls({ 0, 5 }, RIGHT, 1);
+		gGrids.Make_Chain_Of_Walls({ 1, 5 }, DOWN, 1);
+
+		gGrids.Make_Chain_Of_Walls({ 0, 7 }, RIGHT, 1);
+		gGrids.Make_Chain_Of_Walls({ 1, 7 }, DOWN, 1);
+
+		gGrids.Make_Chain_Of_Walls({ 0, 10 }, RIGHT, 1);
+		gGrids.Make_Chain_Of_Walls({ 1, 10 }, UP, 1);
+
+		// Quelques lignes sur la bordure right
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 6 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 8 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 9 }, LEFT, 1);
+		break;
+
+
+	case 1:Add_Spec(LEFT, 6);break;
+	case 2:Add_Spec(LEFT, 8);skip = 4;break;
+	case 3:Add_Spec(LEFT, 9);skip = 2;break;
+	case 4:Add_Spec(LEFT, 9);break;
+	case 5:Add_Spec(LEFT, 5);skip = 5;break;
+	case 6:Add_Spec(LEFT, 7);skip = 2;break;
+	case 7:Add_Spec(LEFT, 9);skip = 3;break;
+	case 8:Add_Spec(LEFT, 5);break;
+	case 9:MsgQueue::Register(CHECKPOINT_REACHED);			break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
+
+void Puzzle_1_11()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -741,7 +660,7 @@ void Puzzle_1_9()
 }
 
 // EZ Vertical introduction!
-void Puzzle_1_10()
+void Puzzle_1_12()
 {	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 6,7 });				// Coord de départ du jouer
@@ -762,7 +681,7 @@ void Puzzle_1_10()
 }
 
 // redirect couloir au milieu
-void Puzzle_1_11()
+void Puzzle_1_13()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -804,7 +723,7 @@ void Puzzle_1_11()
 
 
 // MUST BE REDONE
-void Puzzle_1_12()
+void Puzzle_1_14()
 {	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 10,1 });				// Coord de départ du jouer
@@ -831,7 +750,7 @@ void Puzzle_1_12()
 }
 
 // 2 long wall d'obstacle
-void Puzzle_1_13()
+void Puzzle_1_15()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -863,7 +782,7 @@ void Puzzle_1_13()
 // Static shoot dans tout les sens
 // 1-12 LEFT/RIGHT
 // 1-10	UP/DOWN 
-void Puzzle_1_14()
+void Puzzle_1_16()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -908,7 +827,7 @@ void Puzzle_1_14()
 
 
 // THE FINAL CHALLENGE IS HERE HAHAHAHAHAH
-void Puzzle_1_15()
+void Puzzle_1_17()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -997,44 +916,3 @@ void Puzzle_1_15()
 		break;
 	}
 }
-
-void Puzzle_1_16(){	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		break;
-
-
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
-	}}
-void Puzzle_1_17(){	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		break;
-
-
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
-	}}

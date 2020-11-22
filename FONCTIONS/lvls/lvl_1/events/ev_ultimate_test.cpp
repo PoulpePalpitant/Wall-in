@@ -29,14 +29,6 @@ const int totalSpw = 50;
 /*
 
 
- TES RENDU À CRÉER UN NOUVEAU SCRIPT POUR TESTER LES CHECKPOINTS. J'aimerais faire deux versions:
-
- Philosophie de lvl design: tu devrais jamais mettre de skip. Si t'en met , c'est sur un check point. Sinon, donne un moyen au joueur d'accélérer le jeu!!
-
- Je met bcp de checkpoint, chaque séquence devient un mini puzzle dans chacun des niveaux. Le jeu devient vraiment plus casual. niveau probablement plus long, mais moins frustrant
-
-
-
 
 
 
