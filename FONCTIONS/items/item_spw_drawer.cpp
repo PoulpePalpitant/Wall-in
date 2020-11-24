@@ -49,6 +49,7 @@ bool DrawItemSpawnList::Add(ItemType type, GrdCoord crd)		// Ajoute l'item à dra
 		drawer[total].type = type;
 		drawer[total].XY = linkGrid->link[crd.c][crd.r].Get_XY();
 		drawer[total].timer.Start_Timer(0);		// First step de l'animation
+		drawer[total].cancel = false;
 
 		total++;	
 		return true;

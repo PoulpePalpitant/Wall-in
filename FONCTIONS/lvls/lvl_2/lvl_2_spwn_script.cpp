@@ -47,21 +47,21 @@ void Lvl_2_Spwn_Script()
 		case 3: gBoxSide = DOWN;
 			MsgQueue::Register(ENABLE_ITEM_SPAWN);	// Start les spawns là
 			break;
-		case 4:gVerticalBorder = true; break;	// it's all random wut? It is!
-		case 5:gHorizontalBorder = true; Add(1);break;
-		case 6:gVerticalBorder = true;break;
-		case 7:gHorizontalBorder = true;break;
-		case 8:gVerticalBorder = true;break;
-		case 9:gVerticalBorder = true;break;
+		case 4:gVerticalSpawns = true; break;	// it's all random wut? It is!
+		case 5:gHorizontalSpawns = true; Add(1);break;
+		case 6:gVerticalSpawns = true;break;
+		case 7:gHorizontalSpawns = true;break;
+		case 8:gVerticalSpawns = true;break;
+		case 9:gVerticalSpawns = true;break;
 		case 10:Add(2);break;
-		case 11:gHorizontalBorder = true;break;
-		case 12:gVerticalBorder = true;break;
-		case 13:gVerticalBorder = true;break;
-		case 14:gHorizontalBorder = true;break;
+		case 11:gHorizontalSpawns = true;break;
+		case 12:gVerticalSpawns = true;break;
+		case 13:gVerticalSpawns = true;break;
+		case 14:gHorizontalSpawns = true;break;
 		case 15:Add(2);break;
-		case 16:gVerticalBorder = true;break;		// Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; // CETTE FORMULE CRASH 100% DU TEMPS
-		case 17:gHorizontalBorder = true;break;
-		case 18:gVerticalBorder = true;break;
+		case 16:gVerticalSpawns = true;break;		// Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; // CETTE FORMULE CRASH 100% DU TEMPS
+		case 17:gHorizontalSpawns = true;break;
+		case 18:gVerticalSpawns = true;break;
 		case 19:Add(3);break;
 		case 20:				
 			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
@@ -175,23 +175,23 @@ void Lvl_2_Spwn_Script()
 			break;
 		
 			// Start les quad spawns!!
-		case 81:gVerticalBorder = true; Add(3); break;
-		case 83:gHorizontalBorder = true; Add(3); break;
-		case 84:gHorizontalBorder = true; Add(3); break;
-		case 87:gVerticalBorder = true; Add(3); break;
+		case 81:gVerticalSpawns = true; Add(3); break;
+		case 83:gHorizontalSpawns = true; Add(3); break;
+		case 84:gHorizontalSpawns = true; Add(3); break;
+		case 87:gVerticalSpawns = true; Add(3); break;
 
 			// Biggest rush of all time
-		case 88: gVerticalBorder = true; Add(1); break;		
-		case 89: gHorizontalBorder = true; Add(1); break;
-		case 90: gVerticalBorder = true; Add(1); break;
-		case 91: gHorizontalBorder = true;  Add(1); break;
-		case 92: gVerticalBorder = true; Add(1); break;
-		case 93: gHorizontalBorder = true; Add(1); break;
-		case 94: gVerticalBorder = true; Add(1); break;
-		case 95: gHorizontalBorder = true; Add(1); break;
-		case 96: gVerticalBorder = true; Add(1); break;
-		case 97: gHorizontalBorder = true;Add(1); break;
-		case 98: gVerticalBorder = true; Add(1); break;
+		case 88: gVerticalSpawns = true; Add(1); break;		
+		case 89: gHorizontalSpawns = true; Add(1); break;
+		case 90: gVerticalSpawns = true; Add(1); break;
+		case 91: gHorizontalSpawns = true;  Add(1); break;
+		case 92: gVerticalSpawns = true; Add(1); break;
+		case 93: gHorizontalSpawns = true; Add(1); break;
+		case 94: gVerticalSpawns = true; Add(1); break;
+		case 95: gHorizontalSpawns = true; Add(1); break;
+		case 96: gVerticalSpawns = true; Add(1); break;
+		case 97: gHorizontalSpawns = true;Add(1); break;
+		case 98: gVerticalSpawns = true; Add(1); break;
 		case 99: Add(2); break;
 
 

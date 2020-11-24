@@ -12,7 +12,7 @@ extern const int NUMWAVES[];	// Nombre de bot waves selon chaques niveaux. Indic
 extern const int FINALHOUR[];	// À quel wave le final hour aura lieu
 
 // La liste de chacun des checkpoints dans chaque niveau. Le nombre correspond à une spawnwave. Le dernier sera souvent le FINALHOUR
-extern const int NUM_CHECKPOINT[];		// Nombre de checkpoint dans chaque lvlv
+extern const int NUM_PUZZLES[];		// Nombre de checkpoint dans chaque lvlv
 
 void (*LVL1_PUZZLES[])();// declare!
 
@@ -43,7 +43,6 @@ extern int gCurrPuzzleStepMax;
 
 
 
-int Get_Lvl_Checkpoint();	// Rapporte le nombre qui correspond au spawncycletot d'où le checkpoint à été fixé
 void Peek_Lvl_Script();		
 void Peek_Sub_Lvl_Script();
 void Init_Puzzle();	// Initialise un puzzle

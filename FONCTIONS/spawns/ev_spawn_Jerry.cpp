@@ -90,7 +90,7 @@ void Spawn_A_Jerry(Direction boxSide, int spwNum, int delay)	// Permet de spawn 
 	gCustomBot.warningDelay = delay;	
 	
 	if (verti) // random border basically
-		bots_to_spawn::gVerticalBorder = true;
+		bots_to_spawn::gVerticalSpawns = true;
 	
 	Spawn_A_Bot(boxSide, spwNum);		// Off he goes!
 }

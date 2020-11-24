@@ -26,5 +26,4 @@ public:
 
 	// SET
 	void Set_Ammo(int nbShots); 
-	void Set_Ammo_For_Checkpoint();	// Set la limite selon le nombre assigné au checkpoint d'un niveau
 };

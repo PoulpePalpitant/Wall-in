@@ -72,7 +72,7 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 6:
-				Ev_Progress_Bar();	// Make that progress bar
+				Ev_Progress_Bar2();	// Make that progress bar
 				ev_LvlStartWarning.Advance(0);
 				break;
 			

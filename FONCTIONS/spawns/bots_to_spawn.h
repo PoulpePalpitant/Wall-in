@@ -19,7 +19,7 @@ namespace bots_to_spawn {
 
 	// Random coordonnées		/ Si aucune boxside// coord n'est spécifié, le spawn sera random
 	extern bool gRandomSpwn, gRandomBoxSide;	// Le prochain bot spawnera sur une COORD Aléatoire
-	extern bool gHorizontalBorder, gVerticalBorder, gAllSides;		// Le prochain spawn sera vertical, ou horizontal	
+	extern bool gHorizontalSpawns, gVerticalSpawns, gAllSides;		// Le prochain spawn sera vertical, ou horizontal	
 	extern BotType type;				// Le type de tout les bots du prochain spawn 
 	extern int gNumSpawnTOT;			// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
 	//extern Sp_CoordIn gCrdInterval;		// Donne un interval de coordonnée sur une bordure

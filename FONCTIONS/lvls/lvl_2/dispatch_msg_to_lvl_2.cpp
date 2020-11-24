@@ -74,12 +74,12 @@ void Dispatch_Msg_To_Lvl_2()
 				{
 					P1.Er_Player();
 					Just_Dr_Map_Borders();
-					Ev_Progress_Bar();
+					Ev_Progress_Bar2();
 					MsgQueue::Register(SPAWN_PLAYER);
 				}
 				else
 				{
-					Ev_Progress_Bar();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
+					Ev_Progress_Bar2();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
 					P1.Dr_Player();
 					MsgQueue::Register(FREE_PLAYER);
 				}
@@ -111,7 +111,7 @@ void Dispatch_Msg_To_Lvl_2()
 	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		clrscr();
-		gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
+		gSpawnCycleTot = 0;
 		break;
 
 	case PROCEED: 

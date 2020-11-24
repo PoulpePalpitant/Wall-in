@@ -12,15 +12,17 @@
 
 static void Ev_Progress_Animation();
 static void Ev_Break_Animation();
-static void Dr_Er_Cursor(bool draw);
+static void Dr_Er_Cursor(bool draw, Coord crd);
 
 static Event ev_ProgressAnimation(Ev_Progress_Animation, 6);	// pour faire afficher un ti progrès dans la bar
 static Event ev_BreakAnimation(Ev_Break_Animation, 1);	// Animation surt les points break
-static Event ev_ProgressBar(Ev_Progress_Bar);
-static Event ev_DrawWholeBar(Ev_Draw_Whole_Bar, 1);
-static Event ev_DrawWholeBarFast(Ev_Draw_Whole_Bar_Fast, 1);
 
+//static Event ev_ProgressBar(Ev_Progress_Bar);
+//static Event ev_DrawWholeBar(Ev_Draw_Whole_Bar, 1);
+//static Event ev_DrawWholeBarFast(Ev_Draw_Whole_Bar_Fast, 1);
 
+static Event ev_ProgressBar2(Ev_Progress_Bar2);
+static Event ev_DrawWholeBar2(Ev_Draw_Whole_Bar2, 1);
 
 // got lazy here
 // Permet d'inscrire certains "break" dans la progress bar au endroit dans le spawn script ou une certaine longues pause à lieu. J'ai décidé de faire ça manuellement.
@@ -35,30 +37,33 @@ static int waitForNxtSpawn;			// Pendant un break, Si le total de spawn dépasse 
 
 // UI
 static const std::string tip[2] = { "  > "," <  " };
-static const int barLength = 100;	// Dimension de la bar
-static Coord crd;
+static const int BAR_LENGTH = 100;	// Dimension de la bar OLD
+static int nextPuzzle;				// Prochain puzzle
+
+static Coord crd = {};
+static const int SPACE_BTW_DOTS = 2;	// Espace entre chaque dots sur la bar
 static Colors barProgClr;	// // Est jaune. Devient rouge durant le fianl hour
 
-static bool Is_Checkpoint_Here(int lvl, int waveTot)	// Check si un checkpoint  à lieu ici
-{
-	int const* pCHECKPOINT_LVL;	// le pointeurs vers les checkpoints de niveau
-
-	switch (lvl + 1)	// vraiment cave
-	{
-	case 1:pCHECKPOINT_LVL = LVL1_CHECKPOINT; break;
-	case 2:pCHECKPOINT_LVL = LVL2_CHECKPOINT; break;
-	case 3:pCHECKPOINT_LVL = LVL3_CHECKPOINT; break;
-	case 4:pCHECKPOINT_LVL = LVL4_CHECKPOINT; break;
-	default: return false;
-	}
-
-	for (int i = 0; i < NUM_CHECKPOINT[lvl]; i++)
-	{
-		if (waveTot == pCHECKPOINT_LVL[i])
-			return true;
-	}
-	return false;
-}
+//static bool Is_Checkpoint_Here(int lvl, int waveTot)	// Check si un checkpoint  à lieu ici
+//{
+//	int const* pCHECKPOINT_LVL;	// le pointeurs vers les checkpoints de niveau
+//
+//	switch (lvl + 1)	// vraiment cave
+//	{
+//	case 1:pCHECKPOINT_LVL = LVL1_CHECKPOINT; break;
+//	case 2:pCHECKPOINT_LVL = LVL2_CHECKPOINT; break;
+//	case 3:pCHECKPOINT_LVL = LVL3_CHECKPOINT; break;
+//	case 4:pCHECKPOINT_LVL = LVL4_CHECKPOINT; break;
+//	default: return false;
+//	}
+//
+//	for (int i = 0; i < NUM_PUZZLES[lvl]; i++)
+//	{
+//		if (waveTot == pCHECKPOINT_LVL[i])
+//			return true;
+//	}
+//	return false;
+//}
 
 static void Draw_tip(Coord crd, bool side)	// True = left false = right
 {
@@ -73,139 +78,148 @@ static void Draw_tip(Coord crd, bool side)	// True = left false = right
 		//ConsoleRender::Add_Char(crd, TXT_CONST.DOT, BRIGHT_WHITE); 
 	}
 }
-
-void Ev_Draw_Whole_Bar()	// Happens first
-{
-	static int waveTot;
-	static float nextWave;
-	static float ratio;
-	static Colors baseClr;
-	static Coord coord;
-
-	if (!ev_DrawWholeBar.Is_Active())
-	{
-		waveTot = nextWave = 0;
-		ratio = (NUMWAVES[gCurrentLevel - 1]) / ((float)barLength);
-		baseClr = GRAY;
-		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) - (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
-		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
-
-		ev_DrawWholeBar.Activate();
-		ev_DrawWholeBar.Start(0);
-		ev_DrawWholeBar.delay.Start_Timer(100000, NUMWAVES[gCurrentLevel - 1]);
-	}
-	else
-		while (ev_DrawWholeBar.delay.Tick())
-		{
-			if (FINALHOUR[gCurrentLevel - 1] == waveTot) // Check si on draw le finalhour ici
-			{
-				finalHour = coord;
-				ConsoleRender::Add_Char(coord, TXT_CONST.LINE_VER, LIGHT_RED); coord.x++;
-				baseClr = RED;
-				nextWave += ratio;
-				
-			}
-			else
-				if (Is_Checkpoint_Here(gCurrentLevel - 1, waveTot)) // draw checkpoint
-				{
-					// Affiche le symbole du break
-					ConsoleRender::Add_Char(coord, '|', LIGHT_GREEN); coord.x++;
-					nextWave += ratio;
-				}
-				else
-					if ((int)nextWave == waveTot)	// On passe au prochain
-					{
-						ConsoleRender::Add_Char(coord, TXT_CONST.DOT, baseClr); coord.x++;
-						nextWave += ratio;
-						// Start l'animation du prochain
-					}
-
-			waveTot++;
-		}
-
-	if (!ev_DrawWholeBar.delay.Is_On())
-	{
-		Draw_tip(coord, false);	// right tip, à la fin
-		ev_DrawWholeBar.Cancel();	// safety
-	}
-
-}
-
-void Ev_Draw_Whole_Bar_Fast()	// Happens first
-{
-	static int waveTot;
-	static float nextWave;
-	static float ratio;
-	static Colors baseClr;
-	static Coord coord;
-
-	if (!ev_DrawWholeBarFast.Is_Active())
-	{
-		waveTot = nextWave = 0;
-		ratio = (NUMWAVES[gCurrentLevel - 1]) / ((float)barLength);
-		baseClr = GRAY;
-		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) - (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
-		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
-
-		ev_DrawWholeBarFast.Activate();
-		ev_DrawWholeBarFast.Start(0);
-
-		//if (gSpawnCycleTot >= FINALHOUR[gCurrentLevel - 1] - 5)
-		//	ev_DrawWholeBarFast.delay.Start_Timer(200000 * 5, NUMWAVES[gCurrentLevel - 1]);
-		//else
-			ev_DrawWholeBarFast.delay.Start_Timer(200000, NUMWAVES[gCurrentLevel - 1]);
-	}
-	else
-		while (ev_DrawWholeBarFast.delay.Tick())
-		{
-			if (FINALHOUR[gCurrentLevel - 1] == waveTot) // Check si on draw le finalhour ici
-			{
-				finalHour = coord;
-				ConsoleRender::Add_Char(coord, TXT_CONST.LINE_VER, LIGHT_RED); coord.x++;
-				baseClr = RED;
-				nextWave += ratio;
-			}
-			else
-				if (Is_Checkpoint_Here(gCurrentLevel - 1, waveTot)) // draw checkpoint
-				{
-					// Affiche le symbole du break
-					ConsoleRender::Add_Char(coord, '|', LIGHT_GREEN); coord.x++;
-					nextWave += ratio;
-				}
-				else
-					if ((int)nextWave == waveTot)	// On passe au prochain
-					{
-						if (nextWave >= gSpawnCycleTot)
-						{
-							ConsoleRender::Add_Char(coord, TXT_CONST.DOT, baseClr); coord.x++;
-						}
-						else
-						{
-							ConsoleRender::Add_Char(coord, TXT_CONST.DOT, barProgClr); coord.x++;
-						}
-
-						
-						nextWave += ratio;
-						// Start l'animation du prochain
-					}
-			waveTot++;
-		}
-
-	if (!ev_DrawWholeBarFast.delay.Is_On())
-	{
-		Draw_tip(coord, false);	// right tip, à la fin
-		ev_DrawWholeBarFast.Cancel();	// safety
-	}
-
-}
+//
+//void Ev_Draw_Whole_Bar()	// Happens first
+//{
+//	static int waveTot;
+//	static float nextWave;
+//	static float ratio;
+//	static Colors baseClr;
+//	static Coord coord;
+//
+//	if (!ev_DrawWholeBar.Is_Active())
+//	{
+//		waveTot = nextWave = 0;
+//		ratio = (NUMWAVES[gCurrentLevel - 1]) / ((float)BAR_LENGTH);
+//		baseClr = GRAY;
+//		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (BAR_LENGTH / 2) - (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+//		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
+//
+//		ev_DrawWholeBar.Activate();
+//		ev_DrawWholeBar.Start(0);
+//		ev_DrawWholeBar.delay.Start_Timer(100000, NUMWAVES[gCurrentLevel - 1]);
+//	}
+//	else
+//		while (ev_DrawWholeBar.delay.Tick())
+//		{
+//			if (FINALHOUR[gCurrentLevel - 1] == waveTot) // Check si on draw le finalhour ici
+//			{
+//				finalHour = coord;
+//				ConsoleRender::Add_Char(coord, TXT_CONST.LINE_VER, LIGHT_RED); coord.x++;
+//				baseClr = RED;
+//				nextWave += ratio;
+//				
+//			}
+//			else
+//				if (Is_Checkpoint_Here(gCurrentLevel - 1, waveTot)) // draw checkpoint
+//				{
+//					// Affiche le symbole du break
+//					ConsoleRender::Add_Char(coord, '|', LIGHT_GREEN); coord.x++;
+//					nextWave += ratio;
+//				}
+//				else
+//					if ((int)nextWave == waveTot)	// On passe au prochain
+//					{
+//						ConsoleRender::Add_Char(coord, TXT_CONST.DOT, baseClr); coord.x++;
+//						nextWave += ratio;
+//						// Start l'animation du prochain
+//					}
+//
+//			waveTot++;
+//		}
+//
+//	if (!ev_DrawWholeBar.delay.Is_On())
+//	{
+//		Draw_tip(coord, false);	// right tip, à la fin
+//		ev_DrawWholeBar.Cancel();	// safety
+//	}
+//
+//}
+//
+//void Ev_Draw_Whole_Bar_Fast()	// Happens first
+//{
+//	static int waveTot;
+//	static float nextWave;
+//	static float ratio;
+//	static Colors baseClr;
+//	static Coord coord;
+//
+//	if (!ev_DrawWholeBarFast.Is_Active())
+//	{
+//		waveTot = nextWave = 0;
+//		ratio = (NUMWAVES[gCurrentLevel - 1]) / ((float)BAR_LENGTH);
+//		baseClr = GRAY;
+//		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (BAR_LENGTH / 2) - (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+//		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
+//
+//		ev_DrawWholeBarFast.Activate();
+//		ev_DrawWholeBarFast.Start(0);
+//
+//		//if (gSpawnCycleTot >= FINALHOUR[gCurrentLevel - 1] - 5)
+//		//	ev_DrawWholeBarFast.delay.Start_Timer(200000 * 5, NUMWAVES[gCurrentLevel - 1]);
+//		//else
+//			ev_DrawWholeBarFast.delay.Start_Timer(200000, NUMWAVES[gCurrentLevel - 1]);
+//	}
+//	else
+//		while (ev_DrawWholeBarFast.delay.Tick())
+//		{
+//			if (FINALHOUR[gCurrentLevel - 1] == waveTot) // Check si on draw le finalhour ici
+//			{
+//				finalHour = coord;
+//				ConsoleRender::Add_Char(coord, TXT_CONST.LINE_VER, LIGHT_RED); coord.x++;
+//				baseClr = RED;
+//				nextWave += ratio;
+//			}
+//			else
+//				if (Is_Checkpoint_Here(gCurrentLevel - 1, waveTot)) // draw checkpoint
+//				{
+//					// Affiche le symbole du break
+//					ConsoleRender::Add_Char(coord, '|', LIGHT_GREEN); coord.x++;
+//					nextWave += ratio;
+//				}
+//				else
+//					if ((int)nextWave == waveTot)	// On passe au prochain
+//					{
+//						if (nextWave >= gSpawnCycleTot)
+//						{
+//							ConsoleRender::Add_Char(coord, TXT_CONST.DOT, baseClr); coord.x++;
+//						}
+//						else
+//						{
+//							ConsoleRender::Add_Char(coord, TXT_CONST.DOT, barProgClr); coord.x++;
+//						}
+//
+//						
+//						nextWave += ratio;
+//						// Start l'animation du prochain
+//					}
+//			waveTot++;
+//		}
+//
+//	if (!ev_DrawWholeBarFast.delay.Is_On())
+//	{
+//		Draw_tip(coord, false);	// right tip, à la fin
+//		ev_DrawWholeBarFast.Cancel();	// safety
+//	}
+//
+//}
 
 
 
 static void Progress()
 {
 	nextWave += ratio;
-	Dr_Er_Cursor(false);	// delete le curseur précédant
+	Dr_Er_Cursor(false,crd);	// delete le curseur précédant
 	crd.x++;	// avance d'une case :`D
+	if (ev_ProgressAnimation.Is_Active())
+	{
+		ev_ProgressAnimation.Cancel();								// lazy shit
+		ConsoleRender::Add_Char({ crd.x - 1, crd.y }, TXT_CONST.DOT, barProgClr);	// lazy shit
+	}
+}
+
+static void Progress2()
+{
 	if (ev_ProgressAnimation.Is_Active())
 	{
 		ev_ProgressAnimation.Cancel();								// lazy shit
@@ -215,85 +229,85 @@ static void Progress()
 
 // pas de spawn sur les break? Pas de spawn sur les break!|
 // Signale au joueur combien de waves y reste avant la fin 
-void Ev_Progress_Bar()
-{
-	if (!ev_ProgressBar.Is_Active())
-	{
-		nextWave = 0;
-		ratio = NUMWAVES[gCurrentLevel - 1] / ((float)barLength);	// On se fie à cette valeur pour progresser dans la bar		
-		crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength / 2) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
-		barProgClr = LIGHT_YELLOW;
-
-		if (gSpawnCycleTot == 0)	// Version normal	
-			Ev_Draw_Whole_Bar();
-		else
-		{
-			Ev_Draw_Whole_Bar_Fast();	// Version checkpoint: Commence la progression plus loin sur la bar (à l'endroit ou le checkpoint est)
-
-			while (nextWave < gSpawnCycleTot)
-				Progress();
-		}
-
-
-		ev_ProgressBar.Activate();
-		ev_ProgressBar.Start(1000);
-		ev_ProgressBar.delay.Start_Timer(20000, 1, true);
-	}
-	else
-		while (ev_ProgressBar.delay.Tick())
-		{
-			if (gSpawnCycleTot == NUMWAVES[gCurrentLevel - 1])	// reached the end
-			{
-				ev_ProgressBar.Cancel();
-				return;
-			}
-
-			// if final hour?
-			if (gSpawnCycleTot == FINALHOUR[gCurrentLevel - 1])
-			{
-				if (barProgClr != LIGHT_RED) // dumb condition, but understandable
-				{
-					Progress(); 
-					barProgClr = LIGHT_RED;	// it's serious time
-					Ev_Break_Animation();	// start l'animation du drette sur le FINALHOUR
-				}
-
-				continue;
-			}
-
-			if (ev_BreakAnimation.Is_Active())	// Si l'animation de break est active
-			{
-				if (waitForNxtSpawn != gSpawnCycleTot)	// Faut attendre le prochain spawn
-				{
-					ev_BreakAnimation.Cancel();// Stop le break
-					Progress();	// Quand un break arrive, il faut avancer de 2 le ratio, sinon ça décale
-					Ev_Progress_Animation(); // progress
-				}
-			}
-			else
-				if (Is_Checkpoint_Here(gCurrentLevel - 1, gSpawnCycleTot))
-				{
-					waitForNxtSpawn = gSpawnCycleTot;
-					Progress();	// we progress
-					Ev_Break_Animation();	// start l'animation du break
-				}
-				else
-					if ((int)nextWave == gSpawnCycleTot)	// On passe au prochain
-					{
-						Progress(); // efface le curseur précédant et on avance
-						Ev_Progress_Animation();
-					}
-		}
-}
+//void Ev_Progress_Bar()
+//{
+//	if (!ev_ProgressBar.Is_Active())
+//	{
+//		nextWave = 0;
+//		ratio = NUMWAVES[gCurrentLevel - 1] / ((float)BAR_LENGTH);	// On se fie à cette valeur pour progresser dans la bar		
+//		crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (BAR_LENGTH / 2) - 1, map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+//		barProgClr = LIGHT_YELLOW;
+//
+//		if (gSpawnCycleTot == 0)	// Version normal	
+//			Ev_Draw_Whole_Bar();
+//		else
+//		{
+//			Ev_Draw_Whole_Bar_Fast();	// Version checkpoint: Commence la progression plus loin sur la bar (à l'endroit ou le checkpoint est)
+//
+//			while (nextWave < gSpawnCycleTot)
+//				Progress();
+//		}
+//
+//
+//		ev_ProgressBar.Activate();
+//		ev_ProgressBar.Start(1000);
+//		ev_ProgressBar.delay.Start_Timer(20000, 1, true);
+//	}
+//	else
+//		while (ev_ProgressBar.delay.Tick())
+//		{
+//			if (gSpawnCycleTot == NUMWAVES[gCurrentLevel - 1])	// reached the end
+//			{
+//				ev_ProgressBar.Cancel();
+//				return;
+//			}
+//
+//			// if final hour?
+//			if (gSpawnCycleTot == FINALHOUR[gCurrentLevel - 1])
+//			{
+//				if (barProgClr != LIGHT_RED) // dumb condition, but understandable
+//				{
+//					Progress(); 
+//					barProgClr = LIGHT_RED;	// it's serious time
+//					Ev_Break_Animation();	// start l'animation du drette sur le FINALHOUR
+//				}
+//
+//				continue;
+//			}
+//
+//			if (ev_BreakAnimation.Is_Active())	// Si l'animation de break est active
+//			{
+//				if (waitForNxtSpawn != gSpawnCycleTot)	// Faut attendre le prochain spawn
+//				{
+//					ev_BreakAnimation.Cancel();// Stop le break
+//					Progress();	// Quand un break arrive, il faut avancer de 2 le ratio, sinon ça décale
+//					Ev_Progress_Animation(); // progress
+//				}
+//			}
+//			else
+//				if (Is_Checkpoint_Here(gCurrentLevel - 1, gSpawnCycleTot))
+//				{
+//					waitForNxtSpawn = gSpawnCycleTot;
+//					Progress();	// we progress
+//					Ev_Break_Animation();	// start l'animation du break
+//				}
+//				else
+//					if ((int)nextWave == gSpawnCycleTot)	// On passe au prochain
+//					{
+//						Progress(); // efface le curseur précédant et on avance
+//						Ev_Progress_Animation();
+//					}
+//		}
+//}
 
 
 void Ev_Progress_Animation()
 {
 	if (!ev_ProgressAnimation.Is_Active())
 	{
-		Dr_Er_Cursor(true);	// avance le curseur
+		Dr_Er_Cursor(false, crd);	// delete le curseur précédant
 		ev_ProgressAnimation.Activate();
-		ev_ProgressAnimation.Start(7000);
+		ev_ProgressAnimation.Start(300);
 	}
 	else
 		while (ev_ProgressAnimation.delay.Tick())
@@ -331,6 +345,10 @@ void Ev_Progress_Animation()
 				// Fin animation qui flash
 				ConsoleRender::Add_Char(crd, TXT_CONST.DOT, barProgClr);
 				ev_ProgressAnimation.Advance(0);
+
+
+				crd.x += SPACE_BTW_DOTS;				// avance d'une case :`D
+				Dr_Er_Cursor(true,crd);						// avance le curseur
 				break;
 			}
 		}
@@ -354,12 +372,12 @@ void Ev_Break_Animation()
 			if (draw)
 			{	// Animation qui flash
 				//ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);	// sur la bar 
-				Dr_Er_Cursor(true);
+				Dr_Er_Cursor(true,crd);
 				draw = false;
 			}
 			else { // une fois sur deux, on efface pour clignoter
 				//ConsoleRender::Add_Char(crd, TXT_CONST.DOT, LIGHT_GREEN);	// sur la bar 
-				Dr_Er_Cursor(false);
+				Dr_Er_Cursor(false,crd);
 				draw = true;
 			}
 
@@ -367,7 +385,7 @@ void Ev_Break_Animation()
 }
 
 
-void Dr_Er_Cursor(bool draw)
+void Dr_Er_Cursor(bool draw, Coord crd)
 {
 	if (draw)
 	{
@@ -379,4 +397,98 @@ void Dr_Er_Cursor(bool draw)
 		ConsoleRender::Add_Char({ crd.x, crd.y - 1 }, TXT_CONST.SPACE); // 1 case en haut
 		ConsoleRender::Add_Char({ crd.x, crd.y + 1 }, TXT_CONST.SPACE); // 1 case en bass
 	}
+}
+
+
+////////////////////////////////////////////// VERSION 2, AVEC LES NOUVEAUX SPAWN SCRIPTS
+
+
+void Ev_Draw_Whole_Bar2()	// Happens first
+{
+	static int puzzleMarker;
+	static int barLength;
+	static float ratio;
+	static Colors clr;
+	static Coord coord;
+
+	if (!ev_DrawWholeBar2.Is_Active())
+	{
+		puzzleMarker = 0;
+		barLength = NUM_PUZZLES[gCurrentLevel - 1];
+		clr = GRAY;
+		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength) - (int)tip[true].length() , map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
+
+		ev_DrawWholeBar2.Activate();
+		ev_DrawWholeBar2.Start(0);
+		if(gCurrentPuzzle[gCurrentLevel - 1] == 0)
+
+			ev_DrawWholeBar2.delay.Start_Timer(100000 / 12, barLength);
+		else
+			ev_DrawWholeBar2.delay.Start_Timer(100000, barLength);
+	}
+	else
+		while (ev_DrawWholeBar2.delay.Tick())
+		{
+			if (puzzleMarker == gCurrentPuzzle[gCurrentLevel - 1] )
+				Dr_Er_Cursor(true, coord);	// Affiche le curseur au bon endroit
+
+			if (puzzleMarker == barLength - 1)	// Le final houre :O
+			{
+				ConsoleRender::Add_Char(coord,158, RED); coord.x++;
+				Draw_tip(coord, false);		// right tip, à la fin
+				ev_DrawWholeBar2.Cancel();	// safety
+			}
+			else
+				if (puzzleMarker < gCurrentPuzzle[gCurrentLevel - 1]) // Puzzle déjà fait
+					clr = LIGHT_GREEN;
+				else
+					clr = GRAY;	// Puzzle pas encore fait
+
+			ConsoleRender::Add_Char(coord, TXT_CONST.DOT, clr); coord.x += SPACE_BTW_DOTS;
+			puzzleMarker++;
+		}
+}
+
+
+
+void Ev_Progress_Bar2()
+{
+	static int barLength;
+	//static Coord crd;
+
+	if (!ev_ProgressBar2.Is_Active())
+	{
+		nextPuzzle = gCurrentPuzzle[gCurrentLevel - 1] + 1; // On se fie à cette valeur pour progresser dans la bar		
+		barLength = NUM_PUZZLES[gCurrentLevel - 1];
+		crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength), map.Get_Box_Limit(UP) - 4 };	// pos de départ ouch
+		crd.x += (gCurrentPuzzle[gCurrentLevel - 1]) * SPACE_BTW_DOTS;
+
+		barProgClr = LIGHT_GREEN;
+
+		if (gSpawnCycleTot == 0)	// Version normal	
+			Ev_Draw_Whole_Bar2();
+
+		ev_ProgressBar2.Activate();
+		ev_ProgressBar2.Start(1000);
+		//ev_ProgressBar2.delay.Start_Timer(20000, 1, true);
+	}
+	else
+	{
+		if (gCurrentPuzzle[gCurrentLevel - 1] == barLength)	// reached the end
+		{
+			barProgClr = LIGHT_RED;	// it's serious time
+			Progress2();
+			ev_ProgressBar2.Cancel();
+			return;
+		}
+
+		if (gCurrentPuzzle[gCurrentLevel - 1] == nextPuzzle)	// On passe au prochain
+		{
+			Progress2();
+			Ev_Progress_Animation();
+			nextPuzzle++;
+		}
+	}
+
 }

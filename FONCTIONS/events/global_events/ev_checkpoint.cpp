@@ -45,7 +45,10 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				MsgQueue::Register(LOCK_PLAYER);	// It has to be done
 				P1.Er_Player();						// Efface son char
 				Init_Puzzle();
-				Set_Ev_Spawn_Player(3);	// Spawn le joueru
+
+				if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+					Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
+
 				MsgQueue::Register(ENABLE_BLAST);
 				gSpwBotTimer.Resume();
 				ev_ReachCheckpoint.Cancel();

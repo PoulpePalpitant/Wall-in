@@ -91,16 +91,6 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 	}
 }
 
-void BlastAmmo::Set_Ammo_For_Checkpoint()	// Set la limite selon le nombre assigné au checkpoint d'un niveau
-{
-	if (gCurrentLevel == 1)
-		Set_Ammo(LVL1_BLAST_AMMO[gCurrentPuzzle[gCurrentLevel - 1]]);
-	else
-		if (gCurrentLevel == 2)
-			Set_Ammo(LVL2_BLAST_AMMO[gCurrentPuzzle[gCurrentLevel - 1]]);
-}
-
-
 
 
 // UI UI UI UI UI UI UI 
