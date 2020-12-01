@@ -11,19 +11,14 @@
 
 const int NB_LVLS = 2;								// Nombre de niveau que j'ai fais
 const int NUMWAVES[NB_LVLS] = { 250, 100 };			// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
-const int FINALHOUR[NB_LVLS] = { 203, 80 };			// À quel wave le final hour aura lieu
-const int NUM_PUZZLES[NB_LVLS] = { 18, 4 };		// Nombre de Puzzles dans chaque lvl
-
-const int LVL2_CHECKPOINT[] = {  20, 40, 67,  80 };
-const int LVL3_CHECKPOINT[] = { 0 };
-const int LVL4_CHECKPOINT[] = { 0 };
-const int LVL5_CHECKPOINT[] = { 0 };
+const int NUM_PUZZLES[NB_LVLS] = { 18, 20 };		// Nombre de Puzzles dans chaque lvl
 
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
 short gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
-
+short gUnlockedLevels[3] = {1,1,0};
+short gLastLvlUnlocked = 0;
 
 int gCurrPuzzleStep = 0;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
 int gCurrPuzzleStepMax = 0;

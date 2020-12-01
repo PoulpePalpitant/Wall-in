@@ -47,17 +47,16 @@ void Dispatch_Msg_To_Lvl_2()
 		}
 		switch (gCurrentStage)
 		{
-		case 1:Ev_Wake_Up_2();break;//gCurrentStage++;
-		case 2:Ev_Lvl2_Training();break;
-		case 3:Ev_Lvl2_Training_1();break;
-		case 4:Ev_Lvl2_Training_2();break;
-		case 5:Ev_Lvl2_Training_3();break;	// L'inversion de 3 et 2 n'est pas une erreur. Or is it?
-		case 6: /*gCurrentStage++;*/	// TEMP
-			//ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
-			//botList.Destroy_All_Bots();
-
+		case 1:Ev_Wake_Up_2();
+			gCurrentStage = 5;	// Pour skipp tes vieux tutorials
+			break;
+		case 2://Ev_Lvl2_Training();break;
+		case 3://Ev_Lvl2_Training_1();break;
+		case 4://Ev_Lvl2_Training_2();break;
+		case 5://Ev_Lvl2_Training_3();break;	// L'inversion de 3 et 2 n'est pas une erreur. Or is it?
+		case 6: 
 			Clear_All_States(true, false);	// Pour resize le grid. Tu va devoir attendre 1 loop lol. ou plus maintenant
-			Resize_Grids_To_Level(gGrids, gCurrentLevel, gCurrentStage);	// PEUT PT CCAUSÉ DES BUGS SI NON TESTÉ
+			Resize_Grids_To_Level(gGrids, gCurrentLevel, 6);	// PEUT PT CCAUSÉ DES BUGS SI NON TESTÉ
 			Ev_Dr_Day_2();
 			break;
 
@@ -115,7 +114,7 @@ void Dispatch_Msg_To_Lvl_2()
 		break;
 
 	case PROCEED: 
-		if (gCurrentStage == 7)	// Le stage ou à lieu le main game
+		if (gCurrentStage == 2)	// Le stage ou à lieu le main game
 		{
 			gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
 			MsgQueue::Register(PLS_INTIALIZE_LVL);

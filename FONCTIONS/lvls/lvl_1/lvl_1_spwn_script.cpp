@@ -42,10 +42,10 @@ void Puzzle_1_1();
 void Puzzle_1_2();
 void Puzzle_1_3();
 void Puzzle_1_4();
-void Puzzle_1_5();	//
+void Puzzle_1_5();	
 void Puzzle_1_6();
 void Puzzle_1_7();
-void Puzzle_1_8();	// Peut être utilisé, mais va bcp trop vite
+void Puzzle_1_8();	
 void Puzzle_1_9();
 void Puzzle_1_10();
 void Puzzle_1_11();
@@ -97,12 +97,6 @@ void Lvl_1_Spwn_Script()
 		int numSpawnWaves = gSpawnCycleTot;	// Pour aller dans la switch et déterminé quel va être le spawn
 		skip = 0;						// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
 		
-		// POUR GET LE MAX
-		//	spawnGrid->Get_MaxSpwnCrdX() - 1
-		//	spawnGrid->Get_MaxSpwnCrdY() - 1
-		//Add(300);
-		
-
 		LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
 
 		// Ceci ajoute du temps entre le spawn actuel et le prochain
@@ -701,17 +695,17 @@ void Puzzle_1_13()
 	case 2:Add_Spec(UP, 4);skip = 1;break;
 	case 3:Add_Spec(UP, 6);skip = 1;break;
 	case 4:Add_Spec(UP, 5);skip = 1;break;
-	case 5:Add_Spec(LEFT, 4);Add_Spec(RIGHT, 4);skip = 2;break;
+	case 5:Add_Spec(LEFT, 4);Add_Spec(RIGHT, 4);skip = 6;break;
 	case 6:Add_Spec(UP, 5);skip = 1;break;
 	case 7:Add_Spec(UP, 7);skip = 1;break;
 	case 8:Add_Spec(UP, 7);skip = 1;break;
 	case 9:Add_Spec(UP, 7);skip = 1;break;
-	case 10:Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);skip = 2;break;
+	case 10:Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);skip = 6;break;
 	case 11:Add_Spec(UP, 8);skip = 1;break;
 	case 12:Add_Spec(UP, 4);skip = 1;break;
 	case 13:Add_Spec(UP, 4);skip = 1;break;
 	case 14:Add_Spec(UP, 7);skip = 1;break;
-	case 15:Add_Spec(LEFT, 6);Add_Spec(RIGHT, 6);skip = 4;break;
+	case 15:Add_Spec(LEFT, 6);Add_Spec(RIGHT, 6);skip = 6;break;
 	case 16:Add_Spec(UP, 4);skip = 2;break;
 	case 17:Add_Spec(LEFT, 7);Add_Spec(UP, 4);skip = 2;break;
 	case 18:Add_Spec(UP, 8);skip = 1;break;
@@ -738,7 +732,7 @@ void Puzzle_1_14()
 
 	case 1:Add_Spec(LEFT, 2); Add_Spec(RIGHT, 0);break;
 	case 2:Add_Spec(LEFT, 1); Add_Spec(RIGHT, 1);break;
-	case 3:Add_Spec(LEFT, 0); Add_Spec(RIGHT, 2);break;
+	case 3:Add_Spec(LEFT, 0); Add_Spec(RIGHT, 2);skip = 4;break;
 	case 4:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 3);break;
 	case 5:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 2);break;
 	case 6:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3); Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 4;break;
@@ -759,10 +753,11 @@ void Puzzle_1_15()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 12,3 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(37);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(36);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 		gGrids.Make_Chain_Of_Walls({ 3,14 }, UP, 14);
 		gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 14);
+		gGrids.Make_Chain_Of_Walls({ 9,linkGrid->Get_Rows() - 1 }, LEFT,1);
 		break;
 
 	case 1:Add_Spec(RIGHT, 0);Add_Spec(RIGHT, 1);break;
@@ -771,7 +766,7 @@ void Puzzle_1_15()
 	case 4:Add_Spec(RIGHT, 0);Add_Spec(RIGHT, 1); break;
 	case 5:Add_Spec(UP, 9);Add_Spec(UP, 10);Add_Spec(UP, 11);skip = 2;break;
 	case 6:Add_Spec(RIGHT, 0);skip = 2;break;
-	case 7:Add(6);Set_Interval(DOWN, 3, 9); skip = 12;break;
+	case 7:Add(4);Set_Interval(DOWN, 4, 8); skip = 12;break;
 	case 8:Add_Spec(UP, 0);Add_Spec(UP, 1); skip = 3;break;
 	case 9:Add_Spec(LEFT, 13);break;
 	case 10:Add_Spec(LEFT, 7);Add_Spec(LEFT, 8);skip = 6; break;
@@ -820,7 +815,7 @@ void Puzzle_1_16()
 	case 19:Add_Spec(UP, 1);break;
 	case 20:Add_Spec(LEFT, 12); skip = 3;break;
 	case 21:Add_Spec(DOWN, 10);break;
-	case 22:Add_Spec(RIGHT, 12);break;
+	case 22:Add_Spec(RIGHT, 12);skip = 5; break;
 	case 23:Add_Spec(LEFT, 2);break;
 	case 24:Add_Spec(UP, 9);break;
 	case 25:Add_Spec(RIGHT, 11);break;
@@ -895,22 +890,22 @@ void Puzzle_1_17()
 	case 17:Add(1);skip = 4;break;
 	case 18:Add(1);skip = 4;break;
 	case 19:ItemSpawner::Set_Spawner_Timer(ItemType::HEALTH, 1000, 0);break;	// Augmente vitesse des spawnsAdd(1);skip = 3;break;
-	case 20:Add(1);skip = 3;break;
-	case 21:Add(1);skip = 3;break;
-	case 22:Add(1);skip = 3;break;
-	case 23:Add(1);skip = 3;break;
-	case 24:Add(1);skip = 3;break;
-	case 25:Add(1);skip = 3;break;
-	case 26:Add(1);skip = 3;break;
-	case 27:Add(1);skip = 3;break;
-	case 28:Add(1);skip = 3;break;
-	case 29:Add(1);skip = 4;break;
-	case 30:Add(1);skip = 4;break;
-	case 31:Add(1);skip = 4;break;
-	case 32:Add(1);skip = 4;break;
-	case 33:Add(1);skip = 4;break;
-	case 34:Add(1);skip = 4;break;
-	case 35:Add(1);skip = 4;break;
+	case 20:Add(1);skip = 4;break;
+	case 21:Add(1);skip = 4;break;
+	case 22:Add(1);skip = 4;break;
+	case 23:Add(1);skip = 4;break;
+	case 24:Add(1);skip = 4;break;
+	case 25:Add(1);skip = 4;break;
+	case 26:Add(1);skip = 4;break;
+	case 27:Add(1);skip = 4;break;
+	case 28:Add(1);skip = 4;break;
+	case 29:Add(1);skip = 5;break;
+	case 30:Add(1);skip = 5;break;
+	case 31:Add(1);skip = 5;break;
+	case 32:Add(1);skip = 5;break;
+	case 33:Add(1);skip = 5;break;
+	case 34:Add(1);skip = 5;break;
+	case 35:Add(1);skip = 5;break;
 	case 36:Add(1);skip = 3;break;
 	case 37:Add(1);skip = 3;break;
 	case 38:Add(1);skip = 3;break;
@@ -925,6 +920,7 @@ void Puzzle_1_17()
 	case 47:Add(1);skip = 1;break;
 	case 48:Add(1);break;
 	case 49:
+
 		// VICTORY IS OURS HAHAHAHAHAHAH
 		MsgQueue::Register(STOP_BOT_SPAWNS);
 		Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire

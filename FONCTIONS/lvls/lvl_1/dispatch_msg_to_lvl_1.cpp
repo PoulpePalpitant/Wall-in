@@ -32,6 +32,7 @@
 #include "../../grid/AllGrids.h"
 #include "../../events/global_events/ev_progress_bar.h"
 #include "../../events/global_events/ev_thank_you.h"
+#include "../../events/global_events/ev_lvl_unlocked.h"
 
 
 // C'EST ICI QUE ÇA SE PASSE
@@ -43,8 +44,7 @@ void Dispatch_Msg_To_Lvl_1()
 	case PLS_INTIALIZE_LVL: Lvl_1_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
 
 	case LVL_INITIALIZED: 
-	//	MsgQueue::Register(CHANGE_WINSIZE);
-		break;	// n'empêche même pas de register des messges ici :(
+		break;
 
 	case CHANGE_WINSIZE:
 	//	OBS_Change_Window();
@@ -128,13 +128,10 @@ void Dispatch_Msg_To_Lvl_1()
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
 				// Ferme le jeu
-				Ev_Thks_For_Playing();
+				//Ev_Thks_For_Playing();
 
 				// Prochain level
-				//gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
-				//gCurrentLevel = 2;
-				//gSkipStory = false;
-				//Event::Cancel_All();		// Tout les events
+				Ev_Lvl_Unlocked();
 			}
 		}
 		else

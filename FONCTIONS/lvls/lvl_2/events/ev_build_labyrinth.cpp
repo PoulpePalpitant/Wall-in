@@ -14,18 +14,24 @@
 #include "../../../events/global_events/feedback/ev_draw_map.h"
 #include "../../../global_types/global_types.h"
 #include "../../../events/global_events/clear_all_states.h"
+#include "../../../events/global_events/feedback/ev_red_borders.h"
 
 
-static Event ev_BuildLabyrinth(Ev_Build_Labyrinth, 8); // Def //
+static Event ev_BuildLabyrinth(Ev_Build_Labyrinth, 20); // Def //
 
+static std::string escape = "Do You Ever Feel Trapped?   ";
 static std::string adv = "Adventure Here";
-static std::string moral = "What do you seek?";
-static std::string moral_2 = "An escape?";
-static std::string goal = "- NEW GOAL -";
+
+static std::string obj = "You Don't Belong Here";
+static std::string obj2 = "Escape This Place...   ";
+
+static std::string goal1 = "These Walls...   ";
+static std::string goal2 = "Can't Contain You!";
+
+static std::string menacing1 = "There Is No Escape";
+static std::string menacing2 = "You Built These Walls";
 
 
-static std::string nxt = "What Next?";
-static std::string doing = "What Are You Doing?";
 
 // Tous ce que j'ai de besoin pour constuire le labyrinthe
 static int rootR;	// Row de la root
@@ -37,41 +43,29 @@ static Direction dir;
 
 void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de murs pour obtenir ce qu'il désir
 {
-	//// initialisation
-	//static int maxC = gGrids.linkGrd.Get_Cols();
-	//static int maxR = gGrids.linkGrd.Get_Rows();
-	//static Coord xy;
 	static Modifier mod = REGULAR;
 
 	//Just_Dr_Map_Borders();	// Pour m'orienter quand je build
 	if (!ev_BuildLabyrinth.Is_Active())
 	{
+
+		ConsoleRender::Add_String(escape, { Find_Ctr_X(escape.size()), gConHeight / 2 }, WHITE, TXT_SPD_DR * 0.9);
 		ev_BuildLabyrinth.Activate();
-		ev_BuildLabyrinth.Start(400);
+		ev_BuildLabyrinth.Start(250);
 	}
 	else
 		while (ev_BuildLabyrinth.delay.Tick())
 		{
 			switch (ev_BuildLabyrinth.Get_Current_Step())
 			{
-			case 1://wait for game title to erase
-				ev_BuildLabyrinth.Advance(0);
+			case 1:
+				//wait for game title to erase
+				ConsoleRender::Add_String(escape, { Find_Ctr_Grid(escape), gConHeight / 2 }, WHITE, TXT_SPD_ER * 2,1);
+				MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
+				ev_BuildLabyrinth.Advance(900);
 				break;
+
 			case 2:
-
-				//rootR = 0;
-				//for (int c = 0; c < maxC; c++)	// Affiche Le Link grid
-				//{
-				//	xy = gGrids.linkGrd.link[c][rootR].Get_XY(); ConsoleRender::Add_String(std::to_string(c), xy);
-				//}
-
-				//rootC = 0;
-				//for (int r = 0; r < maxR; r++)
-				//{
-				//	xy = gGrids.linkGrd.link[rootC][r].Get_XY(); ConsoleRender::Add_String(std::to_string(r), xy);
-				//}
-
-
 				// Je commence le design dans le coin supérieur gauche
 				rootC = 0;	rootR = 0; 		// Origin
 				gGrids.Make_Chain_Of_Walls({ rootC, rootR + 1 }, RIGHT, 1);
@@ -280,50 +274,82 @@ void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de mu
 				ConsoleRender::Add_String(adv, { Find_Ctr_String_X(adv) + 3,START_Y -2 }, LIGHT_GREEN);
 					
 
-				ev_BuildLabyrinth.Advance(0);
-				ev_BuildLabyrinth.delay.Start_Timer(100000, 1, true);
+				ev_BuildLabyrinth.Advance(1000);
 				break;
 
+
 			case 3:
-				if (Are_Equal(P1.Get_Grd_Coord(), { 7,0 }))	// Le goal à reach pour le labyrinthe
+				ConsoleRender::Add_String(obj,  Heart_Txt_Crd_Left(obj), LIGHT_GREEN, TXT_SPD_DR);
+				ev_BuildLabyrinth.Advance(600);
+				break;
+
+			case 4:
+				ConsoleRender::Add_String(obj2, Heart_Txt_Crd_Right(obj), LIGHT_GREEN, TXT_SPD_DR);
+				ev_BuildLabyrinth.Advance(250);
+				break;
+
+			case 5:
+				ConsoleRender::Add_String(obj, Heart_Txt_Crd_Left(obj), LIGHT_GREEN, TXT_SPD_ER,1);
+				ConsoleRender::Add_String(obj2, Heart_Txt_Crd_Right(obj), LIGHT_GREEN, TXT_SPD_ER,1);
+
+				ev_BuildLabyrinth.Advance(0);
+				ev_BuildLabyrinth.delay.Start_Timer(100000, 1, true);
+				break;	
+			
+			//case 6:
+			//	if (P1.Get_Grd_Coord().r == 8)
+			//	{
+			//	ConsoleRender::Add_String(goal1, { Heart_Txt_Crd_Left(goal1)}, LIGHT_GREEN, TXT_SPD_DR );
+			//	ev_BuildLabyrinth.delay.Stop();
+			//	ev_BuildLabyrinth.Advance(500);
+			//	}
+			//	break;
+
+			//case 7:
+			//	ConsoleRender::Add_String(goal2, { Heart_Txt_Crd_Right(goal2) }, LIGHT_GREEN, TXT_SPD_DR);
+			//	ev_BuildLabyrinth.Advance(400);
+			//	break;
+
+			//case 8:
+			//	ConsoleRender::Add_String(goal1, { Heart_Txt_Crd_Left(goal1) }, LIGHT_GREEN, TXT_SPD_ER,1);
+			//	ConsoleRender::Add_String(goal2, { Heart_Txt_Crd_Right(goal2) }, LIGHT_GREEN, TXT_SPD_ER,1);
+			//	ev_BuildLabyrinth.Advance(400);
+			//	ev_BuildLabyrinth.delay.Start_Timer(100000, 1, true);
+			//	break;
+
+
+			case 6:
+				if (Are_Equal(P1.Get_Grd_Coord(), { 7,1 }) || Are_Equal(P1.Get_Grd_Coord(), { 6,0 }))	// Le goal à reach pour le labyrinthe
 				{
 					Clear_Map();
 					Clear_All_Renders();
 					clrscr();
 					P1.Dr_Player();
+					Set_Ev_Red_Borders(200);
 
 					//MsgQueue::Register(LOCK_PLAYER);
 					MsgQueue::Register(DISABLE_BLAST);
 					ev_BuildLabyrinth.delay.Stop();
-					ev_BuildLabyrinth.Advance(400);
+					ev_BuildLabyrinth.Advance(1000);
 				}
-
-				break;
-			case 4:
-				ConsoleRender::Add_String(goal, { Up_Txt_1(goal)}, BRIGHT_WHITE, TXT_SPD_DR);
-				ev_BuildLabyrinth.Advance(400);
 				break;
 
-			case 5:
-				//ConsoleRender::Add_String(moral, { Find_Ctr_String_X(moral) + 3,gConHeight / 2}, LIGHT_GREEN);
-				ConsoleRender::Add_String(TXT_CONST.DOTDOTDOT, { Up_Txt_3(TXT_CONST.DOTDOTDOT)}, BRIGHT_WHITE, TXT_SPD_DR / 4);
-				ev_BuildLabyrinth.Advance(300);
-				break;
-
-			case 6:
-				ConsoleRender::Add_String(nxt, { Find_Ctr_Grid(nxt), gConHeight / 2 - 5 }, LIGHT_GREEN, TXT_SPD_DR / 3);
-				ev_BuildLabyrinth.Advance(400);
-				break;	
-			
 			case 7:
-				ConsoleRender::Add_String(doing, { Find_Ctr_Grid(doing), gConHeight / 2 - 3 }, LIGHT_GREEN, TXT_SPD_DR / 2);
-				ev_BuildLabyrinth.Advance(250);
+				ConsoleRender::Add_String(menacing1, { Find_Ctr_Grid(menacing1), gConHeight / 2 - 10 }, LIGHT_RED, 0);
+				ev_BuildLabyrinth.Advance(600);
 				break;
 
 			case 8:
+				ConsoleRender::Add_String(menacing2, { Find_Ctr_Grid(menacing2), gConHeight / 2 - 8 }, LIGHT_RED, 0);
+				ev_BuildLabyrinth.Advance(400);
+				break;
+
+			case 9:
+				Cancel_Ev_Red_Borders();
 				clrscr();
 				MsgQueue::Register(STAGE_ADVANCE);
 				ev_BuildLabyrinth.Advance(0);
+				ev_BuildLabyrinth.delay.Start_Timer(100000, 1, true);
 				break;
 			}
 		}

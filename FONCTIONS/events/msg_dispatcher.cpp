@@ -154,6 +154,15 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case VICTORY:
+		if (gCurrentLevel < 3)
+		{
+			gUnlockedLevels[gCurrentLevel] = 1;
+			gLastLvlUnlocked = gCurrentLevel + 1;
+		}
+		else
+			gLastLvlUnlocked = 0;
+
+
 		Ev_Victory_Screen();
 		break;	
 	

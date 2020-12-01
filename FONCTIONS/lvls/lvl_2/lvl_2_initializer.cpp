@@ -39,7 +39,6 @@ void Lvl_2_Initializer()
 
 		gCurrentStage = 0;
 		Ev_Build_Labyrinth(); // start le level avec ceci :)
-		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
 	}
 
 	gSpwBotTimer.Start_Timer(SPW_BOT_SPD_LVL2, 1 , true); // DEFUALT

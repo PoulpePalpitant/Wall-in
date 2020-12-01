@@ -15,9 +15,11 @@
 #include "msg_events/ev_waking_up.h"
 #include "../../spawns/valid_spwn_intervals.h"
 
+#include "../../events/global_events/ev_lvl_unlocked.h"
+
 void Lvl_1_Initializer()
 {
-	gLvlTime = 0;		// Reset Le timer du niveau
+	gLvlTime = 0;		
 
 	if (gSkipStory)
 	{
@@ -34,19 +36,20 @@ void Lvl_1_Initializer()
 		//gSkipStory = false;
 
 
-		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+		MsgQueue::Register(STAGE_ADVANCE);	
 
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
-		int checkpointTest = 0;/*17 = max*/
+		int checkpointTest = 17;/*17 = max*/
 		if(gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
 			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
 	else
 	{
+
 		//Ev_Wake_Up();		// TEST EVENT WAKEUP
 		gCurrentStage = 0;
-		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
+		MsgQueue::Register(SPAWN_PLAYER);	
 	}
 
 	gSpwBotTimer.Start_Timer(1700, 1 , true); //  DEFUALT
@@ -56,22 +59,16 @@ void Lvl_1_Initializer()
 	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
 	//gBotMoveTimer.Start_Timer(50200, 1, true);	// DEBUG
 
-	
-	//ItemSpawner::Add_To_Pool(ItemType::BUFFER, 30, 0);
-	//ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 20, 50);
-	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
-	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 500, 0);
 
-
-	Resize_Grids_To_Level(gGrids, 1);			// Resize tout les grids pour ce niveau :)
-	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
+	Resize_Grids_To_Level(gGrids, 1);			
+	bots_to_spawn::Reset_To_Default();			
 	
 	P1.Set_Hp(3);	// 3 de vie le gros
 	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
 	
-	if (!P1.Set_On_Grid())		// Doit être sur le grid pour le niveau
+	if (!P1.Set_On_Grid())		
 		throw "player pas sur le grid";
 	
-	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
-	MsgQueue::Register(DISABLE_BLAST);	// It has to be done
+	MsgQueue::Register(LVL_INITIALIZED);
+	MsgQueue::Register(DISABLE_BLAST);	
 }

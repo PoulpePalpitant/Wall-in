@@ -131,7 +131,7 @@ void Erase_All_Boss_Txt(bool slow)
 	for (int i = 0; i < 6; i++)
 	{
 		if (slow)
-			ConsoleRender::Add_String(bigEraser, { map.Get_Box_Limit(RIGHT) + 2, Boss_Txt_Y(i) }, WHITE, 50, true);
+			ConsoleRender::Add_String(bigEraser, { map.Get_Box_Limit(RIGHT) + 2, Boss_Txt_Y(i) }, WHITE, TXT_SPD_ER, true);
 		else
 		{
 			gotoxy(map.Get_Box_Limit(RIGHT) + 2, Boss_Txt_Y(i));
