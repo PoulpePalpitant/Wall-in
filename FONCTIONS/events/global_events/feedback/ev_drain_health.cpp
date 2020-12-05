@@ -85,6 +85,7 @@ void Add_Ev_Drain_Health()
 	{
 		ev_DrainHealthWarning.Cancel();
 		Q_ev_DrainHealthWarning.Remove(0);
+		Stop_Ev_Hp_Drain_Msg();
 	}
 
 	Q_ev_DrainHealthWarning.Add(crd);

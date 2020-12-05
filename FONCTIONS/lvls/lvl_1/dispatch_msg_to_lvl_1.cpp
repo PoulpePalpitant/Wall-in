@@ -80,12 +80,6 @@ void Dispatch_Msg_To_Lvl_1()
 				}
 				else
 				{
-					// OLD WAY
-					//P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentPuzzle[gCurrentLevel - 1]]);
-					//gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
-
-
-
 					Checkpoint_Delay();// Delay Next spawn
 
 					if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
@@ -99,12 +93,10 @@ void Dispatch_Msg_To_Lvl_1()
 				}
 			}
 
-			P1.Reset_Hp_And_Heart(3);// Ev_Dr_Heart();
-			Ev_Progress_Bar2();	// Plutôt: if (!drawn)
-			Init_Puzzle();	// NEW WAY
+			P1.Reset_Hp_And_Heart(3);
+			Ev_Progress_Bar2();
+			Init_Puzzle();	
 							
-
-			//blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();	// PRE-VERSION 1 SPAWN SCRIPT
 			MsgQueue::Register(START_BOTS); // Here they come baby
 			gSkipStory = false;
 			gDayStarted = true;

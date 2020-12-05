@@ -25,6 +25,7 @@ public:
 	Distance Get_Ctr_X() { return ((limit[RIGHT] - limit[LEFT]) / 2); }	// Point central en X
 	Distance Get_Ctr_Y();// Point central en Y
 
+
 	void Resize(LinkGrid& linkGrid);	// Resize selon la dimension du Grid principal(LinkGrid)
 
 public:

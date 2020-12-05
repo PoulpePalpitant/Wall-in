@@ -16,6 +16,9 @@
 #include "events/ev_lvl2_training_1.h"
 #include "events/ev_lvl2_training_2.h"
 #include "events/ev_lvl2_training_3.h"
+#include "../../events/global_events/ev_spwn_player.h"
+#include "../../events/global_events/ev_lvl_unlocked.h"
+
 
 /* Msg events*/
 #include "msg_events/ev_day_2.h"
@@ -61,48 +64,44 @@ void Dispatch_Msg_To_Lvl_2()
 			break;
 
 		case 7:
+
 			P1.Set_Hp(3);
 			if (gSkipStory)
 			{
 				/*safety*/
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 				botList.Destroy_All_Bots();
-				P1.Set_Position({ 6,6 });
 
 				if (gCurrentPuzzle[gCurrentLevel + 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
 				{
+					P1.Set_Position({ 6,6 });
 					P1.Er_Player();
 					Just_Dr_Map_Borders();
-					Ev_Progress_Bar2();
+					gCurrPuzzleStep = 0;	// SAFETY
 					MsgQueue::Register(SPAWN_PLAYER);
 				}
 				else
 				{
-					Ev_Progress_Bar2();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
-					P1.Dr_Player();
-					MsgQueue::Register(FREE_PLAYER);
+
+					Checkpoint_Delay();// Delay Next spawn
+
+					if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 				}
-				Just_Dr_Heart();
-				//Ev_Dr_Heart();
+
+
+
+				// Pour debug
+				gGrids.Dr_Spawngrid();
 			}
 
-			// Il va y avoir quelques items sur la map déjà :)
-			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITE{ 3,3 }MS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
-			// c'est trop hard xD
+			P1.Reset_Hp_And_Heart(3);
+			Ev_Progress_Bar2();
+			Init_Puzzle();
 
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false, true);
-			ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6,4 }, false, true);
-			// ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITE{ 3,3 }MS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS  ITEMS 
-
-
-			MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
 			MsgQueue::Register(START_BOTS); // Here they come baby
 			gSkipStory = false;
 			gDayStarted = true;
-			break;
 		}
 
 		break;
@@ -125,6 +124,9 @@ void Dispatch_Msg_To_Lvl_2()
 				gCurrentStage = 0;
 				gCurrentLevel = 3;
 				Ev_Thks_For_Playing();
+
+				Ev_Lvl_Unlocked();
+
 			}
 		}
 		else

@@ -21,6 +21,7 @@
 // Cheats! sshhhhs
 #include "../../player/player.h"
 #include "../../items/item_spw_drawer.h"
+#include "../../spawns/valid_spwn_intervals.h"
 
 // TO REMOVE
 #include "../../console/sweet_cmd_console.h"
@@ -85,9 +86,9 @@ static int spw;
 static int box;
 static GrdCoord crd;
 static std::string codeRecycling = "(Don't Let The Shapes Reach This Border)";
-static bool seenFinalHour = false;
 static std::string tip_01 = "Drain Hp For Ammo ->";
 static std::string tip_01_1 = "Shoot to drain hp ";
+static bool seenFinalHour = false;
 static int skip;
 
 void Lvl_1_Spwn_Script()
@@ -263,7 +264,6 @@ void Lvl_1_Spwn_Script()
 */
 //}
 
-//                                DISCLAIMER: l'ordre des définitions de méthodes suivantes ne veut pas dire que ce puzzle sera joué dans cet ordre
 // Voici les puzzles du niveau
 // da first
 void Puzzle_1_0(){
@@ -340,6 +340,7 @@ void Puzzle_1_2(){
 	case 9:MsgQueue::Register(CHECKPOINT_REACHED);break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE	break;
 	}
 }
+
 
 
 // MINI puzzle pour montrer que tu peux drain ta vie
@@ -828,6 +829,16 @@ void Puzzle_1_16()
 // THE FINAL CHALLENGE IS HERE HAHAHAHAHAH
 void Puzzle_1_17()
 {
+	static std::string _1 = "- SURVIVE -";
+	static std::string _2 = "- Waves Remaining -";
+	static std::string _3 = "<- Drain Extra Hp For Ammo";
+	static std::string _4 = "Shoot To Drain Hp";
+
+	static Coord crd;
+	static int y = Heart_Txt_Crd_Right("  ").y - 2;
+
+	const int SHAPES_TO_KILL = 40;
+	static int shapesRemaining;
 
 	if (gCurrPuzzleStep < 19) // Tout les spawns seront verticaux lors de la moitié du final hour
 		gHorizontalSpawns = true;
@@ -835,18 +846,29 @@ void Puzzle_1_17()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 6,7 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(20);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);		// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
+		shapesRemaining = SHAPES_TO_KILL;
+
+		crd = { map.Get_Box_Limit(RIGHT) + 13,map.Get_Ctr_Y() - 4 };
+
+
+
+		//seenFinalHour = true;	/// REMOVE THIS
+
 
 		if (!seenFinalHour)
-		{ MsgQueue::Register(LOCK_PLAYER);P1.Er_Player(); }
+		{
+			MsgQueue::Register(LOCK_PLAYER);P1.Er_Player();
+		}
+		else
+			Cancel_Checkpoint_Delay();
 		break;
 
 	case 1:
 		if (!seenFinalHour)
 		{
 			MsgQueue::Register(FINAL_HOUR);	// montre ça juste une fois, EVER
-			seenFinalHour = true;
 			skip = 10;
 		}
 		break;
@@ -857,73 +879,215 @@ void Puzzle_1_17()
 		if (P1.Cant_Do_Stuff())
 			Set_Ev_Spawn_Player(3);
 
-		// Pour assister
-		gGrids.Make_Chain_Of_Walls({ 3,0 }, DOWN, 2);
-		gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 2);
-		//gGrids.Make_Chain_Of_Walls({ 7,0 }, DOWN, 1);
-		//gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 4);
-		//gGrids.Make_Chain_Of_Walls({ 11,0 }, DOWN, 1);
+		//gGrids.Make_Chain_Of_Walls({ 4,0 }, DOWN, linkGrid->Get_Rows() - 1);
+		//gGrids.Make_Chain_Of_Walls({ 8,0 }, DOWN, linkGrid->Get_Rows() - 1);
+		//gGrids.Make_Chain_Of_Walls({ 4,linkGrid->Get_Rows() - 1 }, LEFT, 1);	
+		//gGrids.Make_Chain_Of_Walls({ 8,linkGrid->Get_Rows() - 1 }, RIGHT, 1);
 
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,4 });
-		skip = 5;
+
+		/* V1*/
+		/*gGrids.Make_Chain_Of_Walls({ 0,0 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,1 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,2 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,3 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,4 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,4 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,5 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,6 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,7 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,8 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,9 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,11 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,12 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,13 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,14 }, RIGHT, 2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,0 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,1 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,2 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,3 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,4 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,4 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,5 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,6 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,7 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,8 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,9 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,10 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,11 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,12 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,13 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,14 }, LEFT, 2);*/
+
+
+		/*v2*/
+		gGrids.Make_Chain_Of_Walls({ 4,0 }, DOWN, linkGrid->Get_Rows() - 1);
+		gGrids.Make_Chain_Of_Walls({ 8,0 }, DOWN, linkGrid->Get_Rows() - 1);
+		gGrids.Make_Chain_Of_Walls({ 4,linkGrid->Get_Rows() - 1 }, LEFT, 1);	/*1*/
+		gGrids.Make_Chain_Of_Walls({ 8,linkGrid->Get_Rows() - 1 }, RIGHT, 1);
+
+		gGrids.Make_Chain_Of_Walls({ 3,1 }, DOWN, linkGrid->Get_Rows() - 3);
+		gGrids.Make_Chain_Of_Walls({ 9,1 }, DOWN, linkGrid->Get_Rows() - 3);
+		gGrids.Make_Chain_Of_Walls({ 3,linkGrid->Get_Rows() - 2 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ 9,linkGrid->Get_Rows() - 2 }, RIGHT, 1);
+
+		//gGrids.Make_Chain_Of_Walls({ 2,1 }, DOWN, linkGrid->Get_Rows() - 4);
+		//gGrids.Make_Chain_Of_Walls({ 10,1 }, DOWN, linkGrid->Get_Rows() - 4);
+		//gGrids.Make_Chain_Of_Walls({ 2,linkGrid->Get_Rows() - 3 }, LEFT, 2);
+		//gGrids.Make_Chain_Of_Walls({ 10,linkGrid->Get_Rows() - 3 }, RIGHT, 2);
+
+		gGrids.Make_Chain_Of_Walls({ 3,0 }, LEFT, 3);
+		gGrids.Make_Chain_Of_Walls({ 0,1 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,2 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,3 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,4 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,4 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,5 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,6 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,7 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,8 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,9 }, RIGHT,  2);
+		gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 2);
+		gGrids.Make_Chain_Of_Walls({ 0,11 }, RIGHT, 2);
+		gGrids.Make_Chain_Of_Walls({ 0,12 }, RIGHT, 2);
+		gGrids.Make_Chain_Of_Walls({ 1,13 }, LEFT, 1);
+		gGrids.Make_Chain_Of_Walls({ 2,14 }, LEFT, 2);
+
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4,0 }, RIGHT,  3);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,1 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,2 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,3 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,4 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,4 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,5 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,6 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,7 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,8 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,9 }, LEFT,  2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,10 }, LEFT, 2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,11 }, LEFT, 2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,12 }, LEFT, 2);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2,13 }, RIGHT, 1);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3,14 }, RIGHT, 2);
+
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,3 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,12 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,11 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,11 });
+
+
+		if (!seenFinalHour)
+		{
+			ConsoleRender::Add_String(_3, { Heart_Txt_Crd_Right(_3).x - 3 ,y }, WHITE, TXT_SPD_DR * 0.7);
+			ConsoleRender::Add_String(_4, { Heart_Txt_Crd_Left(_4).x + 8,y + 4 }, WHITE, TXT_SPD_DR * 0.7);
+			seenFinalHour = true;
+			skip = 20;
+		}
+
+
 		break;
 
 	case 3:
-		ItemSpawner::Add_To_Pool(ItemType::HEALTH, 700, 0);
+		ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
+		ConsoleRender::Add_String(_2, { crd.x - 4,crd.y + 1 }, WHITE, TXT_SPD_DR);
+		ItemSpawner::Add_To_Pool(ItemType::HEALTH, 200, 0);
 		MsgQueue::Register(ENABLE_ITEM_SPAWN);
 		skip = 8;
 		break;
 
 	case 4:Add(1);skip = 5;break;
-	case 5:Add(1);skip = 4;break;
-	case 6:Add(1);skip = 4;break;
-	case 7:Add(1);skip = 4;break;
-	case 8:Add(1);skip = 4;break;
-	case 9:Add(1);skip = 4;break;
-	case 10:Add(1);skip = 5;break;
-	case 11:Add(1);skip = 4;break;
-	case 12:Add(1);skip = 4;break;
-	case 13:Add(1);skip = 4;break;
-	case 14:Add(1);skip = 6;break;
-	case 15:Add(1);skip = 4;break;
-	case 16:Add(1);skip = 4;break;
-	case 17:Add(1);skip = 4;break;
-	case 18:Add(1);skip = 4;break;
-	case 19:ItemSpawner::Set_Spawner_Timer(ItemType::HEALTH, 1000, 0);break;	// Augmente vitesse des spawnsAdd(1);skip = 3;break;
-	case 20:Add(1);skip = 4;break;
-	case 21:Add(1);skip = 4;break;
-	case 22:Add(1);skip = 4;break;
-	case 23:Add(1);skip = 4;break;
-	case 24:Add(1);skip = 4;break;
-	case 25:Add(1);skip = 4;break;
-	case 26:Add(1);skip = 4;break;
-	case 27:Add(1);skip = 4;break;
-	case 28:Add(1);skip = 4;break;
-	case 29:Add(1);skip = 5;break;
-	case 30:Add(1);skip = 5;break;
-	case 31:Add(1);skip = 5;break;
-	case 32:Add(1);skip = 5;break;
-	case 33:Add(1);skip = 5;break;
-	case 34:Add(1);skip = 5;break;
-	case 35:Add(1);skip = 5;break;
+	case 5:Add(1);
+		ConsoleRender::Add_String(_3, { Heart_Txt_Crd_Right(_3).x - 3,y }, WHITE, TXT_SPD_DR, 1);
+		ConsoleRender::Add_String(_4, { Heart_Txt_Crd_Left(_4).x + 8,y + 4 }, WHITE, TXT_SPD_DR, 1);
+		skip = 5;break;
+	case 6:Add(1);skip = 5;break;
+	case 7:Add(1);skip = 5;break;
+	case 8:Add(1);skip = 5;break;
+	case 9:Add(1);skip = 5;break;
+	case 10:Add(1);skip = 8;
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,3 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,12 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,11 });
+		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,11 });
+		break;
+
+	case 11:Add(1);skip = 2;break;
+	case 12:Add(1);skip = 2;break;
+	case 13:Add(1);skip = 2;break;
+	case 14:Add(1);skip = 2;break;
+	case 15:Add(1);skip = 1;break;
+	case 16:Add(1);skip = 1;break;
+	case 17:Add(1);skip = 1;break;
+	case 18:Add(1);skip = 1;break;
+	case 19:Add_Spec(LEFT, 0);Add_Spec(RIGHT, 0),
+
+		skip = 16;break;
+	case 20:
+		for (int r = 0; r < 5; r++)
+		{
+			for (int c = 0; c < 5; c++)
+			{
+				ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 4 + c, 9 + r });
+			}
+		}
+		skip = 16;
+		break;
+
+	case 21:Add(1);skip = 5;break;
+	case 22:Add(1);skip = 5;break;
+	case 23:Add(1);skip = 5;break;
+	case 24:Add(1);skip = 3;break;
+	case 25:Add(1);skip = 2;break;
+	case 26:Add(1);skip = 2;break;
+	case 27:Add(1);skip = 2;break;
+	case 28:Add(1);skip = 2;break;
+	case 29:Add(1);skip = 2;break;
+	case 30:Add(1);skip = 2;break;
+	case 31:Add(1);skip = 7;break;
+	case 32:Add(1);skip = 3;break;
+	case 33:Add(1);skip = 3;break;
+	case 34:Add(1);skip = 3;break;
+	case 35:Add(1);skip = 3;break;
 	case 36:Add(1);skip = 3;break;
 	case 37:Add(1);skip = 3;break;
-	case 38:Add(1);skip = 3;break;
-	case 39:Add(1);skip = 3;break;
-	case 40:Add(1);skip = 3;break;
-	case 41:Add(1);skip = 3;break;
-	case 42:Add(1);skip = 2;break;
-	case 43:Add(1);skip = 2;break;
-	case 44:Add(1);skip = 2;break;
-	case 45:Add(1);skip = 1;break;
-	case 46:Add(1);skip = 1;break;
-	case 47:Add(1);skip = 1;break;
-	case 48:Add(1);break;
-	case 49:
-
+	case 38:Add(1);skip = 2;break;
+	case 39:Add(1);skip = 2;break;
+	case 40:Add(1);skip = 0;break;
+	case 41:Add(1);skip = 0;break;
+	case 42:Add(1);skip = 0;break;
+	case 43:
 		// VICTORY IS OURS HAHAHAHAHAHAH
 		MsgQueue::Register(STOP_BOT_SPAWNS);
 		Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
 		break;
 	}
+
+	if (gCurrPuzzleStep > 2)
+	{
+		if (shapesRemaining == 9)
+			ConsoleRender::Add_String(TXT_CONST.SPACE_STRING, { crd.x + 5,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
+
+		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 4,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
+		shapesRemaining--;
+
+		if (gCurrPuzzleStep < 19)
+		{
+			Set_Interval(UP, 4, 8);
+		}
+		else
+			Set_Interval(UP, 3, 9);
+				
+
+	}
+
 }

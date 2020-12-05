@@ -17,7 +17,7 @@
 
 void Lvl_2_Initializer()
 {
-	gLvlTime = 0;		// Reset Le timer du niveau
+	gLvlTime = 0;		
 
 	if (gSkipStory)
 	{
@@ -33,38 +33,32 @@ void Lvl_2_Initializer()
 	}
 	else
 	{
-		//gCurrentStage = 0;	// Pour choisir le niveau que tu veux pour starter	: 0 = wakeup
-		//MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
-
-
 		gCurrentStage = 0;
-		Ev_Build_Labyrinth(); // start le level avec ceci :)
+		Ev_Build_Labyrinth(); // start le level avec ceci :
 	}
 
-	gSpwBotTimer.Start_Timer(SPW_BOT_SPD_LVL2, 1 , true); // DEFUALT
-	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
-	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
-	//gBotMoveTimer.Start_Timer(10200, 1, true);	// TEST
-	
-	ItemSpawner::Add_To_Pool(ItemType::BUFFER, BUFFER_SPEED_LVL2, 2);
-	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, BLOCKER_SPEED_LVL2, 3);
-	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 1000, 0);
-	ItemSpawner::Add_To_Pool(ItemType::HEALTH, 20, 15);
-	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
 
-	Resize_Grids_To_Level(gGrids, 2);			// Resize tout les grids pour ce niveau :)
-	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); // MUST BE DONE BEFORE WHEN WE START EACH LEVEL BRAH
-	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
+	gSpwBotTimer.Start_Timer(1700, 1, true); //  DEFUALT
+	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
+
+
+	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
+	//gBotMoveTimer.Start_Timer(10200, 1, true);	// TEST
+
+
+	Resize_Grids_To_Level(gGrids, 2);					
+	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); 
+	bots_to_spawn::Reset_To_Default();					
 	
-	P1.Set_Hp(3);	// 3 de vie le gros
+	P1.Set_Hp(3);	
 	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
 	
-	if (!P1.Set_On_Grid())		// Doit être sur le grid pour le niveau
+	if (!P1.Set_On_Grid())		
 		throw "player pas sur le grid";
 	
-	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
-	MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+	MsgQueue::Register(LVL_INITIALIZED);
+	MsgQueue::Register(ENABLE_BLAST);	
 	
-	MsgQueue::Register(DISABLE_ITEM_SPAWN); // items!
+	MsgQueue::Register(DISABLE_ITEM_SPAWN);
 
 }
