@@ -52,60 +52,24 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				MsgQueue::Register(ENABLE_BLAST);
 				gSpwBotTimer.Resume();
 				ev_ReachCheckpoint.Cancel();
-
 			}
 			else
 				if (!gAllBotMeta.alive && P1.Get_HP())
 				{
-					//if (gSpawnCycleTot == LVL1_CHECKPOINT[gCurrentPuzzle[gCurrentLevel - 1]])	// OLD WAY
-					{
-						// Version avec 1 script par niveau
-						//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-						// Pour debug
-						//gGrids.Dr_Spawngrid();
+					// Nouvelle version avec plusieurs scripts
+					Stop_Ev_Hp_Drain_Msg();
+					Clear_Map();						// Effacer la map est satisfaisant
+					P1.Dr_Player();						// doit redraw le joueur quand on fait ça
+					Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
+					Ev_Good_Job();						// Félicite le joueur
+					P1.Reset_Hp_And_Heart(3);			// Restore la vie du joueur
 
-						//MsgQueue::Register(LOCK_PLAYER);	// It has to be done
-						//P1.Reset_Hp_And_Heart(3);			// Restore la vie du joueur
-						//Clear_Map();
-						//Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
-						//Ev_Good_Job();						// Félicite le joueur
-						//gCurrentPuzzle[gCurrentLevel - 1]++;	// Le checkpoint est officiellement updaté
-						//
-						//if (!Are_Equal(P1.Get_Grd_Coord(), LVL1_CHECKPOINT_P1_CRD[gCurrentPuzzle[gCurrentLevel - 1]]))	// déplace le joueur si il ne se trouve pas sur le bon spawn point
-						//{
-						//	// Start next puzzle
-
-						//	P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentPuzzle[gCurrentLevel - 1]]);
-						//	Set_Ev_Spawn_Player(.7f);
-						//	P1.Er_Player();
-						//}
-						//else
-						//	P1.Dr_Player();
-
-						//blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();
-						//gSpwBotTimer.Resume();
-						//gSpwBotTimer.Add_Count(5);	// Ajoute une tite pause à chaque fois que le checkpoint à été atteint!
-						//ev_ReachCheckpoint.Cancel();
-						//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-						// Nouvelle version avec plusieurs scripts
-						Stop_Ev_Hp_Drain_Msg();				
-						Clear_Map();						// Effacer la map est satisfaisant
-						P1.Dr_Player();						// doit redraw le joueur quand on fait ça
-						Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
-						Ev_Good_Job();						// Félicite le joueur
-						P1.Reset_Hp_And_Heart(3);			// Restore la vie du joueur
-
-						gCurrentPuzzle[gCurrentLevel - 1]++;// Le checkpoint est officiellement updaté
-						ev_ReachCheckpoint.delay.Stop();
-						ev_ReachCheckpoint.Advance(300); // Une tite pause avant de continuer!!
-						MsgQueue::Register(DISABLE_BLAST);
-					}
-
+					gCurrentPuzzle[gCurrentLevel - 1]++;// Le checkpoint est officiellement updaté
+					ev_ReachCheckpoint.delay.Stop();
+					ev_ReachCheckpoint.Advance(300); // Une tite pause avant de continuer!!
+					MsgQueue::Register(DISABLE_BLAST);
 				}
 		}
-
-
 	}
 }
 

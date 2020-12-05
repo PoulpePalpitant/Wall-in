@@ -25,6 +25,7 @@
 #include "msg_events/ev_waking_up.h"
 #include "msg_events/ev_arr_keys.h"
 #include "msg_events/ev_day_1.h"
+#include "msg_events/ev_health_is_ammo.h"
 
 // others
 #include "../../events/global_events/feedback/ev_draw_map.h"
@@ -157,6 +158,7 @@ void Dispatch_Msg_To_Lvl_1()
 			//Ev_Bot_Tutorial();
 		}
 		break;
+
 		/* Items*/
 	case ITEM_PICKUP:
 		if (gCurrentStage <= 1)
@@ -164,6 +166,11 @@ void Dispatch_Msg_To_Lvl_1()
 			Ev_Dr_New_Goal();		// - NEW GOAL -
 			Ev_Spawn_Life();
 		}
+		
+		if (gDayStarted == true && gCurrentPuzzle[0] == 1) {
+			Ev_Health_Is_Ammo();
+		}
+
 		//Set_Dr_Map_1();
 		break;
 

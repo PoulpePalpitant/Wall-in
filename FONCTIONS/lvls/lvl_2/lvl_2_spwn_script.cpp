@@ -125,18 +125,23 @@ void Puzzle_2_0()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 3,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
+	case 0:P1.Set_Position({ 6,1 });				
+		blastP1.Get_Ammo_Manager().Set_Ammo(10);	
 		gCurrPuzzleStepMax = 12;
 		
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2  + 1}, LEFT, 2,WallStrength::REGULAR, Modifier::BLOCKER);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 + 1}, RIGHT, 2, WallStrength::REGULAR, Modifier::BLOCKER);
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 4 , 9 });
+		gGrids.Activate_Blocker({ linkGrid->Get_Cols() / 2 - 3, 11 }, 0);	
+		gGrids.Activate_Blocker({ linkGrid->Get_Cols() / 2 , 11    }, 0);
+		gGrids.Activate_Blocker({ linkGrid->Get_Cols() / 2 + 3, 11 }, 0);
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 , 3 });
 		break;
 
 
-	case 1:skip = 10;
-	case 2:
+	case 1:skip = 10;break;
+	case 2:Add(1);break;
 	case 3:
 	case 4:
 	case 5:
@@ -152,9 +157,10 @@ void Puzzle_2_1()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ linkGrid->Get_Cols() - 5, 2 });				// Coord de départ du jouer
+	case 0:
+		P1.Set_Position({ linkGrid->Get_Cols() - 5, 2 });				// Coord de départ du jouer
 		P1.Reset_Hp_And_Heart(1);
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(20);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
 		for (int r = 1; r < 5; r += 2)	// 2 couloirs

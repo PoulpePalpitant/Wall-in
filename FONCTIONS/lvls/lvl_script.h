@@ -16,6 +16,7 @@ extern const int NUM_PUZZLES[];
 
 void (*LVL1_PUZZLES[])();// declare!
 void (*LVL2_PUZZLES[])();
+void (*LVL3_PUZZLES[])();
 
 extern short gCurrentLevel;	
 extern short gUnlockedLevels[3];

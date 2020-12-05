@@ -22,14 +22,10 @@ void Lvl_2_Initializer()
 	if (gSkipStory)
 	{
 		// Pour un normal quick start
-		gCurrentStage = 6; // Normal
 		//gCurrentStage = 0; // wakup
-		//gCurrentStage = 1; // TEST #1
-		//gCurrentStage = 2; // TEST #2
-		//gCurrentStage = 3; // TEST #3
-		//gCurrentStage = 4; // TEST #4
-		//gCurrentStage = 5; // warning
-		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+		//gCurrentStage = 1; // warning
+		gCurrentStage = 2; // Normal
+		MsgQueue::Register(STAGE_ADVANCE);	
 	}
 	else
 	{

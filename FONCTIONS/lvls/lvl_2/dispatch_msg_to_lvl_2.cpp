@@ -51,20 +51,13 @@ void Dispatch_Msg_To_Lvl_2()
 		switch (gCurrentStage)
 		{
 		case 1:Ev_Wake_Up_2();
-			gCurrentStage = 5;	// Pour skipp tes vieux tutorials
 			break;
-		case 2://Ev_Lvl2_Training();break;
-		case 3://Ev_Lvl2_Training_1();break;
-		case 4://Ev_Lvl2_Training_2();break;
-		case 5://Ev_Lvl2_Training_3();break;	// L'inversion de 3 et 2 n'est pas une erreur. Or is it?
-		case 6: 
-			Clear_All_States(true, false);	// Pour resize le grid. Tu va devoir attendre 1 loop lol. ou plus maintenant
-			Resize_Grids_To_Level(gGrids, gCurrentLevel, 6);	// PEUT PT CCAUSÉ DES BUGS SI NON TESTÉ
+		
+		case 2: 
 			Ev_Dr_Day_2();
 			break;
-
-		case 7:
-
+		
+		case 3:
 			P1.Set_Hp(3);
 			if (gSkipStory)
 			{
@@ -72,7 +65,7 @@ void Dispatch_Msg_To_Lvl_2()
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 				botList.Destroy_All_Bots();
 
-				if (gCurrentPuzzle[gCurrentLevel + 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
+				if (gCurrentPuzzle[gCurrentLevel - 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
 				{
 					P1.Set_Position({ 6,6 });
 					P1.Er_Player();
@@ -107,9 +100,10 @@ void Dispatch_Msg_To_Lvl_2()
 		break;
 
 	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
-		MsgQueue::Register(PLS_INTIALIZE_LVL);
+		Clear_All_States();	// Thats a fucking quick reset brah
 		clrscr();
-		gSpawnCycleTot = 0;
+		gSkipStory = true;	// clear state clear aussi ça, qui est agaçant
+		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		break;
 
 	case PROCEED: 
