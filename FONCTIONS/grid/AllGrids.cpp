@@ -471,3 +471,36 @@ void AllGrids::Activate_Blocker(GrdCoord crd, bool deactivate)	// Active un bloc
 		linkGrd.link[crd.c][crd.r].Dsp_Link();
 	}
 }
+
+void AllGrids::Activate_Link(GrdCoord crd, Modifier mod,bool deactivate)	
+{
+	if (crd.c < 0 || crd.r < 0)
+		return;
+
+	if (deactivate)
+	{
+		linkGrd.link[crd.c][crd.r].Deactivate_Link();
+		linkGrd.link[crd.c][crd.r].Er_Link();
+	}
+	else
+	{
+		linkGrd.link[crd.c][crd.r].Activate_Link(mod);
+		linkGrd.link[crd.c][crd.r].Dsp_Link();
+	}
+}
+
+
+void AllGrids::Make_Box_Of_Blockers(GrdCoord start, GrdCoord end, bool erase )
+{
+	for (int i = start.c; i <= end.c; i++)
+	{
+		gGrids.Activate_Blocker({ i, start.r }, erase);
+		gGrids.Activate_Blocker({ i, end.r }, erase);
+	}
+
+	for (int i = start.r; i <= end.r; i++)
+	{
+		gGrids.Activate_Blocker({ start.c, i }, erase);
+		gGrids.Activate_Blocker({ end.c, i }, erase);
+	}
+}

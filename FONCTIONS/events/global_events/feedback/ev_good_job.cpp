@@ -12,10 +12,13 @@ static const short NUM_COLOR = 6;
 
 static Event ev_GoodJob(Ev_Good_Job, NUM_COLOR * 3);
 
-const short NUM_CONGRATULATIONS = 10;
+const short NUM_CONGRATULATIONS = 16;
+const short NUM_RARE_GRATS = 16;
+
 const static std::string CONGRATULATIONS[NUM_CONGRATULATIONS] = { "- EXTRAORDINARY -", " - FANTASTIC -", "- WELL DONE -", "- THAT WAS INCREDIBLE -","- SUPER! -" ,
-"- KEEP IT UP -", "- GREAT WORK -", "- SWEET MOVES -", "- SPLENDID -", "- BRAVISSIMO -"};
-const static std::string RARE_GRATS = "- THIS IS A GRATIFYING COMMENT -";
+"- KEEP IT UP -", "- GREAT WORK -", "- SWEET MOVES -", "- SPLENDID -", "- BRAVISSIMO -" , "- EXCELLENTISSIMO -","- DAZZLING PERFORMANCE -","- GOOD JOB -", "- SUPERBLY EXECUTED -","- SUCESS -", "- NICE ONE -" };
+
+const static std::string RARE_GRATS[NUM_RARE_GRATS] = { "- THIS IS A GRATIFYING COMMENT -", "- FIRST TRY ;p -" };
 
 static Coord crd;
 
@@ -33,7 +36,7 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 		grats = CONGRATULATIONS[rand() % NUM_CONGRATULATIONS];
 		
 		if (rand() % 100 == 1)
-			grats = RARE_GRATS;
+			grats = RARE_GRATS[rand() % NUM_RARE_GRATS];
 
 
 		erOrDr = false;

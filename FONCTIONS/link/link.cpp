@@ -71,6 +71,9 @@ void Link::Set_UI()
 		break;
 	}
 
+	//if (state == LinkState::BOUND)		// Tout les link bound on ce symbol
+	//	sym = (char)LinkSym::PARENT;
+
 	if (state == LinkState::ROOT && modifier != Modifier::FORCEFIELD)
 		sym = (char)LinkSym::ROOT;
 }

@@ -51,7 +51,7 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 	gridLength = DELTA_X * col;
 	START_X = (gConWidth - gridLength) / 2;
 	gridHeight = DELTA_Y * row;
-	START_Y = (gConHeight - gridHeight) / 2;
+	START_Y = (gConHeight - gridHeight) / 2 ;
 
 	if (grid.areCreated)
 		Resize_All_Grids(grid, col, row); // UNE SEULE CRÉATION

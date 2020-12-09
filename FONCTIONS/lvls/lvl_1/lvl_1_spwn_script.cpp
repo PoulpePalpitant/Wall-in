@@ -434,6 +434,7 @@ void Puzzle_1_5()
 		break;
 
 	case 1:
+
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,7 }, LEFT, linkGrid->Get_Cols() - 1);
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,9 }, LEFT, linkGrid->Get_Cols() - 1);
 		gGrids.Make_Chain_Of_Walls({ 0,8 }, RIGHT, 11); // Wall du milieu à transfer
