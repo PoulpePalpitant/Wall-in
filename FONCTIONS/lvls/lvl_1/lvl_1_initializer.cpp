@@ -19,8 +19,6 @@
 
 void Lvl_1_Initializer()
 {
-	gLvlTime = 0;		
-
 	if (gSkipStory)
 	{
 		// Pour un quick start avec warning

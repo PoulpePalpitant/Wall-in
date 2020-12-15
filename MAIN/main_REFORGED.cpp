@@ -91,8 +91,6 @@ void main()	// Le début!
 	while (GameLoopClock::Is_Running())	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
 		GameLoopClock::Tick();	// Delta time est en seconde!!!
-		GameLoopClock::UPD_Total_Time();	// Temps du niveau
-		
 		
 		lag += GameLoopClock::Get_Delta_Time();
 

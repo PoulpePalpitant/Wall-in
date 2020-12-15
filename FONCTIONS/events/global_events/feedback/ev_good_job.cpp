@@ -9,11 +9,11 @@
 
 
 static const short NUM_COLOR = 6;
-
+static Event ev_PerfectVictory(Ev_Perfect_Victory);
 static Event ev_GoodJob(Ev_Good_Job, NUM_COLOR * 3);
 
 const short NUM_CONGRATULATIONS = 16;
-const short NUM_RARE_GRATS = 16;
+const short NUM_RARE_GRATS = 2;
 
 const static std::string CONGRATULATIONS[NUM_CONGRATULATIONS] = { "- EXTRAORDINARY -", " - FANTASTIC -", "- WELL DONE -", "- THAT WAS INCREDIBLE -","- SUPER! -" ,
 "- KEEP IT UP -", "- GREAT WORK -", "- SWEET MOVES -", "- SPLENDID -", "- BRAVISSIMO -" , "- EXCELLENTISSIMO -","- DAZZLING PERFORMANCE -","- GOOD JOB -", "- SUPERBLY EXECUTED -","- SUCESS -", "- NICE ONE -" };
@@ -75,6 +75,9 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 				}
 		}
 }
+
+void Ev_Perfect_Victory(){}
+
 
 void Cancel_Ev_Good_Job()	// permet de cancel cet event for the sake of speed
 {

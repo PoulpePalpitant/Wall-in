@@ -17,8 +17,6 @@
 
 void Lvl_2_Initializer()
 {
-	gLvlTime = 0;		
-
 	if (gSkipStory)
 	{
 		// Pour un normal quick start
@@ -29,13 +27,18 @@ void Lvl_2_Initializer()
 
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
-		int checkpointTest = 7;/*17 = max*/
+		int checkpointTest = 9;/*17 = max*/
 		if (gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
 			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
 	else
 	{
-		gCurrentStage = 0;
+
+
+
+
+
+		gCurrentStage = 0;	// DONT
 		Ev_Build_Labyrinth(); // start le level avec ceci :
 	}
 

@@ -45,24 +45,22 @@ void Link::Set_UI()
 		break;
 
 	case BUFFER:
-		sym = 254;		
+		//sym = 254;		
+		sym = (char)LinkSym::PARENT;
+
 		clr = LIGHT_YELLOW;
 		break;
 
 	case Modifier::BLOCKER:
-		sym = 158;
-		/*if (state == LinkState::ROOT)
-			clr = BG_WH_LIGHT_RED;
-		else*/
-			clr = LIGHT_RED;
+		//sym = 158;
+		sym = (char)LinkSym::PARENT;
+		clr = LIGHT_RED;
 		break;
 
 	case Modifier::CORRUPTER:
-		sym = 207;
-	/*	if (state == LinkState::ROOT)
-			clr = BG_WH_LIGHT_PURPLE;
-		else*/
-			clr = LIGHT_PURPLE;
+		//sym = 207;
+		sym = (char)LinkSym::PARENT;
+		clr = LIGHT_PURPLE;
 		break;
 
 	case Modifier::FORCEFIELD:

@@ -167,7 +167,7 @@ void Dispatch_Msg_To_Lvl_1()
 			Ev_Spawn_Life();
 		}
 		
-		if (gDayStarted == true && gCurrentPuzzle[0] == 1) {
+		if (gDayStarted == true && gCurrentPuzzle[0] == 2) {
 			Ev_Health_Is_Ammo();
 		}
 

@@ -70,6 +70,9 @@ void Update_Player_Action()
 	{
 		if (!gPauseUpdates)
 		{
+			if (blastP1.Is_Active() && action != PAUSE)	// Empêche de refresh l'action. Ceci est le buffer du blast
+				return;
+
 			switch (action)
 			{
 			case PAUSE:
@@ -88,7 +91,7 @@ void Update_Player_Action()
 				break;
 
 			case BLAST:
-				if (!blastP1.Is_Active() && !ChoiceTime::Is_Choice_Time() && !gBlockBlast)
+				if (!ChoiceTime::Is_Choice_Time() && !gBlockBlast)
 				{
 					static GrdCoord grdCrd;	// Position du joueur
 					grdCrd = P1.Get_Grd_Coord();
@@ -100,8 +103,6 @@ void Update_Player_Action()
 					bool consumeQueue = true;
 					bool blastTransfer = false; // Transfer ne compte pas comme un tir normal. C'est plutôt une destruction d'un wall existant, suivi d'un tir dans une autre direction. 
 					BlastAmmo *ammo;	
-
-
 
 
 					blastP1.Set_Strength(WallStrength::REGULAR);	// dflt
@@ -145,15 +146,16 @@ void Update_Player_Action()
 				}
 				else
 				{
+
+
 					Blast_Disabled_While_CD();		// Check si c'est à cause de ça
 					Ev_Wrong_Action_Add();			// Flash le joueur
 					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		// Really dumb shit
 				}
-					
 				break;
 
 			case MOVE:
-				if (!blastP1.Is_Active() && !gChoiceTime)	// Le joueur ne peut bouger durant un blast
+				if (!gChoiceTime)	
 					Move_Player(P1, keyDirection);	// bouge le joueuruu!
 				break;
 
@@ -167,9 +169,6 @@ void Update_Player_Action()
 					return;	// Conserve l'action de téléporter
 				break;
 			}
-
-
-			
 		}
 		else
 			if (action == UNPAUSE)
@@ -184,6 +183,7 @@ void Update_Player_Action()
 				}
 			}
 	}
+
 	// Faut reset l'action
 	action = IDLE;
 	keyDirection = NONE;	// et la keydirection

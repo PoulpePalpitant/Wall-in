@@ -85,7 +85,7 @@ void Dispatch_Msg_To_Lvl_2()
 
 
 				// Pour debug
-				gGrids.Dr_Spawngrid();
+				//gGrids.Dr_Spawngrid();
 			}
 
 			P1.Reset_Hp_And_Heart(3);

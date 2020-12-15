@@ -313,7 +313,7 @@ void Puzzle_1_0(){
 
 
 // Puzzle de ligne verticale à faire en haut
-void Puzzle_1_2(){
+void Puzzle_1_1(){
 	switch (gCurrPuzzleStep)
 	{
 	case 0:
@@ -342,7 +342,7 @@ void Puzzle_1_2(){
 }
 
 // MINI puzzle pour montrer que tu peux drain ta vie
-void Puzzle_1_1() {
+void Puzzle_1_2() {
 
 	switch (gCurrPuzzleStep)
 	{
@@ -360,7 +360,7 @@ void Puzzle_1_1() {
 
 
 	case 1:skip = 5; break;
-	case 2:Add_Spec(RIGHT, 3);skip = 2; break;
+	case 2:Add_Spec(RIGHT, 3);skip = 6; break;
 	case 3:Add_Spec(LEFT, 10);break;
 	case 4:break;
 	case 5:
@@ -393,7 +393,7 @@ void Puzzle_1_4() {
 	switch (gCurrPuzzleStep)
 	{
 	case 0:
-		P1.Set_Position({ 9, 0 });				// Coord de départ du jouer
+		P1.Set_Position({ 9, 3 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(13);// Quantité d'ammo
 		gCurrPuzzleStepMax = 11;
 		gGrids.Make_Chain_Of_Walls({ 9,7 }, RIGHT, 1);
@@ -583,9 +583,9 @@ void Puzzle_1_9()
 	case 3:Add(2);Set_Interval(LEFT, 0, 2);	skip = 1; break;
 	case 4:Add(2);Set_Interval(RIGHT, 1, 3); skip = 5;break;
 	case 5:Add(2);Set_Interval(LEFT, 3, 5);  skip = 3;break;
-	case 6:Add(2);Set_Interval(LEFT, 7, 9);  skip = 3; break;
-	case 7:Add(2);Set_Interval(RIGHT, 3, 5); skip = 3;break;
-	case 8:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 2);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 2;break;
+	case 6:Add(2);Set_Interval(RIGHT, 3, 5); skip = 5;break;
+	case 7:Add(2);Set_Interval(LEFT, 7, 9);  skip = 3; break;
+	case 8:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 2);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);break;
 	case 9:Add(2);Set_Interval(RIGHT, 7, 9);MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
@@ -770,7 +770,7 @@ void Puzzle_1_15()
 	case 8:Add_Spec(UP, 0);Add_Spec(UP, 1); skip = 3;break;
 	case 9:Add_Spec(LEFT, 13); skip = 4; break;
 	case 10:Add_Spec(LEFT, 7);Add_Spec(LEFT, 8);skip = 6; break;
-	case 11:Add_Spec(UP, 0);Add_Spec(UP, 1);Add_Spec(UP, 2);break;
+	case 11:Add_Spec(UP, 0);Add_Spec(UP, 1);Add_Spec(UP, 2);skip = 6;break;
 	case 12:Add_Spec(LEFT, 5);Add_Spec(LEFT, 6);skip = 3;break;
 	case 13:Add_Spec(LEFT, 13); skip = 12; break;
 	case 14:Add(12);Set_Interval(UP, 0, linkGrid->Get_Cols() - 1); MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE C

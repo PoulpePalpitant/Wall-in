@@ -308,12 +308,11 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 
 			if (linkMod == REGULAR)
 			{
-				if (link->Get_Num_Child())	// pas de chaîne à buff sans child
-				{
-					link->Convert_Modifier(BUFFER);	// convertit le link en buffer
+				link->Convert_Modifier(BUFFER);	// convertit le link en buffer
+
+				if (link->Get_Num_Child())	// pas de chaîne à buff si ya pas de child
 					ListsOfChainToModify::Add_Chain_To_Modify(linkCrd, link, false, BUFF);	// BUFF tou les childs walls aà partir du Link
-					eraseBlast = true;
-				}
+				eraseBlast = true;
 			}
 
 			if (linkMod == BLOCKER)
