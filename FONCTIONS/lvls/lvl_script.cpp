@@ -11,7 +11,7 @@
 
 const int NB_LVLS = 2;								// Nombre de niveau que j'ai fais
 const int NUMWAVES[NB_LVLS] = { 250, 100 };			// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
-const int NUM_PUZZLES[NB_LVLS] = { 18, 20 };		// Nombre de Puzzles dans chaque lvl
+const int NUM_PUZZLES[NB_LVLS] = { 18, 24 };		// Nombre de Puzzles dans chaque lvl
 
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1

@@ -78,14 +78,14 @@ void Dispatch_Msg_To_Lvl_2()
 
 					Checkpoint_Delay();// Delay Next spawn
 
-					if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+					if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
 						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 				}
 
 
 
 				// Pour debug
-				//gGrids.Dr_Spawngrid();
+				gGrids.Dr_Spawngrid();
 			}
 
 			P1.Reset_Hp_And_Heart(3);

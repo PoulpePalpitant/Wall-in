@@ -349,35 +349,16 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 		{
 			for (int r = 0; r < row; r++)
 			{
-				if (wallGrid->wall[c][r].state != WallState::DEAD)
+				//if (wallGrid->wall[c][r].state != WallState::DEAD)
 				{
 					wallGrid->wall[c][r].Set_Drawer(true, true);	// ERASE d'ABORd
 					wallGrid->wall[c][r].Deactivate_Wall();	// Ensuite delete le shit
 				}
 			}
 		}
+
 		wallGrid = wallGridVer;	// finis par wallgrid vertical
 	}
-
-
-	//col = linkGrid->Get_Cols() - 1;
-	//row = linkGrid->Get_Rows() - 1;
-
-	// //V1 
-	//for (int c = 0; c < col ; c++)
-	//{
-	//	for (int r = 0; r < row ; r++)
-	//	{
-	//		/* Ceci est un dumb fix rapide, car un glitch visuel fait en sorte que certains root Link ne sont pas effacé*/
-	//		if (linkGrid->link[c][r].Get_State() == LinkState::ROOT)
-	//		{
-	//			linkGrid->link[c][r].Clr_Link();
-	//		}
-
-	//		if(linkGrid->link[c][r].Get_State() != LinkState::DEAD)
-	//			Add_Chain_To_Modify({ c,r });
-	//	}
-	//}
 
 	annihilating = false;
 }

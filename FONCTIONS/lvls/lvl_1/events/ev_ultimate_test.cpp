@@ -22,7 +22,7 @@ static Coord crd;
 static bool success = false;
 
 static int spw;
-static int warnings = 109;/*112*/ // le - 8 c'est parce que ça pars moins vite somehow quand je debug pas
+static int warnings = 109;/*112*/ 
 const int totalSpw = 50;
 
 

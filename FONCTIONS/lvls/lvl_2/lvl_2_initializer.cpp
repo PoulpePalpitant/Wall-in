@@ -24,10 +24,10 @@ void Lvl_2_Initializer()
 		//gCurrentStage = 1; // warning
 		gCurrentStage = 2; // Normal
 		MsgQueue::Register(STAGE_ADVANCE);	
-
+		
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
-		int checkpointTest = 9;/*17 = max*/
+		int checkpointTest = 0;/* 23 = max*/
 		if (gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
 			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
