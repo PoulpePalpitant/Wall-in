@@ -26,7 +26,7 @@ namespace DrawModifierQueue {
 		//titleCrd = { (Find_Ctr_X((int)std::size(queueTitle)) / 2) * 3, 24 };									// La corrd du ttitre principal
 		//titleCrd ={ (int)((Find_Ctr_X((int)std::size(queueTitle)) / 2) * 1.5f), 24 }; // Essayons à gauche
 
-		titleCrd.x = map.Get_Box_Limit(LEFT) - 13;
+		titleCrd.x = map.Get_Box_Limit(LEFT) - 15;
 
 		if (map.Get_Height() <= 13)
 			titleCrd.y = map.Get_Box_Limit(UP);
