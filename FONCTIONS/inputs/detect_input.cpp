@@ -234,7 +234,17 @@ void Handle_Input()
 		break;
 
 	case 13:	/* enter */
-		
+		if (gDayStarted)
+		{
+			if (gPauseUpdates)
+			{
+				action = ActionType::UNPAUSE;
+				gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Reset le checkpoint au premier puzzle du niveau
+				MsgQueue::Register(LOAD_CHECKPOINT);
+				return;
+			}
+		}
+ 
 		if (ChoiceTime::Is_Choice_Time())
 			ChoiceTime::Apply_Choice();
 		else

@@ -78,7 +78,7 @@ void Dispatch_Msg_To_Lvl_2()
 
 					Checkpoint_Delay();// Delay Next spawn
 
-					if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+					if (gCurrentPuzzle[gCurrentLevel - 1] + 1 != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
 						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 				}
 
@@ -118,9 +118,7 @@ void Dispatch_Msg_To_Lvl_2()
 				gCurrentStage = 0;
 				gCurrentLevel = 3;
 				Ev_Thks_For_Playing();
-
 				Ev_Lvl_Unlocked();
-
 			}
 		}
 		else

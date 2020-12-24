@@ -81,7 +81,8 @@ void Update_Player_Action()
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			// Besoin d'un max screen size
 				if (gDayStarted)
 				{
-					Press_R_To_Retry_On_Pause(1);
+					Press_X_To_Proceed(2);
+					//Press_R_To_Retry_On_Pause(1);
 					gRetryCheckpoint = true;
 				}
 				break;
@@ -178,7 +179,8 @@ void Update_Player_Action()
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);		// 
 				if (gDayStarted)
 				{
-					Press_R_To_Retry_On_Pause(1, true);
+					Press_X_To_Proceed(2, true);
+					//Press_R_To_Retry_On_Pause(1, true);
 					gRetryCheckpoint = true;
 				}
 			}

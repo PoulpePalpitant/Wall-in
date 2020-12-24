@@ -42,12 +42,11 @@
 
 
 // GLOBAL
-
 static int msgIndex = 0;	// Va chercher l'index dans la queue de messages. Si = à tail, veut dire qu'il a atteint la fin
 MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msgIndex qui sera interprété par les event Listeners
 
 // STATIC
-MsgType MsgQueue::queue[MSG_QUEUE_SIZE];	// La liste de tout les messages enregistré pendant une frame
+MsgType MsgQueue::queue[MSG_QUEUE_SIZE] = {};	// La liste de tout les messages enregistré pendant une frame
 int MsgQueue::head = 0;
 int MsgQueue::tail = 0;		// début, fin d'indice du array
 int MsgQueue::total = 0;
@@ -72,18 +71,30 @@ void MsgQueue::Register(MsgType msg)	// Ajoute le message à la liste des message
 	}
 	else
 	{
-		 std::cout << "fuck";		// Tu send trop de message, Probablement à cause que tu détruit tout les links
-		return;
+		std::cout << ".";		// Tu send trop de message, Probablement à cause que tu détruit tout les links
+		Unregister_All();
+
+		queue[tail] = PLS_INTIALIZE_LVL;		// Fix un crash
+		tail = (tail + 1) % MSG_QUEUE_SIZE;		
+		total++;
 	}
 }
 void MsgQueue::Unregister_All()
 {
 	gCurrentMsg = LITERALLY_NOTHING;	// Annule le message actuel
-	msgIndex = tail;	// Annule le dispatching de message pour cette frame
 
-	for (int i = 0; i < total; i++)
-		Unregister();
+	for (int i = 0; i < MSG_QUEUE_SIZE; i++)
+		queue[i] = LITERALLY_NOTHING;
+
+	head = tail = total = 0;
+	msgIndex = tail;	// Annule le dispatching de message pour cette frame
 }
+
+void MsgQueue::Reset_Total() 
+{
+	total = 0; 
+}
+
 
 void MsgQueue::Dispatch_Messages()		// Prend un message enregistré de la liste à envoyé
 {

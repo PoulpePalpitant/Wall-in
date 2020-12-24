@@ -273,6 +273,10 @@ void Puzzle_1_0(){
 		P1.Set_Position({ 6, 5 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(5);// Quantité d'ammo
 		gCurrPuzzleStepMax = 11;
+
+
+		// reset cette variable ici
+		seenFinalHour = false;
 		break;
 
 
@@ -1085,7 +1089,6 @@ void Puzzle_1_17()
 		}
 		else
 			Set_Interval(UP, 3, 9);
-				
 
 	}
 

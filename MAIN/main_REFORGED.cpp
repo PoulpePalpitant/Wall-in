@@ -88,6 +88,7 @@ void main()	// Le début!
 	GameLoopClock::Reset_Timer();	// Premier reset
 	//thread *inputs = new thread(Input_Thread_Handler);
 
+
 	while (GameLoopClock::Is_Running())	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
 	{
 		GameLoopClock::Tick();	// Delta time est en seconde!!!
