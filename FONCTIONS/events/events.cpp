@@ -12,7 +12,7 @@
 
 Event* Event::eventsID[MAX_NUM_EVENTS] = {};	// TOUT LES EVENTS
 FixedList<int>Event::toUpdate(MAX_NUM_EVENTS);	// Initialisation, une fois, de la queue d'event actifs à updater 
-int Event::total;	// Nombre d'events dans le jeu
+int Event::total = 0;	// Nombre d'events dans le jeu
 
 void Safety();	// si, somehow, le timer est à OFF et que l'event est activé , on l'arrête
 

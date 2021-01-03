@@ -65,7 +65,7 @@ public:
 	Event(void (*toDefine)(), int eventSteps = 1) {
 		
 		steps = eventSteps;	// Le nombre d'étape que contient l'event. 
-		
+
 		eventsID[total] = this;	// Criss l'event dans l'array
 		ID = total;	// Associe l'ID
 		total++;	// Avance le total 

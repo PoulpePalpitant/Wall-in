@@ -11,15 +11,15 @@
 
 /* Level1  events !*/
 #include "events/ev_change_window.h"
-#include "events/ev_spawn_life.h"
+#include "events/ev_spawn_life2.h"
 #include "events/ev_dot_chase.h"
-#include "events/ev_bot_tutorial.h"
+#include "events/ev_bot_tutorial2.h"
 #include "events/ev_build_start_walls.h"
 #include "../../events/global_events/ev_update_heart.h"
 #include "../../events/global_events/ev_spwn_player.h"
 
 /* Msg events*/
-#include "msg_events/ev_new_goal.h"
+#include "msg_events/ev_new_goal2.h"
 #include "msg_events/EV_Hello.h"
 #include "msg_events/ev_wasd.h"
 #include "msg_events/ev_waking_up.h"
@@ -163,8 +163,8 @@ void Dispatch_Msg_To_Lvl_1()
 	case ITEM_PICKUP:
 		if (gCurrentStage <= 1)
 		{
-			Ev_Dr_New_Goal();		// - NEW GOAL -
-			Ev_Spawn_Life();
+			//Ev_Dr_New_Goal2();		// - NEW GOAL -
+			Ev_Spawn_Life2();
 		}
 		
 		if (gDayStarted == true && gCurrentPuzzle[0] == 2) {
@@ -175,7 +175,7 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 
 	case SPAWN_SPECIAL_ITEM: 
-		Ev_Spawn_Mysterious_Item();			// Si tu trigger un event qui était déjà actif ici, ça va faire deux updates en 1 seul cycle! -	BAD -
+		Ev_Spawn_Mysterious_Item2();			// Si tu trigger un event qui était déjà actif ici, ça va faire deux updates en 1 seul cycle! -	BAD -
 		break;
 
 		/*Bots*/

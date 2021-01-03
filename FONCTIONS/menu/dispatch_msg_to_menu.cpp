@@ -13,7 +13,6 @@
 #include "../inputs/action_input.h"
 
 #include "../events/global_events/ev_update_heart.h" // for testing
-#include "../UI/console_output/Test.h"
 
  int choosenLvl = 0;	
  
@@ -39,7 +38,7 @@ void Dispatch_Msg_To_Menu()
 		
 		// DEBUG
 		//*******
-		Quick_STart(2, 1);
+		//Quick_STart(1, 0);
 
 		break;	// Initialize plein de choses
 	

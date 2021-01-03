@@ -35,15 +35,9 @@ void Peek_Lvl_Script()
 	switch (gCurrentLevel)
 	{
 	case 0: break;
-	case 1:	
-		Lvl_1_Spwn_Script(); break;	// Détermine quel sera la prochaine wave de spawn
-		case 2: Lvl_2_Spwn_Script(); break;
-		/*case 3: Level_3_Script(); break;
-		case 4: Level_4_Script(); break;
-		case 5: Level_5_Script(); break;
-		case 6: Level_6_Script(); break;
-		case 7: Level_7_Script(); break;
-		case 8: Level_8_Script();*/
+	case 1:	Lvl_1_Spwn_Script(); break;	// Détermine quel sera la prochaine wave de spawn
+	case 2: Lvl_2_Spwn_Script(); break;
+	/*case 3: Level_3_Script(); break;	*/
 	}
 }
 void Peek_Sub_Lvl_Script()

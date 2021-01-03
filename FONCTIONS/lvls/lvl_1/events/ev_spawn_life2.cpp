@@ -1,5 +1,5 @@
 
-#include "ev_spawn_life.h"
+#include "ev_spawn_life2.h"
 
 #include "../../../items/item_list.h"
 
@@ -15,16 +15,15 @@
 
 static Coord pos;		// position en xy
 static int itemY;
-static Event ev_SpawnMysteriousItem(Ev_Spawn_Mysterious_Item, 10);
-static std::string healthy = "You Are Feeling Healthy";
-static std::string anything = "And Alive";
+static Event ev_SpawnMysteriousItem(Ev_Spawn_Mysterious_Item2, 10);
+static std::string healthy = "You Seem";
+static std::string anything = "Healthy Enough";
 
 
-void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de tit points)
+void Ev_Spawn_Mysterious_Item2()	// Spawn un item mystérieux! ( version pas de tit points)
 {
 	static Item item;	// l'item qui va être créé 
 
-	// si au stage 1
 	if (!ev_SpawnMysteriousItem.Is_Active())
 	{
 		if (gCurrentStage == 0)
@@ -32,13 +31,10 @@ void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de ti
 			pos.x = linkGrid->link[linkGrid->Get_Cols() / 2][0].Get_XY().x;	// Le milieu
 			pos.y = linkGrid->link[0][0].Get_XY().y;						// première ligne
 			itemY = pos.y;
-			//pos = P1.Get_XY(); 
-			//pos.y -= DELTA_Y * 6;		// Position de l'item
 			
 			ev_SpawnMysteriousItem.Activate();
-			//ev_SpawnMysteriousItem.Start(90);// ON EMMERDE L'ÉTAPE 0
 			ev_SpawnMysteriousItem.Start(0);
-			ev_SpawnMysteriousItem.delay.Start_Timer(10000/*90*/, 1, true);// INFINITY
+			ev_SpawnMysteriousItem.delay.Start_Timer(10000, 1, true);// INFINITY
 		}
 	}
 	else	// doin stuff 
@@ -47,7 +43,6 @@ void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de ti
 		{
 			switch (ev_SpawnMysteriousItem.Get_Current_Step())
 			{
-
 			case 1:
 				if (P1.Get_Grd_Coord().r <= linkGrid->Get_Rows() / 2 + 2)	// Attend que le joueur se déplace sur la moitié du field pour spawner l'item
 				{
@@ -163,9 +158,9 @@ void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de ti
 
 
 static Coord crd;	// NE PAS MÉLANGER POS ET CRD
-static Event ev_SpawnLife(Ev_Spawn_Life, 10);
+static Event ev_SpawnLife(Ev_Spawn_Life2, 10);
 
-void Ev_Spawn_Life()					// Trace un chemin vers le coeur
+void Ev_Spawn_Life2()					// Trace un chemin vers le coeur
 {
 	if (!ev_SpawnLife.Is_Active())
 	{
