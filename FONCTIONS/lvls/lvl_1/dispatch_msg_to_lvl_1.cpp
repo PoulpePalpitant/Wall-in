@@ -11,6 +11,7 @@
 
 /* Level1  events !*/
 #include "events/ev_change_window.h"
+#include "events/ev_shoot.h"
 #include "events/ev_spawn_life2.h"
 #include "events/ev_dot_chase.h"
 #include "events/ev_bot_tutorial2.h"
@@ -163,8 +164,11 @@ void Dispatch_Msg_To_Lvl_1()
 	case ITEM_PICKUP:
 		if (gCurrentStage <= 1)
 		{
-			//Ev_Dr_New_Goal2();		// - NEW GOAL -
 			Ev_Spawn_Life2();
+
+			Ev_Learn_To_Shoot();			// Learn to shoot
+			MsgQueue::Register(FREE_PLAYER);
+			MsgQueue::Register(STAGE_ADVANCE);
 		}
 		
 		if (gDayStarted == true && gCurrentPuzzle[0] == 2) {

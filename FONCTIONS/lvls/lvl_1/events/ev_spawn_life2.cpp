@@ -225,13 +225,13 @@ void Ev_Spawn_Life2()					// Trace un chemin vers le coeur
 			case 7:
 				ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
 				Start_Ev_Dr_Heart(3, true); // affiche le coeur 	// spawn le coeur
-				ev_SpawnLife.Advance(350);
+				ev_SpawnLife.Advance(400);
 				break;
 
 			case 8:
 				
 				ConsoleRender::Add_String(healthy, Heart_Txt_Crd_Left (healthy), LIGHT_GREEN, TXT_SPD_DR);
-				ev_SpawnLife.Advance(700);
+				ev_SpawnLife.Advance(1000);
 				break;
 
 			case 9:

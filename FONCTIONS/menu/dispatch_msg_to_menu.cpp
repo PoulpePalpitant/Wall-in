@@ -38,7 +38,7 @@ void Dispatch_Msg_To_Menu()
 		
 		// DEBUG
 		//*******
-		//Quick_STart(1, 0);
+		Quick_STart(1, 0);
 
 		break;	// Initialize plein de choses
 	

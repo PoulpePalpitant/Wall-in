@@ -26,6 +26,9 @@ void Ev_Learn_To_Shoot()// Trace un chemin vers une fausse porte de sortie
 		ev_AdventureHere.Activate();
 		ev_AdventureHere.Start(600);
 		ev_AdventureHere.delay.Start_Timer(10000, 1, true);	// va checker à l'infinie pour vérifier si le joueur se trouve sur la position
+
+		MsgQueue::Register(FREE_PLAYER);
+		MsgQueue::Register(STAGE_ADVANCE);
 	}
 	else	// doin stuff 
 	{
