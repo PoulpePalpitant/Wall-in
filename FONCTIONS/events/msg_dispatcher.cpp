@@ -281,6 +281,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 	case DISABLE_BLAST:
 		gBlockBlast = true;
+		blastP1.Cancel();
 		break;
 		// Tout les events qui sont trigger par ça  
 	}

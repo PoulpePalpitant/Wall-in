@@ -11,7 +11,7 @@
 
 /* Level1  events !*/
 #include "events/ev_change_window.h"
-#include "events/ev_shoot.h"
+#include "events/ev_learn_border_limit.h"
 #include "events/ev_spawn_life2.h"
 #include "events/ev_dot_chase.h"
 #include "events/ev_bot_tutorial2.h"
@@ -55,11 +55,15 @@ void Dispatch_Msg_To_Lvl_1()
 	case STAGE_ADVANCE:
 		if (gCurrentStage == 3)
 		{
+			Cancel_All_That_Buggy_Shit();
+			clrscr();
 			ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 			botList.Destroy_All_Bots();
-			clrscr();
-			Ev_Dr_Day_1();
+			gSkipStory = true;
+			Clear_All_Renders();
 
+			//Ev_Dr_Day_1();
+			MsgQueue::Register(STAGE_ADVANCE);
 		}
 		if (gCurrentStage == 4)
 		{
@@ -151,31 +155,19 @@ void Dispatch_Msg_To_Lvl_1()
 		}
 		break;
 
-	case BUMPED_BORDER:
-		if (gCurrentLevel == 1 && gCurrentStage == 1)
-		{
-			if(P1.Get_Grd_Coord().c == linkGrid->Get_Cols() - 1)
-				Ev_Wake_Up();		// Le joueur se fait wakeup
-			//Ev_Bot_Tutorial();
-		}
-		break;
-
 		/* Items*/
 	case ITEM_PICKUP:
 		if (gCurrentStage <= 1)
 		{
+			Draw_Tuto_Progression(1);
 			Ev_Spawn_Life2();
-
-			Ev_Learn_To_Shoot();			// Learn to shoot
-			MsgQueue::Register(FREE_PLAYER);
-			MsgQueue::Register(STAGE_ADVANCE);
+			Ev_Learn_Border_Limit();			// Learn to shoot
 		}
 		
 		if (gDayStarted == true && gCurrentPuzzle[0] == 2) {
 			Ev_Health_Is_Ammo();
 		}
 
-		//Set_Dr_Map_1();
 		break;
 
 	case SPAWN_SPECIAL_ITEM: 

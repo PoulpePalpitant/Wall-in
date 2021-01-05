@@ -8,8 +8,8 @@
 #include "../../../spawns/ev_spawn_Jerry.h"
 
 Event ev_Dr_StopJerry(Ev_Dr_Stop_Jerry, 3);
-static std::string _1 = "- STOP JERRY -"; ;
-static std::string _2 = "(Do It     Times)";
+static std::string _1 = "- STOP THEM -"; ;
+static std::string _2 = "Remaining : ";
 static Coord crdCount;		// La coord du numéro à updater
 
 static int deadCount;	// Nombre de Jerry dead
@@ -17,7 +17,7 @@ static int deadCount;	// Nombre de Jerry dead
 void Upd_Jerry_Count()
 {
 	crdCount = Up_Txt_3(_2);
-	crdCount.x += 7;
+	crdCount.x += 12;
 	
 	if(jerCount - deadJerrys == 9)
 		ConsoleRender::Add_String("9 ", crdCount, LIGHT_GREEN, TXT_SPD_FAST);	// Lazy interface stuff
@@ -37,7 +37,6 @@ void Stop_Ev_Dr_Stop_Jerry()	// Stopping the jerrys
 
 void Ev_Dr_Stop_Jerry()			// Le joueur doit arrêter Jerry plusieurs fois
 {
-	//crd.x = P1.Get_XY().x; crd.y -= 3;
 	if (!ev_Dr_StopJerry.Is_Active())
 	{
 		 deadCount = 0;
@@ -80,5 +79,5 @@ void Ev_Dr_Stop_Jerry()			// Le joueur doit arrêter Jerry plusieurs fois
 void Er_Stop_Jerry()
 {
 	ConsoleRender::Add_String(_1, Up_Txt_1(_1), WHITE, TXT_SPD_FAST, true);	// ERASE
-	ConsoleRender::Add_String(_2, Up_Txt_3(_2), WHITE, TXT_SPD_FAST, true);
+	ConsoleRender::Add_String(_2 + "   ", Up_Txt_3(_2 + "   "), WHITE, TXT_SPD_FAST, true);
 }

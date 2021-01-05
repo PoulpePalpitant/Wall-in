@@ -32,8 +32,10 @@ extern bool gRetryCheckpoint;		// Restart le niveau à partir d'un checkpoint
 extern int gCurrPuzzleStep;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
 extern int gCurrPuzzleStepMax;
 
-
+extern short tutoStep;
+extern const short TUTO_TOTAL_STEPS;
 
 void Peek_Lvl_Script();		
 void Peek_Sub_Lvl_Script();
 void Init_Puzzle();	// Initialise un puzzle
+void Draw_Tuto_Progression(bool progression); // I don't care anymore'

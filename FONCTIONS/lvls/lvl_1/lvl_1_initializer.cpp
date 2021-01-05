@@ -11,6 +11,7 @@
 #include "../../items/item_spawner.h"
 #include "../lvl_script.h"
 #include "events/ev_bot_tutorial.h"
+#include "events/ev_bot_tutorial2.h"
 #include "msg_events/ev_day_1.h"
 #include "msg_events/ev_waking_up.h"
 #include "../../spawns/valid_spwn_intervals.h"
@@ -30,7 +31,7 @@ void Lvl_1_Initializer()
 
 
 		//gCurrentStage = 1;	// Skip tout les tutorials
-		//Ev_Bot_Tutorial();	// TEST EVENT TUTORIAL AVEC JERRY
+		//Ev_Bot_Tutorial2();	// TEST EVENT TUTORIAL 
 		//gSkipStory = false;
 
 
@@ -46,6 +47,8 @@ void Lvl_1_Initializer()
 	{
 
 		//Ev_Wake_Up();		// TEST EVENT WAKEUP
+		//Ev_Bot_Tutorial2();
+
 		gCurrentStage = 0;
 		MsgQueue::Register(SPAWN_PLAYER);	
 	}
@@ -55,7 +58,7 @@ void Lvl_1_Initializer()
 
 
 	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
-	//gBotMoveTimer.Start_Timer(50200, 1, true);	// DEBUG
+	//gBotMoveTimer.Start_Timer(5000200, 1, true);	// DEBUG
 
 
 	Resize_Grids_To_Level(gGrids, 1);			

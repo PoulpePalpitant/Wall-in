@@ -27,7 +27,7 @@ void Press_X_To_Proceed(int action, bool cancel)	// Active ou désactive le proce
 	else
 	{
 		gProceedTime = true;
-		ConsoleRender::Add_String(proceed[action], { Find_Ctr_Grid(proceed[action]),gConHeight - 1 }, clr);
+		ConsoleRender::Add_String(proceed[action], { Find_Ctr_Grid(proceed[action]),gConHeight - 1}, clr);
 	}
 }
 

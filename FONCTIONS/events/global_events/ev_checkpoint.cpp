@@ -17,9 +17,9 @@
 #include "../../bots/botmeta.h"
 #include "../../player/player.h"
 #include "feedback/ev_rainbow_borders.h"
+#include "feedback/ev_good_job.h"
 #include "ev_spwn_player.h"
 #include "ev_update_heart.h"
-#include "feedback/ev_good_job.h"
 #include "../../events/global_events/feedback/ev_drain_health.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);

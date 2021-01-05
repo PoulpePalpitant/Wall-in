@@ -5,7 +5,8 @@
 #include"events/Ev_Start_Game.h"
 #include "menu_initializer.h"
 #include "events/ev_lvl_choice.h"
-#include "events/dr_skip_choice.h"
+#include "events/dr_tuto_choice.h"
+#include "events/dr_quit_button.h"
 
 #include "../lvls/lvl_script.h"
 #include "../events/msg_dispatcher.h"
@@ -38,12 +39,14 @@ void Dispatch_Msg_To_Menu()
 		
 		// DEBUG
 		//*******
-		Quick_STart(1, 0);
+		//Quick_STart(1, 1);
 
 		break;	// Initialize plein de choses
 	
 	case LVL_INITIALIZED:	
 		OBS_Draw_Game_Title();
+		Dr_Quit_Button();
+
 		MsgQueue::Register(STAGE_ADVANCE);
 		break;
 		
@@ -56,7 +59,9 @@ void Dispatch_Msg_To_Menu()
 			if (gCurrentStage == 3)
 			{
 				Ev_Er_Choose_Lvl();
-				Dr_Skip_Story_Choice();
+				if(choosenLvl == 1)
+					Dr_Tuto_Choice();
+
 				//if(tempLevel == 1)
 				//	Start_Ev_Dr_Heart(2); // tasety
 
@@ -86,33 +91,51 @@ void Dispatch_Msg_To_Menu()
 
 		if (gCurrentStage >= 3)
 		{
-			if (gMenuKey == 78 || gMenuKey == 89)	 /*78 = Y Pour Yes */ /*89 n pour no */
-			{
-				if (gMenuKey == 78)				
-					gSkipStory = true; 
-
-				if (P1.Set_On_Grid())
-					P1.Set_Position({ 6,7 });
-
-				OBS_Erase_Game_Title();	// Erase Title Screen
-				Er_Skip_Story_Choice();	// Efface ce choix
-				gMenuInputs = false;
-				//gCurrentLevel = choosenLvl;
-
-				//OBS_Start_Game();		// Passe au prochain niveau
-			}
-
 			if (gMenuKey == 27)				/* /* escape, retourne au choix de niveau */
 			{
-				Er_Skip_Story_Choice();	// Efface ce choix
+				if (choosenLvl == 1)
+					Er_Tuto_Choice();	// Efface ce choix
 
 				MsgQueue::Register(STAGE_ADVANCE);	// On passe au choix précédant
 				gCurrentStage = 0;
 				/* erase choice
-				
+
 				*/
 
 			}
+			else
+				if (choosenLvl == 1)
+				{
+					if (gMenuKey == 78 || gMenuKey == 89)	 /*78 = n Pour n */ /*89 y pour yes */
+					{
+						if (gMenuKey == 78)						
+							gSkipStory = true;
+						else
+						{
+							if (P1.Set_On_Grid())
+								P1.Set_Position({ 6,7 });
+
+							tutoStep = 0;
+						}
+
+						
+
+
+						OBS_Erase_Game_Title();	// Erase Title Screen
+						Dr_Quit_Button(1);
+						Er_Tuto_Choice();	// Efface ce choix
+						gMenuInputs = false;
+					}
+				}
+				else
+				{
+					gSkipStory = true;
+					gMenuInputs = false;
+					OBS_Erase_Game_Title();	// Erase Title Screen
+					Dr_Quit_Button(1);
+
+				}
+
 			break;
 		}
 	}

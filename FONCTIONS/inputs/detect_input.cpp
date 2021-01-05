@@ -210,7 +210,8 @@ void Handle_Input()
 	case 'S':case 's':	keyDirection = DOWN; action = MOVE; break;
 	case 'D':case 'd':	keyDirection = RIGHT;action = MOVE; break;
 	case 'Q':case 'q':	break;
-	case 'J':case 'j':	lastKey = KeyPressed::JERRY; break;
+
+	case 'P':case 'p':	lastKey = KeyPressed::JERRY; break;
 	case 'R':case 'r':			
 		if (gDayStarted)
 		{
@@ -320,6 +321,10 @@ void Read_Input_Buffer()
 			if (gMenuInputs)
 			{
 				gMenuKey = keyCode;
+
+				if(gMenuKey == 'Q' || gMenuKey == 'q')
+					GameLoopClock::Stop();	// stop de game right here folks
+
 				MsgQueue::Register(PRESSED_KEY);
 			}
 			else

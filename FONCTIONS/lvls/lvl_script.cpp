@@ -6,6 +6,7 @@
 #include "lvl_1/lvl_1_spwn_script.h"
 #include "lvl_2/lvl_2_spwn_script.h"
 #include "lvl_1/sub_lvl_1_script.h"
+#include "../UI/console_output/render_list.h"
 
 // Ceci est la conséquence de moi qui est trop lazy pour apprendre à faire des scripts
 
@@ -17,12 +18,14 @@ const int NUM_PUZZLES[NB_LVLS] = { 18, 24 };		// Nombre de Puzzles dans chaque l
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
 short gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
-short gUnlockedLevels[3] = {1,0,0};
+short gUnlockedLevels[3] = {1,1,0};
 short gLastLvlUnlocked = 0;
 
 int gCurrPuzzleStep = 0;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
 int gCurrPuzzleStepMax = 0;
 
+const short TUTO_TOTAL_STEPS = 7;
+short tutoStep = 0;
 
 bool gDayStarted = false;
 bool gSkipStory = false;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
@@ -73,3 +76,12 @@ void Init_Puzzle() {
 	gCurrPuzzleStep++;
 }
 
+void Draw_Tuto_Progression(bool progression) {
+	if (progression)
+		tutoStep++;
+
+	ConsoleRender::Add_String("Tutorial Progress :", { 20, 4 }, LIGHT_GREEN);
+	ConsoleRender::Add_String(std::to_string(tutoStep), { 40, 4 }, LIGHT_GREEN);
+	ConsoleRender::Add_Char({ 41,4 }, '/', WHITE);
+	ConsoleRender::Add_String(std::to_string(TUTO_TOTAL_STEPS), { 42, 4 }, LIGHT_GREEN);
+}
