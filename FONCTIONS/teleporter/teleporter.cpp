@@ -10,12 +10,14 @@ const char Teleporter::SYM = (unsigned char)250;
 
 bool Teleporter::Validate_Position(GrdCoord crd)			// Check si le link d'une position est free et régulier
 {
-	return linkGrid->link[crd.c][crd.r].Get_State() == LinkState::FREE && linkGrid->link[crd.c][crd.r].Get_Modifier() == Modifier::REGULAR;
+	//return linkGrid->link[crd.c][crd.r].Get_State() == LinkState::FREE && linkGrid->link[crd.c][crd.r].Get_Modifier() == Modifier::REGULAR;
+	return true;
 }
 
 bool Teleporter::Validate_Position(Link &link)			// Check si le link d'une position est free et régulier
 {
-	return link.Get_State() == LinkState::FREE && link.Get_Modifier() == Modifier::REGULAR;
+	return 	link.Get_Modifier() != Modifier::FORCEFIELD;
+
 }
 
 
@@ -47,7 +49,7 @@ bool Teleporter::Teleport_Player()							//
 		P1.Dr_Player();
 
 		// Remove teleporter
-		Remove_Teleport_Location();
+		//Remove_Teleport_Location();
 
 		return true;
 	}
@@ -57,19 +59,23 @@ bool Teleporter::Teleport_Player()							//
 
 bool Teleporter::Set_Teleport_Location(GrdCoord coord)		// Set la position du teleporteur
 {
-	if (Validate_Position(coord))
+	if (isActive)
 	{
-		if (isActive)
+		if (linkGrid->link[crd.c][crd.r].Get_State() != LinkState::DEAD)
+		{
 			linkGrid->link[crd.c][crd.r].Dsp_Link();	// redraw le link
-		else
-			isActive = true;
-
-		crd = coord;
-		Dr_Teleporter();
-		return true;
+		}
 	}
 	else
-		return false;
+	{
+
+			isActive = true;
+	}
+
+	crd = coord;
+	//Dr_Teleporter();
+
+	return true;
 }
 
 
@@ -84,6 +90,8 @@ void Teleporter::Dr_Teleporter()							// Affiche le teleporter
 	if (!Are_Equal(P1.Get_Grd_Coord(), crd))
 	{
 		Coord xy = linkGrid->link[crd.c][crd.r].Get_XY();
-		ConsoleRender::Add_Char(xy, SYM, CLR);
+		
+		//if(!linkGrid->Is_Link_Alive_Here(crd))
+		//	ConsoleRender::Add_Char(xy, SYM, CLR);
 	}
 }

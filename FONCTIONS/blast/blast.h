@@ -19,7 +19,7 @@
 */
 struct BlastType						
 {
-	WallStrength strength;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
+	WallType wallType;	// La force du wall qui sera créé.	/ Change aussi l'apparence du blast actif
 	Modifier mod;		// Le type de Link qui sera créé	/ Change l'apparence aussi? 
 };							// Change les propriétés du blast
 
@@ -71,9 +71,9 @@ class Blast
 	Direction dir;						// Ça direction dans la consoles
 	SpeedTimer updateTimer;				// Permet de limiter la vitesse de l'update de la position du blast
 
-	// POST-BLAST	/* temporaire
-	WallStrength strength = WallStrength::REGULAR;	// obselete: force du blast
-	Modifier modifier;		// Produit un effet unique quand le blast s'arrête, notamment sur les links et les walls
+	// POST-BLAST	
+	WallType wallType = WallType::REGULAR;	// Produit des intéractions unique
+	Modifier modifier;						// Produit aussi un effet unique quand le blast s'arrête, notamment sur les links et les walls
 
 	// SETUP DU BLAST
 	void Setup_Blast_UI();					// Assigne l'apparence du blast
@@ -81,7 +81,7 @@ class Blast
 	void Setup_Position_Incrementors(GrdCoord &startPos);	// Sa position 
 	void Setup_Dist_Btw_Links();								// Setup la distance qui va séparer chaque élément du Link Grid que le blast va parcourir
 	void Setup_Length();										// Ajuste la longueur du blast qui sera tiré
-	void Setup_Speed();											// La vitesse d'affichage du blast(temps de pause entre chaque)
+	void Setup_Speed(bool quick = false);						// La vitesse d'affichage du blast(temps de pause entre chaque)
 	
 
 	// CHANGEMENT DES PROPRIÉTÉS DE BASES
@@ -101,7 +101,7 @@ class Blast
 	int Nb_Of_Links_To_Activate();
 	int Nb_Of_Walls_Per_Blast();		// Calcul le nombre de walls à enregistrer après un blast.
 public:
-	void  Set_Strength(WallStrength strgth) { strength = strgth; }	// Set la strength du blast(surviens généralement lors du transfert d'un wall. la strght sera la même que le wall)
+	void  Set_WallType(WallType strgth) { wallType = strgth; }	// Set la wallType du blast(surviens généralement lors du transfert d'un wall. la strght sera la même que le wall)
 	
 	// GET UTILES
 	const CoordIncrementor* const Get_Front_XY() { const CoordIncrementor* const copy = &frontXY; return copy; }		// Retourne un pointeur constant vers l'adresse, pour pouvoir copier correctement l'axe, qui est en fait un pointeur vers une crd

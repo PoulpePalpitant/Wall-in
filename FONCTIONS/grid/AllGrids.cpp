@@ -118,6 +118,9 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	{
 		// Erase whole blast
 		UI_MoveBlast::Setup_Blast_Eraser(blast);
+		
+		linkCrd.Decrement_Coord();
+		tp.Set_Teleport_Location(linkCrd.index);
 	}
 	else
 	{
@@ -132,7 +135,11 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 			child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// le child
 
 			parent->Activate_Link(blast->modifier, wall);		// Active le Link, et le lie à son child
-			wall->Activate_Wall(blast->strength, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
+			
+			if(parent->Get_Modifier() == Modifier::ENERGIZER)
+				wall->Activate_Wall(WallType::ENERGIZED, child, Get_Opp_Polar(linkCrd.polar));	
+			else
+				wall->Activate_Wall(blast->wallType, child, Get_Opp_Polar(linkCrd.polar));		// active wall. *La polarization inverse est dû au fait que l'on fait le parcours inverse du blast, partant de la fin vers le début
 
 			// WE won't STOP, si un bot est sur un mur qu'on veut créer
 			if (wall->Get_Bot_On_Me() != -1)	// Si y'avait un bot sur le wall qu'on vient de créer, on VA détruire les deux
@@ -160,8 +167,15 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 			botList.bot[impactedWall->Get_Bot_On_Me()].Bot_Impact(impactedWall);	// Im pact. Un mur fut créer par dessus un bot
 		else
 		{
-			if (tp.Validate_Position(*child))
+			if (tp.Validate_Position(*child)) 
 				tp.Set_Teleport_Location(linkCrd.index);
+			else
+			{
+				// Le teleporte sera une case plus loin 
+				linkCrd.Decrement_Coord();
+				if(!Are_Equal( linkCrd.index, P1.Get_Grd_Coord()) && tp.Validate_Position(linkGrid->link[linkCrd.index.c][linkCrd.index.r]))
+					tp.Set_Teleport_Location(linkCrd.index);
+			}
 		}
 	}
 
@@ -192,7 +206,7 @@ static GridIndexIncrementor Find_First_Wall_Crd(const WallGrid &grid, const GrdC
 }
 
 // Créer manuellement une chaîne de murs et de Links dans une direction
-void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength, Modifier type, GrdCoord movePlayer)
+void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallType wallType, Modifier type, GrdCoord movePlayer)
 {
 	static Wall* wall;						// Wall à activer
 	static Link* child, * parent;			// Link à activer et son child
@@ -256,7 +270,7 @@ void AllGrids::Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls,
 		}
 
 		parent->Activate_Link(type, wall);		// Active le Link, et le lie à son child
-		wall->Activate_Wall(strength, child, wallCrd.polar);	// active wall
+		wall->Activate_Wall(wallType, child, wallCrd.polar);	// active wall
 		
 		if (numWalls == 1)
 		{
@@ -301,11 +315,6 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 			break;
 
 		case BUFFER:
-			if (linkMod == BUFFER)
-			{
-				/* behaviour à déterminer*/	break;
-			}
-
 			if (linkMod == REGULAR)
 			{
 				link->Convert_Modifier(BUFFER);	// convertit le link en buffer
@@ -361,38 +370,7 @@ bool AllGrids::Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastM
 						}
 					}
 			break;
-
-		case COLOR_A:
-			if (linkMod == COLOR_B)
-				eraseBlast = true;
-			break;/* Destroy rest of blast*/
-
-		case COLOR_B:
-			if (linkMod == COLOR_A)
-				eraseBlast = true;
-			break;/* Destroy rest of blast*/
-
-
-			//  YO, quAND TU TIR SUR LE MÊME TYPE, LE FREE LINK AU BOUTE EST AUTOMATIQUEMENT CONVERTIT
-
-			// OU
-
-			// L'EFFET SE PROPAGE AU PARENTS AUSSI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 		}
-	}
-	else
-	{
-		///* Par défault, tout les modifiers vont créer des murs quand il atteigned la bordure. Ils vont aussi créer une ROOT, qui sra indestructible, mais modifiables
-		// le child sera impassable également
-
-		////if (blastMod != REGULAR)
-		//{
-		//		link->Activate_Lonely_Link(blastMod);		// créer le link tu seul
-		//		link->Convert_Modifier(BLOCKER);	// ensuite le convertit
-		//		eraseBlast = true;
-		//}
-
 	}
 	return true;
 }
@@ -502,4 +480,35 @@ void AllGrids::Make_Box_Of_Blockers(GrdCoord start, GrdCoord end, bool erase )
 		gGrids.Activate_Blocker({ start.c, i }, erase);
 		gGrids.Activate_Blocker({ end.c, i }, erase);
 	}
+}
+
+static bool Validate_Dead_Link(GrdCoord crd) {
+	if (linkGrid->Is_Inbound({ crd.c,crd.r }))
+		if (linkGrid->link[crd.c][crd.r].Get_State() == LinkState::DEAD)
+			return true;
+	return false;
+}
+
+void AllGrids::Make_Box_Around(GrdCoord center, Distance distance,Modifier mod, bool erase)
+{
+	int c, r;
+
+	//up 
+	for (c = center.c - distance; c < center.c + distance; c++)
+		if (Validate_Dead_Link({ c,center.r - distance }))
+			gGrids.Activate_Link({ c, center.r - distance }, mod, erase);
+	
+	//down
+	for (c = center.c - distance; c < center.c + distance; c++)
+		if (Validate_Dead_Link({ c,center.r + distance }))
+			gGrids.Activate_Link({ c, center.r + distance }, mod, erase);
+
+	// Left side right side
+	for (r = center.r - distance + 1; r < center.r + distance; r++)
+		if (Validate_Dead_Link({ center.c - distance, r }))
+			gGrids.Activate_Link({ center.c - distance,r }, mod, erase);
+
+	for (r = center.r - distance; r < center.r + distance + 1; r++)
+		if (Validate_Dead_Link({ center.c + distance, r }))
+			gGrids.Activate_Link({ center.c + distance,r }, mod, erase);
 }

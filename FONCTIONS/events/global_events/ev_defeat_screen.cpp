@@ -64,7 +64,8 @@ void Ev_Slow_Defeat_Screen()				 // Affiche un écran punitif
 			switch (ev_SlowDefeatScreen.Get_Current_Step())
 			{
 			case 1:
-				Set_Custom_Glitch_Map_Ev(false, 1900000); // pour remplir l'écran de petits char cool
+					Set_Custom_Glitch_Map_Ev(false, 1900000); // pour remplir l'écran de petits char cool
+
 				Start_Ev_Dr_Heart(0);		 // Setup l'event Précédent
 				ev_SlowDefeatScreen.Advance(500);
 				break;
@@ -115,7 +116,11 @@ void Ev_Fast_Defeat_Screen()				 // Prompt le joueur à restart!
 			switch (ev_FastDefeatScreen.Get_Current_Step())
 			{
 			case 1:
-				Set_Custom_Glitch_Map_Ev(false, 3000000); // pour remplir l'écran de petits char cool
+				if(gCurrentLevel == 3)
+					Set_Custom_Glitch_Map_Ev(false, 30000000); // pour remplir l'écran de petits char cool
+				else
+					Set_Custom_Glitch_Map_Ev(false, 3000000); // pour remplir l'écran de petits char cool
+
 				Start_Ev_Dr_Heart(0);		 // Setup l'event Précédent
 				ev_FastDefeatScreen.Advance(0);
 				ev_FastDefeatScreen.delay.Start_Timer(10000, 1, true);

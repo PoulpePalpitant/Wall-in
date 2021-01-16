@@ -113,7 +113,9 @@ enum MsgType
 
 
 // CONST
-const int MSG_QUEUE_SIZE = 1000;	// Maximum de message par cycle. yup, taht many
+const int MSG_QUEUE_SIZE = 10000;	// Maximum de message par cycle. yup, taht many
+// Dépasser la queue size softlock le jeu :(
+
 
 // GLOBAL
 extern MsgType gCurrentMsg;		// Prend un msg qui sera interprété par les event Listeners

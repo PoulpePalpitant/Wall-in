@@ -5,14 +5,14 @@
 #include "../menu/menu_script.h"
 #include "lvl_1/lvl_1_spwn_script.h"
 #include "lvl_2/lvl_2_spwn_script.h"
+#include "lvl_3/lvl_3_spwn_script.h"
 #include "lvl_1/sub_lvl_1_script.h"
 #include "../UI/console_output/render_list.h"
 
 // Ceci est la conséquence de moi qui est trop lazy pour apprendre à faire des scripts
 
-const int NB_LVLS = 2;								// Nombre de niveau que j'ai fais
-const int NUMWAVES[NB_LVLS] = { 250, 100 };			// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
-const int NUM_PUZZLES[NB_LVLS] = { 18, 24 };		// Nombre de Puzzles dans chaque lvl
+const int NB_LVLS = 3;								// Nombre de niveau que j'ai fais
+const int NUM_PUZZLES[NB_LVLS] = { 18, 24,24 };		// Nombre de Puzzles dans chaque lvl
 
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
@@ -40,7 +40,7 @@ void Peek_Lvl_Script()
 	case 0: break;
 	case 1:	Lvl_1_Spwn_Script(); break;	// Détermine quel sera la prochaine wave de spawn
 	case 2: Lvl_2_Spwn_Script(); break;
-	/*case 3: Level_3_Script(); break;	*/
+	case 3: Lvl_3_Spwn_Script(); break;
 	}
 }
 void Peek_Sub_Lvl_Script()
@@ -69,11 +69,12 @@ void Init_Puzzle() {
 	else
 		if (gCurrentLevel == 2)
 			LVL2_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
-		//else
-		//	if (gCurrentLevel == 3)
-		//		LVL3_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
-
+		else
+			if (gCurrentLevel == 3)
+				LVL3_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
+	
 	gCurrPuzzleStep++;
+
 }
 
 void Draw_Tuto_Progression(bool progression) {

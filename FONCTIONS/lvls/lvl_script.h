@@ -8,7 +8,6 @@ extern const int NB_LVLS;
 
 
 
-extern const int NUMWAVES[];	// Nombre de bot waves selon chaques niveaux. Indice 0 = lvl 1
 extern const int FINALHOUR[];	// À quel wave le final hour aura lieu
 
 

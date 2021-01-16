@@ -32,8 +32,8 @@ namespace DrawModifierQueue {
 
 			while (draw->timer.Tick())
 			{
-				X = titleCrd.x + btwTitle;	//yep
-				Y = titleCrd.y + yPos[0];	//xep
+				X = fakeTitleCrd.x + btwTitle;	//yep
+				Y = fakeTitleCrd.y + yPos[0];	//xep
 
 				// ANIMATION TIME
 				switch (draw->currStep)

@@ -8,6 +8,7 @@
 #include "../menu/events/Ev_Start_Game.h"
 #include "../lvls/lvl_1/dispatch_msg_to_lvl_1.h"
 #include "../lvls/lvl_2/dispatch_msg_to_lvl_2.h"
+#include "../lvls/lvl_3/dispatch_msg_to_lvl_3.h"
 
 
 /* Global Events*/
@@ -117,11 +118,7 @@ void Dispatch_To_Lvl()	// Par ici qu'on va updater tout les events du niveau
 	case 0:	Dispatch_Msg_To_Menu(); break;			// Update les events du menu
 	case 1: Dispatch_Msg_To_Lvl_1();break;			// Check les events à faire
 	case 2: Dispatch_Msg_To_Lvl_2();break;			// Check les events à faire
-	case 3:// Lvl_3_Upd_Events();break;			// Check les events à faire
-	case 4:// Lvl_4_Upd_Events();break;			// Check les events à faire
-	case 5:// Lvl_5_Upd_Events();break;			// Check les events à faire
-	case 6:// Lvl_6_Upd_Events();break;			// Check les events à faire
-	case 7: break;// Lvl_7_Upd_Events();break;			// Check les events à 			
+	case 3: Dispatch_Msg_To_Lvl_3();break;			// Check les events à faire
 	}
 }
 
@@ -285,20 +282,4 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 		// Tout les events qui sont trigger par ça  
 	}
-
-	// Event Wowow
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Secret event
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event Wowow
-	// Event Wowow
-	// Event Wowow   	 
 }

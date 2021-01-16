@@ -10,10 +10,10 @@
 
 void Change_Blast()
 {
-	switch (blastP1.strength)
+	switch (blastP1.wallType)
 	{
-	case WallStrength::REGULAR:blastP1.strength = WallStrength::STRONG;	ConsoleRender::Add_String("Stronk!", { 72,45 },LIGHT_YELLOW); break;
-	case WallStrength::STRONG: blastP1.strength = WallStrength::REGULAR;ConsoleRender::Add_String("Regular", { 72,45 }, WHITE); break;
+	case WallType::REGULAR:blastP1.wallType = WallType::STRONG;	ConsoleRender::Add_String("Stronk!", { 72,45 },LIGHT_YELLOW); break;
+	case WallType::STRONG: blastP1.wallType = WallType::REGULAR;ConsoleRender::Add_String("Regular", { 72,45 }, WHITE); break;
 	}
 	blastP1.Setup_Blast_UI();
 

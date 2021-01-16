@@ -95,8 +95,7 @@ void Lvl_1_Spwn_Script()
 {
 	if (gSpawnThisCycle)
 	{
-		int numSpawnWaves = gSpawnCycleTot;	// Pour aller dans la switch et déterminé quel va être le spawn
-		skip = 0;						// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
+		skip = 0;	// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
 		
 		LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
 
@@ -105,35 +104,6 @@ void Lvl_1_Spwn_Script()
 			gSpwBotTimer.Add_Count(skip);
 
 		gCurrPuzzleStep++;	// Prochain step du puzzle!
-
-			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
-			// TELEPORTATION TUTORIAL
-
-			/*
-			P1.Move_And_Draw_Player({ 9,14 });	// ouins, last resort
-						// Very Temporary! Doit être remove
-			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
-			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
-
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, linkGrid->Get_Rows() - 1 }, UP, linkGrid->Get_Rows() - 3);
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, 2 }, LEFT, linkGrid->Get_Cols() - 5);
-			gGrids.Make_Chain_Of_Walls({ 2, 2 }, DOWN, 2);
-
-			gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 2 }, LEFT, linkGrid->Get_Cols() - 6);
-			gGrids.Make_Chain_Of_Walls({ 2, linkGrid->Get_Rows() - 2 }, UP, 3);
-			Add(3); Set_Interval(LEFT, 6, 9);skip = -1;
-			skip = 5;
-			break;
-
-			Add(1);  gBoxSide = RIGHT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1;	Set_Custom_Bot(SPWN_DLAY - 15);	break;
-			MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-
-			ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR, 1);
-			ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR, 1);break; // breaky break
-			*/
-			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
-
-
 
 			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 
@@ -215,54 +185,9 @@ void Lvl_1_Spwn_Script()
 
 
 
-			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
-//// FORCEFIELD INTRODUCTION
-//linkGrid->link[6][linkGrid->Get_Rows() - 6].Activate_Lonely_Link(Modifier::FORCEFIELD);	// Créer une root ici
-//linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 4].Activate_Lonely_Link(Modifier::REGULAR);	// Créer une root ici
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 2 }, LEFT, 2 );
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 2 }, RIGHT, 2);
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 1, linkGrid->Get_Rows() - 6 }, UP, 2);
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 1, linkGrid->Get_Rows() - 6} , UP, 2);
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 1, linkGrid->Get_Rows() - 6 }, RIGHT,  5);
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 1, linkGrid->Get_Rows() - 6 }, LEFT, 5);
-//gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, linkGrid->Get_Rows() - 6 }, DOWN, 1 );
-//gGrids.Make_Chain_Of_Walls({ 0, linkGrid->Get_Rows() - 6 }, DOWN, 1 );
-//Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2);
-//Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 2);
-//break;
-// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
 
 	}
 }
-
-/* TEMPLATE DE PUZZLE SCRIPT*/
-
-
-
-//void Puzzle_1_0(){
-/*
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		break;
-
-
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-*/
-//}
 
 // Voici les puzzles du niveau
 // da first
@@ -358,6 +283,8 @@ void Puzzle_1_2() {
 
 		// Mur en L pour montrer au joueur comment dealer avec
 		gGrids.Make_Chain_Of_Walls({ 0,3 }, RIGHT, 1);
+		gGrids.Make_Chain_Of_Walls({ 12,11 }, LEFT, 1);
+
 		gGrids.Make_Chain_Of_Walls({ 1,3 }, DOWN, 1);
 		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,11 });
 		break;
@@ -365,7 +292,10 @@ void Puzzle_1_2() {
 
 	case 1:skip = 5; break;
 	case 2:Add_Spec(RIGHT, 3);skip = 6; break;
-	case 3:Add_Spec(LEFT, 10);break;
+	case 3:Add_Spec(LEFT, 10);
+		Add_Spec(LEFT, 9);
+		break;
+
 	case 4:break;
 	case 5:
 		MsgQueue::Register(CHECKPOINT_REACHED);	
@@ -882,48 +812,6 @@ void Puzzle_1_17()
 		if (P1.Cant_Do_Stuff())
 			Set_Ev_Spawn_Player(3);
 
-		//gGrids.Make_Chain_Of_Walls({ 4,0 }, DOWN, linkGrid->Get_Rows() - 1);
-		//gGrids.Make_Chain_Of_Walls({ 8,0 }, DOWN, linkGrid->Get_Rows() - 1);
-		//gGrids.Make_Chain_Of_Walls({ 4,linkGrid->Get_Rows() - 1 }, LEFT, 1);	
-		//gGrids.Make_Chain_Of_Walls({ 8,linkGrid->Get_Rows() - 1 }, RIGHT, 1);
-
-
-		/* V1*/
-		/*gGrids.Make_Chain_Of_Walls({ 0,0 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,1 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,2 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,3 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,4 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,4 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,5 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,6 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,7 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,8 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,9 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,11 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,12 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,13 }, RIGHT, 3);
-		gGrids.Make_Chain_Of_Walls({ 0,14 }, RIGHT, 2);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,0 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,1 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,2 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,3 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,4 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,4 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,5 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,6 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,7 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,8 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,9 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,10 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,11 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,12 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,13 }, LEFT, 3);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1,14 }, LEFT, 2);*/
-
-
-		/*v2*/
 		gGrids.Make_Chain_Of_Walls({ 4,0 }, DOWN, linkGrid->Get_Rows() - 1);
 		gGrids.Make_Chain_Of_Walls({ 8,0 }, DOWN, linkGrid->Get_Rows() - 1);
 		gGrids.Make_Chain_Of_Walls({ 4,linkGrid->Get_Rows() - 1 }, LEFT, 1);	/*1*/
@@ -933,11 +821,6 @@ void Puzzle_1_17()
 		gGrids.Make_Chain_Of_Walls({ 9,1 }, DOWN, linkGrid->Get_Rows() - 3);
 		gGrids.Make_Chain_Of_Walls({ 3,linkGrid->Get_Rows() - 2 }, LEFT, 1);
 		gGrids.Make_Chain_Of_Walls({ 9,linkGrid->Get_Rows() - 2 }, RIGHT, 1);
-
-		//gGrids.Make_Chain_Of_Walls({ 2,1 }, DOWN, linkGrid->Get_Rows() - 4);
-		//gGrids.Make_Chain_Of_Walls({ 10,1 }, DOWN, linkGrid->Get_Rows() - 4);
-		//gGrids.Make_Chain_Of_Walls({ 2,linkGrid->Get_Rows() - 3 }, LEFT, 2);
-		//gGrids.Make_Chain_Of_Walls({ 10,linkGrid->Get_Rows() - 3 }, RIGHT, 2);
 
 		gGrids.Make_Chain_Of_Walls({ 3,0 }, LEFT, 3);
 		gGrids.Make_Chain_Of_Walls({ 0,1 }, RIGHT,  2);
@@ -1018,7 +901,6 @@ void Puzzle_1_17()
 		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,4 });
 		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,4 });
 
-
 		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,12 });
 		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,11 });
 		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,11 });
@@ -1071,7 +953,7 @@ void Puzzle_1_17()
 	case 43:
 		// VICTORY IS OURS HAHAHAHAHAHAH
 		MsgQueue::Register(STOP_BOT_SPAWNS);
-		Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
+		Ev_Wait_For_Victory(); 
 		break;
 	}
 
@@ -1089,7 +971,5 @@ void Puzzle_1_17()
 		}
 		else
 			Set_Interval(UP, 3, 9);
-
 	}
-
 }

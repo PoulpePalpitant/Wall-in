@@ -45,7 +45,7 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 	case 0:	col = 14, row = 14;	break;		
 	case 1:	col = 13, row = 15;	break; 
 	case 2: col = 13, row = 15; break;	
-	case 3:	col = 19, row = 15;	break;
+	case 3:	col = 27, row = 15;	break;
 	}
 
 	gridLength = DELTA_X * col;

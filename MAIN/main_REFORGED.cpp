@@ -114,9 +114,9 @@ void main()	// Le début!
 			// GARDER ICI POUR PÉNITENCE
 			ConsoleRender::Render_String_Animation();	// Affiche les éléments des listes d'animation, solution très simplistes pour créer de l'animation linéaire, principalement pour les string.
 
-			if (++frames == 10)	// update les infos à chaque X Frames
+			if (++frames == 60)	// update les infos à chaque X Frames
 			{
-				//cout << Timer->Get_Delta_Time() << "\t \t";		// Affiche le temps écoulé pour 1 frame. 
+				//ConsoleRender::Add_String(std::to_string(GameLoopClock::Get_Delta_Time()),crd);		// Affiche le temps écoulé pour 1 frame. 
 				//ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
 				//ConsoleRender::Add_String("  ", crd);								// efface la dizaine
 				//ConsoleRender::Add_String(std::to_string(/*(int)*/(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
@@ -128,7 +128,7 @@ void main()	// Le début!
 			}
 			GameLoopClock::Reset_Timer();	// Reset la frame!
 		}
-		
+
 		Update_Game_NOT_60FPS();	// à remove un jour lol
 		ConsoleRender::Render();	// Fait tout les affichages
 	}

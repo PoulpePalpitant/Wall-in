@@ -133,32 +133,37 @@ void Puzzle_2_0()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(3);// Quantité d'ammo
+	case 0:P1.Set_Position({ 6,3 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(4);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
 		gGrids.Make_Box_Of_Blockers({ 0 + 4 , 0 }, { linkGrid->Get_Cols() - 1 - 4 , linkGrid->Get_Rows() - 1 });
-		gGrids.Activate_Blocker({ 6, 2 });
 		Set_Dr_Map_1(TXT_SPD_DR * 4);  // Erase la border au cas où le joueur est pas en mode quickstartS
+		gGrids.Activate_Link({ 6,11 });	// Link ordinaire à gauche
+
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 10 }, false, true);
 
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 , 1 }, false, true);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 1 }, false, true);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 , 1 }, false, true);
 
+
 		// reset cette variable ici
 		seenFinalHour = false;
-
 		break;
 
 
 	case 1:skip = 8;break;
 	case 2:
-		Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);
-		Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2);
-		Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 3);
+		Add_Spec(LEFT, 10);
+		Add_Spec(LEFT, 9);
+		Add_Spec(LEFT, 8);
+		skip = 10;
 		break;
 
-	case 3:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		break;
+
+	case 4:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
 
@@ -219,13 +224,15 @@ void Puzzle_2_2()
 
 		gGrids.Make_Box_Of_Blockers({ 3 + 1, 4 }, { linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 5 });
 
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 6 }, false);
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,7 }, false);
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 8 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,5 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,6 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 ,5 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7, 6 }, false);
 
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 ,6 }, false);
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7,7 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 8 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 9 }, false);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 ,8 }, false);
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 ,9 }, false);
 		break;
 
 
@@ -251,7 +258,8 @@ void Puzzle_2_3()
 		gCurrPuzzleStepMax = 12;
 
 		gGrids.Make_Chain_Of_Walls({ 10,0 }, DOWN, linkGrid->Get_Rows() - 1);
-		gGrids.Make_Chain_Of_Walls({ 10,linkGrid->Get_Rows() - 1 }, RIGHT, 1);
+		linkGrid->link[10][linkGrid->Get_Rows() - 1].Convert_Modifier(Modifier::BLOCKER);
+
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 0 ,11 }, false);
 
 		gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 3);
@@ -329,28 +337,42 @@ void Puzzle_2_4()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 6,8 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(11);	// Quantité d'ammo
+	case 0:P1.Set_Position({ 6,9 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(10);	// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
-
-		for (int r = 6; r <= linkGrid->Get_Rows() - 5; r++)
-			for (int c = 3; c <= linkGrid->Get_Cols() - 4; c++)
+		for (int r = 0; r <= linkGrid->Get_Rows() - 1; r++)
+			for (int c = 0; c <= linkGrid->Get_Cols() - 1; c++)
 			{
-				if (!(r < 9 && c == 6))
-					ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c, r }, true);
+				if (!(r < 15 && c == 6))
+					ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c, r }, 0,1);
 			}
 
-		gGrids.Make_Box_Of_Blockers({ 2, 5 }, { linkGrid->Get_Cols() - 3, linkGrid->Get_Rows() - 4 });
 		gGrids.Activate_Link({ 6, 5 }, Modifier::REGULAR, 1);
-		gGrids.Make_Chain_Of_Walls({ 6, 7 }, UP, 7);
+
+		gGrids.Make_Chain_Of_Walls({ 6, 6 }, UP, 6);
+		gGrids.Make_Chain_Of_Walls({ 6, 6 }, DOWN, 1);
+		linkGrid->link[6][7].Convert_Modifier(Modifier::BLOCKER);
+
+
+		//ItemsOnGrid::Remove({6,7});
+		//ItemsOnGrid::Remove({ 7,8 });
 		break;
 
-	case 1:Add(2); Set_Interval(RIGHT, 7, 9);skip = 15;break;
-	case 2:Add(2); Set_Interval(UP, 4, 6);   skip = 12;break;
-	case 3:Add(2); Set_Interval(UP, 6, 8); skip = 5;break;
-	case 4:Add(7);Set_Interval(RIGHT, 0, 7); skip = 12;break;
-	case 5:Add_Spec(LEFT, 7);/*Add_Spec(RIGHT, 6);*/Add_Spec(DOWN, 5);Add_Spec(UP, 6); skip = 6;break;
+	case 1:Add(2); Set_Interval(RIGHT, 7, 9);skip = 10;break;
+	case 2:Add(2); Set_Interval(UP, 4, 6);   skip = 7;break;
+	case 3:Add(2); Set_Interval(UP, 6, 8); skip = 6;break;
+	case 4:
+		Add_Spec(LEFT, 6);
+		skip = 12;
+		break;
+
+	case 5:
+		Add(6); Set_Interval(LEFT, 0, 6);
+		Add(4); Set_Interval(RIGHT, 6, 10);
+		skip = 6;
+		break;
+
 	case 6:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
@@ -398,7 +420,7 @@ void Puzzle_2_5()
 		break;
 
 
-	case 1:skip = 20;break;
+	case 1:skip = 15;break;
 	case 2:Add(10);Set_Interval(LEFT, 9, 14);
 		Set_Interval(RIGHT, 9, 14);	break;
 	case 3:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
@@ -429,7 +451,7 @@ void Puzzle_2_6()
 		break;
 
 
-	case 1:skip = 8; break;
+	case 1:skip = 7; break;
 	case 2:
 		Add_Spec(UP, 1);
 		Add_Spec(DOWN, 1);
@@ -442,6 +464,8 @@ void Puzzle_2_6()
 	case 3:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
+
+
 
 void Puzzle_2_7()
 {
@@ -467,7 +491,73 @@ void Puzzle_2_7()
 }
 
 
+// Montre qu'on peut grab les items avec transfer. Montre aussi qu'est-ce que ça fait quand on tir sur une border
 void Puzzle_2_8()
+{
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ 0 ,7 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		gCurrPuzzleStepMax = 12;
+
+		gGrids.Make_Chain_Of_Walls({ 12,7 }, LEFT, 10);
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 2 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 2 , linkGrid->Get_Rows() - 4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3 , linkGrid->Get_Rows() - 4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3 , 3 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 4 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 4 , linkGrid->Get_Rows() - 4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 5 , linkGrid->Get_Rows() - 4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 , 3 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , linkGrid->Get_Rows() - 4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 7 , linkGrid->Get_Rows() - 4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 , 3 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 8 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 8 , linkGrid->Get_Rows() - 4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 9 , 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 9 , linkGrid->Get_Rows() - 4 });
+
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 10 , linkGrid->Get_Rows() - 4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 10 , 3 });
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 11 , linkGrid->Get_Rows() - 4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 11 , 3 });
+		break;
+
+
+	case 1:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 0;break;
+	case 2:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 3:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 4:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 5:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 6:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 7:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 8:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 9:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 3;break;
+	case 11:Add_Spec(RIGHT, 0);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1); skip = 0;break;
+	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
+
+void Puzzle_2_9()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -538,8 +628,9 @@ void Puzzle_2_8()
 	}
 }
 
+
 // Buffer transfer tuto
-void Puzzle_2_9()
+void Puzzle_2_10()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -572,7 +663,7 @@ void Puzzle_2_9()
 
 
 // une tit ligne au milieu, again
-void Puzzle_2_10() {
+void Puzzle_2_11() {
 	switch (gCurrPuzzleStep)
 	{
 	case 0:
@@ -586,13 +677,14 @@ void Puzzle_2_10() {
 		gGrids.Activate_Link({ 5,7 }, Modifier::BLOCKER);
 		gGrids.Activate_Link({ 7,7 }, Modifier::BLOCKER);
 
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 5, 8 });
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 7, 8 });
+		gGrids.Activate_Link({ 5,8 }, Modifier::BLOCKER);
+		gGrids.Activate_Link({ 7,8 }, Modifier::BLOCKER);
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 5, 9 });
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 7, 9 });
 		break;
 
 	case 1:Add(2);Set_Interval(RIGHT, 8, 10); skip = 5;break;
-		//case 2:Add_Spec(RIGHT,7); Add_Spec(LEFT, 7); skip = 1;break;
-		//case 3:Add_Spec(RIGHT,7); Add_Spec(LEFT, 7); skip = 1;break;
 	case 2:Add_Spec(RIGHT, 7); Add_Spec(LEFT, 7); skip = 5;break;
 	case 3:Add(2);Set_Interval(LEFT, 5, 7);Add(2);Set_Interval(RIGHT, 5, 7); skip = 10;break;
 	case 4:Add(2);Set_Interval(LEFT, 7, 9); Add(4);Set_Interval(RIGHT, 7, 11);skip = 4;break;
@@ -603,71 +695,6 @@ void Puzzle_2_10() {
 
 
 
-// Montre qu'on peut grab les items avec transfer. Montre aussi qu'est-ce que ça fait quand on tir sur une border
-void Puzzle_2_11()
-{
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 0 ,7 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-
-		gGrids.Make_Chain_Of_Walls({ 12,7 }, LEFT, 10);
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 2 , 3 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 2 , linkGrid->Get_Rows() - 4 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 3 , linkGrid->Get_Rows() - 4 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3 , 3 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 4 , 3 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 4 , linkGrid->Get_Rows() - 4 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 5 , linkGrid->Get_Rows() - 4 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 , 3 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6 , 3 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , linkGrid->Get_Rows() - 4 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 7 , linkGrid->Get_Rows() - 4 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, {7 , 3 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 8 , 3 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 8 , linkGrid->Get_Rows() - 4 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 9 , 3 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 9 , linkGrid->Get_Rows() - 4 });
-
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 10 , linkGrid->Get_Rows() - 4 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 10 , 3 });
-
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 11 , linkGrid->Get_Rows() - 4 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 11 , 3 });
-		break;
-
-
-	case 1:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 0;break;
-	case 2:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 3:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 4:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 5:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 6:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 7:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 8:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 0;break;
-	case 9:Add_Spec(LEFT, 0);Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY()- 1); skip = 3;break;
-	case 11:Add_Spec(RIGHT, 0);Add_Spec(RIGHT,spawnGrid->Get_MaxSpwnCrdY() -1); skip = 0;break;
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
 
 void Puzzle_2_12()
 {
@@ -723,18 +750,20 @@ void Puzzle_2_13()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 6,9 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(9);// Quantité d'ammo
+	case 0:P1.Set_Position({ 6,7 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(8);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
 		gGrids.Make_Box_Of_Blockers({ 3, 4 }, { linkGrid->Get_Cols() - 4, linkGrid->Get_Rows() - 5 });
+		gGrids.Make_Chain_Of_Walls({ 6, 4 }, DOWN, 1);
+		linkGrid->link[6][5].Convert_Modifier(Modifier::BLOCKER);
 
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 ,6 }, false);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 ,7 }, false);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5, 8 }, false);
 
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,6 }, false);
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,7 }, false);
+		//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,7 }, false);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 ,8 }, false);
 
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 ,6 }, false);
@@ -748,9 +777,9 @@ void Puzzle_2_13()
 	case 3:Add_Spec(UP, 6);skip = 2;break;
 	case 4:Add_Spec(RIGHT, 8); skip = 2;break;
 	case 5:Add_Spec(DOWN, 8); skip = 1;break;
-	case 6:Add_Spec(LEFT, 6);skip = 1;break;
-	case 7:Add_Spec(UP, 5);skip = 1;break;
-	case 8:Add_Spec(RIGHT, 5);skip = 1;break;
+	case 6:Add_Spec(LEFT, 6);skip = 4;break;
+	case 7:Add_Spec(RIGHT, 5);skip = 1;break;
+	case 8:Add_Spec(UP, 5);skip = 1;break;
 	case 9:Add_Spec(LEFT, 4);skip = 1;break;
 	case 10:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
@@ -884,15 +913,15 @@ void Puzzle_2_16()
 		gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 1, 7 });
 
 		gGrids.Activate_Link({ 0,7 }, Modifier::BUFFER);
-		gGrids.Make_Chain_Of_Walls({ 0, 7 }, RIGHT, 7, WallStrength::STRONG);
+		gGrids.Make_Chain_Of_Walls({ 0, 7 }, RIGHT, 7, WallType::STRONG);
 		break;
 
-	case 1:Add_Spec(RIGHT, 5);break;	// Ajoute un skip = 1 ici si c'est trop hard //skip = 1;
-	case 2:Add_Spec(RIGHT, 5);break;												 //skip = 1;
-	case 3:Add_Spec(RIGHT, 5);break;												 //skip = 1;
-	case 4:Add_Spec(RIGHT, 5);break;												 //skip = 1;
-	case 5:Add_Spec(RIGHT, 5);break;												 //skip = 1;
-	case 6:Add_Spec(RIGHT, 5);break;												 //skip = 1;
+	case 1:Add_Spec(RIGHT, 5);skip = 1; break;	// Ajoute un skip = 1 ici si c'est trop hard //skip = 1;
+	case 2:Add_Spec(RIGHT, 5);skip = 1; break;												 //skip = 1;
+	case 3:Add_Spec(RIGHT, 5);skip = 1; break;												 //skip = 1;
+	case 4:Add_Spec(RIGHT, 5);skip = 1; break;												 //skip = 1;
+	case 5:Add_Spec(RIGHT, 5);skip = 1; break;												 //skip = 1;
+	case 6:Add_Spec(RIGHT, 5);skip = 1; break;												 //skip = 1;
 	case 7:Add_Spec(RIGHT, 5); skip = 15;break;
 	case 8:Add(7); Set_Interval(UP, 5, 12);break;
 	case 9:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
@@ -911,15 +940,15 @@ void Puzzle_2_17()
 
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, 9 }, DOWN, 1);
 
-		gGrids.Make_Chain_Of_Walls({ 3, 11 }, UP, 1);
-		gGrids.Make_Chain_Of_Walls({ 3, 11 - 1 }, RIGHT, 3);
+		gGrids.Make_Chain_Of_Walls({ 3, 11 }, UP, 1,WallType::STRONG,Modifier::BUFFER);
+		gGrids.Make_Chain_Of_Walls({ 3, 11 - 1 }, RIGHT, 3, WallType::STRONG);
 
 		gGrids.Make_Chain_Of_Walls({ 6, 3 }, RIGHT, 1);
 		gGrids.Make_Chain_Of_Walls({ 7, 3 }, DOWN, 3);
 
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { linkGrid->Get_Cols() - 2,8 });
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 4, 11 });
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 4 });
+		//ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 4, 11 });
 		break;
 
 
@@ -1193,7 +1222,7 @@ void Puzzle_2_21()
 	case 1:Add(4);Set_Interval(DOWN, 6, 10);skip = 10;break;
 	case 2:Add_Spec(RIGHT, 2);skip = 3;break;
 	case 3:Add(4);Set_Interval(DOWN, 2, 6);skip = 5;break;
-	case 4:Add_Spec(RIGHT, 2);skip = 3;break;
+	case 4:Add_Spec(RIGHT, 2);skip = 5;break;
 	case 5:Add(2);Set_Interval(RIGHT, 5, 7);skip = 5;break;
 	case 6:Add_Spec(RIGHT, 2);skip = 5;break;
 	case 7:Add(3);Set_Interval(DOWN, 2, 5);skip = 5;break;
@@ -1340,7 +1369,7 @@ void Puzzle_2_FINAL()
 	static std::string _1 = "- SURVIVE -";
 	static std::string _2 = "- Waves Remaining -";
 	static Coord crd;
-	const int SHAPES_TO_KILL = 34;
+	const int SHAPES_TO_KILL = 23;
 	static int shapesRemaining;
 
 	switch (gCurrPuzzleStep)
@@ -1354,6 +1383,7 @@ void Puzzle_2_FINAL()
 		shapesRemaining = SHAPES_TO_KILL;
 		crd = { map.Get_Box_Limit(RIGHT) + 13,map.Get_Ctr_Y() - 4 };
 
+		seenFinalHour = true;
 
 		if (!seenFinalHour)
 		{
@@ -1367,37 +1397,16 @@ void Puzzle_2_FINAL()
 		if (!seenFinalHour)
 		{
 			MsgQueue::Register(FINAL_HOUR);	// montre ça juste une fois, EVER
+			seenFinalHour = true;
 			skip = 10;
 		}
+		else
+			skip = -1;
 		break;
 
 	case 2:
-		if (!seenFinalHour)
-			seenFinalHour = true;
-
 		if (P1.Cant_Do_Stuff())
 			Set_Ev_Spawn_Player(3);
-
-
-		// box autours
-		//for (int i = 0; i < linkGrid->Get_Cols(); i++)
-		//{
-		//	gGrids.Activate_Blocker({ i, 0 }, 0);
-		//	gGrids.Activate_Blocker({ i, 14 }, 0);
-
-		//	//gGrids.Activate_Blocker({ i, 1 }, 0);
-		//	//gGrids.Activate_Blocker({ i, 13 }, 0);
-		//}
-
-		/*for (int i = 6; i < linkGrid->Get_Rows() - 1; i++)
-		{
-			gGrids.Activate_Blocker({ 0, i }, 0);
-			gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 1, i }, 0);
-
-			gGrids.Activate_Blocker({ 1, i }, 0);
-			gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 2, i }, 0);
-		}*/
-
 
 		//box regular au milieu
 		for (int i = 3; i < linkGrid->Get_Cols() -3; i++)
@@ -1415,10 +1424,12 @@ void Puzzle_2_FINAL()
 			gGrids.Activate_Link({ 0,i }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ 1,i }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ 2,i }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ 3,i }, Modifier::BLOCKER);
 
 			gGrids.Activate_Link({ 12,i }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ 11,i }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ 10,i }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ 9,i }, Modifier::BLOCKER);
 		}
 
 		// Lignes horizontales
@@ -1465,9 +1476,9 @@ void Puzzle_2_FINAL()
 		ConsoleRender::Add_String(_2, { crd.x - 4,crd.y + 1 }, WHITE, TXT_SPD_DR);
 
 		MsgQueue::Register(ENABLE_ITEM_SPAWN);
-		ItemSpawner::Add_To_Pool(ItemType::HEALTH, 150, 0);
-		ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 120, 0);
-		ItemSpawner::Add_To_Pool(ItemType::BUFFER, 120, 0);
+		ItemSpawner::Add_To_Pool(ItemType::HEALTH, 80, 0);
+		ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 100, 0);
+		ItemSpawner::Add_To_Pool(ItemType::BUFFER, 100, 0);
 		skip = 8;
 		break;
 
@@ -1515,9 +1526,13 @@ void Puzzle_2_FINAL()
 		Add(8);
 		Add_Spec(LEFT, 10);Add_Spec(LEFT, 11);Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 13);
 		skip = 14;
+
+		// VICTORY IS OURS HAHAHAHAHAHAH
+		MsgQueue::Register(STOP_BOT_SPAWNS);
+		Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
 		break;
 
-	case 27:
+	/*case 27:
 		for (int r = 0; r < 2; r++)
 		{
 			ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6, 2 + r });
@@ -1525,9 +1540,9 @@ void Puzzle_2_FINAL()
 		}
 		shapesRemaining++;
 		skip = 3;
-		break;
+		break;*/
 
-	case 28:Add(1);skip = 3;break;
+	/*case 28:Add(1);skip = 3;break;
 	case 29:Add(1);skip = 3;break;
 	case 30:Add(1);skip = 8;break;
 	case 31:Add(1);skip = 3;break;
@@ -1542,11 +1557,8 @@ void Puzzle_2_FINAL()
 		Set_Interval(RIGHT, 0, 4);
 		Add(8);
 		Add_Spec(LEFT, 10);Add_Spec(LEFT, 11);Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 13);
+		break;*/
 		
-		// VICTORY IS OURS HAHAHAHAHAHAH
-		MsgQueue::Register(STOP_BOT_SPAWNS);
-		Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
-		break;
 	}
 
 	if (gCurrPuzzleStep % 2 == 0)
@@ -1570,442 +1582,3 @@ void Puzzle_2_FINAL()
 
 
 
-
-
-// Copy-paste that shit when you make lvl 3 :)
-//
-//void Puzzle_2_2()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_3()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_4()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_5()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_6()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_7()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_8()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_9()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_10()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_11()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_12()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_13()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_14()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_15()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_16()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_17()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_18() {
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_19() {
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//void Puzzle_2_FINAL()
-//{
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//		break;
-//
-//
-//	case 1:
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
-//	case 8:
-//	case 9:
-//	case 11:
-//	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}

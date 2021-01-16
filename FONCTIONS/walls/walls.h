@@ -11,7 +11,7 @@ extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall ver
 
 //	LES TYPES DE MURS												// Par défaut, les tirs du joueur font des murs normal
 //enum class WallType { REGULAR, CORRUPTED, INVINCIBLE};
-enum class WallStrength { NONE, REGULAR, STRONG, BIGSTRONGWOW};		//
+enum class WallType { NONE, REGULAR, STRONG, INVINCIBRU, ENERGIZED};		//
 enum class WallState { DEAD, EXISTS, ETERNAL, SAD};					// Je reviendrais customize ça quand je serais plus avancé
 enum class WallSym {DEAD = 255, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_HOR3 = 240,  SYM_VER = 179, SYM_VER2= 186, SYM_VER3 = 221};				// Le symbole d'un seul wall, horizontal et vertical
 
@@ -28,24 +28,20 @@ class Wall {
 	friend class ListsOfChainToModify;
 	friend class StructureManager;
 
-private:
 	WallDrawer drawer;						// Responsable de l'affichage du wall
 	Coord XY = {};							// Coordxy
-	WallStrength strgt = WallStrength::REGULAR;		// Type et force de résistance au bots du mur (dépend des propirétés du tir du joueur)
+	WallType type = WallType::REGULAR;		// Type et force de résistance au bots du mur (dépend des propirétés du tir du joueur)
 	WallState state = WallState::DEAD;		// Si le wall existe visuellement sur l'UI (que le joueur peut le voir)
 	Colors clr = Colors::BRIGHT_WHITE;			// Colors is great. Par défaut se sera Blanc doe
 	WallSym sym = WallSym::DEAD;							// Le symbole vertical ou horizontal. Celui-ci peut changer si le type de mur change
 	Axis axis = HOR;								// Définis le wall comme étant vertical ou horizontal(Dépend du Grid dans lequel il se trouve)
 	int hp;									// La force du wall
 	int botOnMe = -1;						// Avertis si un bot est présent sur le wall. Si le wall s'active au même moment qu'un bot se trouve dessus, celui-ci sera détruit
-private:
-	friend class StructureManager;
 
 	Link* pParent = NULL;					// Le Link par lequel le wall dépend pour éxister. Si le Link est détruit, le wall est détruit
 	Link* pChild = NULL;					// Le Link qui dépend de ce wall. Si ce Wall ou son parent est détruis, ce child le sera aussi
 	Polarization childPos = POS;			// Renseigne sur la position du CHILD selon la polarisation POS/NEG		Si POS: Le child est soit à droite, soit en bas.		Contraire pour le NEG
 
-private:
 	// NO TOUCHO!	BAD CODING HERE
 	void Set_XY(int col, int row, Axis gridaxis);		// Pas utiliser Pour setup manuellement le xy du mur selon un son axe de grid. Ceci est fait en masse lors de la création du grid
 	void Set_Axis(Axis gridAxis) { axis = gridAxis; }		// Ceci est fait à l'initialisation du Wallgrid, et ne devrait jamais changer!!!
@@ -53,12 +49,12 @@ private:
 	void Set_Default_Wall_UI();						// On reset l'apparance du mur à ses valeurs par défaut
 	void Set_Wall_UI();				// On change l'apparance du mur selon son type!
 	void Set_State(WallState newState) { state = newState; }
-	void Set_Strength_From_Parent(WallStrength strgt = WallStrength::REGULAR);
+	void Set_Strength_From_Parent(WallType type = WallType::REGULAR);
 
 public:
 	WallState Get_State() { return this->state; }
 	Modifier Get_Parent_Modifier() { return pParent->Get_Modifier(); }					// Type de wall
-	WallStrength Get_Strgt() { return this->strgt; }		// Type et force de résistance du mur face aux impacts des bots
+	WallType Get_Type() { return this->type; }		// Type et force de résistance du mur face aux impacts des bots
 	int Get_Hp() { return hp; }
 	char Get_Sym() { return (char)this->sym; }		// Accès au Symbole du Mur
 	Axis Get_Axis() { return axis; }				// Axe du wall
@@ -68,7 +64,7 @@ public:
 	int Get_Bot_On_Me() { return botOnMe; }			// Le bot se trouvant sur le wall
 
 	// Active un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
-	void Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr);
+	void Activate_Wall(WallType newStrgt, Link* child, Polarization plr);
 	bool Is_Activated();		
 
 	void Add_Bot_On_Me(int botIndex) { botOnMe = botIndex; }	// Un bot se trouve sur le wall 

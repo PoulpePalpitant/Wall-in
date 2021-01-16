@@ -268,7 +268,7 @@ void Ev_Build_Labyrinth()		// Le joueur doit passer à travers un labyrinth de mu
 				gGrids.Make_Chain_Of_Walls({ rootC - 1, rootR + 2 }, RIGHT, 1);
 				gGrids.Make_Chain_Of_Walls({ rootC , rootR + 2 }, DOWN, 1);
 				gGrids.Make_Chain_Of_Walls({ rootC , rootR + 3 }, LEFT, 3);
-				//gGrids.Make_Chain_Of_Walls({ rootC , rootR }, UP, 1, WallStrength::REGULAR, REGULAR, true);// CONNECTEUR
+				//gGrids.Make_Chain_Of_Walls({ rootC , rootR }, UP, 1, WallType::REGULAR, REGULAR, true);// CONNECTEUR
 
 				ConsoleRender::Add_Char(linkGrid->link[7][0].Get_XY(), TXT_CONST.SPACE_FILL, LIGHT_AQUA);
 				ConsoleRender::Add_String(adv, { Find_Ctr_String_X(adv) + 3,START_Y -2 }, LIGHT_GREEN);

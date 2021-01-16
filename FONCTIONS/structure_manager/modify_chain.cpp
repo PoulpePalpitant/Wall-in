@@ -223,7 +223,7 @@ void ListsOfChainToModify::Corrupt(ChainToModify* chain)			// Change le modifier
 void ListsOfChainToModify::Buff_Walls(ChainToModify* chain)		// Buff les walls 
 {	
 	chain->parentWall = chain->selectedLink->pParent;	 // trouve le mur parent
-	chain->parentWall->Set_Strength_From_Parent(WallStrength::STRONG);		 // buff le mur,ensuite on attend que le mur soit réafficher pour continuer l'opération
+	chain->parentWall->Set_Strength_From_Parent(WallType::STRONG);		 // buff le mur,ensuite on attend que le mur soit réafficher pour continuer l'opération
 	chain->parentWall->Set_Drawer();	// Redraw taht damn wall
 }
 void ListsOfChainToModify::Select_Modification(ChainToModify* chain)

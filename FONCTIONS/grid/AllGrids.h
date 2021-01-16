@@ -35,8 +35,9 @@ public:
 	bool Activate_Walls_And_Links_From_Blast(Blast* blast);	// record tout les walls et links après un blast
 	// Créer manuellement une chaîne de murs et de Links dans une direction
 	// Par défaut, chaque chaines de murs ne peuvent avoir deux origines, mais tu peux mettre la valeur multipleRoot true  pour que ce soit true... Nope, it odenst work sry
-	void Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallStrength strength = WallStrength::REGULAR, Modifier mod = Modifier::REGULAR, GrdCoord movePlayer = {-1,-1});
+	void Make_Chain_Of_Walls(GrdCoord grdCrd, Direction dir, int numWalls, WallType wallType = WallType::REGULAR, Modifier mod = Modifier::REGULAR, GrdCoord movePlayer = {-1,-1});
 	void Make_Box_Of_Blockers(GrdCoord start, GrdCoord end, bool erase = false);
+	void Make_Box_Around(GrdCoord crd, Distance distance = 1, Modifier mod = Modifier::REGULAR, bool erase = false);	// Construit un périmètre
 
 
 	void Activate_Link(GrdCoord crd, Modifier mod = Modifier::REGULAR, bool deactivate = false);	

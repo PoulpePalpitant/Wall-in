@@ -15,7 +15,7 @@ enum Duality
 	Chaque blast qui impact un link du même type va créer 1 mur de la force même force du type. Le link free au bout possèdera le même modifier
 
 	- BUFFER : BLAST
-	Créer un super link. Tout les walls connectés au super link deviennent un super wall. Les supers walls sont capable d'arrêter 2 bots!
+	Créer un super link. Tout les walls ENFANT connectés au super link deviennent un super wall. Les supers walls sont capable d'arrêter 2 bots!
 
 	- REGULAR : LINK
 	Tout les tirs régulier ou de types BUFFER sur ce link vont générer un super wall. 
@@ -37,7 +37,7 @@ enum Duality
 
 enum Modifier
 {
-	REGULAR, BUFFER, BLOCKER,  CORRUPTER, FORCEFIELD,  COLOR_A, COLOR_B, BLIND_COLOR
+	REGULAR, BUFFER, BLOCKER,  CORRUPTER, FORCEFIELD,  ENERGIZER, COLOR_B, BLIND_COLOR
 };
 
 // Le joueur aurait une queue de modifiers qui sont appliqués au prochain blast qu'il tir

@@ -6,7 +6,7 @@
 #include "../events/msg_dispatcher.h"
 #include "../items/item_list.h"
 #include "blast_modifier_queue.h"
-
+#include "../lvls/lvl_script.h" 
 #include "blast.h"
 
 /*
@@ -22,7 +22,7 @@ extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER * 2;
 //extern const time_t DFLT_BLAST_SPD_HOR = DFLT_BLAST_SPD_VER - DFLT_BLAST_SPD_VER / 4;// J'agrandis la vitesse à l'horizontal!			
 
 // Les propriétés principales du Blast par défaut
-extern const BlastType DFLT_BLAST =	{WallStrength::REGULAR, Modifier::REGULAR};
+extern const BlastType DFLT_BLAST =	{WallType::REGULAR, Modifier::REGULAR};
 
 // PEW PEW!!
 
@@ -35,28 +35,20 @@ extern Blast blastP2 = {};
 
 
 // INTIALISATION DES PROPRIÉTÉ DU BLAST
-void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir, bool consume)
+void Blast::Setup_Blast(GrdCoord& newStartPos, Direction& newblastDir, bool consume)
 {
-	//strength = type.strength;				// Force du blast. Affecte la puissance du wall qui sera créé
-	//linkType = type.linkType;					// type de Link à créer
-	
-	//if (dir != newblastDir)					// aurait pu être nice, mais je dois vérifié à chaque fois si les valeurs max n'ont pas changé entre le blast précédent
-	//{
-		dir = newblastDir;							// La direction du blast
-		Setup_Length();								// Ajuste la longueur du blast. Pourrait varier selon le type de tir
-		Setup_Grid_Limit();							// La col, ou Row ou le blast va s'arrêté, s'il ne rentre dans rien d'autre avnat!
-		Setup_Speed();								// Sa vitesse
-		Setup_Dist_Btw_Links();						// La distance entre chacune des colisions sur le grid de links
-	//}			
-	if(consume)
+	dir = newblastDir;							// La direction du blast
+	Setup_Length();								// Ajuste la longueur du blast. Pourrait varier selon le type de tir
+	Setup_Grid_Limit();							// La col, ou Row ou le blast va s'arrêté, s'il ne rentre dans rien d'autre avnat!
+	Setup_Speed(this->wallType == WallType::ENERGIZED);								// Sa vitesse
+	Setup_Dist_Btw_Links();						// La distance entre chacune des colisions sur le grid de links
+
+	if (consume)
 		BlastModifierQueue::Consume_Next_Modifier();	// Faut que le blast franchis une distance pour consommer un modifier
-	else
-		blastP1.Setup_Modifier(REGULAR);	// Aucun modifier
+
 
 	Setup_Blast_UI();							// Son apparence futur
 	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
-	
-	updateTimer.Start_Timer(speed, 1, true);	// Vitesse d'update. 
 
 	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
 	active = true;						// Blast officiellement activé
@@ -68,9 +60,9 @@ void Blast::Setup_Blast(GrdCoord &newStartPos, Direction &newblastDir, bool cons
 // SETUP: L'APPARENCE DU BLAST 
 void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 {
-	if (strength == WallStrength::REGULAR)
+	if (wallType == WallType::REGULAR || wallType == WallType::ENERGIZED)
 	{
-		switch (dir)		// Symboles par défaut
+		switch (dir)
 		{
 		case UP:
 		case DOWN: sym = (int)WallSym::SYM_VER; break;
@@ -78,28 +70,39 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 		case RIGHT:sym = (int)WallSym::SYM_HOR; break;
 		}
 
-		color = Colors::WHITE;		// Couleur par défaut
+		if (wallType == WallType::REGULAR)
+			color = Colors::WHITE;
+		else
+			color = Colors::LIGHT_PURPLE;
+		return;
 	}
-	
-	if (strength == WallStrength::STRONG)
+
+	if (wallType == WallType::STRONG)
 	{
-		switch (dir)		// Symboles par défaut
+		switch (dir)
 		{
 		case UP:
 		case DOWN: sym = (int)WallSym::SYM_VER2; color = Colors::WHITE; break;
 		case LEFT:
 		case RIGHT:sym = (int)WallSym::SYM_HOR2; color = Colors::WHITE; break;
 		}
-
+		return;
 	}
 
-	//if (ammo.Ammo_Available() == 0 /*&& lifeDrain*/)
-	//	color = Colors::LIGHT_RED;
+	if (wallType == WallType::NONE)
+	{
+		switch (dir)
+		{
+		case UP:
+		case DOWN: 	sym = (int)WallSym::SYM_VER3;break;
 
-
-	// Autres types 
-	// ...
-
+		case LEFT:
+		case RIGHT:	sym = (int)WallSym::SYM_HOR3;
+		}
+		
+		color = Colors::GRAY;
+		return;
+	}
 }
 
 // SETUP: LONGUEUR MAX DU BLAST
@@ -142,7 +145,7 @@ void Blast::Setup_Grid_Limit()													// Calcul la limite ou le blast va de
 }
 
 // SETUP: VITESSE D'AFFICHAGE DU BLAST
-void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de pause entre chaque)
+void Blast::Setup_Speed(bool quick)											// La vitesse d'affichage du blast(temps de pause entre chaque)
 {
 	switch (dir)
 	{
@@ -151,6 +154,14 @@ void Blast::Setup_Speed()											// La vitesse d'affichage du blast(temps de 
 	case LEFT:case RIGHT:	
 		speed = (int)speedHor;	break;	// Blast horizontal est maintenant 2x plus rapide qu'avant		
 	}
+
+	if (quick)
+		speed *= 2.2;	//3.5
+	else
+		if (gCurrentLevel == 3)
+			speed *= 1.2;// 3.5 is good
+
+	updateTimer.Start_Timer(speed, 1, true);	// Vitesse d'update. 
 }
 
 // SETUP: LA DIRECTION DU BLAST EN XY ET EN COORD DE GRIDS 
@@ -228,8 +239,24 @@ void Blast::UPD_Blast_Shot()
 
 						if (linkGrid->Is_Link_Alive_Here(grdPos.index))			// Vérifie la présence d'un link 
 						{
-							if (linkGrid->link[grdPos.index.c][grdPos.index.r].Get_Modifier() == Modifier::FORCEFIELD)	// Blast peut passé à travers les forcefield
+							if (linkGrid->link[grdPos.index.c][grdPos.index.r].Get_Modifier() == Modifier::FORCEFIELD && wallType != WallType::REGULAR)	// Blast peut passé à travers les forcefield
 							{
+								this->Setup_Speed(1);						// Gonna be a fastblast!
+								
+								if (wallType == WallType::NONE)
+								{
+									this->Set_WallType(WallType::REGULAR);
+									this->Setup_Blast_UI();
+								}
+								//else
+								//{
+								//	this->Set_WallType(WallType::ENERGIZED);
+								//	this->Setup_Blast_UI();
+								//}
+
+								//color = LIGHT_BLUE;s
+
+
  								if (Is_Next_Wall_Active())
 								{
 									Stop_Blast();	// Blast ne peut passé à travers le link. Car 1 mur se trouve derrière
@@ -296,7 +323,6 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 		while (!ffToRedraw.empty())	// vide cette liste de merde
 			ffToRedraw.pop_back();
 
-
 	   // Après le blast!!
 		P1.Upd_Sym_From_Direction(dir);
 		P1.Dr_Player();				// Faut réafficher le joueur après le tir
@@ -304,6 +330,8 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 		// Le Blast peut resté actif si il ne créé pas de mur. Il faut attendre que ses char soit effacés
 		active = gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
 		updateTimer.Stop();
+		
+		Setup_Modifier(REGULAR);	// spaghetti
 	}
 }
 

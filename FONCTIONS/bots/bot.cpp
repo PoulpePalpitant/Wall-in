@@ -126,7 +126,7 @@ bool Bot::Bot_Impact(Wall* wall)
 	int HP;	// l'hp du wall, AVANT l'impact
 	HP = wall->Get_Hp();
 
-	if (wall->Get_Strgt() != WallStrength::NONE) // Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
+	if (wall->Get_Type() != WallType::NONE) // Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
 	{
 		wall->Take_Damage(this->Get_Power()); // Taking dmg here!
 		deadBot = Bot::Take_Dmg(HP);		// Hey me too!

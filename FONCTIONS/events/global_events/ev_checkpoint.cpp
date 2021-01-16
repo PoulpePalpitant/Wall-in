@@ -51,6 +51,8 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 
 				MsgQueue::Register(ENABLE_BLAST);
 				gSpwBotTimer.Resume();
+				gSpwBotTimer.Add_Count(3);
+
 				ev_ReachCheckpoint.Cancel();
 			}
 			else
