@@ -8,6 +8,7 @@
 #include "../menu/events/Ev_Start_Game.h"
 #include "../lvls/lvl_1/dispatch_msg_to_lvl_1.h"
 #include "../lvls/lvl_2/dispatch_msg_to_lvl_2.h"
+#include "../lvls/lvl_3/dispatch_msg_to_lvl_3.h"
 
 
 /* Global Events*/
@@ -42,12 +43,11 @@
 
 
 // GLOBAL
-
 static int msgIndex = 0;	// Va chercher l'index dans la queue de messages. Si = à tail, veut dire qu'il a atteint la fin
 MsgType gCurrentMsg = LITERALLY_NOTHING;		// Prend un msgIndex qui sera interprété par les event Listeners
 
 // STATIC
-MsgType MsgQueue::queue[MSG_QUEUE_SIZE];	// La liste de tout les messages enregistré pendant une frame
+MsgType MsgQueue::queue[MSG_QUEUE_SIZE] = {};	// La liste de tout les messages enregistré pendant une frame
 int MsgQueue::head = 0;
 int MsgQueue::tail = 0;		// début, fin d'indice du array
 int MsgQueue::total = 0;
@@ -72,18 +72,30 @@ void MsgQueue::Register(MsgType msg)	// Ajoute le message à la liste des message
 	}
 	else
 	{
-		 std::cout << "fuck";		// Tu send trop de message, Probablement à cause que tu détruit tout les links
-		return;
+		std::cout << ".";		// Tu send trop de message, Probablement à cause que tu détruit tout les links
+		Unregister_All();
+
+		queue[tail] = PLS_INTIALIZE_LVL;		// Fix un crash
+		tail = (tail + 1) % MSG_QUEUE_SIZE;		
+		total++;
 	}
 }
 void MsgQueue::Unregister_All()
 {
 	gCurrentMsg = LITERALLY_NOTHING;	// Annule le message actuel
-	msgIndex = tail;	// Annule le dispatching de message pour cette frame
 
-	for (int i = 0; i < total; i++)
-		Unregister();
+	for (int i = 0; i < MSG_QUEUE_SIZE; i++)
+		queue[i] = LITERALLY_NOTHING;
+
+	head = tail = total = 0;
+	msgIndex = tail;	// Annule le dispatching de message pour cette frame
 }
+
+void MsgQueue::Reset_Total() 
+{
+	total = 0; 
+}
+
 
 void MsgQueue::Dispatch_Messages()		// Prend un message enregistré de la liste à envoyé
 {
@@ -106,11 +118,7 @@ void Dispatch_To_Lvl()	// Par ici qu'on va updater tout les events du niveau
 	case 0:	Dispatch_Msg_To_Menu(); break;			// Update les events du menu
 	case 1: Dispatch_Msg_To_Lvl_1();break;			// Check les events à faire
 	case 2: Dispatch_Msg_To_Lvl_2();break;			// Check les events à faire
-	case 3:// Lvl_3_Upd_Events();break;			// Check les events à faire
-	case 4:// Lvl_4_Upd_Events();break;			// Check les events à faire
-	case 5:// Lvl_5_Upd_Events();break;			// Check les events à faire
-	case 6:// Lvl_6_Upd_Events();break;			// Check les events à faire
-	case 7: break;// Lvl_7_Upd_Events();break;			// Check les events à 			
+	case 3: Dispatch_Msg_To_Lvl_3();break;			// Check les events à faire
 	}
 }
 
@@ -154,6 +162,15 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case VICTORY:
+		if (gCurrentLevel < 3)
+		{
+			gUnlockedLevels[gCurrentLevel] = 1;
+			gLastLvlUnlocked = gCurrentLevel + 1;
+		}
+		else
+			gLastLvlUnlocked = 0;
+
+
 		Ev_Victory_Screen();
 		break;	
 	
@@ -261,23 +278,8 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 	case DISABLE_BLAST:
 		gBlockBlast = true;
+		blastP1.Cancel();
 		break;
 		// Tout les events qui sont trigger par ça  
 	}
-
-	// Event Wowow
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Secret event
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event swager
-	// Event Wowow
-	// Event Wowow
-	// Event Wowow   	 
 }

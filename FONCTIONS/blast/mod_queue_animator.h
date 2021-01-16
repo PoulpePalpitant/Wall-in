@@ -12,7 +12,7 @@ namespace DrawModifierQueue {
 	extern std::string queueTitle;
 	extern std::string line;
 
-	extern Coord titleCrd;			// La corrd du ttitre principal
+	extern Coord fakeTitleCrd;			// La corrd du ttitre principal
 	extern Distance btwTitle;		// Distance entre le titre de la queue et la limite gauche à droite. On va slide les charactère à gauche et à droite. 
 	extern int limitLeftX;			// // La limite à gauche d'où l'animation va scroller le texte
 	extern int limitRightX;		// La limite à droite ou l'animation va scroller le texte

@@ -7,13 +7,14 @@
 #include "../../events/msg_dispatcher.h"
 #include "../../choice/choice_time.h"
 #include "../../console/sweet_cmd_console.h"
+#include "../../lvls/lvl_script.h"
 
 static Event ev_Dr_ChooseLvl(Ev_Dr_Choose_Lvl, 3);	// Déclaration
 
 static std::string skip = "Select Level";
 static std::string pressNum = "(Press Number)";
 static std::string recom[] = { " 1 " , " 2 ", "More...To Be Announced"};
-//static std::string recom[] = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 "};
+static int lvlsUnlocked;
 
 static Coord crd;
 static int numDist = 8;
@@ -22,6 +23,15 @@ void Ev_Dr_Choose_Lvl()
 {
 	if (!ev_Dr_ChooseLvl.Is_Active())
 	{
+		for (size_t i = 0; i < 3; i++)
+		{
+			if (gUnlockedLevels[i])
+				lvlsUnlocked = i + 1;
+			else
+				break;
+		}
+
+
 		crd.y = 33;
 		crd.x = Find_Ctr_X((int)skip.length());
 		ev_Dr_ChooseLvl.Activate();
@@ -40,14 +50,19 @@ void Ev_Dr_Choose_Lvl()
 			case 2:
 				ConsoleRender::Add_String(pressNum, { crd.x - 1, crd.y + 1 }, GRAY, 0);
 
-				crd.y += 5;
-				crd.x -= 15; // v2
-				crd.x -= 2;
-				for (int i = 0; i < 1; i++)
+				crd.y += 7;
+				crd.x = Find_Ctr_X(1 + (1 + numDist * lvlsUnlocked)) - 4;
+
+
+				for (int i = 0; i < 3; i++)
 				{
 					crd.x += numDist;
-					ConsoleRender::Add_String(recom[i], crd, WHITE, 0);
+					if (gUnlockedLevels[i] && gLastLvlUnlocked != i + 1)
+						ConsoleRender::Add_String(std::to_string(i + 1), crd, WHITE);
+
+					crd.x++;
 				}
+
 				ev_Dr_ChooseLvl.Advance(7000);
 				break;
 
@@ -68,7 +83,10 @@ void Ev_Er_Choose_Lvl()	// efface le choix de lvl
 	ConsoleRender::Add_String(skip, coord, WHITE, 0, true);
 	ConsoleRender::Add_String(pressNum, { coord.x - 1, coord.y + 1 }, WHITE, 0, true);
 
-	coord.y += 5;
+	coord.y += 7;
 	coord.x = 0;
 	gotoxy(coord.x, coord.y);	clreol();	// oldschool stuff
+	gotoxy(coord.x, coord.y - 1);	clreol();	// oldschool stuff
+	gotoxy(coord.x, coord.y - 2);	clreol();	// oldschool stuff
+	gotoxy(coord.x, coord.y - 3);	clreol();	// oldschool stuff
 }

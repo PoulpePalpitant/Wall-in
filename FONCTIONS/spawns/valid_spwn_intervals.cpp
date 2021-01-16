@@ -235,7 +235,7 @@ bool ValidSpwnIntervals::Exclude_Primary_Interval(int border, int min, int max)	
 				// Sinon on doit spliter l'intervalle en deux en excluant les valeurs primaires
 				scndary.start[border]->max = min;	//	INTERVALLE #1
 				prev = scndary.start[border];		// setup le précédant
-				Create_New_Interval(scndary, border, max + 1, scndaryMax);			// INTERVALLE #2
+				Create_New_Interval(scndary, border, max, scndaryMax);			// INTERVALLE #2
 				
 				if(scndary.end[border] == scndary.start[border])
 					scndary.end[border] = scndary.start[border]->nxt;

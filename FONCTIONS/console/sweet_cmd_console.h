@@ -21,4 +21,9 @@ void Change_Window_Position(); // temp
 void Center_WND();			// Met la fenêtre au centre de ton écran
 
 void Change_Typography();
+void Hide_Scrollbar();
+void Fullscreen();
+void Disable_Quick_Edit();
+void No_Resize();
+
 // SetWindowPos(GAME_WND, HWND_TOP, 363, 0, 1401, 1073, SWP_SHOWWINDOW | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu

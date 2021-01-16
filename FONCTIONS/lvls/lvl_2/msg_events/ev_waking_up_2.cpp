@@ -17,8 +17,12 @@
 #include "../../lvl_script.h"
 #include "../../../UI/console_output/dsp_string.h"
 #include "../../lvl_1/msg_events/ev_enter_name.h"		// INTRUDER
+#include "../../../events/global_events/ev_spwn_player.h"
+
+static void Ev_Dumb_Dialogue_Fixer();
 
 static Event ev_WakeUp2(Ev_Wake_Up_2, 50);
+static Event ev_DumbDialogueFixer(Ev_Dumb_Dialogue_Fixer,20);
 
  //;
  //"I Can't Recall Your Name Somehow"; What was you name again? (choice time) = Custom reaction
@@ -32,23 +36,26 @@ static std::string _3 = "No?";
 static std::string _4 = "I'm Sorry If I Don't Remember You";
 static std::string _5 = "There Is Just, Too Many New Faces";
 static std::string _6 = "What Was Your Name again?";
-static std::string _7 = "empty";
-static std::string _8 = "empty";
-static std::string _9 = "All That Matters Is That You Work Here And I'm Your Boss Haha";
-static std::string _10 = "Anyway, Welcome Back, New Employee!";
+static std::string _10 = "Anyway, Welcome Back, Trainee!";
 static std::string _11 = "Usually, People Tend To Quit On Their First Day";
 static std::string _12 = "I Mean, If They Manage To Survive That Is...";
-static std::string _13 = "That Said, If You Want To Keep Working Here,";
+
+static std::string fix_1 = "You Are Not Out Of The Woods Yet, However";
+static std::string fix_2 = "If You Manage To Complete 2 More Days";
+static std::string fix_3 = "Of Training, You Will Be Officially Hired Here";
+static std::string fix_4 = "And As A, Bonus, You Will Get Paid!";
+static std::string fix_5 = "Money Is Great Right? I Love Money...";
+
+static std::string _13 = "Now, For Today";
 static std::string _14 = "You Will Have To Use Our Brand NEW Mandatory \"Tools\"";
 static std::string _15 = "Here They Are";
 static std::string _16 = "Try Them Both";
-static std::string _17 = "Very Useful Right?";	// 
-static std::string _18 = "As I Said, These Tools Are MANDATORY";
-static std::string _19 = "If You Don't Use Them, Well...";
-static std::string _20 = "You're Probably Gonna Have A Bad Time";
-static std::string _21 = "My Job Here Is Done, I Think";
-static std::string _22 = "Jerry Will Show You How To Use The Tools";
-static std::string _23 = "Feel Free To Train With Him Next";
+static std::string _17 = "Very Useful Right?";
+static std::string _18 = ". . . .";
+static std::string _19 = "Honestly, I Have No Idea What They Do";
+static std::string _20 = "I Just Do What I'm Told, Sorry";
+static std::string _21 = "Feel Free To Experiment Here As Long As You Want";
+static std::string _22 = "Good Luck!";
 
 // Faire un choix: Ici c'est choisir son propre nom :_)
 static std::string choiceMade;	// Choix fait par le joueur
@@ -91,25 +98,25 @@ void Lvl2_S1_Refresher()	/// Refresher du niveau 2, stage 1
 		gGrids.Make_Chain_Of_Walls({ 9,9 }, DOWN, wallGridVer->Get_Rows() - 9);	// Mur que le joueurs va tirés avec les items
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,5 });
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 9,5 });
-
 		gRefreshStage = false;
 	}
-
-
 }
 
-void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
+void Ev_Wake_Up_2()
 {
 	if (!ev_WakeUp2.Is_Active())
 	{
 		Just_Dr_Map_Borders();
-		P1.Set_Sym(AllPlyrSym[0]); P1.Set_Position({ 6,1 }); P1.Dr_Player();
+		P1.Set_Sym(AllPlyrSym[0]); P1.Set_Position({ 6,1 });
+		Set_Ev_Spawn_Player(3);
 
-		ListsOfChainToModify::Annihilate_All_Links();	// Links
+		ListsOfChainToModify::Annihilate_All_Links();
 		ev_WakeUp2.Activate();
-		ev_WakeUp2.Start(1000);	// 1000 / 2 = 500.		2 secondes
+		ev_WakeUp2.Start(1000);
 		MsgQueue::Register(ENABLE_BLAST);
-		MsgQueue::Register(FREE_PLAYER);	// pour debug
+
+
+		//ev_WakeUp2.Go_To_X_Step(21);
 	}
 	else
 	{
@@ -118,13 +125,11 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 			switch (ev_WakeUp2.Get_Current_Step())
 			{
 			case 1:
-				Press_X_To_Proceed(3);
-				for (int c = 0; c < linkGrid->Get_Cols(); c++)	// active une rangée de blockers
-				{
+				Press_X_To_Proceed(4);
+				for (int c = 0; c < linkGrid->Get_Cols(); c++)
 					gGrids.Activate_Blocker({ c,4 });
-				}
 
-				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_DR -3);
+				ConsoleRender::Add_String(_1, Boss_Txt_Crd(_1), gBossClr, TXT_SPD_DR - 3);
 				ev_WakeUp2.Advance(300);
 				break;
 
@@ -139,18 +144,17 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 4:
-				//Ev_Enter_Name();
 				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(1000);
 				break;
 
 			case 5:
 				ConsoleRender::Add_String(_4, Boss_Txt_Crd(_4, 2), gBossClr, TXT_SPD_DR);
-				ev_WakeUp2.Advance(500);
+				ev_WakeUp2.Advance(300);
 				break;
 
 			case 6:
-				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr,    TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_2, Boss_Txt_Crd(_2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_3, Boss_Txt_Crd(_3, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_4, Boss_Txt_Crd(_4, 2), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(1000);
@@ -176,9 +180,9 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				ConsoleRender::Add_String(choiceTitle, { Find_Ctr_X((int)choiceTitle.size() / 2) - 5, linkGrid->link[6][4].Get_XY().y + 4 }, gBossClr, TXT_SPD_DR, true);
 				ChoiceTime::Add_Choice(choices[0], TXT_CONST.SPACE_STRING, { 3,9 });
 				ChoiceTime::Add_Choice(choices[1], TXT_CONST.SPACE_STRING, { 9,11 });
-				ChoiceTime::Add_Choice(choices[2], TXT_CONST.SPACE_STRING, { 7, 12});
+				ChoiceTime::Add_Choice(choices[2], TXT_CONST.SPACE_STRING, { 7, 12 });
 				ChoiceTime::Add_Choice(choices[3], TXT_CONST.SPACE_STRING, { 2, 13 });
-				
+
 				for (int c = 0; c < linkGrid->Get_Cols(); c++)	// Désctive une rangée de blockers
 					gGrids.Activate_Blocker({ c,3 }, true);
 
@@ -254,7 +258,7 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				ConsoleRender::Add_String(_10, Boss_Txt_Crd(_10), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_11, Boss_Txt_Crd(_11, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_12, Boss_Txt_Crd(_12, 2), gBossClr, TXT_SPD_ER, true);
-				ev_WakeUp2.Advance(1000);
+				Ev_Dumb_Dialogue_Fixer();
 				break;
 
 			case 20:
@@ -263,7 +267,7 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 21:
-				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14,1), gBossClr, TXT_SPD_DR);
+				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14, 1), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(250);
 				break;
 
@@ -280,7 +284,7 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 24:
-				gRefreshStage= true;
+				gRefreshStage = true;
 				Lvl2_S1_Refresher();
 				ev_WakeUp2.Advance(0);
 				ev_WakeUp2.delay.Start_Timer(10000, 1, true);
@@ -311,12 +315,12 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 			case 28:
 				ConsoleRender::Add_String(_17, Boss_Txt_Crd(_17), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_18, Boss_Txt_Crd(_18, 1), gBossClr, TXT_SPD_ER, true);
-				ev_WakeUp2.Advance(1000);
+				ev_WakeUp2.Advance(400);
 				break;
 
 			case 29:
 				ConsoleRender::Add_String(_19, Boss_Txt_Crd(_19), gBossClr, TXT_SPD_DR);
-				ev_WakeUp2.Advance(400);
+				ev_WakeUp2.Advance(300);
 				break;
 
 			case 30:
@@ -332,34 +336,61 @@ void Ev_Wake_Up_2()			// Accueil Le joueur quand il sort de son répit
 
 			case 32:
 				ConsoleRender::Add_String(_21, Boss_Txt_Crd(_21), gBossClr, TXT_SPD_DR);
-				ev_WakeUp2.Advance(500);
+				ev_WakeUp2.Advance(400);
 				break;
 
 			case 33:
-				ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22, 1), gBossClr, TXT_SPD_DR);
+				ConsoleRender::Add_String(_21, Boss_Txt_Crd(_21), gBossClr, TXT_SPD_ER, 1);
 				ev_WakeUp2.Advance(500);
 				break;
 
 			case 34:
-				ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 2), gBossClr, TXT_SPD_DR);
+				ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22, 1), gBossClr, TXT_SPD_DR);
 				ev_WakeUp2.Advance(250);
 				break;
 
-
 			case 35:
-				ConsoleRender::Add_String(_21, Boss_Txt_Crd(_21), gBossClr,    TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_22, Boss_Txt_Crd(_22, 1), gBossClr, TXT_SPD_ER, true);
-				ConsoleRender::Add_String(_23, Boss_Txt_Crd(_23, 2), gBossClr, TXT_SPD_ER, true);
 				ev_WakeUp2.Advance(500);
 				break;
 			}
-
-			// Étapes pour tester les items
-			//ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 3,5 });
-			//ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 9,5 });
-			//gGrids.Make_Chain_Of_Walls({ 3,9 }, DOWN, wallGridVer->Get_Rows() - 9);	// Mur que le joueurs va tirés avec les items
-			//gGrids.Make_Chain_Of_Walls({ 9,9 }, DOWN, wallGridVer->Get_Rows() - 9);	// Mur que le joueurs va tirés avec les items
-
 	}
 	// ON NE CANCEL PAS L'EVENT
+}
+
+void Ev_Dumb_Dialogue_Fixer()
+{
+	if (!ev_DumbDialogueFixer.Is_Active())
+	{
+		ev_DumbDialogueFixer.Activate();
+		ev_DumbDialogueFixer.Start(400);
+	}
+	else
+	{
+		while (ev_DumbDialogueFixer.delay.Tick())
+			switch (ev_DumbDialogueFixer.Get_Current_Step())
+			{
+			case 1:	ConsoleRender::Add_String(fix_1, Boss_Txt_Crd(fix_1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(400);break;
+			case 2:	ConsoleRender::Add_String(fix_2, Boss_Txt_Crd(fix_2, 1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(700);break;
+			case 3:	ConsoleRender::Add_String(fix_3, Boss_Txt_Crd(fix_3, 2), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(200);break;
+
+			case 4:
+				ConsoleRender::Add_String(fix_1, Boss_Txt_Crd(fix_1), gBossClr, TXT_SPD_ER, true);
+				ConsoleRender::Add_String(fix_2, Boss_Txt_Crd(fix_2, 1), gBossClr, TXT_SPD_ER, true); ev_DumbDialogueFixer.Advance(600);
+				ConsoleRender::Add_String(fix_3, Boss_Txt_Crd(fix_3, 2), gBossClr, TXT_SPD_ER, 1);break;
+
+			case 5:ConsoleRender::Add_String(fix_4, Boss_Txt_Crd(fix_4), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(400);break;
+			case 6:ConsoleRender::Add_String(fix_5, Boss_Txt_Crd(fix_5, 1), gBossClr, TXT_SPD_DR);ev_DumbDialogueFixer.Advance(300);break;
+			case 7:
+				ConsoleRender::Add_String(fix_4, Boss_Txt_Crd(fix_4), gBossClr, TXT_SPD_ER, 1);
+				ConsoleRender::Add_String(fix_5, Boss_Txt_Crd(fix_5, 1), gBossClr, TXT_SPD_ER, 1);
+				ev_DumbDialogueFixer.Advance(500);
+				break;
+
+			case 8:
+				ev_DumbDialogueFixer.Cancel();
+				ev_WakeUp2.Advance(1000);
+				break;
+			}
+	}
 }

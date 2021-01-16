@@ -17,4 +17,5 @@ bool Spawn_Bots_This_Cycle();	// Spawn les bots, ou pas!
 void Temporary_Spawn_Speed_Switch(int speed, bool overwritePrev);	// Instaure une nouvelle vitesse de spawn. "Store" la valeur de la vitesse précédante.
 void Restore_Prev_Spw_Speed();	// restaure la vitesse précédante
 
-void Checkpoint_Delay();	// Ajoute un délai après avoir atteint un check point
+void Checkpoint_Delay();	    // Ajoute un délai après avoir atteint un check point
+void Cancel_Checkpoint_Delay();	// Undo le delay après chaque checkpoint xD.	C'est pour fixe l'animation de spawn du player qui efface des links.

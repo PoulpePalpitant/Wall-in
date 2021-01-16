@@ -9,7 +9,8 @@
 
 static Event ev_SpawnPlayer(Ev_Spawn_Player, 10);
 static Coord crd;
-static float speedRatio = 1;	// Vitesse de l'animation
+static float speedRatio = 1;	
+static bool drawTips = true;	
 
 void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 {
@@ -32,10 +33,13 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 			switch (ev_SpawnPlayer.Get_Current_Step())
 			{
 			case 1:
-				ConsoleRender::Add_Char({ crd.x - 3, crd.y }, 250, GRAY);
-				ConsoleRender::Add_Char({ crd.x + 3, crd.y }, 250, GRAY);
-				ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, 250, GRAY);
-				ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, 250, GRAY);
+				if (drawTips)
+				{
+					ConsoleRender::Add_Char({ crd.x - 3, crd.y }, 250, GRAY);
+					ConsoleRender::Add_Char({ crd.x + 3, crd.y }, 250, GRAY);
+					ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, 250, GRAY);
+					ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, 250, GRAY);
+				}
 				ev_SpawnPlayer.Advance(3000 * speedRatio);break;
 
 			case 2:
@@ -51,16 +55,22 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 				ConsoleRender::Add_Char({ crd.x + 1, crd.y }, 196, BRIGHT_WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 1 }, 179, BRIGHT_WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y + 1 }, 179, BRIGHT_WHITE);
-				ConsoleRender::Add_Char({ crd.x - 3, crd.y }, 250, GRAY);	// Erase
-				ConsoleRender::Add_Char({ crd.x + 3, crd.y }, 250, GRAY);
-				ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, 250, GRAY);
-				ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, 250, GRAY);
+				if (drawTips)
+				{
+					ConsoleRender::Add_Char({ crd.x - 3, crd.y }, 250, GRAY);	// Erase
+					ConsoleRender::Add_Char({ crd.x + 3, crd.y }, 250, GRAY);
+					ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, 250, GRAY);
+					ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, 250, GRAY);
+				}
 				ev_SpawnPlayer.Advance(9000 * speedRatio);break;
 			case 4:
-				ConsoleRender::Add_Char({ crd.x - 3, crd.y }, TXT_CONST.SPACE);	// Erase
-				ConsoleRender::Add_Char({ crd.x + 3, crd.y }, TXT_CONST.SPACE);
-				ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, TXT_CONST.SPACE);
-				ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, TXT_CONST.SPACE);
+				if (drawTips)
+				{
+					ConsoleRender::Add_Char({ crd.x - 3, crd.y }, TXT_CONST.SPACE);	// Erase
+					ConsoleRender::Add_Char({ crd.x + 3, crd.y }, TXT_CONST.SPACE);
+					ConsoleRender::Add_Char({ crd.x, crd.y - 3 }, TXT_CONST.SPACE);
+					ConsoleRender::Add_Char({ crd.x, crd.y + 3 }, TXT_CONST.SPACE);
+				}
 				ConsoleRender::Add_Char({ crd.x - 2, crd.y }, 250, WHITE);
 				ConsoleRender::Add_Char({ crd.x + 2, crd.y }, 250, WHITE);
 				ConsoleRender::Add_Char({ crd.x, crd.y - 2 }, 250, WHITE);
@@ -144,8 +154,9 @@ void Ev_Spawn_Player()		// Fait appara^tre le joueur lentement sur le grid
 	//}
 }
 
-void Set_Ev_Spawn_Player(float speed)		// Animation de spawnage du joueur
+void Set_Ev_Spawn_Player(float speed, bool noTips)		// Animation de spawnage du joueur
 {
+	drawTips = noTips;
 	speedRatio = speed;
 	Ev_Spawn_Player();	// Ne cancel pas l'animation
 }

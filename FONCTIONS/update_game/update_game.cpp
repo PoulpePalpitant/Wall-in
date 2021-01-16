@@ -70,15 +70,18 @@ void Update_Player_Action()
 	{
 		if (!gPauseUpdates)
 		{
+			if (blastP1.Is_Active() && action != PAUSE)	// Empêche de refresh l'action. Ceci est le buffer du blast
+				return;
+
 			switch (action)
 			{
 			case PAUSE:
 				gPauseUpdates = true;
-				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			// Besoin d'un max screen size
-				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			// Besoin d'un max screen size
+				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			
+				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			
 				if (gDayStarted)
 				{
-					Press_R_To_Retry_On_Pause(1);
+					Press_X_To_Proceed(2);
 					gRetryCheckpoint = true;
 				}
 				break;
@@ -88,7 +91,7 @@ void Update_Player_Action()
 				break;
 
 			case BLAST:
-				if (!blastP1.Is_Active() && !ChoiceTime::Is_Choice_Time() && !gBlockBlast)
+				if (!ChoiceTime::Is_Choice_Time() && !gBlockBlast)
 				{
 					static GrdCoord grdCrd;	// Position du joueur
 					grdCrd = P1.Get_Grd_Coord();
@@ -102,27 +105,24 @@ void Update_Player_Action()
 					BlastAmmo *ammo;	
 
 
-
-
-					blastP1.Set_Strength(WallStrength::REGULAR);	// dflt
+					blastP1.Set_WallType(WallType::REGULAR);	// dflt
 
 					// Action Spéciale: Un transfer
 					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
 					if (link->Get_State() == LinkState::FREE)
 					{
-
 						// Si on tir dans la même direction que son parent wall		
 						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
 							cancelBlast = true; // rien va se passer
 						else
 						{
-							blastP1.Set_Strength(link->Get_Parent()->Get_Strgt());// La force du tir est déterminé par le  wall!!!
+							blastP1.Set_WallType(link->Get_Parent()->Get_Type());
+							blastP1.Setup_Modifier(link->Get_Modifier());	// dumb shit beurks fixes, yey!
+
 							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir
 							consumeQueue = false;
-							blastTransfer = true;	// it is true!
+							blastTransfer = true;	
 						}
-
-						// SI LE LINK EST D'UN CERTAIN DTYPE, LE BLAST modifier DEVRAIT PRENDRE SA PROPRIÉTÉ! le blast ne devrait pas prendre la propriété de la queue
 					}
 
 					if (blastP1.Is_Player_Shooting_Border(keyDirection))
@@ -138,7 +138,10 @@ void Update_Player_Action()
 					}
 
 					if (!cancelBlast)
+					{
 						blastP1.Setup_Blast(grdCrd, keyDirection, consumeQueue);
+						P1.Get_Teleporter().Remove_Teleport_Location();
+					}
 					else
 						Ev_Wrong_Action_Add();			// Flash le joueur
 
@@ -147,13 +150,12 @@ void Update_Player_Action()
 				{
 					Blast_Disabled_While_CD();		// Check si c'est à cause de ça
 					Ev_Wrong_Action_Add();			// Flash le joueur
-					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		// Really dumb shit
+					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		
 				}
-					
 				break;
 
 			case MOVE:
-				if (!blastP1.Is_Active() && !gChoiceTime)	// Le joueur ne peut bouger durant un blast
+				if (!gChoiceTime)	
 					Move_Player(P1, keyDirection);	// bouge le joueuruu!
 				break;
 
@@ -167,28 +169,22 @@ void Update_Player_Action()
 					return;	// Conserve l'action de téléporter
 				break;
 			}
-
-
-			
 		}
 		else
 			if (action == UNPAUSE)
 			{
 				gPauseUpdates = false;
-				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			// Besoin d'un max screen size / DONE
-				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);		// 
+				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			
+				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);	
 				if (gDayStarted)
 				{
-					Press_R_To_Retry_On_Pause(1, true);
+					Press_X_To_Proceed(2, true);
 					gRetryCheckpoint = true;
 				}
 			}
 	}
+
 	// Faut reset l'action
 	action = IDLE;
 	keyDirection = NONE;	// et la keydirection
 }
-
-/*
-	À Pt modifier un jour:si tu fais un transfert sur une bordure, tu détruis le wall, mais le blast ne franchis aucune distance si tu fais un transfert horizontale, la longueur maximale n'est pas limité à un wall...
-*/

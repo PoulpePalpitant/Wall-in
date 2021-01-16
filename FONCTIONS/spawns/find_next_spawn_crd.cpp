@@ -34,7 +34,7 @@ static void Find_BoxSide()		// NOTE: Si tu fournis un spawn number, ça brise com
 				if (gAllSides)					// Tout les bordures				   //				// YO SI CETTE LISTE EST AUSSI GRANDE QUE LE NOMBRE DE SPAWN COORD SUR UNE BORDURE, TU DEVRAIS CANCELLER LE 
 					spwCrd.border = rand() % 4;	//	Bordure random					   //				// RESTE DES SPAWNS EN FAISANT BREAK; ET EN SETTANT LE NUMSPAWN À 0!
 				else
-					if (gVerticalBorder) // Bordures LEFT & RIGHT
+					if (gVerticalSpawns) // Bordures LEFT & RIGHT
 					{
 						rand() % 2 == 0 ? spwCrd.border = LEFT : spwCrd.border = RIGHT;	// Spawn sur les bordures gauches ou droites
 
@@ -44,7 +44,7 @@ static void Find_BoxSide()		// NOTE: Si tu fournis un spawn number, ça brise com
 							return;	// hey that's valid						
 					}
 					else
-						if (gHorizontalBorder)	// Bordures UP & DOWN
+						if (gHorizontalSpawns)	// Bordures UP & DOWN
 						{
 							rand() % 2 == 0 ? spwCrd.border = UP : spwCrd.border = DOWN;	// Spawn sur les bordures haut et bas
 

@@ -63,6 +63,10 @@ public:
 	// Doit être absolument utilisé avec un while
 	bool Tick();	// Update le temps écoulé à partir de delta time
 
+	 // Overloaded assignment operator
+	SpeedTimer& operator= (const SpeedTimer& speedTimer);
+
+
 	// CONSTRUCTORINOS
 	SpeedTimer();
 	SpeedTimer(bool noId);	//		// n'ajoute pas de id dans lla liste des timers créés

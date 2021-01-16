@@ -87,7 +87,7 @@ void Player::Upd_Color()
 	case BUFFER: clr = LIGHT_YELLOW;		  break;
 	case BLOCKER: clr = LIGHT_RED;			  break;
 	case CORRUPTER: clr = LIGHT_PURPLE;		  break;
-	case COLOR_A: clr = LIGHT_YELLOW;		  break;
+	case ENERGIZER: clr = LIGHT_PURPLE;		  break;
 	case COLOR_B: clr = LIGHT_AQUA;			  break;
 	case BLIND_COLOR: clr = LIGHT_AQUA;		  break;
 

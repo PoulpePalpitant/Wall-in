@@ -207,9 +207,9 @@ void Exclude_Outside_From_Heart(int hp)
 	}
 	if (hp == 2)
 	{
-		inside.Resize(6, 0, 16);	 // Default
+		inside.Resize(6, 0, 16);	 // // Cette ligne à fais crash le jeu 
 
-		inside.Exclude_Interval_From_List(0, 0, 2);	inside.Exclude_Interval_From_List(0, 12, 16);
+		inside.Exclude_Interval_From_List(0, 0, 2);	inside.Exclude_Interval_From_List(0, 12, 16);	
 		inside.Exclude_Interval_From_List(1, 0, 1);	inside.Exclude_Interval_From_List(1, 13, 16);	// AIS-JE VRAIMENT BESOIN D'EXCLURE LE DEHORS QUAND J'AFFICHE PAS LES CHARACTÈRES VIDE?
 		inside.Exclude_Interval_From_List(2, 0, 1);	inside.Exclude_Interval_From_List(2, 13, 16);	// . . . oui
 		inside.Exclude_Interval_From_List(3, 0, 2);	inside.Exclude_Interval_From_List(3, 11, 16);

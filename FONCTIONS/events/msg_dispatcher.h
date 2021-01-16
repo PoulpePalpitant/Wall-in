@@ -113,7 +113,9 @@ enum MsgType
 
 
 // CONST
-const int MSG_QUEUE_SIZE = 1000;	// Maximum de message par cycle. yup, taht many
+const int MSG_QUEUE_SIZE = 10000;	// Maximum de message par cycle. yup, taht many
+// Dépasser la queue size softlock le jeu :(
+
 
 // GLOBAL
 extern MsgType gCurrentMsg;		// Prend un msg qui sera interprété par les event Listeners
@@ -129,6 +131,8 @@ public:
 	static void Register(MsgType msg);	// Ajoute le message à la liste des message à traiter pour ce cycle
 	static void Dispatch_Messages();
 	static void Unregister_All();		// Permet de retirer tout les messages de la queue
+	static void Reset_Total();
+
 };
 
 void Dispatch_To_Lvl();	// Par ici qu'on va updater tout les events du niveau

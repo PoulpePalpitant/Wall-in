@@ -53,11 +53,11 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
 	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
 	DrawItemSpawnList::Remove_All();	// hardcore
-
+	 //Hide_Ammo_UI();
 	//BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
 	BlastModifierQueue::Reset();
 
-
+	P1.Get_Teleporter().Remove_Teleport_Location();	// Prévient des abus
 
 	// Bot stuff
 	botList.Destroy_All_Bots();	// Bots

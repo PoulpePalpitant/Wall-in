@@ -116,10 +116,11 @@ void Ev_Dr_Day_2()			//  Message d'avertissement que les bots s'en viennent et q
 		ori = { (Find_Ctr_X((int)std::size(T_DAY_2[0]))), (gConHeight / 2) - 15 };
 		ori_2 = { (Find_Ctr_X((int)std::size(T_TITLE[0]))), ori.y + 10};
 		
+		clrscr();
 		MsgQueue::Register(LOCK_PLAYER);
 		Ev_Fill_Map();	// fill la map
 		ev_Dr_Day2.Activate();
-		ev_Dr_Day2.Start(250);	
+		ev_Dr_Day2.Start(200);	
 	}
 	else
 	{

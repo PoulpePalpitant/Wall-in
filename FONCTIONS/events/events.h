@@ -8,7 +8,7 @@
 // Some rules: Tu peux pas terminer un event avec un advance(0)
 
 // CONST
-const int MAX_NUM_EVENTS = 80;	// Nombre d'events max
+const int MAX_NUM_EVENTS = 150;	// Nombre d'events max
 
 
 class Event
@@ -65,7 +65,7 @@ public:
 	Event(void (*toDefine)(), int eventSteps = 1) {
 		
 		steps = eventSteps;	// Le nombre d'étape que contient l'event. 
-		
+
 		eventsID[total] = this;	// Criss l'event dans l'array
 		ID = total;	// Associe l'ID
 		total++;	// Avance le total 

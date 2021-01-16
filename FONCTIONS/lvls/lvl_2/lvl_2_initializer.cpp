@@ -17,55 +17,48 @@
 
 void Lvl_2_Initializer()
 {
-	gLvlTime = 0;		// Reset Le timer du niveau
-
 	if (gSkipStory)
 	{
 		// Pour un normal quick start
-		gCurrentStage = 6; // Normal
 		//gCurrentStage = 0; // wakup
-		//gCurrentStage = 1; // TEST #1
-		//gCurrentStage = 2; // TEST #2
-		//gCurrentStage = 3; // TEST #3
-		//gCurrentStage = 4; // TEST #4
-		//gCurrentStage = 5; // warning
-		MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
+		//gCurrentStage = 1; // warning
+		gCurrentStage = 2; // Normal
+		MsgQueue::Register(STAGE_ADVANCE);	
+		
+		// TEST DU SPAWN SCRIPT ICI
+		// **************************
+		int checkpointTest = 0;/* 23 = max*/
+		if (gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
+			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
 	else
 	{
-		//gCurrentStage = 0;	// Pour choisir le niveau que tu veux pour starter	: 0 = wakeup
-		//MsgQueue::Register(STAGE_ADVANCE);	// Start le stage à partir du msgdispatcher du nlvl 1. 
-
-
-		gCurrentStage = 0;
-		Ev_Build_Labyrinth(); // start le level avec ceci :)
-		MsgQueue::Register(SPAWN_PLAYER);	// spawn le player 
+		gCurrentStage = 0;	// DONT
+		Ev_Build_Labyrinth(); // start le level avec ceci :
 	}
 
-	gSpwBotTimer.Start_Timer(SPW_BOT_SPD_LVL2, 1 , true); // DEFUALT
-	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
-	gBotMoveTimer.Start_Timer(6200, 1, true); //DEFAULT
-	//gBotMoveTimer.Start_Timer(10200, 1, true);	// TEST
-	
-	ItemSpawner::Add_To_Pool(ItemType::BUFFER, BUFFER_SPEED_LVL2, 2);
-	ItemSpawner::Add_To_Pool(ItemType::BLOCKER, BLOCKER_SPEED_LVL2, 3);
-	//ItemSpawner::Add_To_Pool(ItemType::HEALTH, 1000, 0);
-	ItemSpawner::Add_To_Pool(ItemType::HEALTH, 20, 15);
-	//ItemSpawner::Add_To_Pool(ItemType::CORRUPTED, 10, 0);
 
-	Resize_Grids_To_Level(gGrids, 2);			// Resize tout les grids pour ce niveau :)
-	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); // MUST BE DONE BEFORE WHEN WE START EACH LEVEL BRAH
-	bots_to_spawn::Reset_To_Default();			// reset les valeurs par défaut pour le prochain spawn
+	gSpwBotTimer.Start_Timer(1700, 1, true); //  DEFUALT
+	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
+
+
+	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
+	//gBotMoveTimer.Start_Timer(10200, 1, true);	// TEST
+
+
+	Resize_Grids_To_Level(gGrids, 2);					
+	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); 
+	bots_to_spawn::Reset_To_Default();					
 	
-	P1.Set_Hp(3);	// 3 de vie le gros
+	P1.Set_Hp(3);	
 	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
 	
-	if (!P1.Set_On_Grid())		// Doit être sur le grid pour le niveau
+	if (!P1.Set_On_Grid())		
 		throw "player pas sur le grid";
 	
-	MsgQueue::Register(LVL_INITIALIZED);// It has to be done
-	MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+	MsgQueue::Register(LVL_INITIALIZED);
+	MsgQueue::Register(ENABLE_BLAST);	
 	
-	MsgQueue::Register(DISABLE_ITEM_SPAWN); // items!
+	MsgQueue::Register(DISABLE_ITEM_SPAWN);
 
 }

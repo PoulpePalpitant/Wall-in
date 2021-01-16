@@ -5,7 +5,7 @@
 
 #include "../../../console/sweet_cmd_console.h"
 #include "../../lvl_script.h"
-#include "../../../events/events.h"//https://www.twitch.tv/gamesdonequick
+#include "../../../events/events.h"
 #include "../../../grid/AllGrids.h"
 #include "../../../player/player.h"
 #include "../../../UI/console_output/render_list.h"
@@ -153,14 +153,6 @@ void Ev_Spawn_Mysterious_Item()	// Spawn un item mystérieux! ( version pas de ti
 				
 			case 11:
 				
-				//pos.y += DELTA_Y;		// Fait un bond sur le grid :)
-				//if (P1.Get_XY().y - DELTA_Y > pos.y)	// Fait un point vers le joueur
-				//	ConsoleRender::Add_Char(pos, 250);
-				//else
-				//{
-				//	ev_SpawnMysteriousItem.delay.Stop();
-				//	ev_SpawnMysteriousItem.Advance(0);						// terminate l'event
-				//}
 				break;
 
 

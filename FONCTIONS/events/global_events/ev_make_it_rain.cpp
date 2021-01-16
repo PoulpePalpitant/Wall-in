@@ -41,8 +41,8 @@ void Ev_Make_It_Rain()				 // Affiche un écran qui gratifiant
 					if (Q_ev_MakeItRain.queue[i].XY.y <= 3)
 						Q_ev_MakeItRain.queue[i].XY.y += 3;
 					else
-						if (Q_ev_MakeItRain.queue[i].XY.y >= gConHeight - 5)
-							Q_ev_MakeItRain.queue[i].XY.y -= 5;
+						if (Q_ev_MakeItRain.queue[i].XY.y >= gConHeight - 3)
+							Q_ev_MakeItRain.queue[i].XY.y -= 3;
 
 					ConsoleRender::Add_Char(Q_ev_MakeItRain.queue[i].XY, TXT_CONST.CASH, LIGHT_GREEN);
 					Q_ev_MakeItRain.Step(i, fadeSpd);

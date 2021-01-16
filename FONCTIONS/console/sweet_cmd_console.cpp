@@ -54,27 +54,26 @@ void Set_Dflt_WND()
 
 	COORD saveme = { (short)gConWidth ,(short)gConHeight };	// i have been saved
 	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), saveme);
-	Upd_Console_Size();
 
+	// Other stuff
+	// ***********
 
-
-	// avec un unique handle
-//	Change_Font(true, 16); // dflt 16 pour référence
-////SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);	// set la console ben fat, mais somehow pas en fullscreen !
-//	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);	// maximize la console!!!
-//	Upd_Console_Size();
-//	SetConsoleDisplayMode(h, CONSOLE_WINDOWED_MODE, 0);	// set la console ben fat, mais somehow pas en fullscreen !
-//	//ShowWindow(GetConsoleWindow(), SW_SHOWDEFAULT);	// ...
-//	Change_Font(true, 10); // the one you want
-//	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);	// maximize la console!!!
-//
-//	COORD saveme = { gConWidth ,gConHeight };
-//	SetConsoleScreenBufferSize(h, saveme);
-
-
-	//Change_Font(false); // adaptative font
 	Hide_Cursor(); 
+	Change_Typography();
+	Set_Console_Name();
+	Disable_Quick_Edit();
+	Hide_Scrollbar();
+	No_Resize();
+	// Si tu met ça fullscreen, fais jsute ajuster les pauses messages pour qui soit 2 case plus haut(ceux qui sont en bas du coeur)
+	//Fullscreen();
+
+	HWND hWnd = GetConsoleWindow();
+	ShowWindow(hWnd, SW_SHOWMAXIMIZED);
+	Upd_Console_Size();
 }
+
+
+
 
 static int Adapt_Font_To_Screen()	// permet de changer la font du jeu selon le gear du joueur
 {
@@ -170,6 +169,43 @@ void Change_Typography()	// oldway
 	con = GetLargestConsoleWindowSize(h);
 
 
+}
+
+void No_Resize() {
+	SetConsoleMode(h, DISABLE_NEWLINE_AUTO_RETURN);
+}
+
+void Hide_Scrollbar()
+{
+	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+
+	HANDLE hstdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(hstdout, &csbi);
+
+	csbi.dwSize.X = csbi.dwMaximumWindowSize.X;
+	csbi.dwSize.Y = csbi.dwMaximumWindowSize.Y;
+	SetConsoleScreenBufferSize(hstdout, csbi.dwSize);
+
+	HWND x = GetConsoleWindow();
+	ShowScrollBar(x, SB_BOTH, FALSE);
+}
+
+void Fullscreen()
+{
+	keybd_event(VK_MENU, 0x38, 0, 0);
+	keybd_event(VK_RETURN, 0x1c, 0, 0);
+	keybd_event(VK_RETURN, 0x1c, KEYEVENTF_KEYUP, 0);
+	keybd_event(VK_MENU, 0x38, KEYEVENTF_KEYUP, 0);
+}
+
+void Disable_Quick_Edit()
+{
+	HANDLE hInput;
+	DWORD prev_mode;
+	hInput = GetStdHandle(STD_INPUT_HANDLE);
+	GetConsoleMode(hInput, &prev_mode);
+	SetConsoleMode(hInput, prev_mode & ENABLE_EXTENDED_FLAGS);
 }
 
 

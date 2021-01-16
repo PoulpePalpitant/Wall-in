@@ -128,7 +128,7 @@ namespace DrawBlastAmmo {
 			{
 				Dr_Or_Er_Bar(MAX_BAR_SIZE, WHITE, true);	// Met la bar vide SAFETY
 				Dr_Bar_Tip(1);	// draw them tips
-				Dr_Bar_Tip(0);
+				//Dr_Bar_Tip(0);
 				return;
 			}
 
@@ -291,8 +291,7 @@ namespace DrawBlastAmmo {
 
 	void Dr_Ammo_Count(int count, Colors clr)				// Le nombre
 	{
-		static Coord crd = Get_Ori();
-
+		Coord crd = Get_Ori();
 		Er_Ammo_Count(); // Erase le nombre précédant
 		ConsoleRender::Add_String(std::to_string(count), { crd.x + barToCount ,crd.y }, clr, 0);	// draw par-dessus
 	}

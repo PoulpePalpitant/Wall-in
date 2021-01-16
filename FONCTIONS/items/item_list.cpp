@@ -30,6 +30,20 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
 	 size--;
  }
 
+ bool ItemsOnGrid::Remove(GrdCoord crd) {
+
+	 for (int i = 0; i < size; i++)
+	 {
+		 if (Are_Equal(items[i].Get_Grd_Coord(), crd))
+		 {
+			 ItemsOnGrid::Remove(i);
+			 linkGrid->link[crd.c][crd.r].Er_Link();	// efface l'item
+			 return true;
+		 }
+	 }
+	 return false;
+ }
+
  void ItemsOnGrid::Remove_All()
  {
 	 for (int i = 0; i < MAX_ITEMS; i++)		// Décale tout»

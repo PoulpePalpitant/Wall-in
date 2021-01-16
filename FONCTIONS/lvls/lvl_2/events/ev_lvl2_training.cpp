@@ -71,11 +71,9 @@ static void Block_Prison(bool Remove = false)
 		for (int c = 0; c < linkGrid->Get_Cols() - 3; c++)
 			gGrids.Activate_Blocker({ c ,r }, Remove);	// 1 couloir de la mort!!!			
 	}
-	//gGrids.Activate_Blocker({ 0,0 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ 0,1 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ 0,2 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ 0,3 }, 0);	// ferme le corridor
-	//gGrids.Activate_Blocker({ 0,4 }, 0);	// ferme le corridor
 	gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 3,0 }, 0);	
 	gGrids.Activate_Blocker({ linkGrid->Get_Cols() - 3,4 }, 0);
 

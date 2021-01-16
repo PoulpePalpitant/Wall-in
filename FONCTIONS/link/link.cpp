@@ -45,29 +45,31 @@ void Link::Set_UI()
 		break;
 
 	case BUFFER:
-		sym = 254;		
+		//sym = 254;		
+		sym = (char)LinkSym::PARENT;
+
 		clr = LIGHT_YELLOW;
 		break;
 
 	case Modifier::BLOCKER:
-		sym = 158;
-		/*if (state == LinkState::ROOT)
-			clr = BG_WH_LIGHT_RED;
-		else*/
-			clr = LIGHT_RED;
+		//sym = 158;
+		sym = (char)LinkSym::PARENT;
+		clr = LIGHT_RED;
 		break;
 
 	case Modifier::CORRUPTER:
-		sym = 207;
-	/*	if (state == LinkState::ROOT)
-			clr = BG_WH_LIGHT_PURPLE;
-		else*/
-			clr = LIGHT_PURPLE;
+		//sym = 207;
+		sym = (char)LinkSym::PARENT;
+		clr = LIGHT_PURPLE;
 		break;
 
 	case Modifier::FORCEFIELD:
 		sym = 176;
 		clr = Colors::TEST;
+		break;
+
+	case Modifier::ENERGIZER:
+		clr = LIGHT_PURPLE;
 		break;
 	}
 
@@ -99,7 +101,7 @@ void Link::Convert_Modifier(Modifier mod)		// Convertit le modifier d'un link. S
 	}
 }
 
-void Link::Corruption_Inheritance(Modifier& mod)		//  le modifier
+void Link::Modifier_Inheritance(Modifier& mod)		//  le modifier
 {
 	if(pParent != NULL)
 		if (pParent->Get_Parent_Modifier() == CORRUPTER)
@@ -112,7 +114,7 @@ bool Link::Activate_Link(Modifier& mod, Wall* child)
 	// INTÉRACTIONS
 	if(modifier != Modifier::FORCEFIELD)
 		if (modifier == REGULAR)
-			Corruption_Inheritance(mod);
+			Modifier_Inheritance(mod);
 
 	if (this->state == LinkState::DEAD || this->state == LinkState::FREE || modifier == Modifier::FORCEFIELD)		// error brah, le link était pas libre ou DEAD
 	{
@@ -155,22 +157,20 @@ bool Link::Activate_Lonely_Link(Modifier mod)
 	return true;
 }
 
-void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
+void Link::Deactivate_Link()			
 {
 	int children = this->numChild;
 	this->pParent = NULL;
-										// reset pointers 
-	for (int i = 0; i < numChild; i++)	// reset pointers		// that is some odd for loop
+										 
+	for (int i = 0; i < numChild; i++)			
 	{
-		this->pWalls[i] = NULL;	// reset pointers
+		this->pWalls[i] = NULL;	
 		children--;
 	}
 
-	numChild = children;	// Safety
+	numChild = children;	
 	state = LinkState::DEAD;
 	modifier = REGULAR;	// faut bien reset ça
-	//if(type != LinkType::REGULAR)
-		/*do stuff*/
 
 	meta.Remove();
 	
@@ -178,7 +178,7 @@ void Link::Deactivate_Link()					// À DÉTERMINER LORS de la destruction
 		MsgQueue::Register(LINK_DEACTIVATED); // we did
 }
 
-void Link::Unbound_All_Child()	// Retire tout les child du link. et n'update pas le state
+void Link::Unbound_All_Child()	
 {
 	numChild = 0;
 	
@@ -189,14 +189,14 @@ void Link::Unbound_All_Child()	// Retire tout les child du link. et n'update pas
 
 bool Link::Unbound_Wall_Child(Wall* child)
 {
-	if (this->state == LinkState::DEAD)		// ça la foiré, ce link n'était même pas en vie
+	if (this->state == LinkState::DEAD)		
 		return false;
 
 	for (size_t i = 0; i < this->numChild; i++)
 	{
-		if (this->pWalls[i] == child)				// Le wall qu'on veut retirer
+		if (this->pWalls[i] == child)				
 		{		
-			for (size_t j = i; j < numChild; j++)	// décalage de tout les childs de la liste							
+			for (size_t j = i; j < numChild; j++)						
 			{
 				if (j + 1 < numChild)
 					this->pWalls[j] = this->pWalls[j + 1];
@@ -204,7 +204,7 @@ bool Link::Unbound_Wall_Child(Wall* child)
 					this->pWalls[j] = NULL;	// Le dernier sera NULL car on viens de le destroy hha. pOW. Pachinka Haha... SzwIINNg.. PAF! Hehe. SPatatra!!! Ohoho' FLshaq, HaHa.
 			}
 			
-			numChild--;	// -1 wall
+			numChild--;	
 			break;
 		}
 	}
@@ -214,7 +214,7 @@ bool Link::Unbound_Wall_Child(Wall* child)
 		if (state == LinkState::BOUND)
 		{
 			state = LinkState::FREE;
-			this->Set_UI();	// change le sym
+			this->Set_UI();		// change le sym
 			this->Dsp_Link();	// Affiche le sym
 		}
 		else
@@ -232,6 +232,12 @@ bool Link::Unbound_Wall_Child(Wall* child)
 
 
 //UI
+void Link::Change_Color(Colors clr)
+{
+	this->clr = clr;
+	Dsp_Link();
+}
+
 void Link::Dsp_Link()						// Affiche le Link
 {
 	ConsoleRender::Add_Char(this->coord, this->sym, this->clr);

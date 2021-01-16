@@ -12,9 +12,9 @@
 
 const int NUM_COLOR = 4;	// nombre de couleurs
 static Colors clr;	// Pour colorier chaque bordures
-static int eventSpeed = 90200;
-
-static Event ev_RedBorders(Ev_Red_Borders, NUM_COLOR * 50);	// l'event. Fait flasher un certain nombre de fois tout les couleur du pattern ci-dessous
+static int eventSpeed = 70200;
+static int numCycles = 50;
+static Event ev_RedBorders(Ev_Red_Borders,2);	// l'event. Fait flasher un certain nombre de fois tout les couleur du pattern ci-dessous
 
 /*
 		RAINBOW PATTERN
@@ -30,16 +30,19 @@ static Event ev_RedBorders(Ev_Red_Borders, NUM_COLOR * 50);	// l'event. Fait fla
 
 void Ev_Red_Borders()
 {
+	static int cycles;
 	if (!ev_RedBorders.Is_Active())
 	{
+		cycles = 0;
 		ev_RedBorders.Activate();
-		ev_RedBorders.Start(eventSpeed);
+		ev_RedBorders.Start(0);
+		ev_RedBorders.delay.Start_Timer(eventSpeed, 1, 1);
 	}
 	else
 	{
 		while (ev_RedBorders.delay.Tick())
 		{
-			switch (ev_RedBorders.Get_Current_Step() % NUM_COLOR)
+			switch (cycles % NUM_COLOR)
 			{
 			case 0:	clr = RED;	  break;
 			case 1:	clr = GRAY; break;
@@ -50,12 +53,29 @@ void Ev_Red_Borders()
 			}
 			
 			Just_Dr_Map_Borders(clr);
-			ev_RedBorders.Advance(eventSpeed);
+			cycles++;
 
-			if (!ev_RedBorders.Is_Active())
-				Set_Dr_Map_1(0, true);	// Efface la map
+			if (cycles == numCycles * NUM_COLOR)
+			{
+				Cancel_Ev_Red_Borders();
+			}
 
 		}
 	}
 }
 
+void Set_Ev_Red_Borders(int duration)		 
+{
+	numCycles = duration;
+
+	if (ev_RedBorders.Is_Active())
+	{
+		Cancel_Ev_Red_Borders();
+	}
+		
+	Ev_Red_Borders();
+}
+void Cancel_Ev_Red_Borders() {
+	ev_RedBorders.Cancel();
+	Set_Dr_Map_1(0, true);
+}

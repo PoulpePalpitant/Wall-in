@@ -33,88 +33,10 @@ static void Block_Prison(bool Remove = false)
 		}
 }
 
-/*
-bool Sur_Perimetre(distance, pion)
-{
-longueurCote = 1 + distance * 2;
-
-leftSide  = x - distance
-rightSide = x + distance
-upSide    = y - distance
-downSide  = y + distance
-
-
-//----------
-int Convertir_PositionX(pion)	// Convertit une position qui dépasse les limites maximum de la map. Ex: -1, 3		Va convertir le X qui dépasse à gauche pour que celui-ci soit positionné à droite
-if(leftSide < 0 )  
-		leftSide = maxX - leftSide
-
-if(rightSide >= maxX ) 
-		rightSide -= maxX 
-//----------
-//----------
-int Convertir_PositionY(pion)	// Convertit une position qui dépasse les limites maximum de la map. Ex: -1, 3		Va convertir le X qui dépasse à gauche pour que celui-ci soit positionné à droite
-if(upSide == - 1 ) 
-		upSide = maxY - upSide
-
-if(downSide == maxX ) 
-		downSide -= maxY 
-//----------
-
-
-Cette méthode va vérifier chaque case en ligne droite autours du périmètre, en partout du haut vers la droite
-
-
-for (size_t i = 0; i < longueurCote; i++)	// check top
-{
-	//if pion.[x, y] == [Convertir_Position(leftSide + i), upSide]:
-		return True
-}
-for (size_t i = 0; i < longueurCote - 1; i++)	// check richgt
-{
-	//if pion.[x, y] == [rightSide , Convertir_PositionY(upSide + i)]:
-		return True
-}
-for (size_t i = 0; i < longueurCote; i++)	// check top
-{
-	//if pion.[x, y] == [Convertir_Position(rightSide - i), downSide]:
-		return True
-}
-for (size_t i = 0; i < longueurCote - 1; i++)	// check richgt
-{
-	//if pion.[x, y] == [rightSide , Convertir_PositionY(downSide + i)]:
-		return True
-}
-
-
-//if pion.[x, y] == [leftSide, upSide]:
-//        return true
-//        elif pion.[x, y] == [x, upSide]:
-//                return true
-//                elif pion.[x, y] == [leftSide, y]:
-//                        return true
-//                        elif pion.[x, y] == [rightSide, y]:
-//                                return true
-//                                elif pion.[x, y] == [leftSide, downSide]:
-//                                        return true
-//                                        elif pion.[x, y] == [x, downSide]:
-//                                                return true
-//                                                elif pion.[x, y] == [rightSide, downSide]:
-//                                                        return true
-//return false
-
-
-
-*/
-
 static void Refresher()	/// Refresher du stage
 {
 	if (gRefreshStage || P1.Get_HP() < 1)
 	{
-		//ItemsOnGrid::Remove_All();	// enlève tout les items spawné
-		//ListsOfChainToModify::Annihilate_All_Links();	// Links
-		//botList.Destroy_All_Bots();	// Bots
-		//P1.Er_Player();
 		Clear_Map();
 		Press_R_To_Refresh();
 		Press_X_To_Proceed(3);
@@ -179,7 +101,6 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 
 			case 4 :
 				Spawn_A_Jerry(UP, 12);	
-				//Spawn_A_Jerry(UP, 15);	
 				Spawn_A_Jerry(UP, 14);	
 				Spawn_A_Jerry(UP, 13);	
 				ev_Lvl2_Training_1.Advance(1200);
@@ -187,7 +108,6 @@ void Ev_Lvl2_Training_1()			// Le joueur apprend comment tirer sur les modifiers
 
 			case 5:
 				Spawn_A_Jerry(DOWN, 12);
-				//Spawn_A_Jerry(DOWN, 15);
 				Spawn_A_Jerry(DOWN, 14);
 				Spawn_A_Jerry(DOWN, 13);
 				Set_Dr_Map_1();

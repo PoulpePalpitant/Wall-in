@@ -26,7 +26,7 @@ namespace bots_to_spawn {
 	bool instantSpawn = false;	// Aucun warning de la part des bots
 	bool gRandomSpwn = true;
 	bool gRandomBoxSide = true;	// Le prochain bot spawnera sur une COORD Aléatoire
-	bool gHorizontalBorder = false, gVerticalBorder = false, gAllSides = false;		// Le prochain spawn sera vertical, ou horizontal	
+	bool gHorizontalSpawns = false, gVerticalSpawns = false, gAllSides = false;		// Le prochain spawn sera vertical, ou horizontal	
 	BotType type = {};
 
 	int gNumSpawnTOT = 0;				// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
@@ -90,8 +90,8 @@ namespace bots_to_spawn {
 		 instantSpawn = false;
 		 gRandomSpwn = true;		// Spawn random
 		 gRandomBoxSide = true;		// BoxSide random
-		 gHorizontalBorder = false;	// Le prochain spawn sera horizontal	
-		 gVerticalBorder = false;	// Le prochain spawn sera vertical	
+		 gHorizontalSpawns = false;	// Le prochain spawn sera horizontal	
+		 gVerticalSpawns = false;	// Le prochain spawn sera vertical	
 		 gAllSides = true;			// Spawn sur une bordure random
 		 type = BotType::REGULAR;	// I'll take a regular one please.
 
@@ -127,7 +127,7 @@ namespace bots_to_spawn {
 	void Set_Randomness() {				// Doit être utilisé qu'une seule fois par cycle
 		
 		// traitement du random
-		if (gHorizontalBorder || gVerticalBorder)
+		if (gHorizontalSpawns || gVerticalSpawns)
 			gAllSides = false;
 		if (gBoxSide != -1)
 			gRandomBoxSide = false;

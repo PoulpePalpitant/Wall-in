@@ -58,21 +58,8 @@ void UI_MoveBlast::Setup_Blast_Eraser(Blast* blast)
 	if (blast->nbSteps < blast->length)
 		length = blast->nbSteps;
 
+	eraserTimer.Start_Timer(blast->speed, length - 1);	// un timer qui va effacer toute la longueur du blast. le - 1 c'est pour pas effacer l'extremité
 
-	//// Voici un dumb fix
-	//if (blast->Has_Reached_Limit())	// résoud un bug d'affichage quand tu tir sur la bordure avec juste un tit blocker: Le prob d'affichage semble être lié au fait que quand
-	//{
-	//	length--;		// tu reach la bordure, d'increment 1 dernière fois le frontXY et la tailXY, il faut donc décaler de 1 pour pas effacer le link
-
-	//	//if(linkGrid->Is_Link_Alive_Here(blast->grdPos.index))	// et si tu reach la bordure et que tu atteint un blocker aussi, faut reculer encore plus. 
-	//		//length--;
-
-	//}
-
-	eraserTimer.Start_Timer(blast->speed, length - 1);	// un timer qui va effacer toute la longueur du blast. le - 2 c'est pour pas effacer l'extremité
-	
-	// temp bad
-	//eraserTimer.Start_Timer(blast->speed, 0, true);
 }
  
 // Quand le blast ne créer pas de mur, il faut l'effacer au complet

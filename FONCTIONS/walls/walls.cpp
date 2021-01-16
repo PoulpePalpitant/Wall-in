@@ -27,25 +27,20 @@ void Wall::Set_XY(int col, int row, Axis axis)
 // ON CHANGE L'APPARANCE DU MUR SELON SA FORCE ET LE MODIFIER DE SON PARENT!
 void Wall::Set_Wall_UI()									
 {
-
-	// On change rien si le nouveau type est le même que le précédent
-	//if (strgt == newType)		// Doit être updaté
-		//return;
-
-	switch (strgt)
+	switch (type)
 	{
-	case WallStrength::REGULAR:
+	case WallType::REGULAR:
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
-	case WallStrength::NONE:	
-		clr = Colors::GRAY;				// La couleur est grise
+	case WallType::NONE:	
+		clr = Colors::GRAY;				
 		if (axis == HOR)
-			sym = WallSym::SYM_HOR3;		// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
+			sym = WallSym::SYM_HOR3;	// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
 		else
 			sym = WallSym::SYM_VER3;
 		break;
 
-	case WallStrength::STRONG: 
+	case WallType::STRONG: 
 		if (axis == HOR)
 			sym = WallSym::SYM_HOR2;	// DEUX GROSSES LIGNES
 		else
@@ -53,32 +48,41 @@ void Wall::Set_Wall_UI()
 		clr = Colors::BRIGHT_WHITE;				
 		break;
 
-	case WallStrength::BIGSTRONGWOW:
+	case WallType::INVINCIBRU:
 		clr = Colors::LIGHT_AQUA;
 		break;
+
+	case WallType::ENERGIZED:
+		Set_Default_Wall_UI();
+		clr = Colors::LIGHT_PURPLE;
+		break;		
 	}
 
 	//Set_Drawer(false, true);	// Réaffiche le mur
 
 }
 
-void Wall::Set_Strength_From_Parent(WallStrength newStrgt)
+void Wall::Set_Strength_From_Parent(WallType newStrgt)
 {
 	if (StructureManager::Is_Link_Corrupted(pParent))// Le parent corrompu change le Wall en weak pour l'instant
 	{
-		strgt = WallStrength::NONE;
-		hp = (int)strgt;
+		type = WallType::NONE;
+		hp = (int)type;
 	}
 	else
 		if (pParent->Get_Modifier() == BUFFER)
 		{
-			strgt = WallStrength::STRONG;
-			hp = int(strgt);
+			type = WallType::STRONG;
+			hp = int(type);
 		}
 		else
 		{
-			strgt = newStrgt;
-			hp = int(strgt);
+			type = newStrgt;
+
+			if (newStrgt == WallType::ENERGIZED)
+				hp = 1;
+			else
+				hp = int(type);
 		}
 
 	Set_Wall_UI();
@@ -107,7 +111,7 @@ int Wall::Get_Wall_Size(Axis axis)						// La longueur du wall
 }
 
 // Créer un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
-void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
+void Wall::Activate_Wall(WallType newStrgt, Link* child, Polarization plr) {
 
 	state = WallState::EXISTS;		// It's alive!
 	childPos = plr;					// La position de son child dans la console
@@ -115,7 +119,12 @@ void Wall::Activate_Wall(WallStrength newStrgt, Link* child, Polarization plr) {
 	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
 	Set_Strength_From_Parent(newStrgt);		// La nouvelle force du mur
 
-	//drawer.timer.Stop();		// STOP l'effacement du mur si il vient juste d'être détruit
+	
+	//if (this->type == WallType::ENERGIZED)
+	//	if(this->pParent->Get_Modifier() != Modifier::FORCEFIELD)
+	//		this->pParent->Change_Color(LIGHT_PURPLE);
+
+
 	if (drawer.timer.Is_On())
 		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur				Cett fonction peut fail
 
@@ -136,7 +145,7 @@ void Wall::Remove_Bot_On_Me()
 {
 	this->botOnMe = -1; 	// Le bot est pati :)
 
-	//if (strgt == WallStrength::NONE)
+	//if (type == WallType::NONE)
 	//	Set_Drawer();				// DISABLEED SANS SAVOIR CE QUE ÇA FAISAIT
 
 	if (state != WallState::DEAD)
@@ -160,7 +169,7 @@ void Wall::Take_Damage(int dmg)
 		ListsOfChainToModify::Add_Chain_To_Modify({}, this->pChild);	// Détruit la chaîne de mur bueno
 	else
 	{
-		strgt = ((WallStrength)hp);	// change la force. et aussi l'apparence automatiquement.
+		type = ((WallType)hp);	// change la force. et aussi l'apparence automatiquement.
 		Set_Wall_UI();
 		Set_Drawer(); //this->UI_Draw_Or_Erase_Wall();	// Il faut Redraw manuellement
 	}

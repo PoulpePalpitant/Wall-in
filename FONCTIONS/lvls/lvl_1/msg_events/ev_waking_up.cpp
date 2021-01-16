@@ -72,9 +72,6 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 {
 	if (!ev_WakeUp.Is_Active())
 	{
-
-
-
 		clrscr();
 		Just_Dr_Map_Borders();
 		ev_WakeUp.Activate();
@@ -157,11 +154,11 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				break;
 
 			case 12:
-				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14), gBossClr,    TXT_SPD_ER, true);
+				ConsoleRender::Add_String(_14, Boss_Txt_Crd(_14), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_15, Boss_Txt_Crd(_15, 1), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_16, Boss_Txt_Crd(_16, 2), gBossClr, TXT_SPD_ER, true);
 				ConsoleRender::Add_String(_17, Boss_Txt_Crd(_17, 3), gBossClr, TXT_SPD_ER, true);
-				
+
 				Ev_Dumb_Dialogue_Fixer();
 				ev_WakeUp.Advance(0);
 				ev_WakeUp.delay.Start_Timer(10000, 1, true);
@@ -180,8 +177,8 @@ void Ev_Wake_Up()			// Accueil Le joueur quand il sort de son répit
 				}
 
 				//ConsoleRender::Add_String(_6, Boss_Txt_Crd(_6, 2), gBossClr, TXT_SPD_DR); // keep
-				
-					break;
+
+				break;
 
 			case 14:
 				//ConsoleRender::Add_String(_5, Boss_Txt_Crd(_5), gBossClr, TXT_SPD_ER, true);

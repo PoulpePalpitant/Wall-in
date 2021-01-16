@@ -11,20 +11,22 @@
 
 /* Level1  events !*/
 #include "events/ev_change_window.h"
-#include "events/ev_spawn_life.h"
+#include "events/ev_learn_border_limit.h"
+#include "events/ev_spawn_life2.h"
 #include "events/ev_dot_chase.h"
-#include "events/ev_bot_tutorial.h"
+#include "events/ev_bot_tutorial2.h"
 #include "events/ev_build_start_walls.h"
 #include "../../events/global_events/ev_update_heart.h"
 #include "../../events/global_events/ev_spwn_player.h"
 
 /* Msg events*/
-#include "msg_events/ev_new_goal.h"
+#include "msg_events/ev_new_goal2.h"
 #include "msg_events/EV_Hello.h"
 #include "msg_events/ev_wasd.h"
 #include "msg_events/ev_waking_up.h"
 #include "msg_events/ev_arr_keys.h"
 #include "msg_events/ev_day_1.h"
+#include "msg_events/ev_health_is_ammo.h"
 
 // others
 #include "../../events/global_events/feedback/ev_draw_map.h"
@@ -32,6 +34,7 @@
 #include "../../grid/AllGrids.h"
 #include "../../events/global_events/ev_progress_bar.h"
 #include "../../events/global_events/ev_thank_you.h"
+#include "../../events/global_events/ev_lvl_unlocked.h"
 
 
 // C'EST ICI QUE ÇA SE PASSE
@@ -43,8 +46,7 @@ void Dispatch_Msg_To_Lvl_1()
 	case PLS_INTIALIZE_LVL: Lvl_1_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
 
 	case LVL_INITIALIZED: 
-	//	MsgQueue::Register(CHANGE_WINSIZE);
-		break;	// n'empêche même pas de register des messges ici :(
+		break;
 
 	case CHANGE_WINSIZE:
 	//	OBS_Change_Window();
@@ -53,11 +55,15 @@ void Dispatch_Msg_To_Lvl_1()
 	case STAGE_ADVANCE:
 		if (gCurrentStage == 3)
 		{
+			Cancel_All_That_Buggy_Shit();
+			clrscr();
 			ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 			botList.Destroy_All_Bots();
-			clrscr();
-			Ev_Dr_Day_1();
+			gSkipStory = true;
+			Clear_All_Renders();
 
+			//Ev_Dr_Day_1();
+			MsgQueue::Register(STAGE_ADVANCE);
 		}
 		if (gCurrentStage == 4)
 		{
@@ -68,38 +74,35 @@ void Dispatch_Msg_To_Lvl_1()
 				botList.Destroy_All_Bots();
 
 
-				if (gCurrentCheckPoints[gCurrentLevel - 1] == 0)	// Si aucun checkpoint n'été atteint
+				if (gCurrentPuzzle[gCurrentLevel - 1] == 0)	// Si aucun checkpoint n'été atteint
 				{
 					P1.Set_Position({ 6,5 });
 					Just_Dr_Arr_Keys(); 
 					Just_Dr_Wasd();
 					P1.Er_Player();
 					Just_Dr_Map_Borders();
-					Ev_Progress_Bar();
-					MsgQueue::Register(SPAWN_PLAYER);
+					gCurrPuzzleStep = 0;	// SAFETY
+					MsgQueue::Register(SPAWN_PLAYER); // OLDWAY
 				}
 				else
 				{
-					P1.Set_Position(LVL1_CHECKPOINT_P1_CRD[gCurrentCheckPoints[gCurrentLevel - 1]]);
-					gSpawnCycleTot = Get_Lvl_Checkpoint();	// Le lvl va commencer à ce point dans le script
 					Checkpoint_Delay();// Delay Next spawn
-					Ev_Progress_Bar();	// Besoin d'une version FASTER qui élimine ce qui à été fait avant
-					
-					if(gCurrentCheckPoints[gCurrentLevel - 1] != NUM_CHECKPOINT[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+
+					if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
 						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
+
+
 
 					// Pour debug
 					//gGrids.Dr_Spawngrid();
 
-				//	MsgQueue::Register(FREE_PLAYER);
 				}
 			}
 
-			P1.Reset_Hp_And_Heart(3);// Ev_Dr_Heart();
-			blastP1.Get_Ammo_Manager().Set_Ammo_For_Checkpoint();	// nombre de shots
-
-
-			//MsgQueue::Register(ENABLE_BLAST);	// quicker quick start
+			P1.Reset_Hp_And_Heart(3);
+			Ev_Progress_Bar2();
+			Init_Puzzle();	
+							
 			MsgQueue::Register(START_BOTS); // Here they come baby
 			gSkipStory = false;
 			gDayStarted = true;
@@ -116,20 +119,17 @@ void Dispatch_Msg_To_Lvl_1()
 	case PROCEED: 
 		if (gCurrentStage == 4)
 		{
-			gCurrentCheckPoints[gCurrentLevel - 1] = 0;	// Restart le checkpoint
+			gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
 			MsgQueue::Register(PLS_INTIALIZE_LVL);	
 			clrscr();
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
 				// Ferme le jeu
-				Ev_Thks_For_Playing();
+				//Ev_Thks_For_Playing();
 
 				// Prochain level
-				//gCurrentStage = 0;			// START À ZÉRO POUR LE LABYRINTHE
-				//gCurrentLevel = 2;
-				//gSkipStory = false;
-				//Event::Cancel_All();		// Tout les events
+				Ev_Lvl_Unlocked();
 			}
 		}
 		else
@@ -155,26 +155,23 @@ void Dispatch_Msg_To_Lvl_1()
 		}
 		break;
 
-	case BUMPED_BORDER:
-		if (gCurrentLevel == 1 && gCurrentStage == 1)
-		{
-			if(P1.Get_Grd_Coord().c == linkGrid->Get_Cols() - 1)
-				Ev_Wake_Up();		// Le joueur se fait wakeup
-			//Ev_Bot_Tutorial();
-		}
-		break;
 		/* Items*/
 	case ITEM_PICKUP:
 		if (gCurrentStage <= 1)
 		{
-			Ev_Dr_New_Goal();		// - NEW GOAL -
-			Ev_Spawn_Life();
+			Draw_Tuto_Progression(1);
+			Ev_Spawn_Life2();
+			Ev_Learn_Border_Limit();			// Learn to shoot
 		}
-		//Set_Dr_Map_1();
+		
+		if (gDayStarted == true && gCurrentPuzzle[0] == 2) {
+			Ev_Health_Is_Ammo();
+		}
+
 		break;
 
 	case SPAWN_SPECIAL_ITEM: 
-		Ev_Spawn_Mysterious_Item();			// Si tu trigger un event qui était déjà actif ici, ça va faire deux updates en 1 seul cycle! -	BAD -
+		Ev_Spawn_Mysterious_Item2();			// Si tu trigger un event qui était déjà actif ici, ça va faire deux updates en 1 seul cycle! -	BAD -
 		break;
 
 		/*Bots*/

@@ -29,10 +29,19 @@ void BlastAmmo::Deactivate() {
 
 }
 
-void BlastAmmo::Drain_Health_For_Shot()
+bool BlastAmmo::Drain_Health_For_Shot()
 {
-	P1.Player_Lose_HP();
-	Add_Ev_Drain_Health();
+	if (P1.Get_HP() > 1)
+	{
+		P1.Player_Lose_HP();
+		Add_Ev_Drain_Health();
+		return true;
+	}
+	else
+	{
+		Ev_Hp_Drain_Msg();
+		return false;
+	}
 	// ev drain health
 }
 
@@ -41,10 +50,7 @@ bool BlastAmmo::Shoot()
 	if (Is_Active())
 	{
 		if (!Ammo_Available())
-		{
-			Drain_Health_For_Shot();
-			return true;
-		}
+			return Drain_Health_For_Shot();
 
 		if (--ammo == 0)
 			Ev_Ammo_Depleted();	 // Empty!
@@ -84,16 +90,6 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 			Ev_Ammo_Depleted();	 // Pas de ammo
 	}
 }
-
-void BlastAmmo::Set_Ammo_For_Checkpoint()	// Set la limite selon le nombre assigné au checkpoint d'un niveau
-{
-	if (gCurrentLevel == 1)
-		Set_Ammo(LVL1_BLAST_AMMO[gCurrentCheckPoints[gCurrentLevel - 1]]);
-	else
-		if (gCurrentLevel == 2)
-			Set_Ammo(LVL2_BLAST_AMMO[gCurrentCheckPoints[gCurrentLevel - 1]]);
-}
-
 
 
 

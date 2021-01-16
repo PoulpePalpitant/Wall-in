@@ -10,7 +10,7 @@ int gSpawnCycleTot;						// Le nombre total de spawn cycle ayant u lieu
 SpeedTimer gSpwBotTimer;
 int prevSpwSpeed = 0;
 
-const int CHECKPOINT_DELAY = 0;
+const int CHECKPOINT_DELAY = 5;
 
 
 void Reset_Spw_Cycle()				// Reset le nombre de spw cycle à 0
@@ -56,4 +56,9 @@ void Restore_Prev_Spw_Speed()	// restaure la vitesse précédante
 void Checkpoint_Delay()	// Délay après chaque checkpoint
 {
 	gSpwBotTimer.Add_Count(CHECKPOINT_DELAY);
+}
+
+void Cancel_Checkpoint_Delay()	// Undo le delay après chaque checkpoint xD
+{
+	gSpwBotTimer.Add_Count(-CHECKPOINT_DELAY);
 }

@@ -71,12 +71,16 @@ namespace Intervals {
 		{
 			if (instance)
 			{
-				// Destroy first
-				for (int i = 0; i < listTot; i++)
-					instance[i].~IntervalList();		// Détruit les listes, et tous leurs intervalles
 
-				availableLists.~IntervalList();			// Delete la liste contenant les index des listes disponibles
-				delete[] instance;
+				////  Pas obligé, le destructeur devrait le faire automatiquement
+				//// Destroy first
+				//for (int i = 0; i < listTot; i++)
+				//	instance[i].~IntervalList();		// Détruit les listes, et tous leurs intervalles
+				//availableLists.~IntervalList();			// Delete la liste contenant les index des listes disponibles
+
+
+				availableLists.Empty_List();	// vide à la place? c'est pas un pointeur dude
+				delete[] instance;	// Delete deux fois????
 
 			}
 
