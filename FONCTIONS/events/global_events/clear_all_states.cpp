@@ -23,6 +23,7 @@
 #include "../../spawns/bots_to_spawn.h"
 #include "../../items/item_spw_drawer.h"
 #include "feedback/ev_drain_health.h"
+#include "../../blast/mod_queue_animator.h"
 
 //#include "../../grid/AllGrids.h"
 
@@ -53,8 +54,9 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
 	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
 	DrawItemSpawnList::Remove_All();	// hardcore
+	DrawModifierQueue::isShown = false;
 	 //Hide_Ammo_UI();
-	//BlastModifierQueue::queue.EMPTY_QUEUE(); // empty la queue de modifiers
+	
 	BlastModifierQueue::Reset();
 
 	P1.Get_Teleporter().Remove_Teleport_Location();	// Prévient des abus

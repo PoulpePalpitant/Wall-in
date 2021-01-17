@@ -439,7 +439,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
 		}
 
 		//down
@@ -454,7 +454,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
 		}
 
 		// Left 
@@ -469,7 +469,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
 		}
 
 		// right
@@ -485,7 +485,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
 		}
 
 		gGrids.Make_Chain_Of_Walls({ center.c - 1, center.r + distance }, UP, 1, WallType::ENERGIZED);
@@ -510,7 +510,7 @@ void Puzzle_3_6()
 			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
 				wallsPlacedIncorrectly++;
 			else
-				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::NONE || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::NONE)
+				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
 					wallsToConvert++; //Check si les murs sont bien convert
 		}
 
@@ -548,7 +548,7 @@ void Puzzle_3_7()
 			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2, r }, Modifier::FORCEFIELD);
 
 
-		gGrids.Make_Chain_Of_Walls({ 0, 5 }, RIGHT, 3, WallType::NONE);
+		gGrids.Make_Chain_Of_Walls({ 0, 5 }, RIGHT, 3, WallType::WEAK);
 		gGrids.Make_Chain_Of_Walls({ 0, 11 }, RIGHT, 3, WallType::REGULAR);
 		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 5 });
 		break;
@@ -588,7 +588,7 @@ void Puzzle_3_8()
 			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 + 1 + 3 - c, linkGrid->Get_Rows() - 6 }, Modifier::BLOCKER);
 		}
 
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols()  / 2 - 3, 5 }, RIGHT, 1,WallType::NONE);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols()  / 2 - 3, 5 }, RIGHT, 1,WallType::WEAK);
 
 		gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 + 5, 5});
 		gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 - 10 + 1, 5});
@@ -843,7 +843,7 @@ void Puzzle_3_11()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
 		}
 
 		//down
@@ -858,7 +858,7 @@ void Puzzle_3_11()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
 		}
 
 		// Left 
@@ -873,7 +873,7 @@ void Puzzle_3_11()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
 		}
 
 		// right
@@ -889,16 +889,16 @@ void Puzzle_3_11()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::NONE);
+			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
 		}
 
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, 7 - 2 }, DOWN, 1, WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, 7 + 2 }, UP, 1, WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 }, LEFT, 1, WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 - 1 }, LEFT, 1, WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2, 7 - 1 }, RIGHT, 1, WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 + 1 }, LEFT, 1, WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2, 7 + 1 }, RIGHT, 1, WallType::NONE);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, 7 - 2 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, 7 + 2 }, UP, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 - 1 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2, 7 - 1 }, RIGHT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 + 1 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2, 7 + 1 }, RIGHT, 1, WallType::WEAK);
 
 		puzzleSolved = false;
 		P1.Reset_Hp_And_Heart(1);
@@ -917,7 +917,7 @@ void Puzzle_3_11()
 			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
 				wallsPlacedIncorrectly++;
 			else
-				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::NONE || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::NONE)
+				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
 					wallsToConvert++; //Check si les murs sont bien convert
 		}
 
@@ -1069,8 +1069,8 @@ void Puzzle_3_13()
 		gGrids.Activate_Link({ 2, 14 }, Modifier::REGULAR);
 		gGrids.Activate_Link({ 3, 14 }, Modifier::REGULAR);
 		
-		gGrids.Make_Chain_Of_Walls({ 1, 11 }, UP, 1,WallType::NONE);
-		gGrids.Make_Chain_Of_Walls({ 3, 9 }, DOWN, 1,WallType::NONE);
+		gGrids.Make_Chain_Of_Walls({ 1, 11 }, UP, 1,WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 3, 9 }, DOWN, 1,WallType::WEAK);
 		gGrids.Activate_Link({ 2, 10 }, Modifier::REGULAR);
 
 		

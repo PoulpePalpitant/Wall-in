@@ -8,12 +8,16 @@
 #include "../../../blast/blast_ammo_animator.h"
 #include "ev_rainbow_borders.h"
 #include "../../../events/global_events/feedback/ev_draw_map.h"
+#include "../../../blast/mod_queue_animator.h"
+#include "../../msg_dispatcher.h"
+#include "../../../player/player.h"
 
 using namespace DrawBlastAmmo;
-
+using namespace DrawModifierQueue;
 
 static Event ev_AmmoDepleted(Ev_Ammo_Depleted);
 static std::string depleted = "- NO AMMO -";
+static std::string depleted2 = "- NO AMMO FOR SHOT -";
 static Coord crd;
 
 
@@ -41,6 +45,9 @@ void Ev_Ammo_Depleted()	// Affiche 1 warning que le joueur n'a plus d'ammo
 			}
 			else
 			{
+				if (DrawModifierQueue::isShown && P1.Get_HP() == 1)
+					ConsoleRender::Add_String(depleted2, { realTitleCrd.x - 3,realTitleCrd.y }, LIGHT_RED, 0, erOrDr);
+
 				ConsoleRender::Add_String(depleted, crd, LIGHT_RED, 0, erOrDr);
 
 				if (erOrDr)
@@ -54,5 +61,11 @@ void Ev_Ammo_Depleted()	// Affiche 1 warning que le joueur n'a plus d'ammo
 void Cancel_Ev_Ammo_Depleted()	// permet de cancel cet event for the sake of speed
 {
 	ConsoleRender::Add_String(depleted, crd, LIGHT_RED, 0, true);
+	
+	ConsoleRender::Add_String(depleted2, { realTitleCrd.x - 3,realTitleCrd.y }, LIGHT_RED, 0, 1);
+	
+	if (DrawModifierQueue::isShown)
+		MsgQueue::Register(SHOW_MOD_QUEUE);
+
 	ev_AmmoDepleted.Cancel();
 }

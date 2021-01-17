@@ -11,7 +11,7 @@ extern const int WALL_SIZE_Y;	// Le nombre de case qui composent chaque wall ver
 
 //	LES TYPES DE MURS												// Par défaut, les tirs du joueur font des murs normal
 //enum class WallType { REGULAR, CORRUPTED, INVINCIBLE};
-enum class WallType { NONE, REGULAR, STRONG, INVINCIBRU, ENERGIZED};		//
+enum class WallType { WEAK, REGULAR, STRONG, INVINCIBRU, ENERGIZED};		//
 enum class WallState { DEAD, EXISTS, ETERNAL, SAD};					// Je reviendrais customize ça quand je serais plus avancé
 enum class WallSym {DEAD = 255, SYM_HOR = 196 , SYM_HOR2 = 205, SYM_HOR3 = 240,  SYM_VER = 179, SYM_VER2= 186, SYM_VER3 = 221};				// Le symbole d'un seul wall, horizontal et vertical
 

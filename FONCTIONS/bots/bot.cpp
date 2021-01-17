@@ -17,7 +17,7 @@ void Reset_Custom_Bot()
 	gCustomBot.is = false;
 }
 
-bool Bot::Is_Dead()											// vérifie si un bot est mort
+bool Bot::Is_Dead()										
 {
 	if (this->hp <= 0)
 		return true;
@@ -27,7 +27,7 @@ bool Bot::Is_Dead()											// vérifie si un bot est mort
 
 void Bot::Destroy_Bot()
 {
-	this->hp = 0;		// Remet le HP à 0. this boi is dead
+	this->hp = 0;		// this boi is dead
 	ConsoleRender::Add_Char(this->XY, TXT_CONST.SPACE, this->clr);		//Effacement!
 	gAllBotMeta.Bot_Died();	// One more :(
 	
@@ -37,18 +37,18 @@ void Bot::Destroy_Bot()
 
 
 // Création d'un bot
-void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised, bool instant)	// Construit en utilisant d'autre fonctions
+void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised, bool instant)	
 {
 	static CustomBotStats customBot;	customBot.is = false;
 
 	// Le bot qui va suivre est customized
 	if (isBotCustomised)
 	{
-		customBot = gCustomBot;		// Je pourrais mettre ce test dans chacune des fonctions suivantes aussi
+		customBot = gCustomBot;		
 		Reset_Custom_Bot();				/// for now, on reset le custom bot à chaque fois
 	}
 
-	this->type = type;	// Le type de bot est initialisé
+	this->type = type;	
 
 	// INITIALISATION DES VARIABLES DE POSITIONS 'N SHIT
 	Init_Bot_Coord_Stuff(spGrdCrd);
@@ -57,7 +57,7 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised, bool 
 	Init_Bot_Design(customBot);
 
 	// INITIALISE LES STATS DU BOT
-	Init_Bot_Stats(customBot);						// Le type du Bot doit être initialisé d'abord
+	Init_Bot_Stats(customBot);						
 
 	// Le warning de spawn du bot
 	if (instant)
@@ -69,15 +69,12 @@ void Bot::Create_Bot(BotType type, SpwCrd& spGrdCrd, bool isBotCustomised, bool 
 			this->spwnWarning.Init_Spawn_Warning(dir, SPWN_DLAY);
 
 	// INITIALISE DISTANCE À PARCOURIR
-	Init_Step_Count();								// À besoin de la direction et de la vitesse du bot
+	Init_Step_Count();								
 
-	Init_Dist_Btw_Walls();							// Fait juste initialiser btwWalls
-	//Strt_Nxt_Wall_Time();							// Pour starter le prochain timer
+	Init_Dist_Btw_Walls();							
 	tillNxtWall = GAP_BTW_GRID - 1;
 
 	gAllBotMeta.New_Bot();		// +1 les mecs!
-
-	// Je crois qu'il serait pertinent de faire une nouvelle classe de bot uniquement si ses mouvements ou ses intéractions avec les autres objets du jeux sont différentes
 }
 
 
@@ -102,16 +99,14 @@ bool Bot::Take_Dmg(int dmg)
 {
 	bool deadBot = false;
 
-	this->hp -= dmg;	// power = HP
-
+	this->hp -= dmg;	
 	if (this->Is_Dead())
 	{
 		this->Destroy_Bot(); // da bot is destroyed
 		deadBot = true;
 	}
 
-	return deadBot;	// success?
-	/*else update ça couleur ou son design I guess*/
+	return deadBot;	
 			   
 }
 
@@ -123,13 +118,14 @@ bool Bot::Bot_Impact(Wall* wall)
 		return false;
 
 	bool deadBot = false;
-	int HP;	// l'hp du wall, AVANT l'impact
+	int HP;	
+
 	HP = wall->Get_Hp();
 
-	if (wall->Get_Type() != WallType::NONE) // Affiche le wall par dessus le bot le gros, just passing.	 Les bots passent à travers les corrupted
+	if (wall->Get_Type() != WallType::WEAK) // Affiche le wall par dessus le bot le gros, just passing.	
 	{
 		wall->Take_Damage(this->Get_Power()); // Taking dmg here!
-		deadBot = Bot::Take_Dmg(HP);		// Hey me too!
+		deadBot = Bot::Take_Dmg(HP);	 	  // Hey me too!
 	}
 
 	if (deadBot)
@@ -141,19 +137,17 @@ bool Bot::Bot_Impact(Wall* wall)
 // Classic Draw/ erase
 void Bot::Animate_Bot(Bot* bot, Coord& nxtPos)
 {
-	UI_Erase_Bot(bot);	// Wonderful animation
-	UI_Draw_Bot(bot, nxtPos);		// wonderful animation
+	UI_Erase_Bot(bot);	            // Wonderful animation
+	UI_Draw_Bot(bot, nxtPos);		
 }
 
 void Bot::UI_Draw_Bot(Bot* bot, Coord& nxtPos)
 {
-	// Affichage du symbole du bot
 	ConsoleRender::Add_Char(nxtPos, bot->sym, bot->clr);
 }
 
-void Bot::UI_Erase_Bot(Bot* bot)	// ERASE le bot
+void Bot::UI_Erase_Bot(Bot* bot)	
 {
-	// Efface le bot
 	ConsoleRender::Add_Char(bot->XY, TXT_CONST.SPACE);
 }
 

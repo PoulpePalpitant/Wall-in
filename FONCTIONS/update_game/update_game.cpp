@@ -143,7 +143,9 @@ void Update_Player_Action()
 						P1.Get_Teleporter().Remove_Teleport_Location();
 					}
 					else
+					{
 						Ev_Wrong_Action_Add();			// Flash le joueur
+					}
 
 				}
 				else

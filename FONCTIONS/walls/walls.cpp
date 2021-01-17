@@ -32,7 +32,7 @@ void Wall::Set_Wall_UI()
 	case WallType::REGULAR:
 		Set_Default_Wall_UI(); break;		// Mur blanc. Une ligne continue
 
-	case WallType::NONE:	
+	case WallType::WEAK:	
 		clr = Colors::GRAY;				
 		if (axis == HOR)
 			sym = WallSym::SYM_HOR3;	// Le symbole est aussi différent. C'Est plus un truc rayé qu'une ligne continue
@@ -66,7 +66,7 @@ void Wall::Set_Strength_From_Parent(WallType newStrgt)
 {
 	if (StructureManager::Is_Link_Corrupted(pParent))// Le parent corrompu change le Wall en weak pour l'instant
 	{
-		type = WallType::NONE;
+		type = WallType::WEAK;
 		hp = (int)type;
 	}
 	else
@@ -145,7 +145,7 @@ void Wall::Remove_Bot_On_Me()
 {
 	this->botOnMe = -1; 	// Le bot est pati :)
 
-	//if (type == WallType::NONE)
+	//if (type == WallType::WEAK)
 	//	Set_Drawer();				// DISABLEED SANS SAVOIR CE QUE ÇA FAISAIT
 
 	if (state != WallState::DEAD)
@@ -163,7 +163,8 @@ bool Wall::Is_Activated()
 // Dépend de la force du bot
 void Wall::Take_Damage(int dmg)
 {
-	this->hp -= dmg;
+	if(this->type != WallType::INVINCIBRU)
+		this->hp -= dmg;	
 
 	if (hp <= 0)
 		ListsOfChainToModify::Add_Chain_To_Modify({}, this->pChild);	// Détruit la chaîne de mur bueno
@@ -171,7 +172,7 @@ void Wall::Take_Damage(int dmg)
 	{
 		type = ((WallType)hp);	// change la force. et aussi l'apparence automatiquement.
 		Set_Wall_UI();
-		Set_Drawer(); //this->UI_Draw_Or_Erase_Wall();	// Il faut Redraw manuellement
+		Set_Drawer(); 
 	}
 }
 

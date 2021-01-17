@@ -11,7 +11,7 @@ namespace DrawModifierQueue {
 	bool isShown = false;			// si le player vois la queue
 
 	// Bunche of static stuff
-	std::string queueTitle = "NEXT AMMO TYPE";
+	std::string queueTitle = "NEXT SHOT TYPE";
 	static std::string excess = ". . .";
 	std::string line = { (char)242,(char)242,(char)242};
 
@@ -27,7 +27,7 @@ namespace DrawModifierQueue {
 		//titleCrd = { (Find_Ctr_X((int)std::size(queueTitle)) / 2) * 3, 24 };									// La corrd du ttitre principal
 		//titleCrd ={ (int)((Find_Ctr_X((int)std::size(queueTitle)) / 2) * 1.5f), 24 }; // Essayons à gauche
 
-		fakeTitleCrd.x = map.Get_Box_Limit(LEFT) - 17;
+		fakeTitleCrd.x = map.Get_Box_Limit(LEFT) - 20;
 
 
 		if (map.Get_Height() <= 13)
@@ -63,6 +63,13 @@ namespace DrawModifierQueue {
 
 		isShown = false;
 	}
+
+	void Show_Queue_No_Ammo_UI() {
+		ConsoleRender::Add_String(queueTitle, realTitleCrd, WHITE, 0, true);
+
+	}
+
+
 	void Show_Excess() // Les trois tits points qui apparaissent pour signaler qu'il y a plus que 5 éléments dans la queue
 	{
 		ConsoleRender::Add_String(excess, { fakeTitleCrd.x + 2,fakeTitleCrd.y + yPos[MAX_QUEUE_SIZE - 1] +3 }, WHITE);

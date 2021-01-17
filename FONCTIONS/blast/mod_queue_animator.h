@@ -13,6 +13,7 @@ namespace DrawModifierQueue {
 	extern std::string line;
 
 	extern Coord fakeTitleCrd;			// La corrd du ttitre principal
+	extern Coord realTitleCrd;
 	extern Distance btwTitle;		// Distance entre le titre de la queue et la limite gauche à droite. On va slide les charactère à gauche et à droite. 
 	extern int limitLeftX;			// // La limite à gauche d'où l'animation va scroller le texte
 	extern int limitRightX;		// La limite à droite ou l'animation va scroller le texte
@@ -45,6 +46,7 @@ namespace DrawModifierQueue {
 
 	void Show_Queue_UI();	// Affiche la queue
 	void Hide_Queue_UI();	// Efface la queue
+	void Show_Queue_No_Ammo_UI();
 	void Show_Excess();		// Les trois tits points qui apparaissent pour signaler qu'il y a plus que 5 éléments dans la queue
 	void Hide_Excess();
 	void Reorder_Rest_Of_Queue();

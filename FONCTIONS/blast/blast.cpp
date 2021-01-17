@@ -8,6 +8,7 @@
 #include "blast_modifier_queue.h"
 #include "../lvls/lvl_script.h" 
 #include "blast.h"
+#include "mod_queue_animator.h"
 
 /*
 	Le blast horizontal sera 2 fois plus long, car les cases de la console windows sont deux fois plus grandes sur la hauteur,
@@ -89,7 +90,7 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 		return;
 	}
 
-	if (wallType == WallType::NONE)
+	if (wallType == WallType::WEAK)
 	{
 		switch (dir)
 		{
@@ -243,7 +244,7 @@ void Blast::UPD_Blast_Shot()
 							{
 								this->Setup_Speed(1);						// Gonna be a fastblast!
 								
-								if (wallType == WallType::NONE)
+								if (wallType == WallType::WEAK)
 								{
 									this->Set_WallType(WallType::REGULAR);
 									this->Setup_Blast_UI();
@@ -412,6 +413,8 @@ void Blast::Clear_Blast()	// Permet d'effacer enfin le blast quand tu le cancel
 		toErase = nbSteps;
 	for (int i = 0; i < toErase; i++)
 		UI_MoveBlast::Erase_Blast_Tail(this);	//Erase la tail jusqu'au head
+
+	DrawModifierQueue::Hide_Queue_UI();
 
 	ammo.Deactivate();
 	this->Cancel();
