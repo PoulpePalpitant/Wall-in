@@ -4,17 +4,11 @@
 #include	"../link/link.h"
 #include "../grid/grid.h"
 
-// Le teleporteur est une action que le joueur peut faire qui lui permet de se teleporter
 /*
-	Le joueur peut lui même setté le teleporteur en tirant. La logique va comme suis
-
-	Un téléporteur peut uniquement être situé:
-
-	- Sur un Link de state FREE
-	- Sur un Link de modifier REGULAR
-
-	Cela implique donc, que toute tentative de créer un teleporteur ou le joueur tir un blast qui ne produit pas un link FREE et RGULAR échouera
-
+	Le teleporteur est une action que le joueur peut faire qui lui permet de se teleporter
+	Le joueur peut lui même setté le teleporteur en tirant. 
+	Un téléporteur ne téléportera jamais le joueur sur une ROOT. Si le joueur tente de faire ça, il sera téléporté juste en face, selon la direction du tir. Si cette nouvelle position est aussi une ROOT, la téléportation
+	échouera. Le joueur peut se téléporter sur la même position autant de fois qu'il le veut.
 */
 
 class Teleporter
@@ -34,10 +28,9 @@ public:
 	bool Validate_Position(Link &link);				// Check si le link d'une position est free et régulier
 	bool Validate_Position(GrdCoord crd);			// Check si le link d'une position est free et régulier
 	bool Set_Teleport_Location(GrdCoord coord);		// Set une position de téléportation. Fais la validation en même temps
+	GrdCoord Get_Coord() { return crd; }
 
-	//Teleporter() {}
 	~Teleporter() {}
-
 };
 
 

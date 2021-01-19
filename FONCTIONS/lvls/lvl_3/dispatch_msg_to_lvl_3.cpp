@@ -78,6 +78,8 @@ void Dispatch_Msg_To_Lvl_3()
 			P1.Reset_Hp_And_Heart(3);
 			Ev_Progress_Bar2();
 			Init_Puzzle();
+			gGrids.Extremely_Dumb_Fix_To_Redraw_Walls(); // wowsies
+
 
 			MsgQueue::Register(START_BOTS); // Here they come baby
 			gSkipStory = false;

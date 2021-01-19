@@ -3,6 +3,7 @@
 #include "teleporter.h"
 #include "../grid/AllGrids.h"
 #include "../player/player.h"
+#include "../events/global_events/feedback/ev_tp_animation.h"
 
 
 const Colors Teleporter::CLR = LIGHT_GREEN/*LIGHT_AQUA*/;
@@ -44,13 +45,14 @@ bool Teleporter::Teleport_Player()							//
 		else
 			P1.Er_Player();
 
-		// Déclancherait une animation, mais pour l'instant
 		P1.Set_Position(crd);
 		P1.Dr_Player();
 
+		Add_Tp_Animation();
+
+
 		// Remove teleporter
 		//Remove_Teleport_Location();
-
 		return true;
 	}
 	else

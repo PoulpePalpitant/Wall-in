@@ -6,6 +6,9 @@
 #include "../animation/UI_move_blast.h"
 #include "AllGrids.h"
 #include "../global_types/global_types.h"
+#include "../events/global_events/feedback/ev_blast_splash.h"
+#include "../events/msg_dispatcher.h"
+
 
 extern AllGrids gGrids = {};	//	 La variable globale contenant tout les grids
 
@@ -96,11 +99,9 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	static GridIndexIncrementor wallCrd;	// crd du wall
 	static GridIndexIncrementor linkCrd;	// Coord de chaque Link à afficher
 	bool playerOnLink = false;				// N'affiche pas le link child si le player se trouve dessus
-	static bool eraseBlast;			// Ne créer aucun wall. Se produit quand des modifiers se combinent ensemble
-	static Teleporter& tp = P1.Get_Teleporter();			/// le teleporteur du joueur
-
-	// activate walls?
-	// ou juste convert link?
+	static bool eraseBlast;					// Ne créer aucun wall. Se produit quand des modifiers se combinent ensemble
+	static Teleporter& tp = P1.Get_Teleporter();			/// le teleporteur du joueur					
+	bool spaghettiTime = false;				
 
 	parent = child = NULL;
 	wall = impactedWall = NULL; wallGRID = NULL;	/*safety*/
@@ -111,7 +112,6 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 	wallCrd = linkCrd;	wallCrd.index = gGrids.Convert_LinkCrd_To_WallCrd(linkCrd);	// Première Coord de Wall
 
 	// Doit d'abord déterminé si le blast ne fait que convertir un link sans créer de wall, ou si il se smash dans un blocker
-
 	 Deal_With_Modifier_Combinations(blast->grdPos.index, blast->modifier, eraseBlast);
 
 	if (eraseBlast)	// Aucun mur ne sera créé. Un link est probablement convertit, mais on créer rien d'autre
@@ -129,11 +129,21 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 
 		while (nbOfWalls)
 		{
+			// Sert à ne pas lancer le blast_splash quand on tir sur une bordure mais qu'un ROOT était déjà là. Why? parce que je veux pas que l'autre animation
+			// de border splash soit effacé par blast-splash
+			if (parent->Get_State() != LinkState::DEAD)
+				spaghettiTime = true;
+			else
+				MsgQueue::Register(BLAST_REACHED_BORDER);
+
+
+
 			wall = &wallGRID->wall[wallCrd.index.c][wallCrd.index.r];	// Le wall
 			parent = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// Le parent
 			linkCrd.Decrement_Coord();	// Crd du child
 			child = &linkGrid->link[linkCrd.index.c][linkCrd.index.r];	// le child
 
+			
 			parent->Activate_Link(blast->modifier, wall);		// Active le Link, et le lie à son child
 			
 			if(parent->Get_Modifier() == Modifier::ENERGIZER)
@@ -177,9 +187,13 @@ bool AllGrids::Activate_Walls_And_Links_From_Blast(Blast* blast)
 					tp.Set_Teleport_Location(linkCrd.index);
 			}
 		}
+
+		// sploosh
+		if(!blastP1.Has_Reached_Limit() || spaghettiTime) 
+			Add_Blast_Splash(blastP1.dir,blastP1.frontXY.coord);
 	}
 
-	return eraseBlast;	// Détermine si on doit attendre d'erase le avant de désactivé le blast
+	return eraseBlast;	// Détermine si on doit attendre d'erase avant de désactivé le blast
 }
 
 
@@ -511,4 +525,25 @@ void AllGrids::Make_Box_Around(GrdCoord center, Distance distance,Modifier mod, 
 	for (r = center.r - distance; r < center.r + distance + 1; r++)
 		if (Validate_Dead_Link({ center.c + distance, r }))
 			gGrids.Activate_Link({ center.c + distance,r }, mod, erase);
+}
+
+void AllGrids::Extremely_Dumb_Fix_To_Redraw_Walls()	// Le nom le dit: Ceci redraw tout les walls, parce que ça arrive que les walls sont pas bien affichés. Et débuggé cette merde est une perte de temps
+{
+	// Complete old garbage 		
+	for (int r = 0; r < wallGridHor->Get_Rows(); r++)
+	{
+		for (int c = 0; c < wallGridHor->Get_Cols(); c++)
+		{
+			if (wallGridHor->wall[c][r].Is_Activated())
+				wallGridHor->wall[c][r].Set_Drawer();
+		}
+	}
+	for (int r = 0; r < wallGridVer->Get_Rows(); r++)
+	{
+		for (int c = 0; c < wallGridVer->Get_Cols(); c++)
+		{
+			if (wallGridVer->wall[c][r].Is_Activated())
+				wallGridVer->wall[c][r].Set_Drawer();
+		}
+	}
 }

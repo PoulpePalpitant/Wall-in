@@ -9,6 +9,7 @@
 #include "../lvls/lvl_script.h" 
 #include "blast.h"
 #include "mod_queue_animator.h"
+#include "../events/global_events/feedback/ev_blast_splash.h"
 
 /*
 	Le blast horizontal sera 2 fois plus long, car les cases de la console windows sont deux fois plus grandes sur la hauteur,
@@ -238,7 +239,7 @@ void Blast::UPD_Blast_Shot()
 						grdPos.Increment_Coord();	// Nouvelle position sur le grid de Link. 
 						ItemsOnGrid::Pickup_Item_Here(grdPos.index);	// Grab that item, by SHOOTING IT!
 
-						if (linkGrid->Is_Link_Alive_Here(grdPos.index))			// Vérifie la présence d'un link 
+						if (linkGrid->Is_Link_Alive_Here(grdPos.index))			// Vérifie la présence d'un link
 						{
 							if (linkGrid->link[grdPos.index.c][grdPos.index.r].Get_Modifier() == Modifier::FORCEFIELD && wallType != WallType::REGULAR)	// Blast peut passé à travers les forcefield
 							{
@@ -249,14 +250,6 @@ void Blast::UPD_Blast_Shot()
 									this->Set_WallType(WallType::REGULAR);
 									this->Setup_Blast_UI();
 								}
-								//else
-								//{
-								//	this->Set_WallType(WallType::ENERGIZED);
-								//	this->Setup_Blast_UI();
-								//}
-
-								//color = LIGHT_BLUE;s
-
 
  								if (Is_Next_Wall_Active())
 								{
@@ -332,6 +325,7 @@ void Blast::Stop_Blast()	// stop le blast...... le grus
 		active = gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
 		updateTimer.Stop();
 		
+
 		Setup_Modifier(REGULAR);	// spaghetti
 	}
 }
@@ -352,7 +346,6 @@ bool Blast::Has_Reached_Limit()		// Ça c'est la prochaine limite, c'est pas cell
 {
 	if (*grdPos.axis == grdLimit)
 	{
-		MsgQueue::Register(BLAST_REACHED_BORDER);	// Notification 
 		return true;			// Si la colonne, ou la row, sur lequel se trouve le blast est égal à la limite(soit la bordure de la box du terrain de jeu)
 	}							// Si cela est vrai, le blast s'arrête maintenant
 	else

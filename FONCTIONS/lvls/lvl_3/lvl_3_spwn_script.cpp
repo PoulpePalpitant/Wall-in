@@ -144,25 +144,29 @@ void Puzzle_3_1()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2, 9 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(12);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(11);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
 		gGrids.Make_Box_Around({ linkGrid->Get_Cols() / 2, 7 }, 3, Modifier::FORCEFIELD);
+		gGrids.Make_Box_Around({ linkGrid->Get_Cols() / 2, 7 }, 4, Modifier::FORCEFIELD);
+		gGrids.Make_Box_Around({ linkGrid->Get_Cols() / 2, 7 }, 5, Modifier::FORCEFIELD);
+		gGrids.Make_Box_Around({ linkGrid->Get_Cols() / 2, 7 }, 6, Modifier::FORCEFIELD);
 		gGrids.Activate_Link({ linkGrid->Get_Cols() / 2, 7 }, Modifier::ENERGIZER);
 		break;
 
 
 	case 1:skip = 5;break;
 	case 2:Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);Add_Spec(DOWN, 0);	break;
-	case 3:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);Add_Spec(RIGHT, 0); skip = 2;	break;
+	case 3:Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 2;	break;
 	case 4:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 2;	break;
-	case 5:Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);skip = 2;	break;
-	case 6:Add_Spec(DOWN, 0);skip = 2;	break;
-	case 7:Add_Spec(LEFT, 0);break;
-	case 8:Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);	break;
-	case 9:Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);break;
+	case 5:Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);	break;
+	case 6:Add_Spec(DOWN, 0);skip = 5;	break;
+
+	case 7:Add_Spec(LEFT, 0);skip = 5;break;
+	case 8:Add_Spec(LEFT, 0);Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 1);skip = 5;	break;
+	case 9:Add_Spec(UP, spawnGrid->Get_MaxSpwnCrdX() - 1);	break;
 	case 10:Add_Spec(DOWN, 0);	break;
-	case 11:Add_Spec(LEFT, 0);	break;
+	case 11:break;
 	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
@@ -193,8 +197,6 @@ void Puzzle_3_2()
 		skip = 3;
 		break;
 
-
-
 	case 2:
 		Add(13); Set_Interval(UP, 7, 20);
 		Add_Spec(DOWN, spawnGrid->Get_MaxSpwnCrdX() - 2);
@@ -204,111 +206,9 @@ void Puzzle_3_2()
 	}
 }
 
-//// FORCEFIELD TELEPORT ENERGIZED
-void Puzzle_3_3()
-{
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2,3 });
-		blastP1.Get_Ammo_Manager().Set_Ammo(0);
-		gCurrPuzzleStepMax = 12;
-
-		ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR, 1);
-		ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR, 1);
-		
-		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2,0 }, DOWN, 1, WallType::ENERGIZED);
-
-		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 6 - 1].Activate_Lonely_Link(Modifier::FORCEFIELD);
-		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 5].Activate_Lonely_Link(Modifier::REGULAR);
-		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 4].Activate_Lonely_Link(Modifier::REGULAR);
-		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 3].Activate_Lonely_Link(Modifier::REGULAR);
-
-		gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 , linkGrid->Get_Rows() - 2 }, Modifier::BUFFER);
-
-		for (short r = 0; r < 6; r++)
-		{
-			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 - 1 , linkGrid->Get_Rows() - 1 - r }, Modifier::BLOCKER);
-			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 + 1 , linkGrid->Get_Rows() - 1 - r }, Modifier::BLOCKER);
-		}
-
-
-
-		for (short c = 3; c < 4; c++)
-		{
-			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 - 1 + c, linkGrid->Get_Rows() - 6 - 1 }, Modifier::BLOCKER);
-			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 + 1 - c, linkGrid->Get_Rows() - 6 - 1 }, Modifier::BLOCKER);
-		}
-		break;
-
-
-	case 1:
-		Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2);
-		Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 2);
-		break;
-
-	case 2:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
-
-// Respostionnement avec les forcefield. Forcefield transfer #1
-void Puzzle_3_4()
-{
-	int start = 4;
-	int numWalls = 6;
-
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ start + numWalls + 1,7 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(0);		// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-
-
-		for (short c = 0; c < linkGrid->Get_Cols(); c++)
-		{
-			gGrids.Activate_Link({ c, 5 }, Modifier::BLOCKER);
-			gGrids.Activate_Link({ c, 9 }, Modifier::BLOCKER);
-		}
-
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 8 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 7 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 6 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ 0, 6 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ 0, 8 }, Modifier::BLOCKER); // tip
-
-		/*linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2 - 1].Activate_Lonely_Link(Modifier::FORCEFIELD);
-		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2].Activate_Lonely_Link(Modifier::FORCEFIELD);
-		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2 + 1].Activate_Lonely_Link(Modifier::FORCEFIELD);*/
-
-
-		gGrids.Make_Chain_Of_Walls({ start , linkGrid->Get_Rows() / 2 }, RIGHT, numWalls, WallType::REGULAR, Modifier::REGULAR);
-		linkGrid->link[linkGrid->Get_Cols() / 2 + numWalls][linkGrid->Get_Rows() / 2].Activate_Lonely_Link(Modifier::BUFFER);
-		break;
-
-
-	case 1:Add_Spec(UP, start + numWalls - 1 - 1); skip = 3; break;
-	case 2:
-		Add_Spec(UP, start + numWalls - 1 - 1);
-		Add_Spec(DOWN, start + numWalls - 1 - 1);
-		skip = 2; break;
-
-	case 3:Add_Spec(UP, start + numWalls - 3 - 1); skip = 3;break;
-	case 4:
-		Add_Spec(UP, start + numWalls - 3 - 1);
-		Add_Spec(DOWN, start + numWalls - 3 - 1);
-		skip = 3; break;
-
-	case 5:Add_Spec(UP, start + numWalls - 5 - 1); skip = 2; break;
-	case 6:
-		Add_Spec(UP, 0);
-		Add_Spec(DOWN, 0);
-		break;
-
-	case 8:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
 
 // Teleporting madness, Super fast
-void Puzzle_3_5()
+void Puzzle_3_3()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -397,11 +297,112 @@ void Puzzle_3_5()
 	}
 }
 
+//// FORCEFIELD TELEPORT ENERGIZED
+void Puzzle_3_4()
+{
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2,3 });
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);
+		gCurrPuzzleStepMax = 12;
+
+		ConsoleRender::Add_String("TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size("TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR, 1);
+		ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR, 1);
+		
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2,0 }, DOWN, 1, WallType::ENERGIZED);
+
+		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 6 - 1].Activate_Lonely_Link(Modifier::FORCEFIELD);
+		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 5].Activate_Lonely_Link(Modifier::REGULAR);
+		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 4].Activate_Lonely_Link(Modifier::REGULAR);
+		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() - 3].Activate_Lonely_Link(Modifier::REGULAR);
+
+		gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 , linkGrid->Get_Rows() - 2 }, Modifier::BUFFER);
+
+		for (short r = 0; r < 6; r++)
+		{
+			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 - 1 , linkGrid->Get_Rows() - 1 - r }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 + 1 , linkGrid->Get_Rows() - 1 - r }, Modifier::BLOCKER);
+		}
+
+
+
+		for (short c = 3; c < 4; c++)
+		{
+			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 - 1 + c, linkGrid->Get_Rows() - 6 - 1 }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ linkGrid->Get_Cols() / 2 + 1 - c, linkGrid->Get_Rows() - 6 - 1 }, Modifier::BLOCKER);
+		}
+		break;
+
+
+	case 1:
+		Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 2);
+		Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() - 2);
+		break;
+
+	case 2:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
+
+// Respostionnement avec les forcefield. Forcefield transfer #1
+void Puzzle_3_5()
+{
+	int start = 4;
+	int numWalls = 6;
+
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ start + numWalls + 1,7 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);		// Quantité d'ammo
+		gCurrPuzzleStepMax = 12;
+
+
+		for (short c = 0; c < linkGrid->Get_Cols(); c++)
+		{
+			gGrids.Activate_Link({ c, 5 }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ c, 9 }, Modifier::BLOCKER);
+		}
+
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 8 }, Modifier::BLOCKER); // tip
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 7 }, Modifier::BLOCKER); // tip
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 6 }, Modifier::BLOCKER); // tip
+		gGrids.Activate_Link({ 0, 6 }, Modifier::BLOCKER); // tip
+		gGrids.Activate_Link({ 0, 8 }, Modifier::BLOCKER); // tip
+
+		/*linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2 - 1].Activate_Lonely_Link(Modifier::FORCEFIELD);
+		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2].Activate_Lonely_Link(Modifier::FORCEFIELD);
+		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2 + 1].Activate_Lonely_Link(Modifier::FORCEFIELD);*/
+
+
+		gGrids.Make_Chain_Of_Walls({ start , linkGrid->Get_Rows() / 2 }, RIGHT, numWalls, WallType::REGULAR, Modifier::REGULAR);
+		linkGrid->link[linkGrid->Get_Cols() / 2 + numWalls][linkGrid->Get_Rows() / 2].Activate_Lonely_Link(Modifier::BUFFER);
+		break;
+
+
+	case 1:Add_Spec(UP, start + numWalls - 1 - 1); skip = 3; break;
+	case 2:
+		Add_Spec(UP, start + numWalls - 1 - 1);
+		Add_Spec(DOWN, start + numWalls - 1 - 1);
+		skip = 2; break;
+
+	case 3:Add_Spec(UP, start + numWalls - 3 - 1); skip = 3;break;
+	case 4:
+		Add_Spec(UP, start + numWalls - 3 - 1);
+		Add_Spec(DOWN, start + numWalls - 3 - 1);
+		skip = 3; break;
+
+	case 5:Add_Spec(UP, start + numWalls - 5 - 1); skip = 2; break;
+	case 6:
+		Add_Spec(UP, 0);
+		Add_Spec(DOWN, 0);
+		break;
+
+	case 8:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
 
 // Place walls correctly #1
 void Puzzle_3_6()
 {
-
 	static GrdCoord center = { linkGrid->Get_Cols() / 2, 7 };
 	static int distance = 2;
 	static bool puzzleSolved;
@@ -439,7 +440,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
+			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::REGULAR);
 		}
 
 		//down
@@ -454,7 +455,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
+			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::REGULAR);
 		}
 
 		// Left 
@@ -469,7 +470,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
+			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::REGULAR);
 		}
 
 		// right
@@ -485,7 +486,7 @@ void Puzzle_3_6()
 				}
 			}
 
-			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
+			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::REGULAR);
 		}
 
 		gGrids.Make_Chain_Of_Walls({ center.c - 1, center.r + distance }, UP, 1, WallType::ENERGIZED);
@@ -560,8 +561,45 @@ void Puzzle_3_7()
 	}
 }
 
-//// FORCEFIELD TELEPORT WEAK WALLs
+//  No extra ammo. Solve this puzzle #1
 void Puzzle_3_8()
+{
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ 15,9 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(2);// Quantité d'ammo
+		gCurrPuzzleStepMax = 12;
+
+		P1.Reset_Hp_And_Heart(1);
+
+		gGrids.Make_Chain_Of_Walls({ 14,5 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 14,9 }, UP, 1, WallType::WEAK);
+
+
+
+		gGrids.Make_Box_Of_Blockers({ 11,4 }, { 17,10 });
+
+		for (int c = 11; c < 17; c++)
+		{
+			gGrids.Activate_Link({ c, 7 }, Modifier::FORCEFIELD);
+		}
+		break;
+
+
+	case 1:skip = 7;break;
+	case 2:
+		Add_Spec(LEFT, 5);
+		Add_Spec(LEFT, 6);
+		Add_Spec(RIGHT, 7);
+		Add_Spec(RIGHT, 8);
+		break;
+
+	case 3:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
+
+//// FORCEFIELD TELEPORT WEAK WALLs
+void Puzzle_3_9()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -615,7 +653,7 @@ void Puzzle_3_8()
 
 
 // Respostionnement avec les forcefield. Forcefield transfer #2
-void Puzzle_3_9()
+void Puzzle_3_10()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -625,10 +663,10 @@ void Puzzle_3_9()
 
 
 		// Version vertical
-		//for (short c = 11; c < 16; c++)
+		//for (short r = 11; r < 16; r++)
 		//{
-		//	gGrids.Activate_Link({ c, 7 }, Modifier::FORCEFIELD);
-		//	gGrids.Activate_Link({ c, 7 }, Modifier::FORCEFIELD);
+		//	gGrids.Activate_Link({ r, 7 }, Modifier::FORCEFIELD);
+		//	gGrids.Activate_Link({ r, 7 }, Modifier::FORCEFIELD);
 		//}
 
 
@@ -671,7 +709,7 @@ void Puzzle_3_9()
 	case 2:Add_Spec(UP, 8);	 skip = 5;break;
 	case 3:Add_Spec(UP, 14); skip = 5;break;
 	case 4:Add_Spec(UP, 8);  skip = 6;break;
-	case 5:Add_Spec(UP, 15); skip = 6;break;
+	case 5:Add_Spec(UP, 15); skip = 9;break;
 	case 6:
 		Add_Spec(UP, 2);
 		Add_Spec(UP, 3);
@@ -687,9 +725,137 @@ void Puzzle_3_9()
 	}
 }
 
+// Transfère de weak sur des doubles forcefield #1
+void Puzzle_3_11()
+{
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ 6,10 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		gCurrPuzzleStepMax = 12;
+
+		gGrids.Make_Chain_Of_Walls({ 16,3 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 16,4 }, LEFT, 1, WallType::WEAK);
+
+		gGrids.Make_Chain_Of_Walls({ 15,4 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 15,5 }, LEFT, 1, WallType::WEAK);
+
+		gGrids.Make_Chain_Of_Walls({ 14,5 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 14,6 }, LEFT, 1, WallType::WEAK);
+
+		gGrids.Make_Chain_Of_Walls({ 13,6 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 13,7 }, LEFT, 1, WallType::WEAK);
+
+		gGrids.Make_Chain_Of_Walls({ 12,7 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 12,8 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 11,8 }, DOWN, 1, WallType::WEAK);
+
+		// up
+		gGrids.Activate_Link({ 12, 0 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 12, 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 13, 2 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 13, 3 }, Modifier::FORCEFIELD);
+
+		// right
+		gGrids.Activate_Link({ 21, 8 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 20, 8 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 19, 5 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 18, 5 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 23, 4 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 24, 4 }, Modifier::FORCEFIELD);
+
+		// DOwn
+		gGrids.Activate_Link({ 11, 13 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 11, 14 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 13, 12 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 13, 13 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 14, 11 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 14, 12 }, Modifier::FORCEFIELD);
+
+		// Left
+		gGrids.Activate_Link({ 3, 8 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 4, 8 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 5, 5 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 6, 5 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 7, 4 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 8, 4 }, Modifier::FORCEFIELD);
+		break;
+
+	case 1:skip = 20;break;
+	case 2:
+		Add_Spec(LEFT, 13);
+		Add_Spec(UP, 3);
+		Add_Spec(DOWN, 20);
+		Add_Spec(RIGHT, 0);
+		Add_Spec(LEFT, 12);
+		Add_Spec(RIGHT, 2);
+		Add_Spec(LEFT, 11);
+		Add_Spec(UP, 5);
+		Add_Spec(DOWN, 18);
+		Add_Spec(UP, 7);
+		Add_Spec(DOWN, 23);
+		break;
+	case 3:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
 
 
-void Puzzle_3_10()
+// Transfère de weak sur des doubles forcefield #2
+void Puzzle_3_12()
+{
+
+	switch (gCurrPuzzleStep)
+	{
+	case 0:P1.Set_Position({ 15 ,1 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(4);// Quantité d'ammo
+		gCurrPuzzleStepMax = 12;
+
+		for (int r = 0; r <= 14; r++)
+		{
+			gGrids.Activate_Link({ 2 , r }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ 17 , r }, Modifier::BLOCKER);
+
+		}
+
+		gGrids.Activate_Link({ 11, 10 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 11, 11 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 11, 12 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 11, 13 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 11 - 2, 9 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 12 - 2, 9 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 9 - 2, 7 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 10 - 2, 7 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 7 - 2, 5 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 8 - 2, 5 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 5 - 2, 3 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 6 - 2, 3 - 1 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 16, 2 - 1 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 16, 4 - 1 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 16, 6 - 1 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 16, 8 - 1 }, Modifier::REGULAR);
+		gGrids.Make_Chain_Of_Walls({ 15 , 14 }, UP, 4, WallType::WEAK);
+		break;
+
+	case 1:
+		gGrids.Extremely_Dumb_Fix_To_Redraw_Walls(); // wowsies
+		skip = 5;
+		break;
+
+	case 2:	Add_Spec(UP, 9); skip = 4;break;
+	case 3:	Add_Spec(UP, 11); skip = 4;break;
+	case 4:	Add_Spec(UP, 7); skip = 4;break;
+	case 5:	Add_Spec(UP, 11); skip = 4;break;
+	case 6:	Add_Spec(UP, 5); skip = 4;break;
+	case 7:	Add_Spec(UP, 11); skip = 4;break;
+	case 8:	Add_Spec(UP, 3); skip = 4;break;
+	case 9:	Add_Spec(DOWN, 11); skip = 4;break;
+	case 10:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	}
+}
+
+
+// Teleporting madness 2; À REFAIRE
+void Puzzle_3_13()
 {
 	switch (gCurrPuzzleStep)
 	{
@@ -805,7 +971,7 @@ void Puzzle_3_10()
 
 
 // Place walls correctly #2
-void Puzzle_3_11()
+void Puzzle_3_14()
 {
 	static GrdCoord center = { linkGrid->Get_Cols() / 2, 7 };
 	static int distance = 2;
@@ -945,7 +1111,7 @@ void Puzzle_3_11()
 
 
 /// HARD, keep a wall alive, pure speed #1
-void Puzzle_3_12()
+void Puzzle_3_15()
 {
 
 	switch (gCurrPuzzleStep)
@@ -992,7 +1158,7 @@ void Puzzle_3_12()
 
 
 /// HARD, extract an energized wall from destruction
-void Puzzle_3_13()
+void Puzzle_3_16()
 {
 
 	switch (gCurrPuzzleStep)
@@ -1009,7 +1175,6 @@ void Puzzle_3_13()
 			gGrids.Activate_Link({ c , 9 }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ c , 11 }, Modifier::BLOCKER);
 		}
-
 
 		for (int r = 12; r < 15 ; r++)
 			gGrids.Activate_Link({ 4, r }, Modifier::BLOCKER); 
@@ -1029,11 +1194,7 @@ void Puzzle_3_13()
 		for (int r = 6; r < 9; r++)
 			gGrids.Activate_Link({ 4, r }, Modifier::FORCEFIELD);
 
-
-
 		gGrids.Activate_Link({ 4, 10 }, Modifier::FORCEFIELD);
-
-
 		gGrids.Activate_Link({ 0, 7 }, Modifier::REGULAR);
 
 		gGrids.Make_Chain_Of_Walls({ 3, 0 + 1 }, LEFT, 3, WallType::REGULAR);
@@ -1076,154 +1237,126 @@ void Puzzle_3_13()
 		
 		gGrids.Make_Chain_Of_Walls({ 26, 10 }, LEFT, 5, WallType::REGULAR);
 		gGrids.Make_Chain_Of_Walls({ 21, 10 }, LEFT, 1, WallType::ENERGIZED);
-
-		//gGrids.Make_Box_Of_Blockers({ 0,0 }, { 3 , 14 });
-		//Clear les links de trop
-		/*for (int r = 0; r < 3; r++)
-			gGrids.Activate_Link({ 3, 6 + r }, Modifier::REGULAR,1); */
 		break;
 
 
 	case 1:
-		Add_Spec(UP, 2);
-		Add_Spec(RIGHT, 7);
 		Add_Spec(DOWN, 25);
 		instantSpawn = 1; 
 		skip = 4;
 		break;
 
-	case 2:Add_Spec(LEFT, 13); break;
+	case 2:
+		Add_Spec(UP, 2);
+		Add_Spec(RIGHT, 7);
+		instantSpawn = 1;
+		skip = 4;
+		break;
+
 	case 3:Add_Spec(LEFT, 13); break;
-	case 4:Add_Spec(LEFT, 13);break;
-	case 5:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	case 4:Add_Spec(LEFT, 13); break;
+	case 5:Add_Spec(LEFT, 13);break;
+	case 6:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
 
-void Puzzle_3_14()
-{
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		break;
 
-
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
-void Puzzle_3_15()
-{
-	static GrdCoord crd;
-
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2 ,7 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		Set_Dr_Map_1(TXT_SPD_DR * 4);  // Erase la border au cas où le joueur est pas en mode quickstartS
-
-		crd = P1.Get_Grd_Coord();
-
-		for (int c = -1; c < 2; c++)
-			for (int r = -1; r < 2; r++)
-			{
-				if (!(c == 0 && r == 0))
-					linkGrid->link[crd.c + c][crd.r + r].Activate_Lonely_Link(Modifier::FORCEFIELD);
-			}
-
-		break;
-
-
-	case 1:	skip = 15; break;
-	case 2:	break;
-	case 3:	break;
-	case 4:	break;
-	case 5:	break;
-	case 6:	break;
-	case 7:	break;
-	case 8:	break;
-	case 9:	break;
-	case 11:break;
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
-void Puzzle_3_16()
-{
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		break;
-
-
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
+// VERY HARD. No extra ammo. Solve this puzzle #2
 void Puzzle_3_17()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
+	case 0:P1.Set_Position({ 15,9 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
+
+		P1.Reset_Hp_And_Heart(1);
+
+		gGrids.Make_Chain_Of_Walls({ 15,7 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 16,9 }, UP, 1, WallType::WEAK);
+
+		gGrids.Make_Chain_Of_Walls({ 12,5 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 12,10 }, UP, 1, WallType::WEAK);
+
+		gGrids.Activate_Link({ 12,8 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 15,5 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 16,7 }, Modifier::REGULAR);
+
+
+
+		gGrids.Make_Box_Of_Blockers({ 11,4 }, { 17,11 });
+
+		for (int r = 5; r < 11; r++)
+		{
+			gGrids.Activate_Link({ 14,r }, Modifier::FORCEFIELD);
+		}
 		break;
 
 
-	case 1:
+	case 1:skip = 25;break;
 	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		Add_Spec(UP, 13);
+		Add_Spec(DOWN, 13);
+		Add_Spec(UP, 14);
+		Add_Spec(DOWN, 14);
+		break;
+	case 3:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
+
+
+
+
 void Puzzle_3_18() {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
+	case 0:P1.Set_Position({ 15 ,1 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(4);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
+
+		//for (int r = 0; r <= 14; r++)
+		//{
+		//	gGrids.Activate_Link({ 2 , r }, Modifier::BLOCKER);
+		//	gGrids.Activate_Link({ 17 , r }, Modifier::BLOCKER);
+
+		//}
+
+		gGrids.Activate_Link({ 11 + 5, 5 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 12 + 5, 5 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 11 + 5, 6 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 12 + 5, 6 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 11 + 5, 7 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 12 + 5, 7 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 11 + 5, 8 }, Modifier::FORCEFIELD);
+		gGrids.Activate_Link({ 12 + 5, 8 }, Modifier::FORCEFIELD);
+
+		//gGrids.Activate_Link({ 11, 10 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 11, 11 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 11, 12 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 11, 13 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 16, 2 + 5 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 16, 4 + 5 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 16, 6 + 5 }, Modifier::REGULAR);
+		//gGrids.Activate_Link({ 16, 8 + 5 }, Modifier::REGULAR);
+
+		gGrids.Make_Chain_Of_Walls({ 15 , 7 }, UP, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 16 , 2 }, DOWN, 1, WallType::ENERGIZED);
 		break;
 
-
 	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+		gGrids.Extremely_Dumb_Fix_To_Redraw_Walls(); // wowsies
+		skip = 5;
+		break;
+
+	case 2:	Add_Spec(UP, 9); skip = 4;break;
+	case 3:	Add_Spec(UP, 11); skip = 4;break;
+	case 4:	Add_Spec(UP, 7); skip = 4;break;
+	case 5:	Add_Spec(UP, 11); skip = 4;break;
+	case 6:	Add_Spec(UP, 5); skip = 4;break;
+	case 7:	Add_Spec(UP, 11); skip = 4;break;
+	case 8:	Add_Spec(UP, 3); skip = 4;break;
+	case 9:	Add_Spec(DOWN, 11); skip = 4;break;
+	case 10:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
 

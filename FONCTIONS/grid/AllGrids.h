@@ -40,6 +40,7 @@ public:
 	void Make_Box_Around(GrdCoord crd, Distance distance = 1, Modifier mod = Modifier::REGULAR, bool erase = false);	// Construit un périmètre
 
 
+	void Extremely_Dumb_Fix_To_Redraw_Walls();	// Ceci redraw tout les walls, parce que ça arrive que les walls sont pas bien affichés
 	void Activate_Link(GrdCoord crd, Modifier mod = Modifier::REGULAR, bool deactivate = false);	
 	bool Deal_With_Modifier_Combinations(GrdCoord linkCrd, Modifier blastMod, bool &eraseBlast);
 	void Activate_Blocker(GrdCoord crd, bool deactivate = false);	// Active un blocker sans child

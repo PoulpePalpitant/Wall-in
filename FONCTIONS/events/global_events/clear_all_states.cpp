@@ -45,8 +45,9 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 
 	if (eraseLinks)	// efface les links et walls
 	{
-		ListsOfChainToModify::Annihilate_All_Links();	// Links
 		DrawWalls::Remove_All();
+		ListsOfChainToModify::Annihilate_All_Links();	// Links
+		DrawWalls::Draw_Them_Walls();
 	}
 
 	//Vide tout les drawers et les queues : item spawns, warnings, wall drawers etc.
@@ -55,7 +56,6 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
 	DrawItemSpawnList::Remove_All();	// hardcore
 	DrawModifierQueue::isShown = false;
-	 //Hide_Ammo_UI();
 	
 	BlastModifierQueue::Reset();
 

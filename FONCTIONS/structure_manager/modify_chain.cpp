@@ -349,7 +349,6 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 		{
 			for (int r = 0; r < row; r++)
 			{
-				//if (wallGrid->wall[c][r].state != WallState::DEAD)
 				{
 					wallGrid->wall[c][r].Set_Drawer(true, true);	// ERASE d'ABORd
 					wallGrid->wall[c][r].Deactivate_Wall();	// Ensuite delete le shit
