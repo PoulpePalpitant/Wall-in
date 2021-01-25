@@ -77,7 +77,7 @@ private:
 public:
 	// Link transformation
 	void Modifier_Inheritance(Modifier& mod);			//  le modifier
-	void Convert_Modifier(Modifier mod);
+	void Convert_Modifier(Modifier mod, bool overRideDumbRuleOfSpaghetti = false);
 	bool Set_First_Modifier(Modifier mod);// Assigne le state 	
 	bool Activate_Link(Modifier& mod, Wall* child = NULL);	// Active un Link sur le grid, en lui donnant des propriétés and shit. Le connect tu suite à son child, si yen a un.
 	bool Activate_Lonely_Link(Modifier mod = REGULAR);					// Active un link, sans le lier à aucun wall

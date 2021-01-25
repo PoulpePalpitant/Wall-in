@@ -20,11 +20,11 @@
 
 void Lvl_1_Initializer()
 {
-	if (gSkipStory)
+	if (gSkipTutorial)
 	{
 		// Pour un quick start avec warning
 		//gCurrentStage = 2;
-		//gSkipStory = false;
+		//gSkipTutorial = false;
 		
 		// Pour un normal quick start
 		gCurrentStage = 3; 
@@ -32,7 +32,7 @@ void Lvl_1_Initializer()
 
 		//gCurrentStage = 1;	// Skip tout les tutorials
 		//Ev_Bot_Tutorial2();	// TEST EVENT TUTORIAL 
-		//gSkipStory = false;
+		//gSkipTutorial = false;
 
 
 		MsgQueue::Register(STAGE_ADVANCE);	

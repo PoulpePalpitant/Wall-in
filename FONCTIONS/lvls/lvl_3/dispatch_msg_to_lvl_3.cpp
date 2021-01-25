@@ -13,9 +13,7 @@
 #include "../../events/global_events/ev_update_heart.h"
 #include "../../events/global_events/ev_spwn_player.h"
 #include "../../events/global_events/ev_lvl_unlocked.h"
-
-
-/* Msg events*/
+#include "../../events/global_events/ev_back_to_menu.h"
 
 
 
@@ -46,7 +44,7 @@ void Dispatch_Msg_To_Lvl_3()
 		{
 		case 1:
 			P1.Set_Hp(3);
-			if (gSkipStory)
+			if (gSkipTutorial)
 			{
 				/*safety*/
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
@@ -62,7 +60,6 @@ void Dispatch_Msg_To_Lvl_3()
 				}
 				else
 				{
-
 					Checkpoint_Delay();// Delay Next spawn
 
 					if (gCurrentPuzzle[gCurrentLevel - 1] + 1 != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
@@ -72,53 +69,39 @@ void Dispatch_Msg_To_Lvl_3()
 
 
 				// Pour debug
-				gGrids.Dr_Spawngrid();
+				//gGrids.Dr_Spawngrid();
 			}
 
 			P1.Reset_Hp_And_Heart(3);
 			Ev_Progress_Bar2();
 			Init_Puzzle();
-			gGrids.Extremely_Dumb_Fix_To_Redraw_Walls(); // wowsies
 
 
 			MsgQueue::Register(START_BOTS); // Here they come baby
-			gSkipStory = false;
+			gSkipTutorial = false;
 			gDayStarted = true;
 		}
 		break;
 
-	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
-		Clear_All_States();	// Thats a fucking quick reset brah
+	case LOAD_CHECKPOINT:
+		Clear_All_States();
 		clrscr();
-		gSkipStory = true;	// clear state clear aussi ça, qui est agaçant
+		gSkipTutorial = true;
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		break;
 
-	case PROCEED: 
-		if (gCurrentStage == 2)	// Le stage ou à lieu le main game
+	case PROCEED:
+		if (gCurrentStage == 1)
 		{
-			gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
-			MsgQueue::Register(PLS_INTIALIZE_LVL);
-			clrscr();
-			
-			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
+			if (P1.Get_State() != DEAD)
 			{
-				gCurrentStage = 0;
-				gCurrentLevel = 3;
-				//Ev_Thks_For_Playing();
-				Ev_Lvl_Unlocked();
+				gCurrentStage++;
+				gCurrentPuzzle[3 - 1] = 0;
+				Ev_Thks_For_Playing();	// Le jeu est finit
 			}
 		}
 		else
-			MsgQueue::Register(STAGE_ADVANCE);
-		break;	
+			Go_Back_To_Menu();
 
-		/* Items*/
-	case ITEM_PICKUP:
-		if (gCurrentStage <= 1)
-		{
-			break;break;
-		}
-		break;
 	}
 }

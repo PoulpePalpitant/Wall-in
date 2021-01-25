@@ -17,7 +17,7 @@
 
 void Lvl_2_Initializer()
 {
-	if (gSkipStory)
+	if (gSkipTutorial)
 	{
 		// Pour un normal quick start
 		//gCurrentStage = 0; // wakup

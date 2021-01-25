@@ -17,7 +17,8 @@ class BlastAmmo
 public:
 	// FONCTIONS PRINCIPALES 
 	bool Is_Active() { return active; }	// is it?
-	void Deactivate();	// nah
+	void Deactivate();	
+	void Activate();
 	bool Ammo_Available() { return ammo; }	// Can we shoot?
 	bool Shoot();	// Spend un "shot"
 	int Get_Nb_Ammo() { return ammo; }	// that amount

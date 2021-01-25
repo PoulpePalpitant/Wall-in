@@ -54,7 +54,7 @@ void Ev_Slow_Defeat_Screen()				 // Affiche un écran punitif
 
 		// refresh all
 		Clear_All_States();
-		gSkipStory = gDayStarted = true;	// Devient faux dans clr state :(
+		gSkipTutorial = gDayStarted = true;	// Devient faux dans clr state :(
 		ev_SlowDefeatScreen.Activate();
 		ev_SlowDefeatScreen.Start(0);
 	}
@@ -81,7 +81,7 @@ void Ev_Slow_Defeat_Screen()				 // Affiche un écran punitif
 				break;
 
 			case 4:
-				gSkipStory = true;	// we go fast				
+				gSkipTutorial = true;	// we go fast				
 				Press_X_To_Proceed(2);	// press x to retry
 				Press_R_To_Refresh(1);	// press x to retry
 				gRetryCheckpoint = true;
@@ -106,7 +106,7 @@ void Ev_Fast_Defeat_Screen()				 // Prompt le joueur à restart!
 
 		// refresh all
 		Clear_All_States();
-		gSkipStory = gDayStarted = true;	// Devient faux dans clr state :(
+		gSkipTutorial = gDayStarted = true;	// Devient faux dans clr state :(
 		ev_FastDefeatScreen.Activate();
 		ev_FastDefeatScreen.Start(0);
 	}
@@ -140,7 +140,7 @@ void Ev_Fast_Defeat_Screen()				 // Prompt le joueur à restart!
 				break;
 
 			case 4:
-				gSkipStory = true;	// we go fast				
+				gSkipTutorial = true;	// we go fast				
 				//ConsoleRender::Add_String(retry2, { Find_Ctr_Grid(retry2), ori.y + 1 }, GREEN, TXT_SPD_DR,true);	// erase en haut
 				ConsoleRender::Add_String(retry2, { Find_Ctr_Grid(retry2), ori.y + 2 }, GREEN);
 				//ConsoleRender::Add_String(retry2, { Find_Ctr_Grid(retry2), ori.y + 3 }, GREEN, TXT_SPD_FAST,true);	// erase en bas, pour rendre le txt plus lisible

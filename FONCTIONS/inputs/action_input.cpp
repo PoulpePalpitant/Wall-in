@@ -14,6 +14,9 @@ bool gBlockBlast = true;
 bool gMenuInputs = true;
 int gMenuKey = 0;
 
+bool gTeleportBuffer = true;
+
+
 void Reset_Input_Flags()	// Cancel tout les flags
 {
 	action = IDLE;

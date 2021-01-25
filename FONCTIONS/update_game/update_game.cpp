@@ -72,7 +72,7 @@ void Update_Player_Action()
 		{
 			if (blastP1.Is_Active() && action != PAUSE)	// Empêche de refresh l'action. Ceci est le buffer du blast
 				return;
-
+			
 			switch (action)
 			{
 			case PAUSE:
@@ -162,13 +162,15 @@ void Update_Player_Action()
 				break;
 
 			case TELEPORT:
-				if (!blastP1.Is_Active())
+				if (blastP1.Is_Active())
+				{
+					return;	// Conserve l'action
+				}
+				else
 				{
 					if (!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
 						Ev_Wrong_Action_Add();			// Flash le joueur
 				}
-				else
-					return;	// Conserve l'action de téléporter
 				break;
 			}
 		}

@@ -29,6 +29,13 @@ void BlastAmmo::Deactivate() {
 
 }
 
+void BlastAmmo::Activate() {
+	active = true;
+	//DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
+	DrawBlastAmmo::Ev_Dr_Bar_From_Scratch();
+	DrawBlastAmmo::Dr_Ammo_Count(this->ammo);
+}
+
 bool BlastAmmo::Drain_Health_For_Shot()
 {
 	if (P1.Get_HP() > 1)

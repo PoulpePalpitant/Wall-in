@@ -79,10 +79,10 @@ Wall* AllGrids::Find_Wall_From_Link_Coord_Incrementor(GridIndexIncrementor &incr
 	GridIndexIncrementor crd = incre;  // The stupidest shit I can witness from my own asshole
 	crd.Initialize_Axis(Find_Opposite_Dir(dir));
 	wallCrd = Convert_LinkCrd_To_WallCrd(crd);	// Première Coord de Wall
-
+	
 	// si out of bounds we shoud stop
-	if (wallCrd.c < 0 || wallCrd.r < 0)
-		return NULL;
+	if (!wallgrid->Is_Inbound(wallCrd))
+ 		return NULL;
 
 	return &wallgrid->wall[wallCrd.c][wallCrd.r];
 }

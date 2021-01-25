@@ -94,6 +94,7 @@ namespace DrawBlastAmmo {
 	void Dr_Ammo_Used();		// Le joueur tir, L'UI s'UPDATE
 	void Dr_Ammo_Remove();	 // Réduit de 1 le nombre d'ammo
 	void Dr_Bar_Remove();	 // Réduit la bar selon le ratio
+	void Dr_Ammo_Title(bool show = 1);	
 
 	void Dr_Ammo_Count(int count, Colors clr = BRIGHT_WHITE);				// Le nombre
 	void Er_Ammo_Count();													// partis

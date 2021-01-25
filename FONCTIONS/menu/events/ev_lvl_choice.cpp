@@ -42,7 +42,7 @@ void Ev_Dr_Choose_Lvl()
 		{
 			switch (ev_Dr_ChooseLvl.Get_Current_Step())
 			{
-			case 1:// do event stuff
+			case 1:
 				ConsoleRender::Add_String(skip, crd, WHITE, 0);
 				ev_Dr_ChooseLvl.Advance(0);
 				break;

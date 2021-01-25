@@ -16,5 +16,7 @@ extern bool gProceedTime;
 extern bool gSkipTime;
 extern bool gMenuInputs;
 extern int gMenuKey;
+extern bool gTeleportBuffer;
+
 
 void Reset_Input_Flags();	// Met tout ces trucs à off

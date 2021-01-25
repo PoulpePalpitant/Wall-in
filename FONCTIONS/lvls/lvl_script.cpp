@@ -9,16 +9,14 @@
 #include "lvl_1/sub_lvl_1_script.h"
 #include "../UI/console_output/render_list.h"
 
-// Ceci est la conséquence de moi qui est trop lazy pour apprendre à faire des scripts
-
 const int NB_LVLS = 3;								// Nombre de niveau que j'ai fais
-const int NUM_PUZZLES[NB_LVLS] = { 18, 24,24 };		// Nombre de Puzzles dans chaque lvl
+const int NUM_PUZZLES[NB_LVLS] = { 18, 24,22 };		// Nombre de Puzzles dans chaque lvl
 
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
 short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
 short gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
-short gUnlockedLevels[3] = {1,1,0};
+short gUnlockedLevels[3] = {1,1,1};
 short gLastLvlUnlocked = 0;
 
 int gCurrPuzzleStep = 0;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
@@ -28,11 +26,13 @@ const short TUTO_TOTAL_STEPS = 7;
 short tutoStep = 0;
 
 bool gDayStarted = false;
-bool gSkipStory = false;		// Quand le joueur start une game à partir du menu, il peut skipper la story pour arriver direct au lvevl
+bool gSkipTutorial = false;		
 bool gRefreshStage = false;		// Refresh un stage
 bool gRetryCheckpoint = false;		// Restart le niveau à partir d'un checkpoint
 
-																		// +1 pas obligé finalement, on dirait que ça le skip toujours, pt à cause du timer
+											
+bool gameCompleted = false;
+
 void Peek_Lvl_Script()
 {
 	switch (gCurrentLevel)
@@ -43,24 +43,7 @@ void Peek_Lvl_Script()
 	case 3: Lvl_3_Spwn_Script(); break;
 	}
 }
-void Peek_Sub_Lvl_Script()
-{
-	switch (gCurrentStage)
-	{
-	case 0: break;	// Fait rien
-	case 1:	Sub_Lvl_1_Script(); break;		// oublis pas de reset le sublevel dès qu'il est terminé
-		/*case 2: Level_2_Script(); break;
-		case 3: Level_3_Script(); break;
-		case 4: Level_4_Script(); break;
-		case 5: Level_5_Script(); break;
-		case 6: Level_6_Script(); break;
-		case 7: Level_7_Script(); break;
-		case 8: Level_8_Script();*/
-	}
 
-
-
-}
 
 void Init_Puzzle() {
 	gCurrPuzzleStep = 0;

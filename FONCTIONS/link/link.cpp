@@ -89,9 +89,9 @@ bool Link::Set_First_Modifier(Modifier mod)		// Ne convertit pas le modifier si 
 	
 	
 }
-void Link::Convert_Modifier(Modifier mod)		// Convertit le modifier d'un link. Si le link était free, on affiche son symbole de modifier, ce faisant, il devient impassable pour le joueur
+void Link::Convert_Modifier(Modifier mod,bool overRideDumbRuleOfSpaghetti)	// I guess qu'on convertit pas en regular: Je fais ça uniquement pour ne pas convertir un forcefield en regular............
 {
-	if (mod != Modifier::REGULAR)	// I guess qu'on convertit pas en regular: Je fais ça uniquement pour ne pas convertir un forcefield en regular............
+	if (mod != Modifier::REGULAR || overRideDumbRuleOfSpaghetti == true)		// J'ai overide cette façon miteuse de faire. Fuck this shit
 	{
 		modifier = mod;
 		Set_UI();	// affichage

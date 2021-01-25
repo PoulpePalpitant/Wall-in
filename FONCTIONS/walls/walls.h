@@ -47,7 +47,6 @@ class Wall {
 	void Set_Axis(Axis gridAxis) { axis = gridAxis; }		// Ceci est fait à l'initialisation du Wallgrid, et ne devrait jamais changer!!!
 
 	void Set_Default_Wall_UI();						// On reset l'apparance du mur à ses valeurs par défaut
-	void Set_Wall_UI();				// On change l'apparance du mur selon son type!
 	void Set_State(WallState newState) { state = newState; }
 	void Set_Strength_From_Parent(WallType type = WallType::REGULAR);
 
@@ -74,7 +73,12 @@ public:
 	void Deactivate_Wall();
 
 	void Take_Damage(int dmg);		// Dépend de la force du bot
+	void Set_Wall_UI();				// On change l'apparance du mur selon son type!
 	void Set_Drawer(bool erase = false, bool instant = false);									// Préparation pour l'affichage ou l'effaçage
-	void UI_Draw_Or_Erase_Wall(bool inAChain = false);	// Efface un mur
+	void Set_Type(WallType type) {
+		this->type = type;
+		Set_Strength_From_Parent(type);
+		Set_Wall_UI();
+	}
 };
 

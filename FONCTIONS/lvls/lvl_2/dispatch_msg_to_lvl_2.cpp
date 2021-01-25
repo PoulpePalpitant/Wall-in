@@ -59,7 +59,7 @@ void Dispatch_Msg_To_Lvl_2()
 		
 		case 3:
 			P1.Set_Hp(3);
-			if (gSkipStory)
+			if (gSkipTutorial)
 			{
 				/*safety*/
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
@@ -82,8 +82,6 @@ void Dispatch_Msg_To_Lvl_2()
 						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 				}
 
-
-
 				// Pour debug
 				gGrids.Dr_Spawngrid();
 			}
@@ -93,7 +91,7 @@ void Dispatch_Msg_To_Lvl_2()
 			Init_Puzzle();
 
 			MsgQueue::Register(START_BOTS); // Here they come baby
-			gSkipStory = false;
+			gSkipTutorial = false;
 			gDayStarted = true;
 		}
 
@@ -102,7 +100,7 @@ void Dispatch_Msg_To_Lvl_2()
 	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
 		Clear_All_States();	// Thats a fucking quick reset brah
 		clrscr();
-		gSkipStory = true;	// clear state clear aussi ça, qui est agaçant
+		gSkipTutorial = true;	// clear state clear aussi ça, qui est agaçant
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		break;
 
@@ -113,19 +111,8 @@ void Dispatch_Msg_To_Lvl_2()
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
-				gCurrentStage = 0;
-				gCurrentLevel = 3;
-				//Ev_Thks_For_Playing();
 				Ev_Lvl_Unlocked();
 			}
 		break;	
-
-		/* Items*/
-	case ITEM_PICKUP:
-		if (gCurrentStage <= 1)
-		{
-			break;break;
-		}
-		break;
 	}
 }

@@ -785,11 +785,6 @@ void Puzzle_1_17()
 
 		crd = { map.Get_Box_Limit(RIGHT) + 13,map.Get_Ctr_Y() - 4 };
 
-
-
-		//seenFinalHour = true;	/// REMOVE THIS
-
-
 		if (!seenFinalHour)
 		{
 			MsgQueue::Register(LOCK_PLAYER);P1.Er_Player();

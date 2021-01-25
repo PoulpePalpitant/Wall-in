@@ -15,6 +15,9 @@ static Event ev_LvlUnlocked(Ev_Lvl_Unlocked, 10);
 
 
 static std::string msg = "- NEW LEVEL UNLOCKED -";
+static std::string msg2 = "- FINAL LEVEL UNLOCKED -";
+static std::string txt;
+
 static Coord crd;
 static int numDist = 8;
 static const int spd = 5000;
@@ -29,6 +32,11 @@ void Ev_Lvl_Unlocked()
 		crd.y = 40;
 		crd.x = Find_Ctr_X(1 + (1 + numDist * gLastLvlUnlocked)) - 4;
 		crd.x += (numDist + 1) * gLastLvlUnlocked - 1;
+
+		if (gLastLvlUnlocked < 3)
+			txt = msg;
+		else
+			txt = msg2;
 
 		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
 		MsgQueue::Unregister_All();	
@@ -124,7 +132,7 @@ void Ev_Lvl_Unlocked()
 				ev_LvlUnlocked.Advance(spd);
 				
 			case 9:
-				ConsoleRender::Add_String(msg, {crd.x - Half_String(msg), crd.y - 3 }, LIGHT_YELLOW, TXT_SPD_DR);
+				ConsoleRender::Add_String(txt, {crd.x - Half_String(txt), crd.y - 3 }, LIGHT_YELLOW, TXT_SPD_DR);
 				gLastLvlUnlocked = 0;
 				ev_LvlUnlocked.Cancel();
 			}

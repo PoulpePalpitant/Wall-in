@@ -356,7 +356,18 @@ namespace DrawBlastAmmo {
 	// *******************************************************
 	void Dr_Ammo_Title(bool show)		// Le joueur tir, L'UI s'UPDATE
 	{
-		ConsoleRender::Add_String(ammoTitle, { (map.Get_Box_Limit(RIGHT) + 11),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_DR, show);	// AMMO
+		int ammoCount = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();
+
+		if (show)
+		{
+			if (ammoCount < 100)
+				ConsoleRender::Add_String(ammoTitle, { (map.Get_Box_Limit(RIGHT) + 11),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
+			else
+				ConsoleRender::Add_String(ammoTitle, { (map.Get_Box_Limit(RIGHT) + 12),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
+		}
+		else
+			ConsoleRender::Add_String("       ", { (map.Get_Box_Limit(RIGHT) + 10),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_ER, 1);	// AMMO
+
 	}
 
 
@@ -387,7 +398,7 @@ namespace DrawBlastAmmo {
 
 		}
 
-		Dr_Ammo_Title(false);
+		Dr_Ammo_Title(true);
 		isShown = true;
 	}
 }

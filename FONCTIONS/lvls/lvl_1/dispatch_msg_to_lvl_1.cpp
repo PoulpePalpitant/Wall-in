@@ -59,7 +59,7 @@ void Dispatch_Msg_To_Lvl_1()
 			clrscr();
 			ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
 			botList.Destroy_All_Bots();
-			gSkipStory = true;
+			gSkipTutorial = true;
 			Clear_All_Renders();
 
 			//Ev_Dr_Day_1();
@@ -67,7 +67,7 @@ void Dispatch_Msg_To_Lvl_1()
 		}
 		if (gCurrentStage == 4)
 		{
-			if (gSkipStory)
+			if (gSkipTutorial)
 			{
 				/*safety*/
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
@@ -104,7 +104,7 @@ void Dispatch_Msg_To_Lvl_1()
 			Init_Puzzle();	
 							
 			MsgQueue::Register(START_BOTS); // Here they come baby
-			gSkipStory = false;
+			gSkipTutorial = false;
 			gDayStarted = true;
 		}
 		break;
@@ -113,7 +113,7 @@ void Dispatch_Msg_To_Lvl_1()
 		Clear_All_States();	// Thats a fucking quick reset brah
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		clrscr();	
-		gSkipStory = true;	// clear state clear aussi ça, qui est agaçant
+		gSkipTutorial = true;	// clear state clear aussi ça, qui est agaçant
 		break;
 
 	case PROCEED: 
@@ -125,10 +125,6 @@ void Dispatch_Msg_To_Lvl_1()
 			
 			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
 			{
-				// Ferme le jeu
-				//Ev_Thks_For_Playing();
-
-				// Prochain level
 				Ev_Lvl_Unlocked();
 			}
 		}

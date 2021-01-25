@@ -13,14 +13,16 @@
 #include "dispatch_msg_to_menu.h"
 #include "../inputs/action_input.h"
 
-#include "../events/global_events/ev_update_heart.h" // for testing
+#include "../events/global_events/ev_update_heart.h" 
+
+#include "../events/global_events/feedback/ev_good_job.h"
 
  int choosenLvl = 0;	
  
  static void Quick_STart(int lvl, bool skip)
  {
 	 gCurrentLevel = lvl;
-	 gSkipStory = skip;
+	 gSkipTutorial = skip;
 	 gMenuInputs = false;
 
 	 clrscr();
@@ -29,8 +31,6 @@
 
 void Dispatch_Msg_To_Menu()
 {
-	// LISTE DE TOUT LES OBSERVATEURS. Les observateurs activent les events quand les conditions sont met
-
 	switch (gCurrentMsg)
 	{
 						
@@ -39,9 +39,8 @@ void Dispatch_Msg_To_Menu()
 		
 		// DEBUG
 		//*******
-		Quick_STart(3, 1);
-
-		break;	// Initialize plein de choses
+		//Quick_STart(3, 1);
+		break;	
 	
 	case LVL_INITIALIZED:	
 		OBS_Draw_Game_Title();
@@ -61,13 +60,6 @@ void Dispatch_Msg_To_Menu()
 				Ev_Er_Choose_Lvl();
 				if(choosenLvl == 1)
 					Dr_Tuto_Choice();
-
-				//if(tempLevel == 1)
-				//	Start_Ev_Dr_Heart(2); // tasety
-
-				//Fill_Heart_Randomly(false);
-				//Fill_Outisde_Heart(true);
-
 			}
 		break;
 
@@ -82,7 +74,7 @@ void Dispatch_Msg_To_Menu()
 				choosenLvl = gMenuKey - 48;
 				if (gUnlockedLevels[choosenLvl - 1] )
 				{
-					//MsgQueue::Unregister_All();	// répare un bug de merde, lequel? lol EDIT: now I know
+					//MsgQueue::Unregister_All();	// répare un bug de merde, lequel? lol EDIT: now I know. or not...
 					MsgQueue::Register(STAGE_ADVANCE);
 					Ev_Er_Choose_Lvl();
 				}
@@ -109,7 +101,7 @@ void Dispatch_Msg_To_Menu()
 					if (gMenuKey == 78 || gMenuKey == 89)	 /*78 = n Pour n */ /*89 y pour yes */
 					{
 						if (gMenuKey == 78)						
-							gSkipStory = true;
+							gSkipTutorial = true;
 						else
 						{
 							if (P1.Set_On_Grid())
@@ -129,7 +121,7 @@ void Dispatch_Msg_To_Menu()
 				}
 				else
 				{
-					gSkipStory = true;
+					gSkipTutorial = true;
 					gMenuInputs = false;
 					OBS_Erase_Game_Title();	// Erase Title Screen
 					Dr_Quit_Button(1);

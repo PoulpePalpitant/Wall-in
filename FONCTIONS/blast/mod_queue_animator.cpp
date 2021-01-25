@@ -14,7 +14,7 @@ namespace DrawModifierQueue {
 	std::string queueTitle = "NEXT SHOT TYPE";
 	static std::string excess = ". . .";
 	std::string line = { (char)242,(char)242,(char)242};
-
+	
 	Coord fakeTitleCrd = {};									// La corrd du ttitre principal
 	Coord realTitleCrd = {};									// La corrd du ttitre principal
 	
@@ -47,17 +47,24 @@ namespace DrawModifierQueue {
 	}
 	void Hide_Queue_UI() // Efface la queue
 	{
+		std::string eraser = "               ";
 		ConsoleRender::Add_String(queueTitle, realTitleCrd, WHITE, 0, true);
-		
+
 		// Efface les deux tits points sur les côtés
 		ConsoleRender::Add_Char({ fakeTitleCrd.x - 2,fakeTitleCrd.y + 3 }, TXT_CONST.SPACE);
 		ConsoleRender::Add_Char({ fakeTitleCrd.x + 10,fakeTitleCrd.y + 3 }, TXT_CONST.SPACE);
-		ConsoleRender::Add_String(line,{ fakeTitleCrd.x + 3, fakeTitleCrd.y + 4 }, WHITE,0, true); // Efface ligne
-		ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 3 },TXT_CONST.SPACE );
-		ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 7 },TXT_CONST.SPACE );
-		ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 9 },TXT_CONST.SPACE );
-		ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 11 },TXT_CONST.SPACE );
-		ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 13 },TXT_CONST.SPACE );
+
+		// Not time for this shit anymore
+		for (int i = 0; i < 15; i++)
+			ConsoleRender::Add_String(eraser, { fakeTitleCrd.x - 5,fakeTitleCrd.y + i });
+
+		
+		//ConsoleRender::Add_String(line,{ fakeTitleCrd.x + 3, fakeTitleCrd.y + 4 }, WHITE,0, true); // Efface ligne
+		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 3 },TXT_CONST.SPACE );
+		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 7 },TXT_CONST.SPACE );
+		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 9 },TXT_CONST.SPACE );
+		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 11 },TXT_CONST.SPACE );
+		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 13 },TXT_CONST.SPACE );
 		Hide_Excess();	// trois tits points
 	
 

@@ -14,6 +14,7 @@
 #include "../global_events/clear_all_states.h"
 #include "ev_make_it_rain.h"
 #include "../../console/sweet_cmd_console.h"
+#include "../../blast/blast_ammo_animator.h"
 
 static Event ev_VictoryScreen(Ev_Victory_Screen, 5);
 
@@ -65,72 +66,59 @@ static const std::string bigSurvived[] =
 "SSSSSSSSSSSSSSS         UUUUUUUUU     RRRRRRRR     RRRRRRR           VVV           IIIIIIIIII           VVV           EEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD         "
 };
 
+static const std::string level[] = {
+    "LLLLLLLLLLL                                                                              lllllll ",
+	"L:::::::::L                                                                              l:::::l ",
+	"L:::::::::L                                                                              l:::::l ",
+	"LL:::::::LL                                                                              l:::::l ",
+	"  L:::::L                   eeeeeeeeeeee    vvvvvvv           vvvvvvv    eeeeeeeeeeee     l::::l ",
+	"  L:::::L                 ee::::::::::::ee   v:::::v         v:::::v   ee::::::::::::ee   l::::l ",
+	"  L:::::L                e::::::eeeee:::::ee  v:::::v       v:::::v   e::::::eeeee:::::ee l::::l ",
+	"  L:::::L               e::::::e     e:::::e   v:::::v     v:::::v   e::::::e     e:::::e l::::l ",
+	"  L:::::L               e:::::::eeeee::::::e    v:::::v   v:::::v    e:::::::eeeee::::::e l::::l ",
+	"  L:::::L               e:::::::::::::::::e      v:::::v v:::::v     e:::::::::::::::::e  l::::l ",
+	"  L:::::L               e::::::eeeeeeeeeee        v:::::v:::::v      e::::::eeeeeeeeeee   l::::l ",
+	"  L:::::L         LLLLLLe:::::::e                  v:::::::::v       e:::::::e            l::::l ",
+	"LL:::::::LLLLLLLLL:::::Le::::::::e                  v:::::::v        e::::::::e          l::::::l",
+	"L::::::::::::::::::::::L e::::::::eeeeeeee           v:::::v          e::::::::eeeeeeee  l::::::l",
+	"L::::::::::::::::::::::L  ee:::::::::::::e            v:::v            ee:::::::::::::e  l::::::l",
+	"LLLLLLLLLLLLLLLLLLLLLLLL    eeeeeeeeeeeeee             vvv               eeeeeeeeeeeeee  llllllll"
+
+};
+
+static const std::string complete[] = {
+	"     CCCCCCCCCCCCC                                                              lllllll                              tttt                                ",
+	"    CCC::::::::::::C                                                             l:::::l                           ttt:::t                               ",
+	"   CC:::::::::::::::C                                                             l:::::l                           t:::::t                              ",
+	"  C:::::CCCCCCCC::::C                                                             l:::::l                           t:::::t                              ",
+	" C:::::C       CCCCCC   ooooooooooo      mmmmmmm    mmmmmmm   ppppp   ppppppppp    l::::l     eeeeeeeeeeee    ttttttt:::::ttttttt        eeeeeeeeeeee    ",
+	"C:::::C               oo:::::::::::oo  mm:::::::m  m:::::::mm p::::ppp:::::::::p   l::::l   ee::::::::::::ee  t:::::::::::::::::t      ee::::::::::::ee  ",
+	"C:::::C              o:::::::::::::::om::::::::::mm::::::::::mp:::::::::::::::::p  l::::l  e::::::eeeee:::::eet:::::::::::::::::t     e::::::eeeee:::::ee",
+	"C:::::C              o:::::ooooo:::::om::::::::::::::::::::::mpp::::::ppppp::::::p l::::l e::::::e     e:::::etttttt:::::::tttttt    e::::::e     e:::::e",
+	"C:::::C              o::::o     o::::om:::::mmm::::::mmm:::::m p:::::p     p:::::p l::::l e:::::::eeeee::::::e      t:::::t          e:::::::eeeee::::::e",
+	"C:::::C              o::::o     o::::om::::m   m::::m   m::::m p:::::p     p:::::p l::::l e:::::::::::::::::e       t:::::t          e:::::::::::::::::e ",
+	"C:::::C              o::::o     o::::om::::m   m::::m   m::::m p:::::p     p:::::p l::::l e::::::eeeeeeeeeee        t:::::t          e::::::eeeeeeeeeee  ",
+	" C:::::C       CCCCCCo::::o     o::::om::::m   m::::m   m::::m p:::::p    p::::::p l::::l e:::::::e                 t:::::t    tttttte:::::::e           ",
+	"  C:::::CCCCCCCC::::Co:::::ooooo:::::om::::m   m::::m   m::::m p:::::ppppp:::::::pl::::::le::::::::e                t::::::tttt:::::te::::::::e          ",
+	"   CC:::::::::::::::Co:::::::::::::::om::::m   m::::m   m::::m p::::::::::::::::p l::::::l e::::::::eeeeeeee        tt::::::::::::::t e::::::::eeeeeeee  ",
+	"    CCC::::::::::::C oo:::::::::::oo m::::m   m::::m   m::::m p::::::::::::::pp  l::::::l  ee:::::::::::::e          tt:::::::::::tt  ee:::::::::::::e	  ",
+	"     CCCCCCCCCCCCC   ooooooooooo   mmmmmm   mmmmmm   mmmmmm p::::::pppppppp    llllllll    eeeeeeeeeeeeee              ttttttttttt      eeeeeeeeeeeeee	  ",
+	"                                                              p:::::p                                                                                    ",
+	"                                                              p:::::p                                                                                    ",
+	"                                                             p:::::::p                                                                                   ",
+	"                                                             p:::::::p                                                                                   ",
+	"                                                             p:::::::p                                                                                   ",
+	"                                                             ppppppppp                                                                                   ",
+};
+
 static int length[2] = { (int)(bigDAY[0].size()), (int)(bigSurvived[0].size()) };
+static int length2[2] = { (int)(level[0].size()), (int)(complete[0].size()) };
 static int height = 16;
 
-
-// Le contour va avoir 1 string en haut en bas à gauche et à droite de plus que le dedans
-static Intervals::ManageIntervalLists day(height, 0, length[0]); 
-static Intervals::ManageIntervalLists survived(6, 0, length[1]);
-
-static const std::string* victoryWords[2] = { bigDAY, bigSurvived };	// all of the hearts
-
-// CHOIX DE DESIGN
-// . . .
+static const std::string* victoryWords[2] = { bigDAY, bigSurvived };	
+static const std::string* victoryWords2[2] = { level, complete};
 
 
-/*
-
-
-													DDDDDDDDDDDDD                 AAA          YYYYYYY       YYYYYYY  
-													D::::::::::::DDD             A:::A         Y:::::Y       Y:::::Y  
-													D:::::::::::::::DD          A:::::A        Y:::::Y       Y:::::Y  
-													DDD:::::DDDDD:::::D        A:::::::A       Y::::::Y     Y::::::Y  
-													  D:::::D    D:::::D      A:::::::::A      YYY:::::Y   Y:::::YYY  
-													  D:::::D     D:::::D    A:::::A:::::A        Y:::::Y Y:::::Y     
-													  D:::::D     D:::::D   A:::::A A:::::A        Y:::::Y:::::Y      
-													  D:::::D     D:::::D  A:::::A   A:::::A        Y:::::::::Y       
-													  D:::::D     D:::::D A:::::A     A:::::A        Y:::::::Y        
-													  D:::::D     D:::::DA:::::AAAAAAAAA:::::A        Y:::::Y         
-													  D:::::D     D:::::A:::::::::::::::::::::A       Y:::::Y         
-													  D:::::D    D:::::A:::::AAAAAAAAAAAAA:::::A      Y:::::Y         
-													DDD:::::DDDDD:::::A:::::A             A:::::A     Y:::::Y         
-													D:::::::::::::::DA:::::A               A:::::A YYYY:::::YYYY      
-													D::::::::::::DDDA:::::A                 A:::::AY:::::::::::Y      
-													DDDDDDDDDDDDD  AAAAAAA                   AAAAAAYYYYYYYYYYYYY      
-
-
-      SSSSSSSSSSSSSSSUUUUUUUU     UUUUUUURRRRRRRRRRRRRRRRR  VVVVVVVV           VVVVVVVIIIIIIIIIVVVVVVVV           VVVVVVVEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD		     !!:!!
-	SS:::::::::::::::U::::::U     U::::::R::::::::::::::::R V::::::V           V::::::I::::::::V::::::V           V::::::E::::::::::::::::::::D::::::::::::DDD	     !:::!
-   S:::::SSSSSS::::::U::::::U     U::::::R::::::RRRRRR:::::RV::::::V           V::::::I::::::::V::::::V           V::::::E::::::::::::::::::::D:::::::::::::::DD     !:::!
-   S:::::S     SSSSSSUU:::::U     U:::::URR:::::R     R:::::V::::::V           V::::::II::::::IV::::::V           V::::::EE::::::EEEEEEEEE::::DDD:::::DDDDD:::::D    !:::!
-   S:::::S            U:::::U     U:::::U  R::::R     R:::::RV:::::V           V:::::V  I::::I  V:::::V           V:::::V  E:::::E       EEEEEE D:::::D    D:::::D   !:::!
-   S:::::S            U:::::D     D:::::U  R::::R     R:::::R V:::::V         V:::::V   I::::I   V:::::V         V:::::V   E:::::E              D:::::D     D:::::D  !:::!
-	S::::SSSS         U:::::D     D:::::U  R::::RRRRRR:::::R   V:::::V       V:::::V    I::::I    V:::::V       V:::::V    E::::::EEEEEEEEEE    D:::::D     D:::::D  !:::!
-	 SS::::::SSSSS    U:::::D     D:::::U  R:::::::::::::RR     V:::::V     V:::::V     I::::I     V:::::V     V:::::V     E:::::::::::::::E    D:::::D     D:::::D  !:::!
-	   SSS::::::::SS  U:::::D     D:::::U  R::::RRRRRR:::::R     V:::::V   V:::::V      I::::I      V:::::V   V:::::V      E:::::::::::::::E    D:::::D     D:::::D  !:::!
-		  SSSSSS::::S U:::::D     D:::::U  R::::R     R:::::R     V:::::V V:::::V       I::::I       V:::::V V:::::V       E::::::EEEEEEEEEE    D:::::D     D:::::D  !!:!!
-			   S:::::SU:::::D     D:::::U  R::::R     R:::::R      V:::::V:::::V        I::::I        V:::::V:::::V        E:::::E              D:::::D     D:::::D   !!!
-			   S:::::SU::::::U   U::::::U  R::::R     R:::::R       V:::::::::V         I::::I         V:::::::::V         E:::::E       EEEEEE D:::::D    D:::::D   
-   SSSSSSS     S:::::SU:::::::UUU:::::::URR:::::R     R:::::R        V:::::::V        II::::::II        V:::::::V        EE::::::EEEEEEEE:::::DDD:::::DDDDD:::::D     !!!
-   S::::::SSSSSS:::::S UU:::::::::::::UU R::::::R     R:::::R         V:::::V         I::::::::I         V:::::V         E::::::::::::::::::::D:::::::::::::::DD     !!:!!
-   S:::::::::::::::SS    UU:::::::::UU   R::::::R     R:::::R          V:::V          I::::::::I          V:::V          E::::::::::::::::::::D::::::::::::DDD	      !!!
-	SSSSSSSSSSSSSSS        UUUUUUUUU     RRRRRRRR     RRRRRRR           VVV           IIIIIIIIII           VVV           EEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD		      !!!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
 static void Dr_Victory_Phrase()
 {
 	Coord crd = { Find_Ctr_X(length[0]), 10 };
@@ -162,6 +150,22 @@ static void Dr_Victory()
 
 }
 
+static void Dr_Level()
+{
+	Coord crd = { Find_Ctr_X(length2[0]), 10 };
+	for (int line = 0; line < 16; line++)
+		ConsoleRender::Add_String(level[line], { crd.x, crd.y + line });
+
+}
+static void Dr_Complete()
+{
+	Coord crd = { Find_Ctr_X(length2[1]), 10 + height + 4 };
+	for (int line = 0; line < 22; line++)
+		ConsoleRender::Add_String(complete[line], { crd.x, crd.y + line });
+
+}
+
+
  void Ev_Victory_Screen()				 // Affiche un écran qui gratifiant		 // Affiche le coueur à ses différents stades
 {
 	 static int rng[2];
@@ -176,8 +180,10 @@ static void Dr_Victory()
 		ori.y = linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y;
 
 		Clear_All_States(false);
+		DrawBlastAmmo:: Dr_Ammo_Title(false);
+
 		ev_VictoryScreen.Activate();
-		ev_VictoryScreen.Start(400);
+		ev_VictoryScreen.Start(600);
 	}
 	else
 		while (ev_VictoryScreen.delay.Tick())
@@ -186,12 +192,12 @@ static void Dr_Victory()
 			{
 			case 1:
 				
-				Dr_Day();
+				Dr_Level();
 				ev_VictoryScreen.Advance(500);
 				break;
 
 			case 2: // tit break
-				Dr_Victory();
+				Dr_Complete();
 				ev_VictoryScreen.Advance(10000);
 				break;
 

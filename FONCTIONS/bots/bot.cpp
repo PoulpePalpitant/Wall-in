@@ -127,6 +127,10 @@ bool Bot::Bot_Impact(Wall* wall)
 		wall->Take_Damage(this->Get_Power()); // Taking dmg here!
 		deadBot = Bot::Take_Dmg(HP);	 	  // Hey me too!
 	}
+	else
+	{
+		wall->Set_Type(WallType::REGULAR);
+	}
 
 	if (deadBot)
 		wall->Remove_Bot_On_Me();	// le bot est dead, remove it!

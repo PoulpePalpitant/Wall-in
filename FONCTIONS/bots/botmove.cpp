@@ -5,23 +5,6 @@
 #include "botmeta.h"
 #include "botmove.h"
 
-// ÇA SE PEUT QUE J'AILLE À FAIRE ÇA:
-
-//// Ceci réaffiche les bots pour éviter leur disparition quand il sont proche 
-//for (int bot = 0; bot < MaxNumBOTS; ++bot)
-//{
-//	if (BOTXY[bot] != 0)
-//	{
-//		if (UPD_BOT_Warning_Cycles(bot))
-//			UI_AF_BOT_Warning(bot);
-//		else
-//			Afficher_ou_Effacer_BOT(bot, EffacerBOT);
-//	}
-//}
-//
-
-
-
 void BotMove::Move_Bots()	//// On bouge tous les BOTS
 {
 	static Coord start, end;			// Pos départ et d'arrivée
@@ -51,21 +34,12 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 		else
 		{
 			wallGrid = gGrids.Find_Wall_Grid_From_Axis(Find_Opp_Axis(bot->dir));	// trouve le grid que le bot va traverser	/*IMPORTANT*/ Le grid que le Bot va traverser sera Perpendiculaire à celui-ci!
-			grdCrd = bot->nxtWallCrd;									// Crd du prochain mur qu'il va percuter
-			/*
-			// Doit vérifier uniquement quand le bot entre dans le grid
-			if (bot->stepCount >= 2)
-				if (bot->Bot_Impact(&wallGrid->wall[bot->onAWall.c][bot->onAWall.r]))	// // Vérification qu'un wall n'a pas été créé par dessus le bot qu'on va bouger
-				{
-					wallGrid->wall[bot->onAWall.c][bot->onAWall.r].Remove_Bot_On_Me();	// bot est pati!
-					continue;	// Si Oui, il y aura un impact!!
-				}*/
+			grdCrd = bot->nxtWallCrd;											
 	
-			// Tu setup l'incrémenteur XY
-			start = bot->XY;		// Coord de départ
-			XY.Initialize_All(start, bot->dir);	// Inrémenteur de position
+			start = bot->XY;		
+			XY.Initialize_All(start, bot->dir);
 			XY.Increment_Coord();	// avance d'un mouvement
-			end = XY.coord;	// Coord d'arrivée et nouvelle position du bot		// ça va pt chier
+			end = XY.coord;			// Coord d'arrivée et nouvelle position du bot		
 
 			// Enregistrement du mouvement au début de la loop
 			bot->stepCount++;
@@ -73,7 +47,7 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 			wallGrid->wall[bot->onAWall.c][bot->onAWall.r].Remove_Bot_On_Me();	// bot est pati!
 			bot->onAWall = {};	// no more!
 
-			if (!bot->fixedColor)	// pas couleur fixe
+			if (!bot->fixedColor)	
 				bot->Upd_Progression_Color();	// Change la couleur du bot quand il s'approche de sa sortie
 
 			Bot::Animate_Bot(bot, end);		// Erase and draw
@@ -82,8 +56,7 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 
 			if (Bot_Is_On_WallGrid(bot))
 			{
-				/* Fait un impact. Si l'impact tue le bot, we continue */
-				if (bot->Bot_Impact(&wallGrid->wall[grdCrd.index.c][grdCrd.index.r]))	// Im Pact!		
+				if (bot->Bot_Impact(&wallGrid->wall[grdCrd.index.c][grdCrd.index.r]))	
 					continue;
 
 				wallGrid->wall[grdCrd.index.c][grdCrd.index.r].Add_Bot_On_Me(b);	// Ajoute la position du bot 
@@ -97,38 +70,28 @@ void BotMove::Move_Bots()	//// On bouge tous les BOTS
 
 			if (!bot->stepLeft)	// Le bot est sortie de la box!
 			{
-				// BIG EDIT!	:	Les bot one shot le joueur
-				//**********
 				P1.Player_Lose_HP(P1.Get_HP());	// OUCH
 				bot->Destroy_Bot();
 
-				/* ME RÉPÈTE*/
 				toMove--;	// 1 bot de moins à bouger
 
 				if (!toMove)	// pu yin à bouger
 					break;
 
 				continue;	// NÉCESSAIRE. Quand tu détruit, ton ptr est automatiquement assigné au suivant
-				// if dead, continue, else keep going
-
-				/*// On Détruit(enfin) un BOT et tout les blockages de spawn qu'il a engendré
-				Destroy_BOT_and_Spawn_Blocks(bot, front_Spawn_COORD[bot]);*/
 			}
 		}
+		toMove--;	
 
-		toMove--;	// 1 bot de moins à bouger
-
-		if (!toMove)	// pu yin à bouger
+		if (!toMove)	
 			break;
 
 	}
 }
 
 
-bool BotMove::Bot_Is_On_WallGrid(const Bot* const bot)	// ça check ça
+bool BotMove::Bot_Is_On_WallGrid(const Bot* const bot)	
 {
-	// CHECK: si le bot se trouve sur le Wall grid 
-
 	if (bot->tillNxtWall == 0)	// Next Wall représente le nombre de loop restant avant que le bot se trouve à nouveau sur le Wallgrid
 		return true;
 	else

@@ -137,7 +137,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case FINAL_HOUR: 
-		if (gCurrentLevel < 3)
+		if (gCurrentLevel <= 3)
 		{
 			Ev_Final_Hour_1(); // Msg que la dernière attaque s'en vient
 			//Ev_Red_Borders();	// Threathening!
@@ -176,7 +176,6 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	
 	case DEFEAT:
 		if (gDayStarted)
-			//Ev_Slow_Defeat_Screen();
 			Ev_Fast_Defeat_Screen();
 		break;
 
@@ -192,9 +191,6 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 	case WALL_ACTIVATED:
-		// Permet des tests rapides
-		//Ev_Good_Job();				// Félicite le joueur
-		//Ev_Rainbow_Borders();		// fait flasher tout de manière gratifiante
 		break;
 
 	case WALL_DEACTIVATED:
@@ -221,8 +217,6 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 
 		/* PLAYER*/
-
-
 	case LOCK_PLAYER: 
 		Ev_Block_Inputs(true);
 		break;
@@ -237,6 +231,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 	case PLAYER_SPAWNED:
 		break;
+
 		/* ITEMS */
 	case ENABLE_ITEM_SPAWN:
 		stopItmSpwCycle = false;
@@ -247,8 +242,8 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 		
 	case ITEM_SPAWNED: 
-		//Draw_Item_Spawn();
 		break;
+
 		/* BOTS */
 	case RESET_SPW_TOT:		Reset_Spw_Cycle(); break;
 	case STOP_BOTS:			Ev_Stop_Bot_Cycles(); break;

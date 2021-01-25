@@ -1275,20 +1275,11 @@ void Puzzle_2_22()
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 2,7 });
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 1,7 });
 
-		//ItemSpawner::Spawn_This_Item(ItemType::BUFFER,{ 5,3});
-		//ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 7,3});
 
-		//ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 4,5});
-		//ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 8,5});
 
 		gGrids.Make_Chain_Of_Walls({ 6, 0 }, LEFT, 6);
 		gGrids.Make_Chain_Of_Walls({ 6, 0 }, RIGHT, 6);
 
-		//gGrids.Make_Chain_Of_Walls({ 4, 4 }, LEFT,  5);
-		//gGrids.Make_Chain_Of_Walls({ 8, 4 }, RIGHT, 5);
-
-		//gGrids.Make_Chain_Of_Walls({ 5, 2 }, LEFT,  4);
-		//gGrids.Make_Chain_Of_Walls({ 7, 2 }, RIGHT, 4);
 
 		// Vertical sur les côtés
 		gGrids.Make_Chain_Of_Walls({ 0, 7 }, UP, 6);
@@ -1404,7 +1395,6 @@ void Puzzle_2_FINAL()
 		shapesRemaining = SHAPES_TO_KILL;
 		crd = { map.Get_Box_Limit(RIGHT) + 13,map.Get_Ctr_Y() - 4 };
 
-		seenFinalHour = true;
 
 		if (!seenFinalHour)
 		{

@@ -119,12 +119,6 @@ void Wall::Activate_Wall(WallType newStrgt, Link* child, Polarization plr) {
 	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
 	Set_Strength_From_Parent(newStrgt);		// La nouvelle force du mur
 
-	
-	//if (this->type == WallType::ENERGIZED)
-	//	if(this->pParent->Get_Modifier() != Modifier::FORCEFIELD)
-	//		this->pParent->Change_Color(LIGHT_PURPLE);
-
-
 	if (drawer.timer.Is_On())
 		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur				Cett fonction peut fail
 
@@ -213,31 +207,3 @@ void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gè
 	DrawWalls::Add(&drawer); // adding that shit
 }
 
-
-void Wall::UI_Draw_Or_Erase_Wall(bool inAChain)	// Si inAChain est activé, on gère pas la création des queues
-{
-	//CoordIncrementor startPos;	// Position de départ
-	//int wallSize;	// Dimension du mur
-
-	//// Initialisation de l'incrémenteur
-	//startPos.Initialize_Axis(axis);
-	//startPos.polar = childPos;
-	//startPos.coord = XY;
-
-	//wallSize = Get_Wall_Size(axis);
-
-	//if (childPos == NEG)								//  x  ->   <-  x		x = startpos
-	//	*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
-
-	//if(!inAChain)
-	//	ConsoleRender::Create_Animation_Queue(75);
-
-	//for (int i = 0; i < wallSize; i++)
-	//{
-	//	ConsoleRender::Add_Char(startPos.coord, (char)sym, clr);	// SPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEEDSPEED
-	//	startPos.Increment_Coord();	// Prochaine case
-	//}
-
-	//if(!inAChain)
-	//	ConsoleRender::Stop_Queue();			// TU DOIS ABSOLUMENT STOP LA QUEUE QUAND TU UTILISE ^CA
-}

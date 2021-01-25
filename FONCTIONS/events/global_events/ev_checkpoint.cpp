@@ -44,6 +44,8 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				// Initialize le prochain puzzle et clear la map
 				MsgQueue::Register(LOCK_PLAYER);	// It has to be done
 				P1.Er_Player();						// Efface son char
+				P1.Get_Teleporter().Remove_Teleport_Location();	// Pour pas cheater
+
 				Init_Puzzle();
 
 				if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.

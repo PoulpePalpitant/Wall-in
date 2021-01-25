@@ -28,7 +28,7 @@ void Resize_All_Grids(AllGrids& grid, int col, int row)
 }
 
 
-bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
+bool Resize_Grids_To_Level(AllGrids& grid, int lvl, bool finalPuzzle) {
 	
 	// NE JAMAIS resizer le grid quand tu fais encore des affichages des links et de walls and stuff
 	if (!DrawWalls::Is_Empty() || !ListsOfChainToModify::Is_Empty())
@@ -39,7 +39,7 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 	int gridLength; // pour calculer un start_x Centré
 	int gridHeight; // pour calculer un start_y Centré
 
-
+	//if(finalPuzzle)
 	switch (lvl)
 	{
 	case 0:	col = 14, row = 14;	break;		
@@ -47,6 +47,7 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, int stage) {
 	case 2: col = 13, row = 15; break;	
 	case 3:	col = 27, row = 15;	break;
 	}
+
 
 	gridLength = DELTA_X * col;
 	START_X = (gConWidth - gridLength) / 2;
