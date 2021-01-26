@@ -58,13 +58,6 @@ namespace DrawModifierQueue {
 		for (int i = 0; i < 15; i++)
 			ConsoleRender::Add_String(eraser, { fakeTitleCrd.x - 5,fakeTitleCrd.y + i });
 
-		
-		//ConsoleRender::Add_String(line,{ fakeTitleCrd.x + 3, fakeTitleCrd.y + 4 }, WHITE,0, true); // Efface ligne
-		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 3 },TXT_CONST.SPACE );
-		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 7 },TXT_CONST.SPACE );
-		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 9 },TXT_CONST.SPACE );
-		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 11 },TXT_CONST.SPACE );
-		//ConsoleRender::Add_Char({ fakeTitleCrd.x + 4, fakeTitleCrd.y + 13 },TXT_CONST.SPACE );
 		Hide_Excess();	// trois tits points
 	
 

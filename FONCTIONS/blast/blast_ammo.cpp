@@ -8,6 +8,7 @@
 #include "../player/player.h"
 #include "../events/global_events/feedback/ev_ammo_depleted.h"
 #include "../events/global_events/feedback/ev_drain_health.h"
+#include "../events/global_events/feedback/ev_use_emergency_ammo.h"
 
 
 static int x = 8;	// case à droite de box limit right
@@ -23,9 +24,9 @@ static std::string eraseNum = "    ";	// pour erase un nombre
 
 void BlastAmmo::Deactivate() {
 	active = false;
-	DrawBlastAmmo::Dr_Or_Er_Bar(DrawBlastAmmo::MAX_BAR_SIZE, WHITE,true);
-	DrawBlastAmmo::Er_Ammo_Count();
-	Cancel_Ev_Ammo_Depleted();	// efface ammo depleted si c'est le cas
+	//DrawBlastAmmo::Dr_Or_Er_Bar(DrawBlastAmmo::MAX_BAR_SIZE, WHITE,true);
+	//DrawBlastAmmo::Er_Ammo_Count();
+	//Cancel_Ev_Ammo_Depleted();	// efface ammo depleted si c'est le cas
 
 }
 
@@ -36,12 +37,33 @@ void BlastAmmo::Activate() {
 	DrawBlastAmmo::Dr_Ammo_Count(this->ammo);
 }
 
+bool BlastAmmo::Use_Emergency_ammo()
+{
+	if (this->emergencyAmmo)
+	{
+		this->emergencyAmmo--;
+		DrawBlastAmmo::Dr_Emergency_Ammo(this->emergencyAmmo);
+		Add_Ev_Use_Emergency_Ammo();
+
+		if(!emergencyAmmo)
+			Ev_Ammo_Depleted();
+
+		return true;
+	}
+	else
+	{
+		Ev_No_Ammo_Msg();
+		return false;
+	}
+}
+
+
 bool BlastAmmo::Drain_Health_For_Shot()
 {
 	if (P1.Get_HP() > 1)
 	{
 		P1.Player_Lose_HP();
-		Add_Ev_Drain_Health();
+		Add_Ev_Use_Emergency_Ammo();
 		return true;
 	}
 	else
@@ -49,7 +71,6 @@ bool BlastAmmo::Drain_Health_For_Shot()
 		Ev_Hp_Drain_Msg();
 		return false;
 	}
-	// ev drain health
 }
 
 bool BlastAmmo::Shoot()
@@ -57,11 +78,15 @@ bool BlastAmmo::Shoot()
 	if (Is_Active())
 	{
 		if (!Ammo_Available())
-			return Drain_Health_For_Shot();
+		{
+			if (Use_Emergency_ammo())
+				return true;
+			else
+				return false;
+			//return Drain_Health_For_Shot();
+		}
 
-		if (--ammo == 0)
-			Ev_Ammo_Depleted();	 // Empty!
-		else
+		if (--ammo >= 0)
 			DrawBlastAmmo::Dr_Ammo_Remove();// Signale d'update l'interface
 				 
 		DrawBlastAmmo::Dr_Bar_Remove();	 // Réduit pt la longueur de la bar
@@ -84,6 +109,7 @@ void BlastAmmo::Add_Ammo(int amm)
 void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automatiquement le limitateur
 {	
 	ammo = nbShots;
+	emergencyAmmo = 2;	// reset le nombre d'emergency ammo à chaque fois
 
 	if (active == false)
 	{
@@ -93,8 +119,8 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 		// Le ratioBarPerAmmo et l'ui est activé uniquement quand on utilise la méthode set
 		DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
 
-		if(!nbShots)
-			Ev_Ammo_Depleted();	 // Pas de ammo
+		//if(!nbShots)
+		//	Ev_Ammo_Depleted();	 // Pas de ammo
 	}
 }
 

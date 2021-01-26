@@ -49,6 +49,7 @@ void Ev_Ammo_Depleted()	// Affiche 1 warning que le joueur n'a plus d'ammo
 					ConsoleRender::Add_String(depleted2, { realTitleCrd.x - 3,realTitleCrd.y }, LIGHT_RED, 0, erOrDr);
 
 				ConsoleRender::Add_String(depleted, crd, LIGHT_RED, 0, erOrDr);
+				//ConsoleRender::Add_String(depleted, { crd.x + 4  ,crd.y + MAX_BAR_SIZE + 1 - 8 },LIGHT_RED,0, erOrDr);	// 
 
 				if (erOrDr)
 					erOrDr = false;

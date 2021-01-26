@@ -122,13 +122,25 @@ namespace DrawBlastAmmo {
 
 			Dr_Bar_Tip(1);	// draw them tips
 			Dr_Bar_Tip(0);
+			Dr_Emergency_Ammo(0);
+			
 
 			// Draw pas la bar si ta pas d'ammo
 			if (blastP1.Get_Ammo_Manager().Get_Nb_Ammo() == 0)
 			{
 				Dr_Or_Er_Bar(MAX_BAR_SIZE, WHITE, true);	// Met la bar vide SAFETY
-				Dr_Bar_Tip(1);	// draw them tips
-				//Dr_Bar_Tip(0);
+				Dr_Bar_Tip(1, LIGHT_RED, 0, 0);
+				Dr_Bar_Tip(0, LIGHT_RED, 0, 1);
+
+
+				if (blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo() > 0)
+				{
+					Dr_Emergency_Ammo(1);
+					Dr_Emergency_Ammo(2);
+				}
+				else
+					Dr_Emergency_Ammo(blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo());
+
 				return;
 			}
 
@@ -147,6 +159,9 @@ namespace DrawBlastAmmo {
 				else
 					barSize++;
 
+				if(barSize == barMax / 2)
+					Dr_Emergency_Ammo(1);	// Affiche la première moitié de la bar
+
 				if (barSize == barMax)
 				{
 					Dr_Or_Er_Bar(barSize, Get_Bar_Treshold_Color(barSize));	// last char
@@ -157,6 +172,7 @@ namespace DrawBlastAmmo {
 					for (int i = 0; i < toClear; i++)
 						Dr_Bar_Sym(barMax + i, WHITE, true);
 
+					Dr_Emergency_Ammo(2);	// Affiche la 2e tite bar au complet
 
 					ev_DrFullBar.Cancel();
 				}
@@ -258,7 +274,7 @@ namespace DrawBlastAmmo {
 			}
 		}
 	}
-
+	
 	void Dr_Bar_Tip(bool topTip, Colors clr, bool erase, bool connected) // Affiche l'une des 2 extrémités. False = botTip
 	{
 		static Coord crd;  crd = Get_Ori();	// Le point d'origine de la bar
@@ -334,6 +350,12 @@ namespace DrawBlastAmmo {
 
 				if (Upd_Bar_Progression_Color())
 					Dr_Or_Er_Bar(barLength, barProgClr);	// Recolorie la bar au complet
+
+				if (ammo == 0) //draw les deux tips en rouges
+				{
+					Dr_Bar_Tip(1, LIGHT_RED, 0, 0);
+					Dr_Bar_Tip(0, LIGHT_RED, 0, 1);
+				}
 			}
 			else
 				barLength--;
@@ -371,6 +393,55 @@ namespace DrawBlastAmmo {
 	}
 
 
+	// EMERGENCY AMMO
+	// **************
+
+	void Dr_Emergency_Ammo(int ammo)
+	{
+		
+		Coord ori = Get_Ori();	// Le point d'origine de la bar
+		ori.x += 3;
+
+		Colors clr = WHITE;
+
+
+		if (ammo == 2)
+		{
+			// Ammo 1
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[2]);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 10 }, barSym);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 9 }, barSym);
+		}
+		if (ammo == 1)
+		{
+			// Efface L'autre Ammo
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[1]);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 10 }, TXT_CONST.SPACE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.SPACE);
+
+			// Ammo 2
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 8 }, barSym);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 7 }, barSym);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 6 }, 193);
+			clr = LIGHT_YELLOW;
+
+		}
+		if (ammo == 0)
+		{
+			// Efface L'autre Ammo
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 8 },  TXT_CONST.SPACE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 7 },  TXT_CONST.SPACE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 6 }, tip[1], LIGHT_RED);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[1], LIGHT_RED);
+
+			clr = LIGHT_RED;
+		}
+
+		ConsoleRender::Add_Char({ ori.x + 2,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.PLUS, WHITE);
+		ConsoleRender::Add_String(std::to_string(ammo), { ori.x + 4  ,ori.y + MAX_BAR_SIZE + 1 - 9 }, clr);	// 
+
+	}
+
 
 	// ACTIVATION DE L'UI POUR LES YEUX
 	//******************************
@@ -402,3 +473,4 @@ namespace DrawBlastAmmo {
 		isShown = true;
 	}
 }
+

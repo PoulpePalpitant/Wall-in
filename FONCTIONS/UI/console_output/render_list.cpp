@@ -57,6 +57,24 @@ void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , int spe
 	if (text == "")
 		throw "Pas de string vide dans mon salon";
 	
+	if (speed == 0)	// tu suite à la render queue, y'aura pas d'animation
+	{
+		if (erase)
+			for (int i = 0; i < text.size(); i++)
+			{
+				Push_To_Queue(crd, TXT_CONST.SPACE, WHITE, mainQueue);
+				crd.x++;
+			}
+		else
+			for (unsigned char c : text)
+			{
+				Push_To_Queue(crd, c, clr, mainQueue);
+				crd.x++;
+			}
+		
+		return;
+	}
+	
 	// Création d'une nouvelle queue pour la string
 	if (strList.last == NULL)	// Liste vide	
 		strList.first = strList.last = new StringQueue((int)text.length(), speed);	// Nouvelle queue	
