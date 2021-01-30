@@ -14,51 +14,26 @@
 #include "events/ev_build_labyrinth.h"
 
 
-
 void Lvl_2_Initializer()
 {
-	if (gSkipTutorial)
-	{
-		// Pour un normal quick start
-		//gCurrentStage = 0; // wakup
-		//gCurrentStage = 1; // warning
-		gCurrentStage = 2; // Normal
-		MsgQueue::Register(STAGE_ADVANCE);	
-		
-		// TEST DU SPAWN SCRIPT ICI
-		// **************************
-		int checkpointTest = 0;/* 23 = max*/
-		if (gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
-			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
-	}
-	else
-	{
-		gCurrentStage = 0;	// DONT
-		Ev_Build_Labyrinth(); // start le level avec ceci :
-	}
+
+	// TEST DU SPAWN SCRIPT ICI
+	// **************************
+	int checkpointTest = 0;/* 23 = max*/
+	if (gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
+		gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 
 
 	gSpwBotTimer.Start_Timer(1700, 1, true); //  DEFUALT
 	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
 
+	Resize_Grids_To_Level(gGrids, 2);
+	ValidSpwnIntervals::Initialize_Valid_Spawn_List();
+	bots_to_spawn::Reset_To_Default();
 
-	//gSpwBotTimer.Start_Timer(7000, 1 , true); // TEST
-	//gBotMoveTimer.Start_Timer(10200, 1, true);	// TEST
-
-
-	Resize_Grids_To_Level(gGrids, 2);					
-	ValidSpwnIntervals::Initialize_Valid_Spawn_List(); 
-	bots_to_spawn::Reset_To_Default();					
-	
-	P1.Set_Hp(3);	
-	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
-	
-	if (!P1.Set_On_Grid())		
-		throw "player pas sur le grid";
-	
+	MsgQueue::Register(STAGE_ADVANCE);
 	MsgQueue::Register(LVL_INITIALIZED);
-	MsgQueue::Register(ENABLE_BLAST);	
-	
+	MsgQueue::Register(ENABLE_BLAST);
 	MsgQueue::Register(DISABLE_ITEM_SPAWN);
 
 }

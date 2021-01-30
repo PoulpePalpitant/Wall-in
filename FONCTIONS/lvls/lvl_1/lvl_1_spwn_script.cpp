@@ -85,7 +85,7 @@ Puzzle_1_17
 static int spw;
 static int box;
 static GrdCoord crd;
-static std::string codeRecycling = "(Don't Let The Shapes Reach This Border)";
+static std::string codeRecycling = "(Don't let the shapes reach this border)";
 static std::string tip_01 = "Health Is Ammo ->";
 static std::string tip_01_1 = "Shoot to drain hp ";
 static bool seenFinalHour = false;
@@ -96,7 +96,7 @@ void Lvl_1_Spwn_Script()
 	if (gSpawnThisCycle)
 	{
 		skip = 0;	// Représente le nombre de fois qu'on va Skip un cycle de spawn selon l'indice de temps: Delay * Spawn_Cycle
-		
+
 		LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
 
 		// Ceci ajoute du temps entre le spawn actuel et le prochain
@@ -104,93 +104,10 @@ void Lvl_1_Spwn_Script()
 			gSpwBotTimer.Add_Count(skip);
 
 		gCurrPuzzleStep++;	// Prochain step du puzzle!
-
-			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
-
-		//	// TROP COMPLIQUÉ POUR RIEN CELUI AVEC PLEINS DE ROOT PARTOUT
-		//	// LIGNe au milieu
-		//	gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, (linkGrid->Get_Rows() - 1) / 2 }, LEFT, 8);
-
-		//	// Branche 1
-		//	gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, (linkGrid->Get_Rows() - 1) / 2 }, UP, 1);
-		//	gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 3, (linkGrid->Get_Rows() - 1) / 2 }, LEFT, 1);
-
-		//	// Branche 2
-		//	gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, (linkGrid->Get_Rows() - 1) / 2 }, DOWN, 1);
-		//	gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 4, (linkGrid->Get_Rows() - 1) / 2 }, LEFT, 1);
-
-
-		//	// Active les points stratégiques!
-		//	linkGrid->link[4][4].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[5][2].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[6][12].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[7][11].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[8][3].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[11][1].Activate_Lonely_Link();	// Créer une root ici
-		//	//linkGrid->link[12][12].Activate_Lonely_Link();	// Créer une root ici
-
-		//	// bouncys
-		//	linkGrid->link[2][8].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[3][10].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[6][2].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[7][5].Activate_Lonely_Link();	// Créer une root ici
-		//	linkGrid->link[linkGrid->Get_Cols() - 3][1].Activate_Lonely_Link();	// Créer une root ici
-		//	//linkGrid->link[linkGrid->Get_Cols() - 1][6].Activate_Lonely_Link();	// Créer une root ici
-		//	break;
-
-		//case 102:
-		//	Add_Spec(LEFT, 4);
-		//	break;
-
-		//case 103:
-		//	Add_Spec(LEFT, 2);
-		//	break;
-
-		//case 104:
-		//	Add_Spec(LEFT, 11);
-		//	break;
-
-		//case 105:
-		//	Add_Spec(LEFT, 10);
-		//	break;
-
-		//case 106:
-		//	Add_Spec(LEFT, 3);
-		//	break;
-
-		//case 107:
-		//	Add_Spec(RIGHT, 9); skip = 2;
-		//	break;
-
-		//case 108:
-		//	Add_Spec(LEFT, 0); skip = 4;
-		//	break;
-
-		//case 109:
-		//	break;
-
-		//case 110:
-		//	Add_Spec(RIGHT, 4); skip = 2;
-		//	break;
-
-		//case 111:
-		//	Add_Spec(LEFT, 1);
-		//	break;
-
-		//case 112:
-		//	Add_Spec(LEFT, spawnGrid->Get_MaxSpwnCrdY() - 1);
-		//	MsgQueue::Register(CHECKPOINT_REACHED); // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-		//	break;
-			// KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP // KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP KEEP 
-
-
-
-
 	}
 }
 
 // Voici les puzzles du niveau
-// da first
 void Puzzle_1_0(){
 	switch (gCurrPuzzleStep)
 	{
@@ -250,12 +167,14 @@ void Puzzle_1_1(){
 		blastP1.Get_Ammo_Manager().Set_Ammo(7);// Quantité d'ammo
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 1,0 }, DOWN, 1);
 		gCurrPuzzleStepMax = 9;
+
+		Ev_Er_Arr_Keys();
+		Ev_Er_Wasd();
 		break;
 
 
 	case 1:
-		Just_Dr_Arr_Keys(true);
-		Just_Dr_Wasd(true);
+
 		Add_Spec(RIGHT, spawnGrid->Get_MaxSpwnCrdY() / 2);
 		break;
 
@@ -277,27 +196,22 @@ void Puzzle_1_2() {
 	{
 	case 0:
 		P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(2);// Quantité d'ammo
 		gCurrPuzzleStepMax = 5;
-		P1.Player_Lose_HP(1);
 
 		// Mur en L pour montrer au joueur comment dealer avec
 		gGrids.Make_Chain_Of_Walls({ 0,3 }, RIGHT, 1);
 		gGrids.Make_Chain_Of_Walls({ 12,11 }, LEFT, 1);
-
 		gGrids.Make_Chain_Of_Walls({ 1,3 }, DOWN, 1);
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,11 });
 		break;
 
 
-	case 1:skip = 5; break;
-	case 2:Add_Spec(RIGHT, 3);skip = 6; break;
-	case 3:Add_Spec(LEFT, 10);
+	case 1:Add_Spec(RIGHT, 3);skip = 2; break;
+	case 2:Add_Spec(LEFT, 10);
 		Add_Spec(LEFT, 9);
 		break;
 
-	case 4:break;
-	case 5:
+	case 3:
 		MsgQueue::Register(CHECKPOINT_REACHED);	
 		break;
 	}
@@ -687,7 +601,7 @@ void Puzzle_1_15()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 12,3 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(36);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(33);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 		gGrids.Make_Chain_Of_Walls({ 3,14 }, UP, 14);
 		gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 14);
@@ -705,9 +619,8 @@ void Puzzle_1_15()
 	case 9:Add_Spec(LEFT, 13); skip = 4; break;
 	case 10:Add_Spec(LEFT, 7);Add_Spec(LEFT, 8);skip = 6; break;
 	case 11:Add_Spec(UP, 0);Add_Spec(UP, 1);Add_Spec(UP, 2);skip = 6;break;
-	case 12:Add_Spec(LEFT, 5);Add_Spec(LEFT, 6);skip = 3;break;
-	case 13:Add_Spec(LEFT, 13); skip = 12; break;
-	case 14:Add(12);Set_Interval(UP, 0, linkGrid->Get_Cols() - 1); MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE C
+	case 12:Add_Spec(LEFT, 13); skip = 12; break;
+	case 13:Add(12);Set_Interval(UP, 0, linkGrid->Get_Cols() - 1); MsgQueue::Register(CHECKPOINT_REACHED); break;// CHECKPOINTHERE C
 	}
 }
 
@@ -747,7 +660,7 @@ void Puzzle_1_16()
 	case 17:Add_Spec(DOWN, 10);break;
 	case 18:Add_Spec(LEFT, 12);break;
 	case 19:Add_Spec(UP, 1);break;
-	case 20:Add_Spec(LEFT, 12); skip = 3;break;
+	case 20:Add_Spec(LEFT, 12);break;
 	case 21:Add_Spec(DOWN, 10);break;
 	case 22:Add_Spec(RIGHT, 12);skip = 5; break;
 	case 23:Add_Spec(LEFT, 2);break;
@@ -763,12 +676,10 @@ void Puzzle_1_16()
 void Puzzle_1_17()
 {
 	static std::string _1 = "- SURVIVE -";
-	static std::string _2 = "- Waves Remaining -";
-	static std::string _3 = "<- Drain Extra Hp For Ammo";
-	static std::string _4 = "Shoot To Drain Hp";
+	static std::string _2 = "Waves Remaining :";
 
 	static Coord crd;
-	static int y = Heart_Txt_Crd_Right("  ").y - 2;
+	static int y = 5; 
 
 	const int SHAPES_TO_KILL = 40;
 	static int shapesRemaining;
@@ -783,7 +694,7 @@ void Puzzle_1_17()
 		gCurrPuzzleStepMax = 12;
 		shapesRemaining = SHAPES_TO_KILL;
 
-		crd = { map.Get_Box_Limit(RIGHT) + 13,map.Get_Ctr_Y() - 4 };
+		crd = { Find_Ctr_String_X(_1) - 1, 6 };
 
 		if (!seenFinalHour)
 		{
@@ -853,52 +764,44 @@ void Puzzle_1_17()
 
 
 
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,3 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,4 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 6,3 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 7,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 5,4 });
 
-
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,12 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,11 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,11 });
-
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 6,12 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 5,11 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 7,11 });
 
 		if (!seenFinalHour)
 		{
-			ConsoleRender::Add_String(_3, { Heart_Txt_Crd_Right(_3).x - 3 ,y }, WHITE, TXT_SPD_DR * 0.7);
-			ConsoleRender::Add_String(_4, { Heart_Txt_Crd_Left(_4).x + 8,y + 4 }, WHITE, TXT_SPD_DR * 0.7);
 			seenFinalHour = true;
-			skip = 20;
+			skip = 10;
 		}
-
 
 		break;
 
 	case 3:
 		ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
-		ConsoleRender::Add_String(_2, { crd.x - 4,crd.y + 1 }, WHITE, TXT_SPD_DR);
-		ItemSpawner::Add_To_Pool(ItemType::HEALTH, 200, 0);
+		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
+		ItemSpawner::Add_To_Pool(ItemType::AMMO, 200, 0);
 		MsgQueue::Register(ENABLE_ITEM_SPAWN);
 		skip = 8;
 		break;
 
 	case 4:Add(1);skip = 5;break;
-	case 5:Add(1);
-		ConsoleRender::Add_String(_3, { Heart_Txt_Crd_Right(_3).x - 3,y }, WHITE, TXT_SPD_DR, 1);
-		ConsoleRender::Add_String(_4, { Heart_Txt_Crd_Left(_4).x + 8,y + 4 }, WHITE, TXT_SPD_DR, 1);
-		skip = 5;break;
+	case 5:Add(1);skip = 5;break;
 	case 6:Add(1);skip = 5;break;
 	case 7:Add(1);skip = 5;break;
 	case 8:Add(1);skip = 5;break;
 	case 9:Add(1);skip = 5;break;
 	case 10:Add(1);skip = 8;
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,3 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,4 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 6,3 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 7,4 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 5,4 });
 
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 6,12 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 5,11 });
-		ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 7,11 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 6,12 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 5,11 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 7,11 });
 		break;
 
 	case 11:Add(1);skip = 2;break;
@@ -917,7 +820,7 @@ void Puzzle_1_17()
 		{
 			for (int c = 0; c < 5; c++)
 			{
-				ItemSpawner::Spawn_This_Item(ItemType::HEALTH, { 4 + c, 9 + r });
+				ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 4 + c, 9 + r });
 			}
 		}
 		skip = 16;
@@ -955,9 +858,9 @@ void Puzzle_1_17()
 	if (gCurrPuzzleStep > 2)
 	{
 		if (shapesRemaining == 9)
-			ConsoleRender::Add_String(TXT_CONST.SPACE_STRING, { crd.x + 5,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
+			ConsoleRender::Add_String(TXT_CONST.SPACE_STRING, { crd.x + 14,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
 
-		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 4,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
+		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 13,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
 		shapesRemaining--;
 
 		if (gCurrPuzzleStep < 19)

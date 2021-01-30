@@ -22,43 +22,23 @@ void Lvl_1_Initializer()
 {
 	if (gSkipTutorial)
 	{
-		// Pour un quick start avec warning
-		//gCurrentStage = 2;
-		//gSkipTutorial = false;
-		
-		// Pour un normal quick start
 		gCurrentStage = 3; 
-
-
-		//gCurrentStage = 1;	// Skip tout les tutorials
-		//Ev_Bot_Tutorial2();	// TEST EVENT TUTORIAL 
-		//gSkipTutorial = false;
-
-
 		MsgQueue::Register(STAGE_ADVANCE);	
 
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
-		int checkpointTest = 3;/*17 = max*/
+		int checkpointTest = 0;/*17 = max*/
 		if(gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
 			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
 	else
 	{
-
-		//Ev_Wake_Up();		// TEST EVENT WAKEUP
-		//Ev_Bot_Tutorial2();
-
 		gCurrentStage = 0;
 		MsgQueue::Register(SPAWN_PLAYER);	
 	}
 
-	gSpwBotTimer.Start_Timer(1700, 1 , true); //  DEFUALT
-	//gSpwBotTimer.Start_Timer(7000, 1 , true); // DEBUG
-
-
-	gBotMoveTimer.Start_Timer(10000, 1, true);		// DEFUALT
-	//gBotMoveTimer.Start_Timer(5000200, 1, true);	// DEBUG
+	gSpwBotTimer.Start_Timer(1700, 1 , true);	
+	gBotMoveTimer.Start_Timer(10000, 1, true);	
 
 
 	Resize_Grids_To_Level(gGrids, 1);			
@@ -66,9 +46,6 @@ void Lvl_1_Initializer()
 	
 	P1.Set_Hp(3);	// 3 de vie le gros
 	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
-	
-	if (!P1.Set_On_Grid())		
-		throw "player pas sur le grid";
 	
 	MsgQueue::Register(LVL_INITIALIZED);
 	MsgQueue::Register(DISABLE_BLAST);	

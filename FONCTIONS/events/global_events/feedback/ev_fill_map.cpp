@@ -9,6 +9,8 @@
 #include "../../../UI/map.h"
 #include "../../../events/global_events/feedback/ev_draw_map.h"
 
+#include "../../../lvls/lvl_script.h"
+
 static int numChars; // Nombre de char pour fill l'écran
 static Event ev_FillMap(Ev_Fill_Map, 8);	// l'event
 
@@ -66,44 +68,68 @@ void Ev_Fill_Map()			//  Fill la map de charactère cools, delete ensuite tout
 			switch (ev_FillMap.Get_Current_Step())
 			{
 			case 1:
-				Set_Screen_Filler();	// test le screen fill
-				ev_FillMap.Advance(2000000, numChars);
+				Set_Screen_Filler();	
+
+				if (gCurrentLevel < 3)	// Le lvl 3 est plus fat, donc plus lent à dessiner
+				{
+					Set_Dr_Map_1(TXT_SPD_FAST * 3, 0);
+					ev_FillMap.Advance(2000000, numChars);
+				}
+				else
+				{
+					Set_Dr_Map_1(TXT_SPD_FAST * 5, 0);
+					ev_FillMap.Advance(7000000, numChars);
+				}
 
 			case 2:
 				Fill_Screen_Randomly();	// Remplis la console d'un charactère blanc à la fois
-				ev_FillMap.Advance(2500);
+				ev_FillMap.Advance(2900);
 				break;
 
 			case 3:
-				Just_Dr_Map_Borders();
 				ev_FillMap.Advance(1000);
 				break;
 
 			case 4:
 				// Pause Pour afficher Le titre
 				Set_Screen_Filler();
-				ev_FillMap.Advance(300);
+				if (gCurrentLevel < 3)	// Le lvl 3 est plus fat, donc plus lent à dessiner
+					ev_FillMap.Advance(400);
+				else
+					ev_FillMap.Advance(300);
+
+
 				break;
 
 			case 5:
-				ev_FillMap.Advance(10000000, numChars * 2);
+				if (gCurrentLevel < 3)
+				{
+					if (gCurrentLevel == 2)
+						Set_Dr_Map_1(TXT_SPD_DR * 8); 
+
+					ev_FillMap.Advance(2000000, numChars * 2);
+				}
+				else
+				{
+					Set_Dr_Map_1(TXT_SPD_DR * 12);
+					ev_FillMap.Advance(8000000, numChars * 1.4);
+				}
 				break;
 
 			case 6:
 				Fill_Screen_Randomly(true);	// Efface le fill
-				ev_FillMap.Advance(10000);
+				ev_FillMap.Advance(0);
 				break;
 
 			case 7:
-				//clrscr();					// Efface les borders
-				ev_FillMap.Advance(300);
+				ev_FillMap.Cancel();
 				break;
 
-			case 8:
-				ev_FillMap.Advance(0);
-				break;
 			}
 		}
 	}
 }
 
+bool Is_Ev_Fill_Map_Active() {
+	return ev_FillMap.Is_Active();
+}

@@ -10,7 +10,6 @@ namespace DrawBlastAmmo {
 	extern bool isShown;			// si le player vois l'UI d'ammo
 
 	extern double ratioBarPerAmmo;				// Nombre de munition pour chaque char de la bar 
-	extern double nextAmmoEr;			// Le nombre de munition à atteindre pour progresser dans la bar
 	extern bool erDozen;			// Efface la dizaine
 
 	// UI
@@ -52,13 +51,15 @@ namespace DrawBlastAmmo {
 	void Dr_Bar_Sym(int distance, Colors clr = WHITE, bool erase = false ); // Affiche le symbole de la bar selon une distance du point d'origine en bas. 
 	void Dr_Bar_Tip(bool topTip, Colors clr = WHITE, bool erase = false, bool connected = false); // Affiche l'une des 2 extrémités. False = botTip
 	void Dr_Ammo_Used();		// Le joueur tir, L'UI s'UPDATE
-	void Dr_Ammo_Remove();	 // Réduit de 1 le nombre d'ammo
 	void Dr_Bar_Remove();	 // Réduit la bar selon le ratio
 	void Dr_Ammo_Title(bool show = 1);	
 	void Dr_Emergency_Ammo(int ammo);
+	void Dr_Ammo_Gain();
+	void Ev_Dr_Ammo_Gain();		 // Tit animation quand ya un ammo pickup
 
 	void Dr_Ammo_Count(int count, Colors clr = BRIGHT_WHITE);				// Le nombre
 	void Er_Ammo_Count();													// partis
+	void Update_Ammo_Count();	 
 
 
 	// ANIMATION

@@ -10,7 +10,7 @@
 #include "../UI/console_output/render_list.h"
 
 const int NB_LVLS = 3;								// Nombre de niveau que j'ai fais
-const int NUM_PUZZLES[NB_LVLS] = { 18, 24,22 };		// Nombre de Puzzles dans chaque lvl
+const int NUM_PUZZLES[NB_LVLS] = { 18, 24,20 };		// Nombre de Puzzles dans chaque lvl
 
 
 short gCurrentLevel = 0;		// Le niveau actuel!!1
@@ -29,7 +29,6 @@ bool gDayStarted = false;
 bool gSkipTutorial = false;		
 bool gRefreshStage = false;		// Refresh un stage
 bool gRetryCheckpoint = false;		// Restart le niveau à partir d'un checkpoint
-
 											
 bool gameCompleted = false;
 

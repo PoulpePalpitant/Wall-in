@@ -24,15 +24,10 @@ static std::string eraseNum = "    ";	// pour erase un nombre
 
 void BlastAmmo::Deactivate() {
 	active = false;
-	//DrawBlastAmmo::Dr_Or_Er_Bar(DrawBlastAmmo::MAX_BAR_SIZE, WHITE,true);
-	//DrawBlastAmmo::Er_Ammo_Count();
-	//Cancel_Ev_Ammo_Depleted();	// efface ammo depleted si c'est le cas
-
 }
 
 void BlastAmmo::Activate() {
 	active = true;
-	//DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
 	DrawBlastAmmo::Ev_Dr_Bar_From_Scratch();
 	DrawBlastAmmo::Dr_Ammo_Count(this->ammo);
 }
@@ -57,22 +52,6 @@ bool BlastAmmo::Use_Emergency_ammo()
 	}
 }
 
-
-bool BlastAmmo::Drain_Health_For_Shot()
-{
-	if (P1.Get_HP() > 1)
-	{
-		P1.Player_Lose_HP();
-		Add_Ev_Use_Emergency_Ammo();
-		return true;
-	}
-	else
-	{
-		Ev_Hp_Drain_Msg();
-		return false;
-	}
-}
-
 bool BlastAmmo::Shoot()
 {
 	if (Is_Active())
@@ -83,11 +62,10 @@ bool BlastAmmo::Shoot()
 				return true;
 			else
 				return false;
-			//return Drain_Health_For_Shot();
 		}
 
 		if (--ammo >= 0)
-			DrawBlastAmmo::Dr_Ammo_Remove();// Signale d'update l'interface
+			DrawBlastAmmo::Update_Ammo_Count();// Signale d'update l'interface
 				 
 		DrawBlastAmmo::Dr_Bar_Remove();	 // Réduit pt la longueur de la bar
 		return true;
@@ -103,13 +81,21 @@ void BlastAmmo::Add_Ammo(int amm)
 		active = true;	// devient automatiquement actif
 	
 	ammo += amm;
-	//DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié, mais différement, tu fera une animation plus tard
+	
+	if (ammo == 1)
+	{
+		Cancel_Ev_Ammo_Depleted();
+		Stop_Ev_Use_Emergency_Ammo();
+	}
+
+	DrawBlastAmmo::Dr_Ammo_Gain();
+	DrawBlastAmmo::Update_Ammo_Count();
 }
 
 void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automatiquement le limitateur
 {	
 	ammo = nbShots;
-	emergencyAmmo = 2;	// reset le nombre d'emergency ammo à chaque fois
+	Set_Nb_Emergency_Ammo(2);	// reset le nombre d'emergency ammo à chaque fois
 
 	if (active == false)
 	{
@@ -118,12 +104,13 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 
 		// Le ratioBarPerAmmo et l'ui est activé uniquement quand on utilise la méthode set
 		DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
-
-		//if(!nbShots)
-		//	Ev_Ammo_Depleted();	 // Pas de ammo
 	}
 }
 
+void BlastAmmo::Set_Nb_Emergency_Ammo(int nbShots) {
+	emergencyAmmo = nbShots;
+	DrawBlastAmmo::Dr_Emergency_Ammo(nbShots);
+}
 
 
 // UI UI UI UI UI UI UI 

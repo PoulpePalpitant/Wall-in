@@ -77,7 +77,7 @@ void Update_Player_Action()
 			{
 			case PAUSE:
 				gPauseUpdates = true;
-				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 2 }, BRIGHT_WHITE);			
+				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 1 }, BRIGHT_WHITE);			
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			
 				if (gDayStarted)
 				{
@@ -178,7 +178,7 @@ void Update_Player_Action()
 			if (action == UNPAUSE)
 			{
 				gPauseUpdates = false;
-				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 2 });			
+				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 1 });			
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);	
 				if (gDayStarted)
 				{

@@ -16,14 +16,14 @@ const unsigned char ITEM_SYM[MAX_ITEM_TYPE] = { '+',  254 ,158, 207, 176,176,245
 	Il y a des items MODIFIER, et les autres
 	Si le joueur pogne un modifier, son prochain blast sera modifié
 
-	-HEALTH
+	-AMMO
 	Donne +1 de vie au joueur
 
 */
 
 enum class ItemType
 { 
-	REGULAR, BUFFER, BLOCKER, CORRUPTED, COLOR_A, COLOR_B, BLIND_COLOR, HEALTH, LIFE, AMMO 
+	REGULAR, BUFFER, BLOCKER, CORRUPTED, COLOR_A, COLOR_B, BLIND_COLOR, AMMO, LIFE 
 };
 
 class ItemMeta

@@ -21,8 +21,8 @@
 
 
 /* Msg events*/
-#include "msg_events/ev_day_2.h"
 #include "msg_events/ev_waking_up_2.h"
+#include "../../events/global_events/ev_level_title.h"
 
 
 // others
@@ -34,6 +34,9 @@
 #include "../../grid/managegrids.h"
 #include "../../items/item_spawner.h"
 
+static bool seenLevelTitle = false;
+
+
 // C'EST ICI QUE ÇA SE PASSE
 void Dispatch_Msg_To_Lvl_2()
 {
@@ -43,59 +46,47 @@ void Dispatch_Msg_To_Lvl_2()
 	case PLS_INTIALIZE_LVL: Lvl_2_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
 
 	case STAGE_ADVANCE:
-		if (gCurrentStage < 6)
+		Event::Cancel_All();		// Tout les events en cours sont annulés
+		clrscr();
+
+		if (gCurrentPuzzle[gCurrentLevel - 1] == 0)
 		{
-			Event::Cancel_All();		// Tout les events en cours sont annulés
-			clrscr();
-		}
-		switch (gCurrentStage)
-		{
-		case 1:Ev_Wake_Up_2();
-			break;
-		
-		case 2: 
-			Ev_Dr_Day_2();
-			break;
-		
-		case 3:
-			P1.Set_Hp(3);
-			if (gSkipTutorial)
+			if (!seenLevelTitle)
 			{
-				/*safety*/
-				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
-				botList.Destroy_All_Bots();
-
-				if (gCurrentPuzzle[gCurrentLevel - 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
-				{
-					P1.Set_Position({ 6,6 });
-					P1.Er_Player();
-					Just_Dr_Map_Borders();
-					gCurrPuzzleStep = 0;	// SAFETY
-					MsgQueue::Register(SPAWN_PLAYER);
-				}
-				else
-				{
-
-					Checkpoint_Delay();// Delay Next spawn
-
-					if (gCurrentPuzzle[gCurrentLevel - 1] + 1 != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
-						Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
-				}
-
-				// Pour debug
-				gGrids.Dr_Spawngrid();
+				Ev_Dr_Level_Title();
+				seenLevelTitle = 1;
+				return;
 			}
 
-			P1.Reset_Hp_And_Heart(3);
-			Ev_Progress_Bar2();
-			Init_Puzzle();
+			//Just_Dr_Map_Borders();
+			P1.Er_Player();
+			gCurrPuzzleStep = 0;	// SAFETY				
+			MsgQueue::Register(SPAWN_PLAYER);
+		}
+		else
+		{
+			Checkpoint_Delay();// Delay Next spawn
 
-			MsgQueue::Register(START_BOTS); // Here they come baby
-			gSkipTutorial = false;
-			gDayStarted = true;
+			if (gCurrentPuzzle[gCurrentLevel - 1] + 1 != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
+				Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 		}
 
+		/*safety*/
+		ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
+		botList.Destroy_All_Bots();
+
+		P1.Set_Hp(1);
+		Ev_Progress_Bar();
+		Init_Puzzle();
+
+		MsgQueue::Register(START_BOTS); // Here they come baby
+		gSkipTutorial = false;
+		gDayStarted = true;
+
+		// Pour debug
+		//gGrids.Dr_Spawngrid();
 		break;
+
 
 	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
 		Clear_All_States();	// Thats a fucking quick reset brah
@@ -104,15 +95,15 @@ void Dispatch_Msg_To_Lvl_2()
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		break;
 
-	case PROCEED: 
-			gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
-			MsgQueue::Register(PLS_INTIALIZE_LVL);
-			clrscr();
-			
-			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
-			{
-				Ev_Lvl_Unlocked();
-			}
-		break;	
+	case PROCEED:
+		gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
+		MsgQueue::Register(PLS_INTIALIZE_LVL);
+		clrscr();
+
+		if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
+		{
+			Ev_Lvl_Unlocked();
+		}
+		break;
 	}
 }

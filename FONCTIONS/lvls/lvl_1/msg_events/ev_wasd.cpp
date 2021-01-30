@@ -64,9 +64,10 @@ void Ev_Er_Wasd()
 	else
 		while (ev_Er_Wasd.delay.Tick())
 		{
-			ConsoleRender::Add_String(_1, crd, WHITE, 80, true);						// ERASE
-			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_DR, true);
-			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_DR, true);
+			Coord crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2 };
+			ConsoleRender::Add_String(_1, crd, WHITE, TXT_SPD_ER, true);						
+			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_ER, true);
+			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_ER, true);
 			ev_Er_Wasd.Advance(0);
 		}
 }

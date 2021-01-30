@@ -62,10 +62,8 @@ void Set_Dflt_WND()
 	Change_Typography();
 	Set_Console_Name();
 	Disable_Quick_Edit();
-	Hide_Scrollbar();
+	Hide_Scrollbar();	//
 	No_Resize();
-	// Si tu met ça fullscreen, fais jsute ajuster les pauses messages pour qui soit 2 case plus haut(ceux qui sont en bas du coeur)
-	//Fullscreen();
 
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_SHOWMAXIMIZED);

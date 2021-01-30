@@ -54,9 +54,9 @@ static bool overShot = false;
 static GrdCoord dotChase;
 
 static std::string b = BOT_DESIGN_1C[1] + " ' ";
-static std::string _15_1 = ("(Don't Let The 'Shape' Reach This Border) : ");
-static std::string _15_2 = ("(Don't Let The Shapes Reach This Border)");
-static std::string _24 = "- Ammo Is Limited - ";
+static std::string _15_1 = ("(Don't let the 'Shape' reach this border) : ");
+static std::string _15_2 = ("(Don't let the shapes reach this border)");
+static std::string _24 = "- Ammo is limited - ";
 static std::string _24_1 = "Overshooting Drains HEALTH";
 static std::string _25 = "(<-- Try this)";
 
@@ -117,11 +117,9 @@ static void Setup()
 	Just_Dr_Wasd();
 	Just_Dr_Arr_Keys();
 	Free_Das_Player();
-	Just_Dr_Heart();
 	P1.Dr_Player();
 	Retry_If_Fail();
 	Draw_Tuto_Progression(0);
-
 }
 
 
@@ -248,7 +246,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				Set_Jerry_Time(5);
 				Ev_Dr_Stop_Jerry();
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
-				P1.Set_Hp(3); Just_Dr_Heart(); Just_Dr_Arr_Keys();	// réaffichage et redonne de la vie
+				P1.Set_Hp(3); Just_Dr_Arr_Keys();	// réaffichage et redonne de la vie
 
 				MsgQueue::Register(DISABLE_BLAST);		/// Si le joueur tir avant, le blast ne sera pas cancelé
 				ev_BotTutorial2.Advance(400);
@@ -431,7 +429,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				clrscr();
 				stepToSendBack = 35;
 				Setup();
-				P1.Set_Hp(3); Just_Dr_Heart();
+				P1.Set_Hp(3);
 				
 				gCurrentStage = 2;
 				Press_X_To_Proceed(1);

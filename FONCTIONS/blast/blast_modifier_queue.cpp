@@ -5,6 +5,7 @@
 #include "mod_queue_animator_add.h"
 #include "mod_queue_animator_consume.h"
 #include "../player/player.h"
+#include "../events/global_events/feedback/ev_ammo_depleted.h"
 
 
 const int MAX_BLAST_MOD_Q = 10;
@@ -67,4 +68,6 @@ void BlastModifierQueue::Reset()
 	blastP1.Setup_Modifier(REGULAR);	// Aucun modifier
 	P1.Er_Player();
 	DrawModifierQueue::Hide_Queue_UI();
+	Cancel_Ev_Ammo_Depleted(); // just in case
+
 }

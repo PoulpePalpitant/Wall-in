@@ -30,7 +30,7 @@ ItemMeta Item::meta = {};	// info sur le groupe d'items
 //	case ItemType::COLOR_A:		sym = 176;	clr = LIGHT_YELLOW;	  break;
 //	case ItemType::COLOR_B: 	sym = 176;	clr = LIGHT_AQUA;	break;
 //	case ItemType::BLIND_COLOR:	sym = 176;	clr = BRIGHT_WHITE;	  break;
-//	case ItemType::HEALTH:		sym = '0';	clr = LIGHT_GREEN;	  break;
+//	case ItemType::AMMO:		sym = '0';	clr = LIGHT_GREEN;	  break;
 //	}
 //}
 //

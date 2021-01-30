@@ -65,9 +65,12 @@ void Ev_Er_Arr_Keys()
 	else
 		while (ev_Er_ArrKeys.delay.Tick())
 		{
-			ConsoleRender::Add_String(_1, crd, WHITE, 80, true);						// ERASE
-			ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_ER, true);
-			ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_ER, true);
+			crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) };
+			ConsoleRender::Add_String(_1, crd, WHITE, TXT_SPD_ER, true);						// ERASE
+			ConsoleRender::Add_String(_2, { crd.x + 3, crd.y + 2 }, WHITE, TXT_SPD_ER, true);
+			ConsoleRender::Add_String(_3, { crd.x - 1 ,crd.y + 3 }, WHITE, TXT_SPD_ER, true);
+			ConsoleRender::Add_String(_4, { crd.x - 6 ,crd.y + 5 }, WHITE, TXT_SPD_ER, true);	// x -3, y + 2
+
 			ev_Er_ArrKeys.Advance(0);
 		}
 }

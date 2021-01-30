@@ -21,6 +21,7 @@
 #include "ev_spwn_player.h"
 #include "ev_update_heart.h"
 #include "../../events/global_events/feedback/ev_drain_health.h"
+#include "feedback/ev_ammo_depleted.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);
 
@@ -66,7 +67,7 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 					P1.Dr_Player();						// doit redraw le joueur quand on fait ça
 					Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
 					Ev_Good_Job();						// Félicite le joueur
-					P1.Reset_Hp_And_Heart(3);			// Restore la vie du joueur
+					P1.Set_Hp(1);
 
 					gCurrentPuzzle[gCurrentLevel - 1]++;// Le checkpoint est officiellement updaté
 					ev_ReachCheckpoint.delay.Stop();

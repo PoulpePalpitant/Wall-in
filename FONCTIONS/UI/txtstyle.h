@@ -40,6 +40,7 @@ extern TextConstant TXT_CONST;
 
 
 const int STANDARD_ASCII_SIZE = 6;
+const int DOH_FONT_SIZE= 16;
 
 //struct TextArt
 //{

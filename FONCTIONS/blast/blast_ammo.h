@@ -30,4 +30,6 @@ public:
 
 	// SET
 	void Set_Ammo(int nbShots); 
+	void Set_Nb_Emergency_Ammo(int nbShots);
+
 };

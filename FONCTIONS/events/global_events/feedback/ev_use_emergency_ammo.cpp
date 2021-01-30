@@ -26,20 +26,20 @@ struct odds { std::string msg; unsigned int odd; };
 
 // Une phrase différente à chaque fois, ou presque
 static odds emptyMsg[12] = {
-	{"- NO EXTRA AMMO -",42},
+	{" NO EXTRA AMMO ",43},
 	
-	{"- THERE IS NO AMMO - ",8},
-	{"- NOTHING HERE -",8},
-	{"- EMPTY -",8},
-	{"- CANNOT SHOOT -", 8},
-	{"- AMMO'S GONE - ",8},
-	{"- YOU CAN'T - ",8},
+	{" THERE IS NO AMMO  ",8},
+	{" NOTHING HERE ",8},
+	{" EMPTY ",8},
+	{" CANNOT SHOOT ", 8},
+	{" AMMO'S GONE  ",8},
+	{" YOU CAN'T  ",8},
 
-	{"- OH... -",2},
-	{"- TRY AGAIN LATER - ",2},
-	{"- THAT'S NOT HOW IT WORKS - ",2},
-	{"- STOP TRYING ! -",2},
-	{"- YOU'RE SCREWED - ",2},
+	{" OH... ",2},
+	{" TRY AGAIN LATER  ",2},
+	{" THAT'S NOT HOW IT WORKS ",2},
+	{" STOP TRYING ! ",2},
+	{" YOU'RE SCREWED !  ",1},
 };
 
 
@@ -123,7 +123,7 @@ void Ev_No_Ammo_Msg()
 	static std::string msg;
 	if (!ev_NoAmmoMsg.Is_Active())
 	{
-		clr = LIGHT_RED;
+		clr = LIGHT_YELLOW;
 		crd = Get_Ori();
 		crd.x += 5;
 		crd.y += MAX_BAR_SIZE + 1 - 9;
@@ -156,6 +156,17 @@ void Ev_No_Ammo_Msg()
 			ev_NoAmmoMsg.Cancel();
 		}
 }
+
+void Stop_Ev_Use_Emergency_Ammo() {		// This will fix a visual glitch
+	if (ev_UseEmergencyAmmo.Is_Active())
+	{
+		ev_UseEmergencyAmmo.Cancel();
+		Dr_Or_Er_Bar(MAX_BAR_SIZE,WHITE,true);
+		Dr_Bar_Tip(1);
+		Q_ev_UseEmergencyAmmo.Remove(0);
+	}
+}
+
 
 void Stop_Ev_No_Ammo_Msg()		
 {

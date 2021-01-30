@@ -102,31 +102,6 @@ void Lvl_2_Spwn_Script()	// HERE WE GO AGAIN
 	}
 }
 
-//void Puzzle_2_0(){
-/*
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ 6,6 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(10);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-		break;
-
-
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
-	case 11:
-	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-*/
-//}
-
 
 // Tuto blocker
 void Puzzle_2_0()
@@ -138,11 +113,9 @@ void Puzzle_2_0()
 		gCurrPuzzleStepMax = 12;
 
 		gGrids.Make_Box_Of_Blockers({ 0 + 4 , 0 }, { linkGrid->Get_Cols() - 1 - 4 , linkGrid->Get_Rows() - 1 });
-		Set_Dr_Map_1(TXT_SPD_DR * 4);  // Erase la border au cas où le joueur est pas en mode quickstartS
 		gGrids.Activate_Link({ 6,11 });	// Link ordinaire à gauche
 
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 10 }, false, true);
-
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 5 , 6 }, false, true);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 6 }, false, true);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 , 6 }, false, true);
@@ -440,7 +413,8 @@ void Puzzle_2_6()
 	{
 	case 0:
 		P1.Set_Position({ 6, 6 });				// Coord de départ du jouer
-		P1.Reset_Hp_And_Heart(3);
+		P1.Set_Hp(1);
+
 		blastP1.Get_Ammo_Manager().Set_Ammo(4);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
@@ -1379,7 +1353,8 @@ void Puzzle_2_FINAL()
 	static Direction leftOrRight = LEFT;
 
 	static std::string _1 = "- SURVIVE -";
-	static std::string _2 = "- Waves Remaining -";
+	static std::string _2 = "Waves Remaining :";
+
 	static Coord crd;
 	const int SHAPES_TO_KILL = 15;
 	static int shapesRemaining;
@@ -1393,8 +1368,9 @@ void Puzzle_2_FINAL()
 		upOrDown = false;
 		leftOrRight = LEFT;
 		shapesRemaining = SHAPES_TO_KILL;
-		crd = { map.Get_Box_Limit(RIGHT) + 13,map.Get_Ctr_Y() - 4 };
+		crd = { Find_Ctr_String_X(_1) - 1, 6 };
 
+		//seenFinalHour = 1;
 
 		if (!seenFinalHour)
 		{
@@ -1473,12 +1449,12 @@ void Puzzle_2_FINAL()
 		break;
 
 	case 3:
-		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 4,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
+		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 13,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
 		ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
-		ConsoleRender::Add_String(_2, { crd.x - 4,crd.y + 1 }, WHITE, TXT_SPD_DR);
+		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
 
 		MsgQueue::Register(ENABLE_ITEM_SPAWN);
-		ItemSpawner::Add_To_Pool(ItemType::HEALTH, 150, 0);
+		ItemSpawner::Add_To_Pool(ItemType::AMMO, 150, 0);
 		ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 60, 0);
 		ItemSpawner::Add_To_Pool(ItemType::BUFFER, 60, 0);
 		skip = 8;
@@ -1522,11 +1498,12 @@ void Puzzle_2_FINAL()
 
 	if (gCurrPuzzleStep > 3)
 	{
-		if (shapesRemaining == 10) 
-			ConsoleRender::Add_String(TXT_CONST.SPACE_STRING, { crd.x + 5,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
+		if (shapesRemaining == 9)
+			ConsoleRender::Add_String(TXT_CONST.SPACE_STRING, { crd.x + 14,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
+
+		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 13,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
 
 		shapesRemaining--;
-		ConsoleRender::Add_String(std::to_string(shapesRemaining), { crd.x + 4,crd.y + 3 }, LIGHT_GREEN, TXT_SPD_DR);
 	}
 
 

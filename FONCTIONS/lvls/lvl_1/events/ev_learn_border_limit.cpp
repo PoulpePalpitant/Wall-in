@@ -26,7 +26,7 @@ void Ev_Learn_Border_Limit()// Trace un chemin vers une fausse porte de sortie
 	if (!ev_LearnBorderLimit.Is_Active())
 	{
 		ev_LearnBorderLimit.Activate();
-		ev_LearnBorderLimit.Start(150);
+		ev_LearnBorderLimit.Start(1000);
 	}
 	else	
 	{
@@ -92,7 +92,6 @@ void Ev_Learn_Border_Limit()// Trace un chemin vers une fausse porte de sortie
 				{
 					clrscr();
 					Just_Dr_Map_Borders();
-					Just_Dr_Heart();
 					Just_Dr_Wasd();
 					P1.Dr_Player();
 

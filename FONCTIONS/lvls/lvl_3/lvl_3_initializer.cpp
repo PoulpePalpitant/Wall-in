@@ -17,12 +17,11 @@
 void Lvl_3_Initializer()
 {
 	// Pour un normal quick start
-	gCurrentStage = 0; // Normal
-	MsgQueue::Register(STAGE_ADVANCE);
+	gCurrentStage = 1; // Normal
 
 	// TEST DU SPAWN SCRIPT ICI
 	// **************************
-	int checkpointTest = 0;/* 21 = max*/
+	int checkpointTest = 0;/* 20 = max*/
 
 	if (gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
 		gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
@@ -37,9 +36,9 @@ void Lvl_3_Initializer()
 
 	P1.Set_Hp(3);
 
+	MsgQueue::Register(STAGE_ADVANCE);
 	MsgQueue::Register(LVL_INITIALIZED);
 	MsgQueue::Register(ENABLE_BLAST);
-
 	MsgQueue::Register(DISABLE_ITEM_SPAWN);
 
 }

@@ -29,10 +29,10 @@ void Player::Player_Lose_HP(int hpLost)
 	{
 		hp -= hpLost;
 
-		if (hp > 0)
-			Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
-		else
-			Start_Ev_Dr_Heart(0);	// important de mettre 0 ici, car ça peut être plus bas
+		//if (hp > 0)
+		//	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
+		//else
+		//	Start_Ev_Dr_Heart(0);	// important de mettre 0 ici, car ça peut être plus bas
 
 		Upd_State();
 	}

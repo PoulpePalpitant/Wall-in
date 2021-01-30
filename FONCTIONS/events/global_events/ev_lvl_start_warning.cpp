@@ -28,8 +28,6 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 		ori.y = linkGrid->Get_Rows();
 		crd = ori;
 		stringProgress = 0;
-		P1.Set_Position({ 6,6 });
-		MsgQueue::Register(SPAWN_PLAYER);
 
 		ev_LvlStartWarning.Activate();
 		ev_LvlStartWarning.Start(40000, (int)ready.size());
@@ -43,7 +41,7 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				ConsoleRender::Add_Char(crd, ready[stringProgress]);
 				stringProgress++;	// avance d'un char			
 				crd.x++;	// avance d'un char
-				ev_LvlStartWarning.Advance(500);
+				ev_LvlStartWarning.Advance(1000);
 				break;
 
 			case 2:
@@ -61,7 +59,6 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 4:
-				Start_Ev_Dr_Heart(3, true); // affiche le coeur						
 				ev_LvlStartWarning.Advance(500);
 				break;
 
@@ -72,7 +69,7 @@ void Ev_Lvl_Start_Warning()		 // Affiche le coueur à ses différents stades
 				break;
 
 			case 6:
-				Ev_Progress_Bar2();	// Make that progress bar
+				Ev_Progress_Bar();	// Make that progress bar
 				ev_LvlStartWarning.Advance(0);
 				break;
 			

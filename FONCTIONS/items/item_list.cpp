@@ -114,11 +114,11 @@ void ItemsOnGrid::Pickup_Item_Here(GrdCoord crd)
 			}
 			else
 			{
-				if (items[i].Get_Type() == ItemType::AMMO)	// 10 ammo
-					blastP1.Get_Ammo_Manager().Add_Ammo(10);
-				else
-					if (items[i].Get_Type() == ItemType::HEALTH)
-						P1.Player_Gains_HP();	// 1 de vie
+				if (items[i].Get_Type() == ItemType::AMMO)	
+					blastP1.Get_Ammo_Manager().Add_Ammo(1);
+				//else
+				//	if (items[i].Get_Type() == ItemType::AMMO)
+				//		P1.Player_Gains_HP();	// 1 de vie
 			}
 			// Cancel l'animation de spawn ssi y elle avait lieux
 			DrawItemSpawnList::Cancel(linkGrid->link[items[i].grdCrd.c][items[i].grdCrd.r].Get_XY());	// ouach lol

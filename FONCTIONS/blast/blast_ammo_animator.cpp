@@ -11,11 +11,13 @@ namespace DrawBlastAmmo {
 
 	static Event ev_DrFullBar(Ev_Dr_Bar_From_Scratch, MAX_BAR_SIZE);
 	static Event ev_DrAmmoCountFromScratch(Ev_Dr_Ammo_Count_From_Scratch);
+	static Event ev_DrAmmoGain(Ev_Dr_Ammo_Gain,100);
 
 	bool isShown = false;		// si le player vois l'UI 
 	bool erDozen = false;		// si on doit effacer la dizaine
-	double ratioBarPerAmmo = 1;			// Nombre de munition pour chaque char de la bar 
+	double ratioBarPerAmmo = 1;		// Nombre de munition pour chaque char de la bar 
 	double nextAmmoEr = 1;			// Le nombre de munition à atteindre pour progresser dans la bar
+	double nextAmmoDraw = 1;
 
 	//	UI
 	Colors barProgClr = BRIGHT_WHITE;				// Couleur des chars de la bar -> blanc -> jaune -> rouge	selon la progression
@@ -122,27 +124,23 @@ namespace DrawBlastAmmo {
 
 			Dr_Bar_Tip(1);	// draw them tips
 			Dr_Bar_Tip(0);
-			Dr_Emergency_Ammo(0);
-			
+
+			if (blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo() > 0)
+			{
+				Dr_Emergency_Ammo(1);
+				Dr_Emergency_Ammo(2);
+			}
+			else
+				Dr_Emergency_Ammo(blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo());
 
 			// Draw pas la bar si ta pas d'ammo
 			if (blastP1.Get_Ammo_Manager().Get_Nb_Ammo() == 0)
 			{
 				Dr_Or_Er_Bar(MAX_BAR_SIZE, WHITE, true);	// Met la bar vide SAFETY
 				Dr_Bar_Tip(1, LIGHT_RED, 0, 0);
-				Dr_Bar_Tip(0, LIGHT_RED, 0, 1);
-
-
-				if (blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo() > 0)
-				{
-					Dr_Emergency_Ammo(1);
-					Dr_Emergency_Ammo(2);
-				}
-				else
-					Dr_Emergency_Ammo(blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo());
-
 				return;
 			}
+
 
 			ev_DrFullBar.Activate();
 			ev_DrFullBar.Start(0);
@@ -159,8 +157,9 @@ namespace DrawBlastAmmo {
 				else
 					barSize++;
 
-				if(barSize == barMax / 2)
-					Dr_Emergency_Ammo(1);	// Affiche la première moitié de la bar
+				if(blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo() > 0)
+					if(barSize == barMax / 2)
+						Dr_Emergency_Ammo(1);	// Affiche la première moitié de la bar
 
 				if (barSize == barMax)
 				{
@@ -172,7 +171,8 @@ namespace DrawBlastAmmo {
 					for (int i = 0; i < toClear; i++)
 						Dr_Bar_Sym(barMax + i, WHITE, true);
 
-					Dr_Emergency_Ammo(2);	// Affiche la 2e tite bar au complet
+					if(blastP1.Get_Ammo_Manager().Get_Nb_Emergency_Ammo() > 0)
+						Dr_Emergency_Ammo(2);	// Affiche la 2e tite bar au complet
 
 					ev_DrFullBar.Cancel();
 				}
@@ -190,7 +190,6 @@ namespace DrawBlastAmmo {
 		static const int DURATION = 3000;	// durée de 3 secondes
 		static const float SPEED_MULTIPLIER = 2.5;	// durée de 3 secondes
 		static const float fractionsSpeed[] = { 2 / 3.f, 1 / 3.f, 1 / 6.f };	// vitesse relative à la progression
-		static const float fractionsSpeed2[] = { 1 / 2.f, 1 / 4.f, 3 / 16.f, 1 / 16.f };	// vitesse relative à la progression
 		static const int fractions = 3;
 		static int count, nbShots, speed;
 		static float nxtCount, currCount;;
@@ -200,9 +199,6 @@ namespace DrawBlastAmmo {
 
 		if (!ev_DrAmmoCountFromScratch.Is_Active())
 		{
-			//countRatio = DURATION / nbShots;
-			//currCount = DURATION;
-			//nxtCount = currCount -= countRatio;
 
 			count = 0;
 			totTime = 0;	// temps à incrémenter
@@ -221,14 +217,7 @@ namespace DrawBlastAmmo {
 		else
 		{
 			totTime += GameLoopClock::Get_Delta_Time();
-			// speed 
-			// duration = 3 seconde
 
-			// 1 première seconde tu fais le 2 tier
-			// 1 prochaine tu fais le quart
-			// 1 dernière tu fais le reste
-
-			//if(ev_DrAmmoCountFromScratch.delay.Get_Time_Left() < )
 			while (ev_DrAmmoCountFromScratch.delay.Tick())
 			{
 				nbShots = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();	// si le joueur tir pendant l'event, faut réduire ça!
@@ -245,9 +234,6 @@ namespace DrawBlastAmmo {
 					else
 						if (count > nbShots)
 							ev_DrAmmoCountFromScratch.Cancel();
-				//else
-				//	if (count == nbShots - 3)
-				//		ev_DrAmmoCountFromScratch.delay.Start_Timer(3000, 1, true);
 			}
 		}
 	}
@@ -324,7 +310,7 @@ namespace DrawBlastAmmo {
 		isShown = false;
 	}
 
-	void Dr_Ammo_Remove()	 // Réduit de 1 le nombre d'ammo
+	void Update_Ammo_Count()	 // Réduit de 1 le nombre d'ammo
 	{
 		if (!ev_DrAmmoCountFromScratch.Is_Active())
 		{
@@ -339,43 +325,46 @@ namespace DrawBlastAmmo {
 
 		if (ammo <= round(nextAmmoEr))	// UPDATE la bar
 		{
+
 			if (!ev_DrFullBar.Is_Active())
 			{
 				Dr_Bar_Sym(barLength, WHITE, true);	// Réduit la longueur de la bar
 
 				if (barLength == MAX_BAR_SIZE)
 					Dr_Bar_Tip(true, WHITE, 0, 0);	// déconnect le petit char du tip
-
+				
 				barLength--;
 
 				if (Upd_Bar_Progression_Color())
 					Dr_Or_Er_Bar(barLength, barProgClr);	// Recolorie la bar au complet
 
-				if (ammo == 0) //draw les deux tips en rouges
+
+				if (ammo == 0) //draw les deux tips en rouges. or not
 				{
 					Dr_Bar_Tip(1, LIGHT_RED, 0, 0);
-					Dr_Bar_Tip(0, LIGHT_RED, 0, 1);
 				}
 			}
 			else
 				barLength--;
 
-			nextAmmoEr -= ratioBarPerAmmo;	// ammo ne sera jamais négatif
+
+			nextAmmoDraw = ammo +  ratioBarPerAmmo; 
+			nextAmmoEr -= ratioBarPerAmmo;
+			
 			Dr_Bar_Remove();	// On le refait une deuxième fois, car il se peut que l'on doit erase 2 fois la bar si le nombre de tir est plus petit que la bar
 		}
 	}
-
 
 	// UPDATE L'UI INSTANTANNÉMENT DÈS QUE LE JOUEUR TIR DU GUN
 	// *******************************************************
 	void Dr_Ammo_Used()		// Le joueur tir, L'UI s'UPDATE
 	{
 		Dr_Bar_Remove();	 // Réduit pt la longueur de la bar
-		Dr_Ammo_Remove();	 // Réduit de 1 le nombre d'ammo
+		Update_Ammo_Count();	 // Réduit de 1 le nombre d'ammo
 	}
 
 	// Indicateur supplémentaire
-	// *******************************************************
+	// *************************
 	void Dr_Ammo_Title(bool show)		// Le joueur tir, L'UI s'UPDATE
 	{
 		int ammoCount = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();
@@ -408,38 +397,89 @@ namespace DrawBlastAmmo {
 		if (ammo == 2)
 		{
 			// Ammo 1
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[2]);
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 10 }, barSym);
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 9 }, barSym);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[2], WHITE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 10 }, barSym, WHITE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 9 },  barSym, WHITE);
 		}
 		if (ammo == 1)
 		{
 			// Efface L'autre Ammo
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[1]);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[1], WHITE);
 			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 10 }, TXT_CONST.SPACE);
 			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.SPACE);
 
 			// Ammo 2
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 8 }, barSym);
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 7 }, barSym);
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 6 }, 193);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 8 }, barSym, WHITE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 7 }, barSym, WHITE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 6 }, 193, WHITE);
 			clr = LIGHT_YELLOW;
-
 		}
+
 		if (ammo == 0)
 		{
 			// Efface L'autre Ammo
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 10 }, TXT_CONST.SPACE, WHITE);
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.SPACE, WHITE);
 			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 8 },  TXT_CONST.SPACE);
 			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 7 },  TXT_CONST.SPACE);
-			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 6 }, tip[1], LIGHT_RED);
 			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 11 }, tip[1], LIGHT_RED);
-
+			ConsoleRender::Add_Char({ ori.x ,ori.y + MAX_BAR_SIZE + 1 - 6 }, tip[1], LIGHT_RED);
 			clr = LIGHT_RED;
 		}
 
 		ConsoleRender::Add_Char({ ori.x + 2,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.PLUS, WHITE);
 		ConsoleRender::Add_String(std::to_string(ammo), { ori.x + 4  ,ori.y + MAX_BAR_SIZE + 1 - 9 }, clr);	// 
 
+	}
+
+
+	// Un ajout!
+	//**********
+
+	void Dr_Ammo_Gain()
+	{
+		int ammo = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();	// Nombre de munitions du joueur
+
+		if (ev_DrAmmoGain.Is_Active())
+			ev_DrAmmoGain.Cancel(); // Stop l'animation
+		Ev_Dr_Ammo_Gain();
+
+		// Si la bar à atteint son max, faut adapté le ratio
+		if (barLength == MAX_BAR_SIZE)
+		{
+			ratioBarPerAmmo = ammo / (float)MAX_BAR_SIZE  ;
+			ammoMaxTresholdClr = ammo - 1;
+			nextAmmoEr = ammo - ratioBarPerAmmo;
+		}
+		else
+			if (ammo >= round(nextAmmoDraw))
+			{
+				//Dr_Or_Er_Bar(barLength, Get_Bar_Treshold_Color(barLength));	// last char
+
+				if (!ev_DrFullBar.Is_Active())
+				{
+					barLength++;
+					
+					Dr_Bar_Sym(barLength, Get_Bar_Treshold_Color(barLength));	// Allonge la bar
+
+					if (barLength == MAX_BAR_SIZE)
+						Dr_Bar_Tip(1, BRIGHT_WHITE, 0, 1);	// reconnect le ptit tip
+					
+
+					if (Upd_Bar_Progression_Color())
+						Dr_Or_Er_Bar(barLength, barProgClr);	// Recolorie la bar au complet
+
+					if (ammo == 1) // redraw le vieux tip
+						Dr_Bar_Tip(0);
+				}
+				else
+					barLength++;
+
+				nextAmmoDraw += ratioBarPerAmmo;
+				nextAmmoEr = ammo - ratioBarPerAmmo;
+
+				Dr_Ammo_Gain();
+			}
 	}
 
 
@@ -451,14 +491,17 @@ namespace DrawBlastAmmo {
 		int ammo = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();	// Nombre de munitions du joueur
 		Cancel_Ev_Ammo_Depleted();
 
-		barLength = MAX_BAR_SIZE;	// Cette size pourrait être relative
-		ratioBarPerAmmo = (ammo / (double)barLength);
+		barLength = !ammo ? 0 : MAX_BAR_SIZE;
+		ammoMaxTresholdClr = !ammo ? MAX_BAR_SIZE : ammo;
+		ratioBarPerAmmo = !ammo ? 1 : (ammo / (double)MAX_BAR_SIZE);
+
 		nextAmmoEr = ammo - ratioBarPerAmmo;
-		ammoMaxTresholdClr = ammo;
+		nextAmmoDraw = ammo + ratioBarPerAmmo;
+
 
 		if (instant)
 		{
-			Dr_Or_Er_Bar(barLength, LIGHT_GREEN);
+			Dr_Or_Er_Bar(MAX_BAR_SIZE, LIGHT_GREEN);
 			Dr_Ammo_Count(ammo, LIGHT_GREEN);
 		}
 		else
@@ -472,5 +515,56 @@ namespace DrawBlastAmmo {
 		Dr_Ammo_Title(true);
 		isShown = true;
 	}
-}
 
+
+
+
+
+	void Ev_Dr_Ammo_Gain()		 // Affiche le coueur à ses différents stades
+	{
+		static Coord  xy;
+		static int speed = 150000;
+
+		if (!ev_DrAmmoGain.Is_Active())
+		{
+			xy = Get_Ori();
+			xy.x += barToCount - 1;
+		
+			ev_DrAmmoGain.Activate();
+			ev_DrAmmoGain.Start(0);
+			ev_DrAmmoGain.delay.Start_Timer(speed, 3);	
+		}
+		else
+			while (ev_DrAmmoGain.delay.Tick())
+			{
+				switch (ev_DrAmmoGain.Get_Current_Step())
+				{
+				case 1:
+					ConsoleRender::Add_Char(xy, COOL_CHARS[rand() % NUM_COOL_CHARS], LIGHT_GREEN);
+					xy.x++;
+					ev_DrAmmoGain.Advance(0);
+					break;
+
+				case 2: 
+					xy.x-= 4;
+					ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+					ev_DrAmmoGain.Advance(0);
+					ev_DrAmmoGain.delay.Stop();
+					ev_DrAmmoGain.delay.Start_Timer(50000, 2);
+					break;
+
+				case 3: 
+					xy.x++;
+					ConsoleRender::Add_Char(xy, TXT_CONST.SPACE);
+					ev_DrAmmoGain.Advance(0);
+					break;
+
+				case 4: 
+					Dr_Ammo_Count(blastP1.Get_Ammo_Manager().Get_Nb_Ammo(), ammoProgClr);
+					break;
+				}
+			}
+	}
+
+
+}

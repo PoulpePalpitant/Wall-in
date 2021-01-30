@@ -52,7 +52,7 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, bool finalPuzzle) {
 	gridLength = DELTA_X * col;
 	START_X = (gConWidth - gridLength) / 2;
 	gridHeight = DELTA_Y * row;
-	START_Y = (gConHeight - gridHeight) / 2 ;
+	START_Y = (gConHeight - gridHeight + 6) / 2 ;
 
 	if (grid.areCreated)
 		Resize_All_Grids(grid, col, row); // UNE SEULE CRÉATION
@@ -60,6 +60,5 @@ bool Resize_Grids_To_Level(AllGrids& grid, int lvl, bool finalPuzzle) {
 		Create_All_Grids(grid, col, row);
 
 	Ev_Resize_From_Grids();
-	//MsgQueue::Register(GRIDS_RESIZED);
 	return true;
 }

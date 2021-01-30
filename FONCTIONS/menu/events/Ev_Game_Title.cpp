@@ -84,7 +84,10 @@ void Ev_Er_Game_Title()
 				ConsoleRender::Add_String("          W:::::W         W:::::W       a:::::aaaa::::::a  l::::::ll::::::l    I::::::::In::::n    n::::n", { x,y }, WHITE, 200 * 1200, true);y++;
 				ConsoleRender::Add_String("           W:::W           W:::W         a::::::::::aa:::a l::::::ll::::::l    I::::::::In::::n    n::::n", { x,y }, WHITE, 110 * 1200, true);
 				ConsoleRender::Add_String("                                                                                                         ", { x,y }, WHITE, 110 * 1200, true);
-				ev_Er_GameTitle.Advance(400);
+				
+				ConsoleRender::Add_String(author, { gConWidth - 25, gConHeight }, WHITE,TXT_SPD_ER,1);
+
+				ev_Er_GameTitle.Advance(500);
 				break;
 
 			case 2:

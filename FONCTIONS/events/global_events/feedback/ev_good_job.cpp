@@ -47,7 +47,10 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 
 
 		erOrDr = false;
-		crd.y = Heart_Txt_Crd_Left("brrp").y;
+		crd.y = gConHeight / 2;
+		crd.x = Find_Ctr_String_X(grats);
+
+		//crd.y =  Heart_Txt_Crd_Left("brrp").y;
 		ev_GoodJob.Activate();
 		ev_GoodJob.Start(spd);
 	}
@@ -64,22 +67,22 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 			case 4:	clr = BRIGHT_WHITE;    break;
 			case 5:	clr = LIGHT_AQUA;    break;
 			}
+											   
+			ConsoleRender::Add_String(grats, { Up_Txt_2(grats)}, clr);
+			ConsoleRender::Add_String(grats, { Find_Ctr_Grid(grats), map.Get_Box_Limit(DOWN) + 4}, clr);
 
-				ConsoleRender::Add_String(grats, Heart_Txt_Crd_Left(grats), clr);
-				ConsoleRender::Add_String(grats, { Heart_Txt_Crd_Right(grats).x, crd.y }, clr);
+			if (erOrDr)
+				erOrDr = false;
+			else
+				erOrDr = true;
 
-				if (erOrDr)
-					erOrDr = false;
-				else
-					erOrDr = true;
+			ev_GoodJob.Advance(spd);
 
-				ev_GoodJob.Advance(spd);
-
-				if (!ev_GoodJob.Is_Active())
-				{
-					ConsoleRender::Add_String(grats, Heart_Txt_Crd_Left(grats), clr,0,1);
-					ConsoleRender::Add_String(grats, { Heart_Txt_Crd_Right(grats).x, crd.y }, clr,0,1);
-				}
+			if (!ev_GoodJob.Is_Active())
+			{
+				ConsoleRender::Add_String(grats, { Up_Txt_2(grats) }, clr, 0,1);
+				ConsoleRender::Add_String(grats, { Find_Ctr_Grid(grats), map.Get_Box_Limit(DOWN) + 4 }, clr,0,1);
+			}
 		}
 }
 
