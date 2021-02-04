@@ -14,7 +14,6 @@
 #include "../inputs/action_input.h"
 
 #include "../events/global_events/ev_update_heart.h" 
-
 #include "../events/global_events/feedback/ev_good_job.h"
 
  int choosenLvl = 0;	

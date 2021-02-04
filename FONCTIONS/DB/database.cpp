@@ -33,7 +33,7 @@ void Save()
 		saveFile << gCurrentPuzzle[2] << endl;
 		saveFile << gameCompleted << endl;
 		saveFile.close();
-		ConsoleRender::Add_String("Game saved", { gConWidth - 13 ,gConHeight });
+		ConsoleRender::Add_String("Progress saved", { gConWidth - 17 ,gConHeight });
 	}
 }
 

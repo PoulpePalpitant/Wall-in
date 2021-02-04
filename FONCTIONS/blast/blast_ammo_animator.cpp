@@ -377,7 +377,7 @@ namespace DrawBlastAmmo {
 				ConsoleRender::Add_String(ammoTitle, { (map.Get_Box_Limit(RIGHT) + 12),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
 		}
 		else
-			ConsoleRender::Add_String("       ", { (map.Get_Box_Limit(RIGHT) + 10),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_ER, 1);	// AMMO
+			ConsoleRender::Add_String("       ", { (map.Get_Box_Limit(RIGHT) + 10),(map.Get_Box_Limit(UP) - 1) }, WHITE, 0, 1);	// AMMO
 
 	}
 
@@ -427,8 +427,8 @@ namespace DrawBlastAmmo {
 			clr = LIGHT_RED;
 		}
 
-		ConsoleRender::Add_Char({ ori.x + 2,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.PLUS, WHITE);
-		ConsoleRender::Add_String(std::to_string(ammo), { ori.x + 4  ,ori.y + MAX_BAR_SIZE + 1 - 9 }, clr);	// 
+		//ConsoleRender::Add_Char({ ori.x + 2,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.PLUS, WHITE);
+		//ConsoleRender::Add_String(std::to_string(ammo), { ori.x + 4  ,ori.y + MAX_BAR_SIZE + 1 - 9 }, clr);	// 
 
 	}
 

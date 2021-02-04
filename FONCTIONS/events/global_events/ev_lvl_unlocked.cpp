@@ -33,10 +33,13 @@ void Ev_Lvl_Unlocked()
 		crd.x = Find_Ctr_X(1 + (1 + numDist * gLastLvlUnlocked)) - 4;
 		crd.x += (numDist + 1) * gLastLvlUnlocked - 1;
 
-		if (gLastLvlUnlocked < 3)
+		/*if (gLastLvlUnlocked < 3)
 			txt = msg;
 		else
-			txt = msg2;
+			txt = msg2;*/
+
+		txt = msg;
+
 
 		ConsoleRender::Add_Char(crd, TXT_CONST.SPACE);
 		MsgQueue::Unregister_All();	

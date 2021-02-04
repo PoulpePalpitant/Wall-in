@@ -100,8 +100,8 @@ void main()	// Le début!
 				//ConsoleRender::Add_String("  ", crd);								// efface la dizaine
 				//ConsoleRender::Add_String(std::to_string(/*(int)*/(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
 				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });		// Nombre de bot en vie
-				ConsoleRender::Add_String(std::to_string(gCurrPuzzleStep), {crd3.x + 3, crd3.y });	// Nombre de cycles fais
-				ConsoleRender::Add_String(std::to_string(gCurrentPuzzle[gCurrentLevel - 1]), crd3);	// Le puzzle actuel
+				//ConsoleRender::Add_String(std::to_string(gCurrPuzzleStep), {crd3.x + 3, crd3.y });	// Nombre de cycles fais
+				//ConsoleRender::Add_String(std::to_string(gCurrentPuzzle[gCurrentLevel - 1]), crd3);	// Le puzzle actuel
 				frames = 0;
 			}
 			GameLoopClock::Reset_Timer();	// Reset la frame!

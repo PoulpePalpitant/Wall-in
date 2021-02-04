@@ -66,7 +66,6 @@ static std::string _20 = "TUTORIAL COMPLETE!";
 
 
 static int stepToSendBack;	// Si le joueur fail une étape, il va devoir être send back à une étape précédante
-static bool practiceTime = false;
 
 static void Retry_If_Fail()
 {
@@ -132,7 +131,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 		MsgQueue::Register(FREE_PLAYER);
 		ev_BotTutorial2.Activate();
 		ev_BotTutorial2.Start(1000);
-		ev_BotTutorial2.Go_To_X_Step(35);		// freetime
+		//ev_BotTutorial2.Go_To_X_Step(35);		// freetime
 		//ev_BotTutorial2.Go_To_X_Step(20);		// third
 		//ev_BotTutorial2.Go_To_X_Step(10);		// second trial
 		//ev_BotTutorial2.Go_To_X_Step(4);		// first trial
@@ -180,6 +179,9 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 
 			case 4:
 				stepToSendBack = 4;
+				P1.Dr_Player();
+				Draw_Tuto_Progression(0);
+
 				ev_BotTutorial2.Advance(500);
 				break;
 
@@ -227,10 +229,13 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 9:
-				ev_BotTutorial2.Advance(0);
+				ev_BotTutorial2.Advance(1000);
 				break;
 
 			case 10:
+				P1.Dr_Player();
+				Draw_Tuto_Progression(0);
+
 				stepToSendBack = 10;	// si le joueur fail ce test, il sera send back à cette étape
 				ev_BotTutorial2.Advance(1000);
 				break;
@@ -311,6 +316,8 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 			case 20:
 				blastP1.Cancel();
 				CountDown_Cancel();
+				Draw_Tuto_Progression(0);
+
 				stepToSendBack = 20;	// si le joueur fail ce test, il sera send back icitte
 				ConsoleRender::Add_String(_24, Jerry_Txt_Crd(_24), WHITE, TXT_SPD_DR);
 
@@ -320,6 +327,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 21:
+				P1.Dr_Player();
 				Setup();
 				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
 
@@ -430,33 +438,29 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				stepToSendBack = 35;
 				Setup();
 				P1.Set_Hp(3);
-				
+				P1.Dr_Player();
+
 				gCurrentStage = 2;
 				Press_X_To_Proceed(1);
+				Cancel_Ev_Ammo_Depleted();
 
-				//gCurrentStage = 2;
 				ConsoleRender::Add_String(_20, Up_Txt_2(_20), LIGHT_GREEN, TXT_SPD_DR);
 				ev_BotTutorial2.Advance(500);
 				break;
 
 			case 36:
-				if (!practiceTime)	// Jerry Might Not want to help you
-				{
-					jerryTime = true;
-					Make_It_Vertical_Only();
-					Set_Jerry(NONE, -1, prevMovSpeed);	// Tu peux pas mettre un boxisde random et une crd de spawn specific
-					Ev_Spawn_Jerry();
+				jerryTime = true;
+				Make_It_Vertical_Only();
+				Set_Jerry(NONE, -1, prevMovSpeed);	
+				Ev_Spawn_Jerry();
 
-					MsgQueue::Register(ENABLE_BLAST);
-				}
+				MsgQueue::Register(ENABLE_BLAST);
 
 				ev_BotTutorial2.Advance(400);
 				ev_BotTutorial2.delay.Start_Timer(10000, 1, true);	// l'event doit rester actif si le joueur die.
 				break;
 
-
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 				// Cet Event Doit être arrêté manuellement!
 			}
 		}

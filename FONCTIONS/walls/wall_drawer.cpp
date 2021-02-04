@@ -3,7 +3,6 @@
 
 extern const int WALL_DRAW_SPEED = 40000;
 
-
 WallDrawer* DrawWalls::start = NULL; 
 WallDrawer*DrawWalls::end = NULL;
 
@@ -12,10 +11,10 @@ void DrawWalls::Reset_Drawer(WallDrawer* &drawer)
 {
 	drawer->timer.Stop();
 	drawer->nxt = NULL;
-	drawer = NULL;	// reset that shit
+	drawer = NULL;	
 }
 
-void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)	// On delete rien au final
+void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)
 {
 	toRemove->timer.Stop();
 
@@ -24,8 +23,8 @@ void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)	// On delete ri
 	else
 		if (toRemove == start)
 		{
+			// Je me suis fais chié ici, car le .nxt n'était pas reset à chaque fois. Et comme on détruit pas, ça peut créer une loop infinie!
 			start = start->nxt;
-			//Reset_Drawer(toRemove); // Je me suis fais chié ici, car le .nxt n'était pas reset à chaque fois. Et comme on détruit pas, ça peut créer une loop infinie!
 			toRemove->nxt = NULL;		
 			toRemove = start;
 		}
@@ -34,8 +33,6 @@ void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)	// On delete ri
 			{
 				end = prev;
  				toRemove->nxt = NULL;
-				//toRemove = NULL;
-				//Reset_Drawer(toRemove);	// trying stuff here
 				toRemove = prev->nxt = NULL;
 			}
 			else
@@ -43,9 +40,6 @@ void DrawWalls::Remove(WallDrawer* &prev, WallDrawer* &toRemove)	// On delete ri
 				toRemove = toRemove->nxt;
 				prev->nxt->nxt = NULL;
 				prev->nxt = toRemove;
-				//prev->nxt = toRemove->nxt;
-				//Reset_Drawer(toRemove);
-				//toRemove = prev->nxt;
 			}
 }
 void DrawWalls::Remove_All()
@@ -73,7 +67,7 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 }
  bool DrawWalls::Find_And_Draw_Wall(WallDrawer& drawer)
 {
-	 if (start == NULL) return false;	// Liste vide
+	 if (start == NULL) return false;
 
 	 static WallDrawer* it;
 	 static WallDrawer* prev;
@@ -109,9 +103,9 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 	 return false;
 }
 
- void DrawWalls::Finish_Wall(WallDrawer& drawer) // Termine d'afficher un wall. Utilisé quand je veux afficher ou effacer 1 même mur durant 1 même frame
+ void DrawWalls::Finish_Wall(WallDrawer& drawer) 
  {
-	 if (start == NULL) return;	// Liste vide
+	 if (start == NULL) return;	
 
 	 static WallDrawer* it;
 	 static WallDrawer* prev;
@@ -119,7 +113,6 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 	 it = start;
 	 prev = NULL;
 
-	 // nombre de count left
 	 int charsLeft = drawer.timer.Get_Moves_Left();
 
 	 while (it)
@@ -137,7 +130,7 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 		 else
 		 {
 			 prev = it;
-			 it = it->nxt;	// Le wall peut être introuvable je suppose
+			 it = it->nxt;
 		 }
 	 }
  }
@@ -154,7 +147,7 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
  void DrawWalls::Finish_All() // Termine d'afficher tout les walls! Alternative à remove all qui crash tout le temps
  {
 
-	 if (start == NULL) return;	// Liste vide
+	 if (start == NULL) return;	
 
 	 static WallDrawer* it;
 	 static WallDrawer* prev;
@@ -162,7 +155,6 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 	 it = start;
 	 prev = NULL;
 
-	 // nombre de count left
 	 int charsLeft = it->timer.Get_Moves_Left();
 
 	 while (it)
@@ -183,7 +175,7 @@ void DrawWalls::Add(WallDrawer* data)	// Ajoute le wall à draw
 
 void DrawWalls::Draw_Them_Walls()		
 {
-	if (start == NULL) return;	// Liste vide
+	if (start == NULL) return;	
 
 	static WallDrawer* it;
 	static WallDrawer* prev;

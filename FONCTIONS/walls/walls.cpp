@@ -6,8 +6,8 @@
 #include "../events/msg_dispatcher.h"
 #include "walls.h"
 
-extern const int WALL_SIZE_X =  DELTA_X - 1;	// Le nombre de case qui composent chaque wall horizontale
-extern const int WALL_SIZE_Y = DELTA_Y - 1;		// Le nombre de case qui composent chaque wall verticale
+extern const int WALL_SIZE_X =  DELTA_X - 1;	
+extern const int WALL_SIZE_Y = DELTA_Y - 1;		
 
 
 void Wall::Set_XY(int col, int row, Axis axis)
@@ -24,7 +24,7 @@ void Wall::Set_XY(int col, int row, Axis axis)
 	}
 }
 
-// ON CHANGE L'APPARANCE DU MUR SELON SA FORCE ET LE MODIFIER DE SON PARENT!
+// L'apparance du mur selon son type
 void Wall::Set_Wall_UI()									
 {
 	switch (type)
@@ -55,16 +55,14 @@ void Wall::Set_Wall_UI()
 	case WallType::ENERGIZED:
 		Set_Default_Wall_UI();
 		clr = Colors::LIGHT_PURPLE;
+		clr = Colors::LIGHT_AQUA;
 		break;		
 	}
-
-	//Set_Drawer(false, true);	// Réaffiche le mur
-
 }
 
 void Wall::Set_Strength_From_Parent(WallType newStrgt)
 {
-	if (StructureManager::Is_Link_Corrupted(pParent))// Le parent corrompu change le Wall en weak pour l'instant
+	if (StructureManager::Is_Link_Corrupted(pParent)) 
 	{
 		type = WallType::WEAK;
 		hp = (int)type;
@@ -88,21 +86,17 @@ void Wall::Set_Strength_From_Parent(WallType newStrgt)
 	Set_Wall_UI();
 }
 
-// RESET L'APPARENCE DU WALL À SES VALEURS PAR DÉFAUTS
 void Wall::Set_Default_Wall_UI()
 {
-	// Changement du Symbole!
 	if (axis == HOR)
-		sym = WallSym::SYM_HOR;		// Un mur de type différent devrait avoir une couleur et un sym diff
+		sym = WallSym::SYM_HOR;		
 	else
 		sym = WallSym::SYM_VER;
 
-	// Changement de la couleur par défaut
 	clr = Colors::BRIGHT_WHITE;
 }
 
-// Dimension de chacun des walls
-int Wall::Get_Wall_Size(Axis axis)						// La longueur du wall
+int Wall::Get_Wall_Size(Axis axis)						
 {
 	if (axis == HOR)
 		return WALL_SIZE_X;
@@ -110,17 +104,16 @@ int Wall::Get_Wall_Size(Axis axis)						// La longueur du wall
 		return WALL_SIZE_Y;
 }
 
-// Créer un mur (techniquement, le mur était déjà là, mais ici on change son state et son type pour signifier qu'un bot peut à nouveau rentré dedans)
 void Wall::Activate_Wall(WallType newStrgt, Link* child, Polarization plr) {
 
 	state = WallState::EXISTS;		// It's alive!
-	childPos = plr;					// La position de son child dans la console
+	childPos = plr;					// Pour retrouver son child dans la console
 
 	StructureManager::Bond_Wall_To_Child(this, child); // Relie le wall à deux Links
-	Set_Strength_From_Parent(newStrgt);		// La nouvelle force du mur
+	Set_Strength_From_Parent(newStrgt);		
 
 	if (drawer.timer.Is_On())
-		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur				Cett fonction peut fail
+		DrawWalls::Find_And_Draw_Wall(drawer);	// Finit l'affichage du mur *cette fonction peut fail
 
 	Set_Drawer(false, true);
 
@@ -128,19 +121,16 @@ void Wall::Activate_Wall(WallType newStrgt, Link* child, Polarization plr) {
 }
 void Wall::Deactivate_Wall()
 {
-	state = WallState::DEAD;		// REMARQUE: On reset pas toutes les valeurs, c'est pour sauver de l'énergie un peu. On a juste besoin de savoir qu'il est dead au final quand on fais des checkup
+	state = WallState::DEAD;		// REMARQUE: On reset pas toutes les valeurs, c'est pour sauver de l'énergie un peu . On a juste besoin de savoir qu'il est dead au final quand on fais des checkup
 	pParent = pChild = NULL;
-	sym = WallSym::DEAD;	//UI
-	clr = WHITE;			//UI
-	MsgQueue::Register(WALL_DEACTIVATED);	//we did
+	sym = WallSym::DEAD;	
+	clr = WHITE;			
+	MsgQueue::Register(WALL_DEACTIVATED);	
 }
 
 void Wall::Remove_Bot_On_Me()
 {
-	this->botOnMe = -1; 	// Le bot est pati :)
-
-	//if (type == WallType::WEAK)
-	//	Set_Drawer();				// DISABLEED SANS SAVOIR CE QUE ÇA FAISAIT
+	this->botOnMe = -1; 			// Le bot est pati :)
 
 	if (state != WallState::DEAD)
 		Set_Drawer();				// Réaffiche d'un coup que ya des glitchs visuels. encore
@@ -154,7 +144,6 @@ bool Wall::Is_Activated()
 		return true;
 }
 
-// Dépend de la force du bot
 void Wall::Take_Damage(int dmg)
 {
 	if(this->type != WallType::INVINCIBRU)
@@ -171,15 +160,14 @@ void Wall::Take_Damage(int dmg)
 }
 
 
-// Si un wall était déjà en train d'être dessiné? faudrait au moins finir de le draw?????????
-void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gère pas la création des queues
+void Wall::Set_Drawer(bool erase, bool instant)	
 {
-	CoordIncrementor startPos;	// Position de départ
-	int wallSize;	// Dimension du mur
+	CoordIncrementor startPos;	
+	int wallSize;	
 
 	// Initialisation de l'incrémenteur
 	startPos.Initialize_Axis(axis);
-	startPos.polar = childPos;	// pourrait mettre un safety ici, genre if(childpos exist)
+	startPos.polar = childPos;	
 	startPos.coord = XY;
 
 	wallSize = Get_Wall_Size(axis);
@@ -187,14 +175,13 @@ void Wall::Set_Drawer(bool erase, bool instant)	// Si inAChain est activé, on gè
 	if (childPos == NEG)								//  x  ->   <-  x		x = startpos
 		*startPos.axis += wallSize - 1;					// O----O	O----O		-> = plr
 
-	// Si Le Wall était déjà en train d'être afficher, on finis de faire ça
+	// Si Le Wall était déjà en train d'être affiché, on finis de faire ça
 	DrawWalls::Finish_Wall(drawer);
 
-	// Timer is set boyos
 	if (erase)
-		drawer.sym = TXT_CONST.SPACE;	// we erase
+		drawer.sym = TXT_CONST.SPACE;	
 	else
-		drawer.sym = (char)sym;	// we draw
+		drawer.sym = (char)sym;	
 
 	drawer.clr = clr;
 	drawer.xy = startPos;

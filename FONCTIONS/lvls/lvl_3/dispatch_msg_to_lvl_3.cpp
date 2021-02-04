@@ -69,7 +69,7 @@ void Dispatch_Msg_To_Lvl_3()
 
 
 		// Pour debug
-		gGrids.Dr_Spawngrid();
+		//gGrids.Dr_Spawngrid();
 
 		P1.Set_Hp(1);
 

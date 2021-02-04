@@ -19,7 +19,7 @@ public:
 	// FONCTIONS PRINCIPALES 
 	bool Is_Active() { return active; }	// is it?
 	void Deactivate();	
-	void Activate();
+	void Activate(bool redraw = 1);
 	bool Ammo_Available() { return ammo; }	// Can we shoot?
 	bool Shoot();	// Spend un "shot"
 	int Get_Nb_Ammo() { return ammo; }	// that amount

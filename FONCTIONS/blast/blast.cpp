@@ -84,7 +84,11 @@ void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast
 		if (wallType == WallType::REGULAR)
 			color = Colors::WHITE;
 		else
+		{
 			color = Colors::LIGHT_PURPLE;
+			color = Colors::LIGHT_AQUA;
+			
+		}
 		return;
 	}
 

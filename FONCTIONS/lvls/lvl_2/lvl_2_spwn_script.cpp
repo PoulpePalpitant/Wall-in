@@ -631,7 +631,7 @@ void Puzzle_2_10()
 
 		gGrids.Make_Chain_Of_Walls({ 10, 10 }, LEFT, 1);
 		gGrids.Make_Chain_Of_Walls({ 10 - 1, 10 }, UP, 8);
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 10, 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 10, 7 });
 		break;
 
 
@@ -1450,7 +1450,7 @@ void Puzzle_2_FINAL()
 		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
 
 		MsgQueue::Register(ENABLE_ITEM_SPAWN);
-		ItemSpawner::Add_To_Pool(ItemType::AMMO, 150, 0);
+		ItemSpawner::Add_To_Pool(ItemType::AMMO, 200, 0);
 
 		Set_Interval(LEFT, 0, 4);
 		Set_Interval(RIGHT, 0, 4);

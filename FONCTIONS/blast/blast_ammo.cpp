@@ -26,10 +26,14 @@ void BlastAmmo::Deactivate() {
 	active = false;
 }
 
-void BlastAmmo::Activate() {
+void BlastAmmo::Activate(bool redraw ) {
 	active = true;
-	DrawBlastAmmo::Ev_Dr_Bar_From_Scratch();
-	DrawBlastAmmo::Dr_Ammo_Count(this->ammo);
+
+	if (redraw)
+	{
+		DrawBlastAmmo::Ev_Dr_Bar_From_Scratch();
+		DrawBlastAmmo::Dr_Ammo_Count(this->ammo);
+	}
 }
 
 bool BlastAmmo::Use_Emergency_ammo()

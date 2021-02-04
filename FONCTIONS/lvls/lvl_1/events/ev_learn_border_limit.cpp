@@ -45,7 +45,7 @@ void Ev_Learn_Border_Limit()// Trace un chemin vers une fausse porte de sortie
 
 				ConsoleRender::Add_Char(linkGrid->link[dotChase.c][dotChase.r].Get_XY(), '?', LIGHT_GREEN);
 				ev_LearnBorderLimit.Advance(0);
-				ev_LearnBorderLimit.delay.Start_Timer(10000, 1, true);	// va checker à l'infinie pour vérifier si le joueur se trouve sur la position
+				ev_LearnBorderLimit.delay.Start_Timer(1000000, 1, true);	// va checker à l'infinie pour vérifier si le joueur se trouve sur la position
 				break;
 
 			case 2:

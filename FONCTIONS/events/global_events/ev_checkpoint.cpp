@@ -57,7 +57,7 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				MsgQueue::Register(ENABLE_BLAST);
 				gSpwBotTimer.Resume();
 				gSpwBotTimer.Add_Count(3);
-				ConsoleRender::Add_String("Game saved", { gConWidth - 13 ,gConHeight },WHITE,0,1); // ultra lazyiness
+				ConsoleRender::Add_String("Progress saved", { gConWidth - 17 ,gConHeight },WHITE,0,1); // ultra lazyiness
 
 				ev_ReachCheckpoint.Cancel();
 			}

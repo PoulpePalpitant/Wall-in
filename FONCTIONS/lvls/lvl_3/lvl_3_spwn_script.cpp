@@ -11,6 +11,7 @@
 #include "../../bots/botmeta.h"
 #include "../../blast/mod_queue_animator.h"
 #include "../../bots/botlist.h"
+#include "../../blast/blast_ammo_animator.h"
 
 //some events Shhh...
 #include "../../events/global_events/ev_wait_last_bot.h"
@@ -1243,7 +1244,6 @@ void Puzzle_3_FINAL()
 	{
 	case 0:P1.Set_Position({ 13,7 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(15);
-		//blastP1.Get_Ammo_Manager().Set_Ammo(14);
 		gCurrPuzzleStepMax = 12;
 
 		upOrDown = false;
@@ -1254,7 +1254,7 @@ void Puzzle_3_FINAL()
 
 		// DEBUG 
 		// *****
-		seenFinalHour = 1;
+		//seenFinalHour = 1;
 
 
 		if (seenFinalHour)
@@ -1334,9 +1334,8 @@ void Puzzle_3_FINAL()
 		else
 		{
 			Clear_Map();
+			blastP1.Get_Ammo_Manager().Activate(0);
 
-			//blastP1.Get_Ammo_Manager().Activate();
-			//blastP1.Get_Ammo_Manager().Set_Ammo(12);
 			P1.Set_Position({ 13,7 });
 			Set_Ev_Spawn_Player(3);
 			MsgQueue::Register(LOCK_PLAYER);
@@ -1418,8 +1417,9 @@ void Puzzle_3_FINAL()
 		{
 			Clear_Map();
 
-			blastP1.Get_Ammo_Manager().Activate();
-			//blastP1.Get_Ammo_Manager().Set_Ammo(12);
+			blastP1.Get_Ammo_Manager().Activate(0);
+			DrawBlastAmmo::Dr_Or_Er_Bar(DrawBlastAmmo::barLength + 1, DrawBlastAmmo::barProgClr);	// Fix un bug d'ui
+			
 
 			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
@@ -1462,8 +1462,7 @@ void Puzzle_3_FINAL()
 		{
 			Clear_Map();
 
-			blastP1.Get_Ammo_Manager().Activate();
-			//blastP1.Get_Ammo_Manager().Set_Ammo(16);
+			blastP1.Get_Ammo_Manager().Activate(0);
 
 			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
@@ -1540,7 +1539,7 @@ void Puzzle_3_FINAL()
 		else
 		{
 			Clear_Map();
-			blastP1.Get_Ammo_Manager().Activate();
+			blastP1.Get_Ammo_Manager().Activate(0);
 
 			P1.Set_Position({ 13,11 });
 			Set_Ev_Spawn_Player(3);
