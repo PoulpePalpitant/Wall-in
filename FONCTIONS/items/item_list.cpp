@@ -108,7 +108,10 @@ void ItemsOnGrid::Pickup_Item_Here(GrdCoord crd)
 			if (Is_Item_Modifier(items[i]))
 			{
 				if (blastP1.Is_Active() && blastP1.Get_Modifier() == Modifier::REGULAR)
+				{
 					blastP1.Setup_Modifier((Modifier)items[i].Get_Type());		// change le blast actuel
+					blastP1.Change_To_Modifier_Color();
+				}
 				else
 					BlastModifierQueue::Add_Modifier((Modifier)items[i].Get_Type());		// Ajoute l'item à la blast modifier queue
 			}

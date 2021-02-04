@@ -27,14 +27,14 @@ void Lvl_1_Initializer()
 
 		// TEST DU SPAWN SCRIPT ICI
 		// **************************
-		int checkpointTest = 0;/*17 = max*/
+		int checkpointTest = 13;/*17 = max*/
 		if(gCurrentPuzzle[gCurrentLevel - 1] < checkpointTest)
 			gCurrentPuzzle[gCurrentLevel - 1] = checkpointTest;	// Start à partir de ce checkpoint
 	}
 	else
 	{
 		gCurrentStage = 0;
-		MsgQueue::Register(SPAWN_PLAYER);	
+		MsgQueue::Register(SPAWN_PLAYER);
 	}
 
 	gSpwBotTimer.Start_Timer(1700, 1 , true);	
@@ -46,7 +46,8 @@ void Lvl_1_Initializer()
 	
 	P1.Set_Hp(3);	// 3 de vie le gros
 	P1.Set_Position({ linkGrid->Get_Cols() / 2, linkGrid->Get_Rows() - 1 });
-	
+
 	MsgQueue::Register(LVL_INITIALIZED);
 	MsgQueue::Register(DISABLE_BLAST);	
+
 }

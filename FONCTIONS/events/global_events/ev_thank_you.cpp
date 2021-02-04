@@ -55,6 +55,7 @@ void Ev_Thks_For_Playing()
 				break;
 
 			case 3:
+				gCurrentStage++;
 				Press_X_To_Proceed();
 			}
 		}

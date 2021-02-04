@@ -110,6 +110,9 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 void BlastAmmo::Set_Nb_Emergency_Ammo(int nbShots) {
 	emergencyAmmo = nbShots;
 	DrawBlastAmmo::Dr_Emergency_Ammo(nbShots);
+
+	if (ammo == 0 && emergencyAmmo == 0)
+		Ev_Ammo_Depleted();
 }
 
 

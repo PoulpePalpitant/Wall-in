@@ -217,3 +217,9 @@ static void Dr_Complete()
 			}
 		}
 }
+
+ bool Is_Ev_Victory_Screen_Active()
+ {
+	 return ev_VictoryScreen.Is_Active();
+
+ }

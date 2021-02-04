@@ -120,7 +120,6 @@ void Puzzle_2_0()
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6 , 6 }, false, true);
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 7 , 6 }, false, true);
 
-
 		// reset cette variable ici
 		seenFinalHour = false;
 		break;
@@ -1370,7 +1369,7 @@ void Puzzle_2_FINAL()
 		shapesRemaining = SHAPES_TO_KILL;
 		crd = { Find_Ctr_String_X(_1) - 1, 6 };
 
-		//seenFinalHour = 1;
+		seenFinalHour = 1;
 
 		if (!seenFinalHour)
 		{
@@ -1439,13 +1438,10 @@ void Puzzle_2_FINAL()
 		}
 
 		//tips
-		gGrids.Activate_Link({ 6,0 }, Modifier::BUFFER);
-		gGrids.Activate_Link({ 6,14 }, Modifier::BLOCKER);
-		
-
-		//tips
-		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 3 });
-		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 11 });
+		gGrids.Make_Chain_Of_Walls({ 6,0 }, DOWN, 4, WallType::STRONG, Modifier::BUFFER);
+		gGrids.Make_Chain_Of_Walls({ 6,14 }, UP, 4, WallType::REGULAR, Modifier::BLOCKER);
+		/*gGrids.Activate_Link({ 6,0 }, Modifier::BUFFER);
+		gGrids.Activate_Link({ 6,14 }, Modifier::BLOCKER);*/
 		break;
 
 	case 3:
@@ -1455,16 +1451,29 @@ void Puzzle_2_FINAL()
 
 		MsgQueue::Register(ENABLE_ITEM_SPAWN);
 		ItemSpawner::Add_To_Pool(ItemType::AMMO, 150, 0);
-		ItemSpawner::Add_To_Pool(ItemType::BLOCKER, 60, 0);
-		ItemSpawner::Add_To_Pool(ItemType::BUFFER, 60, 0);
-		skip = 8;
+
+		Set_Interval(LEFT, 0, 4);
+		Set_Interval(RIGHT, 0, 4);
+		Add(8);
+		Add_Spec(LEFT, 10);Add_Spec(LEFT, 11);Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 13);
+		skip = 16;
 		break;
 
-	case 4:Add(1);skip = 5;break;
+	case 4:Add(1);skip = 3;
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 1 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 13 });
+		break;
+
 	case 5:Add(1);skip = 5;break;
+
 	case 6:Add(1);skip = 10;break;
 	case 7:Add(1);skip = 5;break;
-	case 8:Add(1);skip = 5;break;
+	case 8:
+		Add(1);skip = 5;
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 2 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 12 });
+		break;
+
 	case 9:Add(1);skip = 8;break;
 	case 10:
 		Add(1);
@@ -1474,16 +1483,25 @@ void Puzzle_2_FINAL()
 	case 11:Add(1);skip = 2;break;
 	case 12:Add(1);skip = 2;break;
 	case 13:Add(1);skip = 5;break;
-	case 14:Add(1);skip = 9;break;
+	case 14:
+		Add(1);skip = 9;
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 3 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 11 });
+		break;
+
 	case 15:Add(1);	skip = 5;break;
-	case 16:Add(1);	skip = 5;	break;
+	case 16:Add(1);	skip = 5;break;
 	case 17:Add(1);skip = 5;break;
+
 	case 18:
 		Set_Interval(LEFT, 0, 4);
 		Set_Interval(RIGHT, 0, 4);
 		Add(8);
 		Add_Spec(LEFT, 10);Add_Spec(LEFT, 11);Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 13);
 		skip = 14;
+
+		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 4 });
+		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 10 });
 
 		// VICTORY IS OURS HAHAHAHAHAHAH
 		MsgQueue::Register(STOP_BOT_SPAWNS);

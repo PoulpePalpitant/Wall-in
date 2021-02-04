@@ -31,6 +31,7 @@
 #include "global_events/ev_checkpoint.h"
 #include "../time/spawn_cycle.h"
 #include "global_events/feedback/ev_red_borders.h"
+#include "../DB/database.h"
 
 // for testing
 #include "global_events/feedback/ev_good_job.h"
@@ -139,8 +140,7 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 	case FINAL_HOUR: 
 		if (gCurrentLevel <= 3)
 		{
-			Ev_Final_Hour_1(); // Msg que la dernière attaque s'en vient
-			//Ev_Red_Borders();	// Threathening!
+			Ev_Final_Hour_1(); 
 		}
 		break;
 
@@ -152,24 +152,22 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		gCurrentStage++;	// Passe au prochain stage
 		break;
 
-	case WAIT_LAST_BOT:
-		//Ev_Wait_For_Bot_Deaths();		
-		break;
-	
-	case NO_BOTS_ALIVE:
-		//if(gDayStarted)
-			//Ev_Reach_Checkpoint();
-		break;
-
 	case VICTORY:
 		if (gCurrentLevel < 3)
 		{
-			gUnlockedLevels[gCurrentLevel] = 1;
-			gLastLvlUnlocked = gCurrentLevel + 1;
+			if (gUnlockedLevels[gCurrentLevel] != 1)
+			{
+				gUnlockedLevels[gCurrentLevel] = 1;
+				gLastLvlUnlocked = gCurrentLevel + 1;
+			}
 		}
 		else
-			gLastLvlUnlocked = 0;
+			gLastLvlUnlocked = -1;
 
+
+		gCurrentPuzzle[gCurrentLevel - 1] = 0;
+
+		Save();	// save that data avant la victory screen !
 
 		Ev_Victory_Screen();
 		break;	
@@ -179,21 +177,12 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 			Ev_Fast_Defeat_Screen();
 		break;
 
+
+	case PROCEED:break;
+
 		/* GRIDS*/
 	case GRIDS_RESIZED: 
 		Ev_Resize_From_Grids();
-		break;
-
-	case LINK_ACTIVATED:
-		break;
-
-	case LINK_DEACTIVATED:
-		break;
-
-	case WALL_ACTIVATED:
-		break;
-
-	case WALL_DEACTIVATED:
 		break;
 		
 		/* UI */
@@ -229,9 +218,6 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		Set_Ev_Spawn_Player();		// Cinématique d'apparition du joueur
 		break;
 
-	case PLAYER_SPAWNED:
-		break;
-
 		/* ITEMS */
 	case ENABLE_ITEM_SPAWN:
 		stopItmSpwCycle = false;
@@ -239,9 +225,6 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 
 	case DISABLE_ITEM_SPAWN:
 		stopItmSpwCycle = true;
-		break;
-		
-	case ITEM_SPAWNED: 
 		break;
 
 		/* BOTS */
@@ -258,7 +241,6 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		break;
 
 		/* Clavier*/
-
 	case BLOCK_ALL_INPUTS:
 		gBlockInputs = true;
 		break;
@@ -275,6 +257,5 @@ void Dispatch_To_Global()	// Update tout les autres qui sont pas dans des module
 		gBlockBlast = true;
 		blastP1.Cancel();
 		break;
-		// Tout les events qui sont trigger par ça  
 	}
 }

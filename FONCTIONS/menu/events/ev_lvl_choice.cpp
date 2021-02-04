@@ -57,7 +57,7 @@ void Ev_Dr_Choose_Lvl()
 				for (int i = 0; i < 3; i++)
 				{
 					crd.x += numDist;
-					if (gUnlockedLevels[i] && gLastLvlUnlocked != i + 1)
+					if (gUnlockedLevels[i] && gLastLvlUnlocked != i + 1 )
 						ConsoleRender::Add_String(std::to_string(i + 1), crd, WHITE);
 
 					crd.x++;

@@ -69,7 +69,7 @@ void Dispatch_Msg_To_Lvl_3()
 
 
 		// Pour debug
-		//gGrids.Dr_Spawngrid();
+		gGrids.Dr_Spawngrid();
 
 		P1.Set_Hp(1);
 
@@ -90,14 +90,9 @@ void Dispatch_Msg_To_Lvl_3()
 		break;
 
 	case PROCEED:
-		if (gCurrentStage == 1)
+		if (gCurrentStage == 2)
 		{
-			if (P1.Get_State() != DEAD)
-			{
-				gCurrentStage++;
-				gCurrentPuzzle[3 - 1] = 0;
-				Ev_Thks_For_Playing();	// Le jeu est finit
-			}
+			Ev_Thks_For_Playing();	// Le jeu est finit
 		}
 		else
 			Go_Back_To_Menu();

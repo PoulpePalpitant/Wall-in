@@ -50,6 +50,7 @@ void Blast::Setup_Blast(GrdCoord& newStartPos, Direction& newblastDir, bool cons
 
 
 	Setup_Blast_UI();							// Son apparence futur
+	Change_To_Modifier_Color();					
 	Setup_Position_Incrementors(newStartPos);	// Sa position sur le Linkgrid et en XY
 
 	nbSteps = movesTillNxtLink = 0;		// Nombre de case que le blast à traversé et nombre de case avant un link	(on start sur un link, donc zéro ici)
@@ -58,6 +59,14 @@ void Blast::Setup_Blast(GrdCoord& newStartPos, Direction& newblastDir, bool cons
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+void Blast::Change_To_Modifier_Color()
+{
+	if (modifier == Modifier::BLOCKER)
+		color = LIGHT_RED;
+	else
+		if (modifier == Modifier::BUFFER)
+			color = LIGHT_YELLOW;
+}
 
 // SETUP: L'APPARENCE DU BLAST 
 void Blast::Setup_Blast_UI()				// Assigne l'apparence du blast

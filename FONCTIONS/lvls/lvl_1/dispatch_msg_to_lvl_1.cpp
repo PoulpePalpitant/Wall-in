@@ -36,6 +36,8 @@
 #include "../../events/global_events/ev_progress_bar.h"
 #include "../../events/global_events/ev_thank_you.h"
 #include "../../events/global_events/ev_lvl_unlocked.h"
+#include "../../events/global_events/ev_back_to_menu.h"	 
+#include  "../../events/global_events/ev_victory_screen.h"
 
 static bool seenLevelTitle = false;
 
@@ -46,13 +48,6 @@ void Dispatch_Msg_To_Lvl_1()
 	switch (gCurrentMsg)
 	{
 	case PLS_INTIALIZE_LVL: Lvl_1_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
-
-	case LVL_INITIALIZED:
-		break;
-
-	case CHANGE_WINSIZE:
-		//	OBS_Change_Window();
-		break;		// Test le changement de window
 
 	case STAGE_ADVANCE:
 		if (!gSkipTutorial)
@@ -119,16 +114,12 @@ void Dispatch_Msg_To_Lvl_1()
 		break;
 
 	case PROCEED:
-		if (gCurrentStage == 4)
+		if (Is_Ev_Victory_Screen_Active())
 		{
-			gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
-			MsgQueue::Register(PLS_INTIALIZE_LVL);
-			clrscr();
-
-			if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
-			{
+			if (gLastLvlUnlocked == -1)
+				Go_Back_To_Menu();
+			else
 				Ev_Lvl_Unlocked();
-			}
 		}
 		else
 			MsgQueue::Register(STAGE_ADVANCE);

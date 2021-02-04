@@ -30,6 +30,7 @@ void Ev_Ammo_Depleted()	// Affiche 1 warning que le joueur n'a plus d'ammo
 		crd = Get_Ori();
 		crd.x += barToCount;
 		erOrDr = false;
+		Dr_Ammo_Title(0);
 		ConsoleRender::Add_String(depleted, crd, LIGHT_RED);
 
 		ev_AmmoDepleted.Activate();

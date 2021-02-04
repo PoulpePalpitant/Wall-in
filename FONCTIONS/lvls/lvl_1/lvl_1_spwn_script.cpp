@@ -123,6 +123,7 @@ void Puzzle_1_0(){
 
 
 	case 1:	MsgQueue::Register(ENABLE_BLAST);
+
 		Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; // Erase la border au cas où le joueur est pas en mode quickstartS
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 2);
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 2);
@@ -528,30 +529,30 @@ void Puzzle_1_13()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 7,5 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(1);// Quantité d'ammo
 		gCurrPuzzleStepMax = 21;
 		gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 9);
-		gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 6);	// max = 9[
+		gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 7);	// max = 9[
 		gGrids.Make_Chain_Of_Walls({ 8,10 }, UP, 3);
 		gGrids.Make_Chain_Of_Walls({ 7,10 }, UP, 3);
 		gGrids.Make_Chain_Of_Walls({ 6,10 }, UP, 4);
 		gGrids.Make_Chain_Of_Walls({ 5,10 }, UP, 5);
-		gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 6);
+		gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 7);
 		break;
 
-	case 1:	Add_Spec(UP, 8);break;
-	case 2:Add_Spec(UP, 4);skip = 1;break;
-	case 3:Add_Spec(UP, 6);skip = 2;break;
-	case 4:Add_Spec(UP, 5);skip = 1;break;
-	case 5:Add_Spec(LEFT, 4);Add_Spec(RIGHT, 4);skip = 6;break;
-	case 6:Add_Spec(UP, 5);skip = 1;break;
-	case 7:Add_Spec(UP, 7);skip = 2;break;
-	case 8:Add_Spec(UP, 7);skip = 1;break;
-	case 9:Add_Spec(UP, 7);skip = 1;break;
+	case 1:Add_Spec(RIGHT, 3);Add_Spec(LEFT, 3);break;
+	case 2: Add_Spec(UP, 4);skip = 1;break;
+	case 3: Add_Spec(UP, 6);skip = 2;break;
+	case 4: Add_Spec(UP, 5);skip = 3;break;
+	case 5: Add_Spec(LEFT, 4);Add_Spec(RIGHT, 4);skip = 6;break;
+	case 6: Add_Spec(UP, 5);skip = 1;break;
+	case 7: Add_Spec(UP, 7);skip = 2;break;
+	case 8: Add_Spec(UP, 7);skip = 1;break;
+	case 9: Add_Spec(UP, 7);skip = 1;break;
 	case 10:Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);skip = 6;break;
 	case 11:Add_Spec(UP, 8);skip = 1;break;
 	case 12:Add_Spec(UP, 4);skip = 2;break;
-	case 13:Add_Spec(UP, 4);skip = 1;break;
+	case 13:Add_Spec(UP, 4);skip = 3;break;
 	case 14:Add_Spec(UP, 7);skip = 1;break;
 	case 15:Add_Spec(LEFT, 6);Add_Spec(RIGHT, 6);skip = 6;break;
 	case 16:Add_Spec(UP, 4);skip = 2;break;
@@ -715,6 +716,7 @@ void Puzzle_1_17()
 
 
 	case 2:
+
 		if (P1.Cant_Do_Stuff())
 			Set_Ev_Spawn_Player(3);
 

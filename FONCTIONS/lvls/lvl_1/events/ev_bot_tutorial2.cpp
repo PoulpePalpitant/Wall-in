@@ -132,7 +132,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 		MsgQueue::Register(FREE_PLAYER);
 		ev_BotTutorial2.Activate();
 		ev_BotTutorial2.Start(1000);
-		//ev_BotTutorial2.Go_To_X_Step(35);		// freetime
+		ev_BotTutorial2.Go_To_X_Step(35);		// freetime
 		//ev_BotTutorial2.Go_To_X_Step(20);		// third
 		//ev_BotTutorial2.Go_To_X_Step(10);		// second trial
 		//ev_BotTutorial2.Go_To_X_Step(4);		// first trial

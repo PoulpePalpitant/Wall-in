@@ -18,6 +18,7 @@
 #include "events/ev_lvl2_training_3.h"
 #include "../../events/global_events/ev_spwn_player.h"
 #include "../../events/global_events/ev_lvl_unlocked.h"
+#include "../../events/global_events/ev_back_to_menu.h"	 
 
 
 /* Msg events*/
@@ -61,7 +62,7 @@ void Dispatch_Msg_To_Lvl_2()
 			//Just_Dr_Map_Borders();
 			P1.Er_Player();
 			gCurrPuzzleStep = 0;	// SAFETY				
-			MsgQueue::Register(SPAWN_PLAYER);
+			Set_Ev_Spawn_Player(3);													
 		}
 		else
 		{
@@ -96,14 +97,13 @@ void Dispatch_Msg_To_Lvl_2()
 		break;
 
 	case PROCEED:
-		gCurrentPuzzle[gCurrentLevel - 1] = 0;	// Restart le checkpoint
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		clrscr();
 
-		if (P1.Get_State() != DEAD)	// hey, Niveau suivant!!
-		{
+		if (gLastLvlUnlocked == -1)
+			Go_Back_To_Menu();
+		else
 			Ev_Lvl_Unlocked();
-		}
 		break;
 	}
 }

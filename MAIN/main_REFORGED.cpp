@@ -1,13 +1,4 @@
-﻿//
-//#include <iostream>   // pour le cout
-//#include <conio.h>   // pour le _getch()
-//#include <thread>	// Pour multiplier les processus en simultané!
-//#include <string>	// pour le string
-//#include <iomanip> // pour les manipulateurs
-//#include <windows.h> //pour le time, et toute sorte de shits.
-//#include < ctime >	// pour utiliser la fonction clock()
-//#include "WinUser.h"
-
+﻿
 // Pour certains affichages test
 #include "../FONCTIONS/rng/rng.h"
 #include "../FONCTIONS/grid/AllGrids.h"
@@ -24,6 +15,8 @@
 #include "../FONCTIONS/events/msg_dispatcher.h"
 #include "../FONCTIONS/console/sweet_cmd_console.h"
 #include "../FONCTIONS/game/initialize_game.h"
+#include "../FONCTIONS/DB/database.h"
+
 
 // test zone
 #include "../FONCTIONS/lvls/lvl_1/msg_events/ev_arr_keys.h"
@@ -31,11 +24,11 @@
 
 using namespace std;
 
-/*
+/*r
 			TITRE DU JEU : WALL IN
 
-			Description: "Wall in" est un jeu d'adresse de style top-down shooter ou le joueur doit empêcher des formes de traverser les frontière de son territoire.
-			Il doit faire ceci en  tirant des murs qui permettent de stopper ces formes.
+			Description: "Wall in" est un jeu de puzzle de style top-down shooter ou le joueur doit empêcher des formes de traverser les frontière de son territoire.
+			Il doit faire ceci en tirant des murs qui permettent de stopper ces formes.
 
 			FAIT PAR : Laurent Montreuil
 			
@@ -53,58 +46,44 @@ void main()	// Le début!
 	// SUPRA TESTING PLACE
 	// *******************
 
-	//LVL1_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
 
+	// Load la save file
+	Load();
 
 	// START STUFF LOOP
 	// ***************
-	Coord crd;
+	Coord crd,crd2,crd3;
 	Initialize_Rng();
 
 	// some windows stuff
 	Set_Input_Buffer_Handle();	
-	Set_Dflt_WND();			// Dimension de la window mon gars
+	Set_Dflt_WND();			// "Résolution" et autres
 
 	// Initialisation du jeu
-	MsgQueue::Register(PLS_INTIALIZE_LVL);	// Hehe
-	Initialize_Game();						// Initialize une bunch de crap
-	//ConsoleRender::Set_Animation_Delay();	// Comment en mode debug: Ceci rajoute du delay sur la méthode qui render l'animation queue
+	MsgQueue::Register(PLS_INTIALIZE_LVL);	
+	Initialize_Game();			
 
 	// UI TESTING
-	Coord crd2 = { 45,1 }; 
-	//ConsoleRender::Add_String("Spawn Waves: ", crd2 );
-	Coord crd3 = { 61,1 };	// Update la combientième wave
 	crd = { 13,1 };
+	crd2 = { 45,1 }; 
+	crd3 = { 61,1 };	
 
-	bool isRunning = true;
-	float frameRate = 60.0f;	// f is for float, convertit la valeur en float au lieu d'un double quand tu écrit avec des décimales
+	float frameRate = 60.0f;	
 	float fps = 1 / frameRate;
-	float inputBuffer = fps / 3;
 	bool loadBuffer = true;
-	float lag = 0; 				// 	si ça dépasse le fps: lag = l'excédant. 	tu update une autre fois, mais AVEC la valeur de LAG à la place, pour rattraper
-	int MS_PER_UPDATE = 10;	// Rythme à laquelle je vais update
-	int loops = 0;
 	int frames = 0;
+
 	GameLoopClock::Reset_Timer();	// Premier reset
-	//thread *inputs = new thread(Input_Thread_Handler);
+	//thread *inputs = new thread(Input_Thread_Handler);	// Reminder d'une tentative de Multithreading
 
 
-	while (GameLoopClock::Is_Running())	// Cette loop sert de gameloop. Chaque tick représente une frame. si tu veux bouger quekchose, ta juste à multiplier la vitesse de ce quek chose par le temps écoulé entre chaque tick(deltatime)
+	while (GameLoopClock::Is_Running())	
 	{
 		GameLoopClock::Tick();	// Delta time est en seconde!!!
 		
-		lag += GameLoopClock::Get_Delta_Time();
-
-		// TEST DE BUFFER D'INPUT QUI MARCHE PAS
-		//if (loadBuffer && GameLoopClock::Get_Delta_Time() >= inputBuffer)
-		//{
-		//	Load_Loop_Buffer();	// un tit buffer d'inputs
-		//	loadBuffer = false;
-		//}
-
 		if (GameLoopClock::Get_Delta_Time() >= fps) { // Si le DeltaTime atteint 60 fps		
 			
-			// Détect les inputs mah dude0											//loadBuffer = true;
+			// Détect les inputs mah dude0										
 			Read_Input_Buffer();
 			
 			// Update le jeu mah dude
@@ -120,8 +99,7 @@ void main()	// Le début!
 				//ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);	// Le temps actuel
 				//ConsoleRender::Add_String("  ", crd);								// efface la dizaine
 				//ConsoleRender::Add_String(std::to_string(/*(int)*/(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
-				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });	// Nombre de bot en vie
-				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.spawned), { crd3.x + 8, crd3.y });	// Nombre de bot en vie
+				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });		// Nombre de bot en vie
 				ConsoleRender::Add_String(std::to_string(gCurrPuzzleStep), {crd3.x + 3, crd3.y });	// Nombre de cycles fais
 				ConsoleRender::Add_String(std::to_string(gCurrentPuzzle[gCurrentLevel - 1]), crd3);	// Le puzzle actuel
 				frames = 0;
@@ -132,30 +110,9 @@ void main()	// Le début!
 		Update_Game_NOT_60FPS();	// à remove un jour lol
 		ConsoleRender::Render();	// Fait tout les affichages
 	}
-	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------o---------
-		// GAME LOOP DES INTERNETS!
 
-		//double previous = getCurrentTime();
-		//double lag = 0.0;
-		//while (true)
-		//{
-		//	double current = getCurrentTime();
-		//	double elapsed = current - previous;
-		//	previous = current;
-		//	lag += elapsed;
+	// SAVE FILE
+	Save();
 
-		//	processInput();
-
-		//	while (lag >= MS_PER_UPDATE)
-		//	{
-		//		update();
-		//		lag -= MS_PER_UPDATE;
-		//	}
-
-		//	render();
-	
-
-	// SAVE FILES
-
-}	// OU :)
+}	
 

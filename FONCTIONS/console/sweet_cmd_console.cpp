@@ -14,9 +14,8 @@ int gTotalRes;
 double charRatio;	// Le ratio pixel par character? Bref, utile pour redimensionner à partir d'un nombre de case!
 
 // Local stuff
-
 static HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-static HANDLE outputHANDLE;					// pour le full screen?
+static HANDLE outputHANDLE;							
 static CONSOLE_SCREEN_BUFFER_INFO csbi;				// Pour avoir accès au screen buffer de la console
 
 void Upd_Console_Size()
@@ -29,9 +28,8 @@ void Upd_Console_Size()
 
 void Set_Console_Name()
 {
-	// LE TITRE DU JEU
-	// ***************
-	LPCTSTR GameName = "Wall In ";
+	
+	LPCTSTR GameName = "Wall In "; // LE TITRE DU JEU
 	SetConsoleTitle(GameName);
 }
 
@@ -43,13 +41,11 @@ void Set_Dflt_WND()
 
 	//À défaut de savoir comment retouvé la dimension d'un écran(pas juste la résolution), this fucking garbage works 
 	Change_Font(true, 16); // dflt 16 pour référence
-	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);	// set la console ben fat, mais somehow pas en fullscreen !
 	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);	// maximize la console!!!
 	Upd_Console_Size();
-	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, 0);	// set la console ben fat, mais somehow pas en fullscreen !
 	ShowWindow(GetConsoleWindow(), SW_SHOWDEFAULT);	// ...
-	Change_Font(false); // the one you want
-	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);	// maximize la console!!!
+	Change_Font(false);	 // the one you want
+	ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);	
 	Upd_Console_Size();
 
 	COORD saveme = { (short)gConWidth ,(short)gConHeight };	// i have been saved
@@ -214,17 +210,10 @@ void Shake_That_Window()
 
 }
 
-// OLDYS
+// Tools
 // *****
-
-// utilisé comme suis
-	// old way d'afficher le jeu, pas fullscreen, en plein milieu de l'écran
-	//SetWindowPos(GAME_WND, HWND_TOP, 0, 0, 1401, 1073, SWP_NOMOVE | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu		/DÉSUET
-	//Upd_Console_Size();
-	//Center_WND(); // maintenant DÉSUET
 void Change_Window_Position()	
 {
-
 	/*							    X	  Y    CX  cy   UINT			UINT							*/
 	SetWindowPos(GAME_WND, HWND_TOP, 100, 100, 0, 0, SWP_NOSIZE | SWP_NOZORDER);		// UTILISE CETTE MAGNIFIQUE FONCTION
 	// HWND_TOP : criss la fenêtre on top
@@ -254,7 +243,6 @@ void Center_WND()
 	wndHeight = rect.bottom - rect.top;
 
 	// Trouve la position du milieu
-
 	centerX = (scrWidth - wndWidth) / 2;		// La position LEFT
 	centerY = (scrHeight - wndHeight) / 2;		// La position TOP
 

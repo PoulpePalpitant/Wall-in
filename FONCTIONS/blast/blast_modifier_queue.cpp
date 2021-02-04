@@ -8,7 +8,7 @@
 #include "../events/global_events/feedback/ev_ammo_depleted.h"
 
 
-const int MAX_BLAST_MOD_Q = 10;
+const int MAX_BLAST_MOD_Q = 300000;
 
 RingBufferQueue<int> BlastModifierQueue::queue(MAX_BLAST_MOD_Q);
 

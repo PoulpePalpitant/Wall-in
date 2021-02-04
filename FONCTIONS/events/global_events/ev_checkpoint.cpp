@@ -22,6 +22,7 @@
 #include "ev_update_heart.h"
 #include "../../events/global_events/feedback/ev_drain_health.h"
 #include "feedback/ev_ammo_depleted.h"
+#include "../../DB/database.h"
 
 static Event ev_ReachCheckpoint(Ev_Reach_Checkpoint, 2);
 
@@ -49,12 +50,14 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 
 				Init_Puzzle();
 
+
 				if (gCurrentPuzzle[gCurrentLevel - 1] != NUM_PUZZLES[gCurrentLevel - 1] - 1)	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
 					Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 
 				MsgQueue::Register(ENABLE_BLAST);
 				gSpwBotTimer.Resume();
 				gSpwBotTimer.Add_Count(3);
+				ConsoleRender::Add_String("Game saved", { gConWidth - 13 ,gConHeight },WHITE,0,1); // ultra lazyiness
 
 				ev_ReachCheckpoint.Cancel();
 			}
@@ -62,7 +65,8 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 				if (!gAllBotMeta.alive && P1.Get_HP())
 				{
 					// Nouvelle version avec plusieurs scripts
-					Stop_Ev_Hp_Drain_Msg();
+
+
 					Clear_Map();						// Effacer la map est satisfaisant
 					P1.Dr_Player();						// doit redraw le joueur quand on fait ça
 					Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
@@ -70,6 +74,7 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 					P1.Set_Hp(1);
 
 					gCurrentPuzzle[gCurrentLevel - 1]++;// Le checkpoint est officiellement updaté
+					Save();	// save that game
 					ev_ReachCheckpoint.delay.Stop();
 					ev_ReachCheckpoint.Advance(300); // Une tite pause avant de continuer!!
 					MsgQueue::Register(DISABLE_BLAST);

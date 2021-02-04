@@ -8,12 +8,12 @@ void (*LVL1_PUZZLES[])();// declare!
 void (*LVL2_PUZZLES[])();
 void (*LVL3_PUZZLES[])();
 
-extern short gCurrentLevel;	
-extern short gUnlockedLevels[3];
-extern short gLastLvlUnlocked;
+extern int gCurrentLevel;	
+extern int gUnlockedLevels[3];
+extern int gLastLvlUnlocked;
 
-extern short gCurrentStage;	// Le sous-niveau actuel
-extern short gCurrentPuzzle[];	// Le checkpoint que le joueur à réussie à reach durant le niveau
+extern int gCurrentStage;	// Le sous-niveau actuel
+extern int gCurrentPuzzle[];	// Le checkpoint que le joueur à réussie à reach durant le niveau
 extern bool gDayStarted;	// Si le lvl à vraiment commencé
 extern bool gSkipTutorial;		
 extern bool gRefreshStage;	// Refresh un stage

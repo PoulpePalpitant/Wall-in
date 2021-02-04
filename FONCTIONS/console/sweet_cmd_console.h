@@ -16,9 +16,8 @@ void Upd_Console_Size();	// Width and height
 void Set_Dflt_WND();		// Fenêtre par défaut du jeu
 void Shake_That_Window();
 
-
-void Change_Window_Position(); // temp
-void Center_WND();			// Met la fenêtre au centre de ton écran
+void Change_Window_Position(); 
+void Center_WND();
 
 void Change_Typography();
 void Hide_Scrollbar();
@@ -26,4 +25,3 @@ void Fullscreen();
 void Disable_Quick_Edit();
 void No_Resize();
 
-// SetWindowPos(GAME_WND, HWND_TOP, 363, 0, 1401, 1073, SWP_SHOWWINDOW | SWP_NOZORDER);	// Bonne dimension par défaut de la fenêtre du jeu

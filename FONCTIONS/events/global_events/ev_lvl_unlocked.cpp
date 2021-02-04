@@ -133,8 +133,12 @@ void Ev_Lvl_Unlocked()
 				
 			case 9:
 				ConsoleRender::Add_String(txt, {crd.x - Half_String(txt), crd.y - 3 }, LIGHT_YELLOW, TXT_SPD_DR);
-				gLastLvlUnlocked = 0;
+				gLastLvlUnlocked = -1;
 				ev_LvlUnlocked.Cancel();
 			}
 		}
+}
+
+bool Is_Ev_Lvl_Unlocked_Active() {
+	return ev_LvlUnlocked.Is_Active();
 }

@@ -103,6 +103,7 @@ void Puzzle_3_0()
 	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2 , 11 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(7);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
+		seenFinalHour = false;
 
 		for (int r = 0; r <= 14; r++)
 		{
@@ -481,33 +482,46 @@ void Puzzle_3_7()
 void Puzzle_3_8() {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 4, 2 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(3);// Quantité d'ammo
+	case 0:P1.Set_Position({ 4, 3 });				// Coord de départ du jouer
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
 		gGrids.Make_Box_Of_Blockers({ 0,0 }, { 26,14 });
 
-		gGrids.Make_Chain_Of_Walls({ 2 , 2 }, RIGHT, 1, WallType::WEAK);
-		gGrids.Activate_Link({ 2 , 3 });
+		gGrids.Make_Chain_Of_Walls({ 2 , 1 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 3 , 1 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 4 , 1 }, DOWN, 1);
 
-		gGrids.Activate_Link({ 24, 2 });
-		gGrids.Make_Chain_Of_Walls({ 24 , 3 }, LEFT, 1, WallType::WEAK);
-		gGrids.Activate_Link({ 24, 4 });
+		gGrids.Make_Chain_Of_Walls({ 8 , 1 }, LEFT, 2, WallType::WEAK);
+		gGrids.Activate_Link({ 8, 2 });
 
-		gGrids.Activate_Link({ 23 , 12 });
-		gGrids.Make_Chain_Of_Walls({ 22 , 12 }, UP, 1, WallType::WEAK);
-		gGrids.Activate_Link({ 21 , 12 });
+		gGrids.Activate_Link({ 6 , 8 });
+		gGrids.Activate_Link({ 7 , 8 });
+		gGrids.Make_Chain_Of_Walls({ 8 , 7 }, UP, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 9 , 7 }, UP, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 10 , 7 }, UP, 1);
+
+		gGrids.Activate_Link({ 23 , 6 });
+		gGrids.Make_Chain_Of_Walls({ 23 , 7 }, LEFT, 2, WallType::WEAK);
+
+
+		gGrids.Activate_Link({ 22 , 13 });
+		gGrids.Activate_Link({ 21 , 13 });
+		gGrids.Make_Chain_Of_Walls({23 , 12 }, UP, 1, WallType::WEAK);
+
 
 		gGrids.Activate_Link({ 2 , 11 });
+		gGrids.Activate_Link({ 3 , 12 });
+
 		break;
 
-	case  1:Add_Spec(UP, 2);skip = 5;break;
-	case  2:Add_Spec(UP, 23);skip = 1;break;
-	case  3:Add_Spec(UP, 23);skip = 3;break;
-	case  4:Add_Spec(RIGHT, 11);break;
-	case  5:Add_Spec(RIGHT, 11);skip = 7;break;
-	case  6:Add_Spec(DOWN, 2);break;
-	case 13:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
+	case 1:Add_Spec(LEFT, 1); instantSpawn = 1; break;
+	case 2:Add_Spec(UP, 7); Add_Spec(UP, 6); Add_Spec(LEFT, 7);Add_Spec(LEFT, 6);break;
+	case 3:Add_Spec(LEFT, 7); skip = 8;break;
+	case 4:Add_Spec(DOWN, 21);Add_Spec(DOWN, 22);skip = 5;break;
+	case 5:Add_Spec(RIGHT, 12);break;
+	case 6:Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 11);skip = 15;break;
+	case 10:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
 
@@ -696,33 +710,36 @@ void Puzzle_3_11()
 
 // Wall go through : #2: MEDIUM
 void Puzzle_3_12() {
+	
+	static int distance = 5;
+
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 2,7 });				// Coord de départ du jouer
+	case 0:P1.Set_Position({ distance - 4,7 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);			// EXCEPTIONNAL
 		gCurrPuzzleStepMax = 12;
 
 
-		for (int c = 0; c <= 7; c++)
+		for (int c = 0; c <= distance; c++)
 		{
 			gGrids.Activate_Link({ c , 5 }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ c , 9 }, Modifier::BLOCKER);
 		}
 		for (int r = 6; r <= 9; r++)
 		{
-			gGrids.Activate_Link({ 7 , r }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ distance  , r }, Modifier::BLOCKER);
 		}
 
 
-		gGrids.Make_Chain_Of_Walls({ 6 , 6 }, LEFT, 1, WallType::REGULAR);
-		gGrids.Make_Chain_Of_Walls({ 5 , 6 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ distance - 1 , 6 }, LEFT, 1, WallType::REGULAR);
+		gGrids.Make_Chain_Of_Walls({ distance - 2 , 6 }, LEFT, 1, WallType::WEAK);
 
-		gGrids.Make_Chain_Of_Walls({ 6 , 7 }, LEFT, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ 5 , 7 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ distance - 1 , 7 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ distance - 2 , 7 }, LEFT, 1, WallType::WEAK);
 
-		gGrids.Make_Chain_Of_Walls({ 6 , 8 }, LEFT, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ 5 , 8 }, LEFT, 1, WallType::REGULAR);
+		gGrids.Make_Chain_Of_Walls({ distance - 1 , 8 }, LEFT, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ distance - 2 , 8 }, LEFT, 1, WallType::REGULAR);
 		break;
 
 
@@ -1041,6 +1058,11 @@ void Puzzle_3_17() {
 			gGrids.Activate_Link({ 12 , r}, Modifier::BLOCKER);
 			gGrids.Activate_Link({ 15 , r}, Modifier::BLOCKER);
 		}
+		
+		gGrids.Activate_Link({ 12 , 11 }, Modifier::BLOCKER);
+		gGrids.Activate_Link({ 12 , 10 }, Modifier::BLOCKER);
+
+
 		for (int c = 0; c <= 3; c++)
 		{
 			gGrids.Activate_Link({ 12 + c , 0 }, Modifier::BLOCKER);
@@ -1122,6 +1144,7 @@ void Puzzle_3_18()
 	{
 	case 0:P1.Set_Position({ 22,1 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);	// Cheese prevention engaged
 		gCurrPuzzleStepMax = 12;
 		Cancel_Checkpoint_Delay();
 
@@ -1202,233 +1225,6 @@ void Puzzle_3_18()
 	}
 }
 
-// Take your time #3 ! The final one
-// Prepare yourself for glorious copy-pasta
-void Puzzle_3_19()
-{
-	static GrdCoord center;center = { linkGrid->Get_Cols() / 2, 7 };
-	static int distance = 3;
-	static bool puzzleSolved;
-	static int wallsToConvert;
-	static int wallsPlacedIncorrectly;
-	static bool correctWallFound;
-	static GrdCoord correctWeakWallPlacement[] = {
-		center.c,			center.r - distance,
-		center.c - 2,		center.r - distance,
-		center.c + 2,		center.r - distance,
-		center.c - distance,center.r + 2 ,
-		center.c + 2,		center.r + distance,
-		center.c,			center.r + distance
-	};
-
-	static GrdCoord correctEnergizedWallsPlacement[] = {
-	center.c - distance,		center.r - 1,
-	center.c - distance,		center.r + 1,
-	center.c - 1,				center.r - distance,
-	center.c - 1,				center.r + distance,
-	center.c + distance,		center.r - 1,
-	center.c + 1,				center.r - distance
-	};
-
-	switch (gCurrPuzzleStep)
-	{
-	case 0:P1.Set_Position({ center.c, center.r - 1 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
-		gCurrPuzzleStepMax = 12;
-
-
-		Ev_Take_Your_Time();
-		gGrids.Activate_Link(center, Modifier::FORCEFIELD);
-		gGrids.Activate_Link({center.c + 1,center.r}, Modifier::FORCEFIELD);
-		gGrids.Activate_Link({center.c - 1,center.r}, Modifier::FORCEFIELD);
-		gGrids.Activate_Link({ center.c + 2,center.r }, Modifier::FORCEFIELD);
-		gGrids.Activate_Link({ center.c - 2,center.r }, Modifier::FORCEFIELD);
-
-		//up 
-		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-		{
-			correctWallFound = false;
-
-			for (GrdCoord coord : correctWeakWallPlacement)
-			{
-				if (Are_Equal({ c, center.r - distance }, coord))
-				{
-					gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::REGULAR);
-					break;
-				}
-			}
-
-			if (!correctWallFound)
-				for (GrdCoord coord : correctEnergizedWallsPlacement)
-				{
-					if (Are_Equal({ c, center.r - distance }, coord))
-					{
-						gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::ENERGIZED);
-						break;
-					}
-				}
-
-			if(!correctWallFound)
-				gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
-		}
-
-		//down
-		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-		{
-			correctWallFound = false;
-
-			for (GrdCoord coord : correctWeakWallPlacement)
-			{
-				if (Are_Equal({ c, center.r + distance }, coord))
-				{
-					gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::REGULAR);
-					break;
-				}
-			}
-
-			if (!correctWallFound)
-				for (GrdCoord coord : correctEnergizedWallsPlacement)
-				{
-					if (Are_Equal({ c, center.r + distance }, coord))
-					{
-						gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::ENERGIZED);
-						break;
-					}
-				}
-
-			if (!correctWallFound)
-				gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
-		}
-
-		// Left 
-		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-		{
-			correctWallFound = false;
-
-			for (GrdCoord coord : correctWeakWallPlacement)
-			{
-				if (Are_Equal({ center.c - distance, r }, coord))
-				{
-					gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::REGULAR);
-					break;
-				}
-			}
-
-			if (!correctWallFound)
-				for (GrdCoord coord : correctEnergizedWallsPlacement)
-				{
-					if (Are_Equal({ center.c - distance, r }, coord))
-					{
-						gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::ENERGIZED);
-						break;
-					}
-				}
-
-			if (!correctWallFound)
-				gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
-		}
-
-		// right
-		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-		{
-			correctWallFound = false;
-
-			for (GrdCoord coord : correctWeakWallPlacement)
-			{
-				if (Are_Equal({ center.c + distance, r }, coord))
-				{
-					gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::REGULAR);
-					break;
-				}
-			}
-
-			if (!correctWallFound)
-				for (GrdCoord coord : correctEnergizedWallsPlacement)
-				{
-					if (Are_Equal({ center.c + distance, r }, coord))
-					{
-						gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::ENERGIZED);
-						break;
-					}
-				}
-
-			if (!correctWallFound)
-				gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
-		}
-
-		gGrids.Make_Chain_Of_Walls({ center.c, center.r + distance }, UP, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ center.c + 2, center.r + distance }, UP, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ center.c + 1, center.r + distance }, UP, 1, WallType::ENERGIZED);
-		gGrids.Make_Chain_Of_Walls({ center.c - 1 , center.r - distance }, DOWN, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ center.c - 2 , center.r - distance }, DOWN, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ center.c , center.r - distance },	   DOWN, 1, WallType::ENERGIZED);
-		gGrids.Make_Chain_Of_Walls({ center.c + 2 , center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r - 1 }, LEFT, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r + 1 }, LEFT, 1, WallType::ENERGIZED);
-		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r + 1 }, RIGHT, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r - 1 }, RIGHT, 1, WallType::ENERGIZED);
-		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r + 2 }, RIGHT, 1, WallType::ENERGIZED);
-
-		puzzleSolved = false;
-
-
-		break;
-
-
-	case 1: skip = 10;break;
-	case 2:
-		wallsToConvert = 0;
-		wallsPlacedIncorrectly = 0;
-
-		for (GrdCoord coord : correctWeakWallPlacement)
-		{
-			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
-				wallsPlacedIncorrectly++;
-			else
-				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
-					wallsToConvert++; //Check si les murs sont bien convert
-		}
-
-		for (GrdCoord coord : correctEnergizedWallsPlacement)
-		{
-			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) 
-				wallsPlacedIncorrectly++;
-			else
-				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() != WallType::ENERGIZED || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() != WallType::ENERGIZED)
-					wallsToConvert++; 
-		}
-
-
-		if (!wallsToConvert && !wallsPlacedIncorrectly && !blastP1.Is_Active())
-		{
-			puzzleSolved = true;
-			Cancel_Ev_Take_Your_Time();
-		}
-		else
-			gCurrPuzzleStep--;
-		break;
-
-	case 3:
-		Add_Spec(UP, 10);
-		Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);
-		Add_Spec(RIGHT, 9);Add_Spec(LEFT, 9);
-		break;
-
-	case 4:
-		Add_Spec(UP, 10);
-		Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);
-		break;
-
-	case 5:
-		Add_Spec(UP, 10);
-		Add_Spec(DOWN, 15);
-		Add_Spec(RIGHT, 4);
-		Add_Spec(LEFT, 9);
-		break;
-
-	case 6:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-	}
-}
 
 void Puzzle_3_FINAL()
 {
@@ -1446,7 +1242,8 @@ void Puzzle_3_FINAL()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 13,7 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(80);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(15);
+		//blastP1.Get_Ammo_Manager().Set_Ammo(14);
 		gCurrPuzzleStepMax = 12;
 
 		upOrDown = false;
@@ -1457,7 +1254,7 @@ void Puzzle_3_FINAL()
 
 		// DEBUG 
 		// *****
-		//seenFinalHour = 1;
+		seenFinalHour = 1;
 
 
 		if (seenFinalHour)
@@ -1488,37 +1285,47 @@ void Puzzle_3_FINAL()
 		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
 		ConsoleRender::Add_String("???", { crd.x + 13,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
 
-		// Phase 1: REGULAR
 		for (int c = 0; c < linkGrid->Get_Cols(); c++)
 		{
-			gGrids.Make_Chain_Of_Walls({ c,6 }, UP, 1);
-			gGrids.Make_Chain_Of_Walls({ c,8 }, DOWN, 1);
+			//gGrids.Make_Chain_Of_Walls({ c,5 }, UP, 1);
+			//gGrids.Make_Chain_Of_Walls({ c,9 }, DOWN, 1);
+			gGrids.Activate_Link({ c,5 });
+			gGrids.Activate_Link({ c,9 });
+		}
+
+		gGrids.Activate_Link({ 11,7 });
+		gGrids.Activate_Link({ 15,7 });
+
+
+		for (int c = 12; c < 15; c++)
+		{
+			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,6 });
+			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,8 });
+
+			if (c != 13)
+				ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,7 });
 		}
 
 		// DEBUG
 		/// ****
 		//gCurrPuzzleStep = 15;//PHASE 2
 		//gCurrPuzzleStep = 24;//PHASE 3
-		//gCurrPuzzleStep = 37;//PHASE 4
+		//gCurrPuzzleStep = 31;//PHASE 4
 		//gCurrPuzzleStep = 50;//PHASE 5
 		//gCurrPuzzleStep = 63;//PHASE 6
 		//gCurrPuzzleStep = 82;//PHASE 7
 		break;
 
 
-	case 3:Add_Spec(LEFT, 6); break;
-	case 4:Add_Spec(LEFT, 6); break;
-	case 5:Add_Spec(RIGHT, 6);break;
-	case 6:Add_Spec(LEFT, 7); break;
-	case 7:Add_Spec(RIGHT, 7);break;
-	case 8:Add_Spec(LEFT, 7);break;
-	case 9:dir = LEFT; Add(2);Set_Interval(dir, 6, 8);break;
-	case 10:Add(2);Set_Interval(dir, 6, 8);;break;
-	case 11:Add(2);Set_Interval(dir, 6, 8);;break;
-	case 12:Add(2);Set_Interval(dir, 6, 8);;break;
-	case 13:
-	case 14:
-	case 15:break;
+	case 3: dir = UP;Add(2);Set_Interval(dir, 11, 14);skip = 3;break;
+	case 4: Add(3);Set_Interval(dir, 12, 15);skip = 7;break;
+	case 5: Add(1);Set_Interval(dir, 11, 15);break;
+	case 6: dir = LEFT;Add_Spec(LEFT, 6); break;
+	case 7:Add(1);Set_Interval(LEFT, 5, 7);break;
+	case 8:Add(1);Set_Interval(RIGHT, 5, 7);break;
+	case 9:Add(1);Set_Interval(LEFT, 5, 7);break;
+	case 10:Add_Spec(RIGHT, 8);break;
+	case 11:Add(1);Set_Interval(LEFT, 6, 8);break;
 
 		// Phase 2 !
 	case 16:
@@ -1526,40 +1333,81 @@ void Puzzle_3_FINAL()
 			gCurrPuzzleStep--;
 		else
 		{
-			// Setup phase 2
 			Clear_Map();
 
-			blastP1.Get_Ammo_Manager().Activate();
+			//blastP1.Get_Ammo_Manager().Activate();
+			//blastP1.Get_Ammo_Manager().Set_Ammo(12);
 			P1.Set_Position({ 13,7 });
 			Set_Ev_Spawn_Player(3);
 			MsgQueue::Register(LOCK_PLAYER);
 
-			for (int r = 0; r < linkGrid->Get_Rows(); r++)
-				for (int c = 0; c < linkGrid->Get_Cols(); c++)
+			for (int c = 0; c < linkGrid->Get_Cols(); c++)
+			{
+				if (c < 11 && c > 4)
 				{
-					if (r <= 5 || r >= 9)
-					{
-						if (r == 5 || r == 9)
-							gGrids.Activate_Link({ c,r }, Modifier::BLOCKER);
-					}
-					else
-						if (!Are_Equal({ c,r }, P1.Get_Grd_Coord()))
-						{
-							ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,r });
-						}
+					ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,6 });
+					ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,8 });
 				}
+				else
+				{
+					if (c <= 4)
+					{
+						ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,6 });
+						ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,8 });
+					}
+				}
+
+				if (c > 16 && c < 22)
+				{
+					ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,6 });
+					ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,8 });
+				}
+				else
+				{
+					if (c >= 22)
+					{
+						ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,6 });
+						ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,8 });
+					}
+				}
+			}
+			for (int c = 0; c < linkGrid->Get_Cols(); c++)
+			{
+				if (c < 11 && c > 15)
+					ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,7 });
+
+			}
+
+			for (int c = 0; c < linkGrid->Get_Cols(); c++)
+			{
+				gGrids.Activate_Link({ c,5 }, Modifier::BLOCKER);
+				gGrids.Activate_Link({ c,9 }, Modifier::BLOCKER);
+			}
+
+			gGrids.Activate_Link({ 11,7 }, Modifier::BLOCKER);
+			gGrids.Activate_Link({ 15,7 }, Modifier::BLOCKER);
+
+
+			for (int c = 12; c < 15; c++)
+			{
+				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,6 });
+				ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,8 });
+
+				if (c != 13)
+					ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,7 });
+			}
 
 		}
 		break;
 
-	case 17:dir = LEFT; break;
+	case 17:dir = LEFT; /*Add(2);Set_Interval(dir, 5, 9); skip = 7;*/ skip = 3; break;
 	case 18:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
 	case 19:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
 	case 20:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
-	case 21:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
-	case 22:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
-	case 23:
-	case 24:break;
+	case 21:Add(2);Set_Interval(dir, 5, 9);skip = 10;		 break;
+	case 22:dir = UP; Add(2);Set_Interval(dir, 11, 13); skip = 3;break;
+	case 23:Add(2);Set_Interval(dir, 12, 14);skip = 4;break;
+	case 24:Add(2);Set_Interval(dir, 11, 14);break;
 
 		// PHASE 3
 		// *******
@@ -1571,43 +1419,43 @@ void Puzzle_3_FINAL()
 			Clear_Map();
 
 			blastP1.Get_Ammo_Manager().Activate();
-			P1.Set_Position({ 13,7 });
+			//blastP1.Get_Ammo_Manager().Set_Ammo(12);
+
+			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
 			MsgQueue::Register(LOCK_PLAYER);
 
+
 			for (int c = 0; c < linkGrid->Get_Cols(); c++)
 			{
-				gGrids.Make_Chain_Of_Walls({ c,4 }, UP, 1);
-				gGrids.Make_Chain_Of_Walls({ c,10 }, DOWN, 1);
+				gGrids.Activate_Link({ c,5 }, Modifier::BUFFER);
+				gGrids.Activate_Link({ c,9 }, Modifier::BUFFER);
 			}
 
-			for (int r = 5; r < 10; r++)
-			{
-				gGrids.Activate_Link({ 11,r });
-				gGrids.Activate_Link({ 15,r });
-			}
+			/*gGrids.Activate_Link({ 11,7 }, Modifier::BUFFER);
+			gGrids.Activate_Link({ 15,7 }, Modifier::BUFFER);*/
+			gGrids.Activate_Link({ 11,8 }, Modifier::BUFFER);
+			gGrids.Activate_Link({ 15,6 }, Modifier::BUFFER);
+			gGrids.Activate_Link({ 13,7 }, Modifier::BUFFER);
 
 
+			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 14,6 });
+			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 12,8 });
+			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 12,7 });
+			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 14,7 });
 		}
 		break;
 
-
-	case 26:dir = UP;break;
-	case 27:Add(2);Set_Interval(dir, 11, 13);skip = 3;break;
-	case 28:Add(3);Set_Interval(dir, 12, 15);skip = 2;break;
-	case 29:Add(1);Set_Interval(dir, 11, 15);skip = 1;break;
-	case 30:Add(2);Set_Interval(dir, 11, 15);skip = 4;break;
-	case 31:Add(3);Set_Interval(dir, 11, 14);break;
-	case 32:
-	case 33:
-	case 34:
-	case 35:
-	case 36:
-	case 37:break;
+	case 26:dir = LEFT; skip = 3;break;
+	case 27:Add_Spec(UP, 11); Add_Spec(DOWN, 11); skip = 2;break;
+	case 28:Add_Spec(UP, 14);Add_Spec(DOWN, 14);skip = 2;break;
+	case 29:Add_Spec(UP, 12);Add_Spec(DOWN, 12);skip = 2;break;
+	case 30:Add_Spec(UP, 13);Add_Spec(DOWN, 13);break;
+	case 31:Add(8);Set_Interval(LEFT, 5, 9);Set_Interval(RIGHT, 5,9);  skip = 23;break;
 
 		// PHASE 4
 		// *******
-	case 38:
+	case 32:
 		if (gAllBotMeta.alive || !P1.Get_HP())
 			gCurrPuzzleStep--;
 		else
@@ -1615,198 +1463,96 @@ void Puzzle_3_FINAL()
 			Clear_Map();
 
 			blastP1.Get_Ammo_Manager().Activate();
-			P1.Set_Position({ 13,7 });
-			Set_Ev_Spawn_Player(3);
-			MsgQueue::Register(LOCK_PLAYER);
+			//blastP1.Get_Ammo_Manager().Set_Ammo(16);
 
-			for (int r = 0; r < linkGrid->Get_Rows(); r++)
-				for (int c = 0; c < linkGrid->Get_Cols(); c++)
-				{
-					if (r <= 3 || r >= 11)
-					{
-						if (r == 3 || r == 11)
-							gGrids.Activate_Link({ c,r }, Modifier::BUFFER);
-					}
-				}
-			gGrids.Activate_Link({ 13 - 1 , 7 + 1 }, Modifier::BUFFER);
-			gGrids.Activate_Link({ 13 + 0 , 7 + 2 }, Modifier::BUFFER);
-			gGrids.Activate_Link({ 13 + 1 , 7 + 3 }, Modifier::BUFFER);
-
-
-			gGrids.Activate_Link({ 13 + 1  , 7 - 1 }, Modifier::BUFFER);
-			gGrids.Activate_Link({ 13 - 0  , 7 - 2 }, Modifier::BUFFER);
-			gGrids.Activate_Link({ 13 - 1  , 7 - 3 }, Modifier::BUFFER);
-		}
-		break;
-
-	case 39:dir = LEFT; break;
-	case 40:Add(8);Set_Interval(dir, 3, 11);skip = 0;break;
-	case 41:Add(8);Set_Interval(dir, 3, 11);skip = 14;break;
-	case 42:Add(8);Set_Interval(dir, 3, 11);skip = 0;break;
-	case 43:Add(8);Set_Interval(dir, 3, 11);skip = 0;break;
-	case 44:
-	case 45:
-	case 46:
-	case 47:break;
-	case 48:break;
-	case 49:break;
-	case 50:break;
-
-		// PHASE 5
-		// *******
-	case 51:
-		if (gAllBotMeta.alive || !P1.Get_HP())
-			gCurrPuzzleStep--;
-		else
-		{
-			// Setup phase 2
-			Clear_Map();
-
-			blastP1.Get_Ammo_Manager().Activate();
-			P1.Set_Position({ 13,7 });
+			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
 			MsgQueue::Register(LOCK_PLAYER);
 
 			for (int c = 0; c < linkGrid->Get_Cols(); c++)
 			{
-				gGrids.Make_Chain_Of_Walls({ c,2 }, UP, 1, WallType::REGULAR, Modifier::BUFFER);
-				gGrids.Make_Chain_Of_Walls({ c,12 }, DOWN, 1, WallType::REGULAR, Modifier::BLOCKER);
+				gGrids.Make_Chain_Of_Walls({ c,5 }, UP, 1);
+				gGrids.Make_Chain_Of_Walls({ c,9 }, DOWN, 1);
+			}
 
+			for (int c = 1; c <= 4 ; c++)
+			{
+				gGrids.Activate_Link({ c,7 }, Modifier::FORCEFIELD);
+				gGrids.Activate_Link({ c,8 }, Modifier::FORCEFIELD);
+			}
+
+			for (int c = 22; c <= 25; c++)
+			{
+				gGrids.Activate_Link({ c,6 }, Modifier::FORCEFIELD);
+				gGrids.Activate_Link({ c,7 }, Modifier::FORCEFIELD);
 			}
 
 
+			for (int r = 6; r < 9; r++)
+			{
+				gGrids.Activate_Link({ 7,r }, Modifier::FORCEFIELD);
+				gGrids.Activate_Link({ 19,r }, Modifier::FORCEFIELD);
+			}
 
-			for (int r = 0; r < linkGrid->Get_Rows(); r++)
-				for (int c = 0; c < linkGrid->Get_Cols(); c++)
-				{
-					if (!Are_Equal({ c,r }, P1.Get_Grd_Coord()))
-						if (r > 2 && r <= 4)
-							ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { c,r });
-						else
-							if (r > 9 && r <= 11)
-								ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { c,r });
+			// Walls à bouger
+			gGrids.Make_Chain_Of_Walls({ 0,6 }, RIGHT, 4, WallType::WEAK);
+			gGrids.Make_Chain_Of_Walls({ 26,8 }, LEFT, 4, WallType::WEAK);
 
-				}
+			gGrids.Make_Chain_Of_Walls({ 11,8 }, UP, 2, WallType::WEAK);
+			gGrids.Make_Chain_Of_Walls({ 15,6 }, DOWN, 2, WallType::WEAK);
+			
+			gGrids.Activate_Link({ 10,6 }, Modifier::FORCEFIELD);
+			gGrids.Activate_Link({ 10,7 }, Modifier::FORCEFIELD);
+			gGrids.Activate_Link({ 9,6 }, Modifier::FORCEFIELD);
+			gGrids.Activate_Link({ 9,7 }, Modifier::FORCEFIELD);
+
+			gGrids.Activate_Link({ 17,7 }, Modifier::FORCEFIELD);
+			gGrids.Activate_Link({ 17,8 }, Modifier::FORCEFIELD);
+			gGrids.Activate_Link({ 16,7 }, Modifier::FORCEFIELD);
+			gGrids.Activate_Link({ 16,8 }, Modifier::FORCEFIELD);
+
+
+			// Anchor points
+			gGrids.Make_Chain_Of_Walls({ 13,8 }, UP, 1, WallType::ENERGIZED);
+			gGrids.Activate_Link({ 5,7 });
+			gGrids.Activate_Link({ 21,7 });
 		}
 		break;
 
-	case 52:dir = LEFT; skip = 4; break;
-	case 53:Add(2);Set_Interval(dir, 2, 4); skip = 4;break;
-	case 54:Add(2);Set_Interval(dir, 10, 12);break;
-	case 55:Add(2);Set_Interval(dir, 2, 4);skip = 4;break;
-	case 56:Add(2);Set_Interval(dir, 10, 12);skip = 0;break;
-	case 57:Add(2);Set_Interval(dir, 2, 4);skip = 0;break;
-	case 58:Add(2);Set_Interval(dir, 2, 4);skip = 0;break;
-	case 59:Add(2);Set_Interval(dir, 2, 4);skip = 0;break;
-	case 60:Add(2);Set_Interval(dir, 10, 12);skip = 0;break;
+	case 33:dir = LEFT; skip = 5; break;
+	case 34:Add_Spec(UP, 9);Add_Spec(DOWN, 9);skip = 1;break;
+	case 35:Add_Spec(UP, 16);Add_Spec(DOWN, 16);skip = 11;break;
+	case 36:Add_Spec(LEFT, 7); skip = 1;break;
+	case 37:Add_Spec(LEFT, 7); skip = 1;break;
+	case 38:Add_Spec(LEFT, 7); skip = 1;break;
+	case 39:Add_Spec(LEFT, 7); skip = 1;break;
+	case 41:Add_Spec(RIGHT, 6);break;
+	case 44:Add_Spec(RIGHT, 6);break;
+	case 45:Add_Spec(RIGHT, 6);break;
+	case 46:Add_Spec(RIGHT, 6);break;
 
-		// PHASE 6
-		// *******
-	case 64:
+		// PHASE 5, the bait
+		// *****************
+	case 47:
+
 		if (gAllBotMeta.alive || !P1.Get_HP())
 			gCurrPuzzleStep--;
 		else
 		{
-			// Setup phase 2
 			Clear_Map();
-
 			blastP1.Get_Ammo_Manager().Activate();
-			P1.Set_Position({ 2, 3 });
-			Set_Ev_Spawn_Player(3);
-			MsgQueue::Register(LOCK_PLAYER);
 
-			for (int c = 0; c < linkGrid->Get_Cols(); c++)
-				for (int r = 1; r < linkGrid->Get_Rows() - 1; r++)
-				{
-					//if (r != 7)
-					if (c == 5 || c == 13 || c == 21)
-						gGrids.Activate_Link({ c,r }, Modifier::FORCEFIELD);
-				}
-
-			for (int r = 0; r <= 26; r++)
-			{
-				if (r >= 2 && r <= 6)
-					gGrids.Make_Chain_Of_Walls({ 0,r }, RIGHT, 1, WallType::WEAK);
-			}
-			gGrids.Make_Chain_Of_Walls({ 0,7 }, RIGHT, 1, WallType::ENERGIZED);
-			//gGrids.Make_Chain_Of_Walls({ 13,7 }, RIGHT, 1, WallType::ENERGIZED);
-
-
-			for (int r = 0; r <= 26; r++)
-			{
-				if (r >= 8 && r <= 12)
-					gGrids.Make_Chain_Of_Walls({ 26,r }, LEFT, 1, WallType::WEAK);
-			}
-			//gGrids.Make_Chain_Of_Walls({ 26,12 }, LEFT, 1, WallType::ENERGIZED);
-			//gGrids.Make_Chain_Of_Walls({ 13,12 }, LEFT, 1, WallType::REGULAR);
-
-
-
-			// Lignes horizontales
-			for (int c = 0; c <= 26; c++)
-			{
-				gGrids.Make_Chain_Of_Walls({ c,1 }, UP, 1, WallType::REGULAR, Modifier::FORCEFIELD);
-				gGrids.Make_Chain_Of_Walls({ c,13 }, DOWN, 1, WallType::REGULAR, Modifier::FORCEFIELD);
-			}
-		}
-		break;
-
-	case 65:dir = UP;skip = 3; break;
-	case 66:Add(1);Set_Interval(UP, 12, 13);skip = 0;break;
-	case 67:Add(1);Set_Interval(UP, 12, 13);skip = 0;break;
-	case 68:Add(1);Set_Interval(UP, 12, 13);skip = 0;break;
-	case 69:Add(1);Set_Interval(UP, 12, 13);skip = 0;break;
-	case 70:Add(1);Set_Interval(UP, 12, 13);skip = 8;break;
-	case 71:Add(1);Set_Interval(DOWN, 13, 14);skip = 0;break;
-	case 72:Add(1);Set_Interval(DOWN, 13, 14);skip = 0;break;
-	case 73:Add(1);Set_Interval(DOWN, 13, 14);skip = 0;break;
-	case 74:Add(1);Set_Interval(DOWN, 13, 14);skip = 0;break;
-	case 75:Add(1);Set_Interval(DOWN, 13, 14);skip = 0;break;
-	case 76:
-	case 77:
-	case 79:
-	case 80:
-	case 81:
-	case 82:break;
-
-
-		// PHASE 7
-		// *******
-	case 83:
-		if (gAllBotMeta.alive || !P1.Get_HP())
-			gCurrPuzzleStep--;
-		else
-		{
-			// Setup phase 2
-			Clear_Map();
-
-			blastP1.Get_Ammo_Manager().Activate();
 			P1.Set_Position({ 13,11 });
 			Set_Ev_Spawn_Player(3);
 			MsgQueue::Register(LOCK_PLAYER);
 
-			//for (short r = 0; r < linkGrid->Get_Rows(); r++)
-			//{
-			//	gGrids.Activate_Link({ 0, r }, Modifier::REGULAR);
-			//	gGrids.Activate_Link({ 26, r }, Modifier::REGULAR);
-			//}
-
-			//for (short c = 0; c < linkGrid->Get_Cols(); c++)
-			//{
-			//	gGrids.Activate_Link({ c, 0 }, Modifier::REGULAR);
-			//	gGrids.Activate_Link({ c, 14 }, Modifier::REGULAR);
-			//}
-
-
 			gGrids.Activate_Link({ 13, 6 }, Modifier::REGULAR);
-
 		}
 		break;
 
-
-	case 84:break;
-	case 85:Add(300); skip = 4;break;
-	case 86:
+	case 49:break;
+	case 50:Add(300); skip = 4;break;
+	case 51:
 		botList.Destroy_All_Bots();
 		Add_Spec(RIGHT, 6);
 		instantSpawn = true;
@@ -1819,744 +1565,3 @@ void Puzzle_3_FINAL()
 	
 	dir = Find_Opposite_Dir(dir);
 }
-//
-//// Place walls correctly #2 Take your time
-//void Puzzle_3_10()
-//{
-//	static GrdCoord center = { linkGrid->Get_Cols() / 2, 7 };
-//	static int distance = 2;
-//	static bool puzzleSolved;
-//	static int wallsToConvert;
-//	static int wallsPlacedIncorrectly;
-//	static GrdCoord coorectWallPlacement[] = {
-//		center.c,center.r - distance,
-//		center.c - 1,center.r - distance,
-//		center.c + 1,center.r - distance,
-//		center.c - distance ,center.r + 1 ,
-//		center.c + distance ,center.r ,
-//		center.c + 1 , center.r + distance,
-//		center.c , center.r + distance
-//	};
-//
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2 - 1,7 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
-//		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);			// EXCEPTIONNAL
-//
-//		gCurrPuzzleStepMax = 12;
-//
-//		Ev_Take_Your_Time();
-//		gGrids.Activate_Link(center, Modifier::FORCEFIELD);
-//
-//		//up 
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r - distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
-//		}
-//
-//		//down
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r + distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
-//		}
-//
-//		// Left 
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ center.c - distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
-//		}
-//
-//		// right
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ center.c + distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
-//		}
-//
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, 7 - 2 }, DOWN, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2, 7 + 2 }, UP, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 }, LEFT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 - 1 }, LEFT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2, 7 - 1 }, RIGHT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 + 2, 7 + 1 }, LEFT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 - 2, 7 + 1 }, RIGHT, 1, WallType::WEAK);
-//
-//		puzzleSolved = false;
-//
-//		break;
-//
-//
-//	case 1:skip = 10;break;
-//	case 2:
-//
-//		wallsToConvert = 0;
-//		wallsPlacedIncorrectly = 0;
-//
-//		// Complete old garbage 		
-//		for (GrdCoord coord : coorectWallPlacement)
-//		{
-//			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
-//				wallsPlacedIncorrectly++;
-//			else
-//				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
-//					wallsToConvert++; //Check si les murs sont bien convert
-//		}
-//
-//
-//		if (!wallsToConvert && !wallsPlacedIncorrectly && !blastP1.Is_Active())
-//		{
-//			puzzleSolved = true;
-//			Cancel_Ev_Take_Your_Time();
-//		}
-//		else
-//			gCurrPuzzleStep--;
-//		break;
-//
-//	case 3:
-//		Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);
-//		Add_Spec(UP, 11);
-//		Add_Spec(DOWN, 14);
-//		Add_Spec(LEFT, 8);Add_Spec(RIGHT, 8);
-//		break;
-//
-//	case 4:Add_Spec(LEFT, 5);break;
-//	case 5:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-//
-
-
-//
-//// Place walls correctly #1
-//void Puzzle_3_5()
-//{
-//	static GrdCoord center = { linkGrid->Get_Cols() / 2, 7 };
-//	static int distance = 2;
-//	static bool puzzleSolved;
-//	static int wallsToConvert;
-//	static int wallsPlacedIncorrectly;
-//
-//	static GrdCoord coorectWallPlacement[] = {
-//		center.c,center.r - distance,
-//		center.c ,center.r + distance,
-//		center.c - distance , center.r + 1,
-//		center.c - distance,center.r - 1,
-//	};
-//
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ center.c ,center.r - 1 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
-//		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);			// EXCEPTIONNAL
-//		gCurrPuzzleStepMax = 12;
-//
-//		Ev_Take_Your_Time();
-//
-//		gGrids.Activate_Link(center, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c - 1,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c + 1,center.r }, Modifier::FORCEFIELD);
-//
-//		//up 
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r - distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::ENERGIZED);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::REGULAR);
-//		}
-//
-//		//down
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r + distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::ENERGIZED);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::REGULAR);
-//		}
-//
-//		// Left 
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ center.c - distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::ENERGIZED);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::REGULAR);
-//		}
-//
-//		// right
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//
-//			for (GrdCoord coord : coorectWallPlacement)
-//			{
-//				if (Are_Equal({ center.c + distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::ENERGIZED);
-//					break;
-//				}
-//			}
-//
-//			gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::REGULAR);
-//		}
-//
-//		gGrids.Make_Chain_Of_Walls({ center.c - 1, center.r + distance }, UP, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - 1, center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 1,	  center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r + 1 }, LEFT, 1, WallType::ENERGIZED);
-//
-//		puzzleSolved = false;
-//		P1.Set_Hp(1);
-//
-//		break;
-//
-//
-//	case 1:skip = 10;break;
-//	case 2:
-//
-//		wallsToConvert = 0;
-//		wallsPlacedIncorrectly = 0;
-//
-//		// Complete old garbage 		
-//		for (GrdCoord coord : coorectWallPlacement)
-//		{
-//			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
-//				wallsPlacedIncorrectly++;
-//			else
-//				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
-//					wallsToConvert++; //Check si les murs sont bien convert
-//		}
-//
-//
-//		if (!wallsToConvert && !wallsPlacedIncorrectly && !blastP1.Is_Active())
-//		{
-//			puzzleSolved = true;
-//			Cancel_Ev_Take_Your_Time();
-//		}
-//		else
-//			gCurrPuzzleStep--;
-//		break;
-//
-//	case 3:
-//		Add_Spec(RIGHT, 5);
-//		Add_Spec(UP, 11);
-//		Add_Spec(DOWN, 11);
-//		Add_Spec(LEFT, 8);
-//		break;
-//
-//	case 4:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-
-//
-//// Take your time #3 ! The final one
-//// Prepare yourself for glorious copy-pasta
-//void Puzzle_3_20()
-//{
-//	static GrdCoord center;center = { linkGrid->Get_Cols() / 2, 7 };
-//	static int distance = 3;
-//	static bool puzzleSolved;
-//	static int wallsToConvert;
-//	static int wallsPlacedIncorrectly;
-//	static bool correctWallFound;
-//	static GrdCoord correctWeakWallPlacement[] = {
-//		center.c,			center.r - distance,
-//		center.c - 2,		center.r - distance,
-//		center.c + 2,		center.r - distance,
-//		center.c - distance,center.r + 2 ,
-//		center.c + 2,		center.r + distance,
-//		center.c,			center.r + distance
-//	};
-//
-//	static GrdCoord correctEnergizedWallsPlacement[] = {
-//	center.c - distance,		center.r - 1,
-//	center.c - distance,		center.r + 1,
-//	center.c - 1,				center.r - distance,
-//	center.c - 1,				center.r + distance,
-//	center.c + distance,		center.r - 1,
-//	center.c + 1,				center.r - distance
-//	};
-//
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ center.c, center.r - 1 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
-//		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);			// EXCEPTIONNAL
-//		gCurrPuzzleStepMax = 12;
-//
-//
-//		Ev_Take_Your_Time();
-//		gGrids.Activate_Link(center, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c + 1,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c - 1,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c + 2,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c - 2,center.r }, Modifier::FORCEFIELD);
-//
-//		//up 
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r - distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ c, center.r - distance }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
-//		}
-//
-//		//down
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r + distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ c, center.r + distance }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
-//		}
-//
-//		// Left 
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ center.c - distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ center.c - distance, r }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
-//		}
-//
-//		// right
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ center.c + distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ center.c + distance, r }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
-//		}
-//
-//		gGrids.Make_Chain_Of_Walls({ center.c, center.r + distance }, UP, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 2, center.r + distance }, UP, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 1, center.r + distance }, UP, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - 1 , center.r - distance }, DOWN, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c - 2 , center.r - distance }, DOWN, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c , center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 2 , center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r - 1 }, LEFT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r + 1 }, LEFT, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r + 1 }, RIGHT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r - 1 }, RIGHT, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r + 2 }, RIGHT, 1, WallType::ENERGIZED);
-//
-//		puzzleSolved = false;
-//
-//
-//		break;
-//
-//
-//	case 1: skip = 10;break;
-//	case 2:
-//		wallsToConvert = 0;
-//		wallsPlacedIncorrectly = 0;
-//
-//		for (GrdCoord coord : correctWeakWallPlacement)
-//		{
-//			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
-//				wallsPlacedIncorrectly++;
-//			else
-//				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
-//					wallsToConvert++; //Check si les murs sont bien convert
-//		}
-//
-//		for (GrdCoord coord : correctEnergizedWallsPlacement)
-//		{
-//			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2)
-//				wallsPlacedIncorrectly++;
-//			else
-//				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() != WallType::ENERGIZED || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() != WallType::ENERGIZED)
-//					wallsToConvert++;
-//		}
-//
-//
-//		if (!wallsToConvert && !wallsPlacedIncorrectly && !blastP1.Is_Active())
-//		{
-//			puzzleSolved = true;
-//			Cancel_Ev_Take_Your_Time();
-//		}
-//		else
-//			gCurrPuzzleStep--;
-//		break;
-//
-//	case 3:
-//		Add_Spec(UP, 10);
-//		Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);
-//		Add_Spec(RIGHT, 9);Add_Spec(LEFT, 9);
-//		break;
-//
-//	case 4:
-//		Add_Spec(UP, 10);
-//		Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);
-//		break;
-//
-//	case 5:
-//		Add_Spec(UP, 10);
-//		Add_Spec(DOWN, 15);
-//		Add_Spec(RIGHT, 4);
-//		Add_Spec(LEFT, 9);
-//		break;
-//
-//	case 6:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}
-
-//
-//// Take your time #3 ! The final one
-//// Prepare yourself for glorious copy-pasta
-//void Puzzle_3_19()
-//{
-//	static GrdCoord center;center = { linkGrid->Get_Cols() / 2, 7 };
-//	static int distance = 3;
-//	static bool puzzleSolved;
-//	static int wallsToConvert;
-//	static int wallsPlacedIncorrectly;
-//	static bool correctWallFound;
-//	static GrdCoord correctWeakWallPlacement[] = {
-//		center.c,			center.r - distance,
-//		center.c - 2,		center.r - distance,
-//		center.c + 2,		center.r - distance,
-//		center.c - distance,center.r + 2 ,
-//		center.c + 2,		center.r + distance,
-//		center.c,			center.r + distance
-//	};
-//
-//	static GrdCoord correctEnergizedWallsPlacement[] = {
-//	center.c - distance,		center.r - 1,
-//	center.c - distance,		center.r + 1,
-//	center.c - 1,				center.r - distance,
-//	center.c - 1,				center.r + distance,
-//	center.c + distance,		center.r - 1,
-//	center.c + 1,				center.r - distance
-//	};
-//
-//	switch (gCurrPuzzleStep)
-//	{
-//	case 0:P1.Set_Position({ center.c, center.r - 1 });				// Coord de départ du jouer
-//		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
-//		gCurrPuzzleStepMax = 12;
-//
-//
-//		Ev_Take_Your_Time();
-//		gGrids.Activate_Link(center, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c + 1,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c - 1,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c + 2,center.r }, Modifier::FORCEFIELD);
-//		gGrids.Activate_Link({ center.c - 2,center.r }, Modifier::FORCEFIELD);
-//
-//		//up 
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r - distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ c, center.r - distance }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ c, center.r - distance }, UP, 1, WallType::WEAK);
-//		}
-//
-//		//down
-//		for (int c = center.c - distance; c < center.c + distance + 1; c++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ c, center.r + distance }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ c, center.r + distance }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ c, center.r + distance }, DOWN, 1, WallType::WEAK);
-//		}
-//
-//		// Left 
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ center.c - distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ center.c - distance, r }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ center.c - distance, r }, LEFT, 1, WallType::WEAK);
-//		}
-//
-//		// right
-//		for (int r = center.r - distance; r < center.r + distance + 1; r++)
-//		{
-//			correctWallFound = false;
-//
-//			for (GrdCoord coord : correctWeakWallPlacement)
-//			{
-//				if (Are_Equal({ center.c + distance, r }, coord))
-//				{
-//					gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::REGULAR);
-//					break;
-//				}
-//			}
-//
-//			if (!correctWallFound)
-//				for (GrdCoord coord : correctEnergizedWallsPlacement)
-//				{
-//					if (Are_Equal({ center.c + distance, r }, coord))
-//					{
-//						gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::ENERGIZED);
-//						break;
-//					}
-//				}
-//
-//			if (!correctWallFound)
-//				gGrids.Make_Chain_Of_Walls({ center.c + distance, r }, RIGHT, 1, WallType::WEAK);
-//		}
-//
-//		gGrids.Make_Chain_Of_Walls({ center.c, center.r + distance }, UP, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 2, center.r + distance }, UP, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 1, center.r + distance }, UP, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - 1 , center.r - distance }, DOWN, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c - 2 , center.r - distance }, DOWN, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c , center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c + 2 , center.r - distance }, DOWN, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r - 1 }, LEFT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c + distance, center.r + 1 }, LEFT, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r + 1 }, RIGHT, 1, WallType::WEAK);
-//		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r - 1 }, RIGHT, 1, WallType::ENERGIZED);
-//		gGrids.Make_Chain_Of_Walls({ center.c - distance, center.r + 2 }, RIGHT, 1, WallType::ENERGIZED);
-//
-//		puzzleSolved = false;
-//
-//
-//		break;
-//
-//
-//	case 1: skip = 10;break;
-//	case 2:
-//		wallsToConvert = 0;
-//		wallsPlacedIncorrectly = 0;
-//
-//		for (GrdCoord coord : correctWeakWallPlacement)
-//		{
-//			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2) //Check si les murs convert sont bien placés
-//				wallsPlacedIncorrectly++;
-//			else
-//				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() == WallType::WEAK || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() == WallType::WEAK)
-//					wallsToConvert++; //Check si les murs sont bien convert
-//		}
-//
-//		for (GrdCoord coord : correctEnergizedWallsPlacement)
-//		{
-//			if (linkGrid->link[coord.c][coord.r].Get_Num_Child() < 2)
-//				wallsPlacedIncorrectly++;
-//			else
-//				if (linkGrid->link[coord.c][coord.r].Get_Child(0)->Get_Type() != WallType::ENERGIZED || linkGrid->link[coord.c][coord.r].Get_Child(1)->Get_Type() != WallType::ENERGIZED)
-//					wallsToConvert++;
-//		}
-//
-//
-//		if (!wallsToConvert && !wallsPlacedIncorrectly && !blastP1.Is_Active())
-//		{
-//			puzzleSolved = true;
-//			Cancel_Ev_Take_Your_Time();
-//		}
-//		else
-//			gCurrPuzzleStep--;
-//		break;
-//
-//	case 3:
-//		Add_Spec(UP, 10);
-//		Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);
-//		Add_Spec(RIGHT, 9);Add_Spec(LEFT, 9);
-//		break;
-//
-//	case 4:
-//		Add_Spec(UP, 10);
-//		Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);
-//		break;
-//
-//	case 5:
-//		Add_Spec(UP, 10);
-//		Add_Spec(DOWN, 15);
-//		Add_Spec(RIGHT, 4);
-//		Add_Spec(LEFT, 9);
-//		break;
-//
-//	case 6:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
-//	}
-//}

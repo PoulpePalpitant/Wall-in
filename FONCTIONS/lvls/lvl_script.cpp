@@ -13,11 +13,11 @@ const int NB_LVLS = 3;								// Nombre de niveau que j'ai fais
 const int NUM_PUZZLES[NB_LVLS] = { 18, 24,20 };		// Nombre de Puzzles dans chaque lvl
 
 
-short gCurrentLevel = 0;		// Le niveau actuel!!1
-short gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
-short gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
-short gUnlockedLevels[3] = {1,1,1};
-short gLastLvlUnlocked = 0;
+int gCurrentLevel = 0;		// Le niveau actuel!!1
+int gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
+int gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
+int gUnlockedLevels[3] = {1,0,0};
+int gLastLvlUnlocked = -1;
 
 int gCurrPuzzleStep = 0;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
 int gCurrPuzzleStepMax = 0;
