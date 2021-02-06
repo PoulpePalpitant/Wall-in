@@ -42,31 +42,6 @@ extern TextConstant TXT_CONST;
 const int STANDARD_ASCII_SIZE = 6;
 const int DOH_FONT_SIZE= 16;
 
-//struct TextArt
-//{
-//
-//
-//	const std::string DAY_1_V2[STANDARD_ASCII_SIZE] = {
-//
-//" ____             ___   _                _____    _____                 __     _   ",
-//"|    \ ___ _ _   |_  | |_|              |  _  |  |   | |___ _ _ _    __|  |___| |_ ",
-//"|  |  | .'| | |   _| |_ _               |     |  | | | | -_| | | |  |  |  | . | . |",
-//"|____/|__,|_  |  |_____|_|              |__|__|  |_|___|___|_____|  |_____|___|___|",
-//"          |___|                                                                    "
-//	};
-//
-//	const std::string DAY_1_V2[STANDARD_ASCII_SIZE] = {				// POLICE DE CHAR : SLANT
-//
-//"    ____                 ___                 ___       _   __                    __      __   ",
-//"   / __ \____ ___  __   <  /                /   |     / | / /__ _      __       / /___  / /_  ",
-//"  / / / / __ `/ / / /   / (_)              / /| |    /  |/ / _ \ | /| / /  __  / / __ \/ __ \ ",
-//" / /_/ / /_/ / /_/ /   / /                / ___ |   / /|  /  __/ |/ |/ /  / /_/ / /_/ / /_/ / ",
-//"/_____/\__,_/\__, /   /_(_)              /_/  |_|  /_/ |_/\___/|__/|__/   \____/\____/_.___/  ",
-//"            /____/                                                                            "
-//		};
-//};
-//
-//TextArt txtArt;
 
 // Des couleurs
 enum Colors
@@ -74,24 +49,24 @@ enum Colors
 	BLACK = 0, GRAY = 8,
 	BLUE = 1, LIGHT_BLUE = 9,
 	GREEN = 2, LIGHT_GREEN = 10,
-	AQUA = 3, LIGHT_AQUA = 11,							// Numbers after 15 include background colors
+	AQUA = 3, LIGHT_AQUA = 11,							
 	RED = 4, LIGHT_RED = 12,
 	PURPLE = 5, LIGHT_PURPLE = 13,
 	YELLOW = 6, LIGHT_YELLOW = 14,
 	WHITE = 7, BRIGHT_WHITE = 15,
 	TEST = 155,
-	BG_WH_LIGHT_GREEN = 250,	// BG_WH	= Background White
-	BG_WH_LIGHT_RED = 252,		// BG_WH	= Background White
-	BG_WH_LIGHT_PURPLE = 253,	// BG_WH	= Background White
+	BG_WH_LIGHT_GREEN = 250,	
+	BG_WH_LIGHT_RED = 252,		
+	BG_WH_LIGHT_PURPLE = 253,	
 };
 
 extern Colors gCurrentColor;	// La couleur actuelle d'output dans la console. 
 extern Colors gBossClr;
 extern Colors gJerClr;
 
-extern const int TXT_SPD_DR; // vitesse d'affichage
-extern const int TXT_SPD_FAST; // vitesse d'affichage
-extern const int TXT_SPD_ER; // vitesse d'effacement
+extern const int TXT_SPD_DR;
+extern const int TXT_SPD_FAST; 
+extern const int TXT_SPD_ER;
 
 
 Colors Get_Current_Color();// Si on veut affiché quoi que ce soit, on utilise ceci pour vérifier si on a besoin, oui ou non de changer la couleur de l'output de la console

@@ -11,8 +11,8 @@
 
 using namespace DrawBlastAmmo;
 
-static Event ev_UseEmergencyAmmo(Ev_Use_Emergency_Ammo); // Def //
-static Event ev_NoAmmoMsg(Ev_No_Ammo_Msg,2); // Def //
+static Event ev_UseEmergencyAmmo(Ev_Use_Emergency_Ammo);
+static Event ev_NoAmmoMsg(Ev_No_Ammo_Msg,2); 
 DrawerQueue Q_ev_UseEmergencyAmmo(8, 9);		
 
 static unsigned char dr = 179;
@@ -46,7 +46,6 @@ static odds emptyMsg[12] = {
 
 void Ev_Use_Emergency_Ammo()
 {
-	//static unsigned char dr = TXT_CONST.SPACE_FILL;
 	static Coord crd; 
 	static int y; 
 	static int step;
@@ -94,12 +93,11 @@ void Ev_Use_Emergency_Ammo()
 	}
 }
 
+// Je veux juste une animation de ça à la fois finalement
 void Add_Ev_Use_Emergency_Ammo()	
 {
 	static Coord crd;
 	crd = Get_Ori();
-
-	// Je veux juste une animation de ça à la fois finalement
 	if (ev_UseEmergencyAmmo.Is_Active())
 	{
 		ev_UseEmergencyAmmo.Cancel();
@@ -119,8 +117,8 @@ void Ev_No_Ammo_Msg()
 {
 	static Colors clr;
 	static Coord crd;
-	static int y = Heart_Txt_Crd_Left("").y;
 	static std::string msg;
+
 	if (!ev_NoAmmoMsg.Is_Active())
 	{
 		clr = LIGHT_YELLOW;

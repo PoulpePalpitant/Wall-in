@@ -1,7 +1,6 @@
 
 
 #include "valid_spwn_intervals.h"
-//#include "../grid/spawngrid.h"
 #include "../grid/AllGrids.h"
 
 #include "bots_to_spawn.h"
@@ -9,30 +8,29 @@
 // RENSEIGNE SUR LES PROCHAINES COORD DE SPAWN POUR CE CYCLE
 // *********************************************************
 
-struct SpecificSpawn {	// Va servir à ajouter des spawns avec des Coordonnées spécifiques dans le scenario du niveau
+struct SpecificSpawn {	
 	SpwCrd spwCrd;
 	SpecificSpawn* nxt;
 };
 
-static SpecificSpawn* start = NULL, * end = NULL, * it = NULL;	// Pour créer une liste de Specific Spawn
+static SpecificSpawn* start = NULL, * end = NULL, * it = NULL;	
 
 namespace bots_to_spawn {
 
 
-	Direction gBoxSide = NONE;	// ou int
-	int gSpwNum = -1;			// le numéro
-	GrdCoord nxtSpawn = {};		//ou ça
+	Direction gBoxSide = NONE;	
+	int gSpwNum = -1;			
+	GrdCoord nxtSpawn = {};		
 
 	bool instantSpawn = false;	// Aucun warning de la part des bots
 	bool gRandomSpwn = true;
-	bool gRandomBoxSide = true;	// Le prochain bot spawnera sur une COORD Aléatoire
-	bool gHorizontalSpawns = false, gVerticalSpawns = false, gAllSides = false;		// Le prochain spawn sera vertical, ou horizontal	
+	bool gRandomBoxSide = true;	
+	bool gHorizontalSpawns = false, gVerticalSpawns = false, gAllSides = false;		
 	BotType type = {};
 
-	int gNumSpawnTOT = 0;				// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle"
+	int gNumSpawnTOT = 0;
 	int gAdditonnalSpawns = 0;			
 
-	Sp_CoordIn gCrdInterval = {};		// Donne un interval de coordonnée sur une bordure
 
 
 	// Ajoute une Coord spécific dans la liste des prochains bot à spawner
@@ -40,10 +38,10 @@ namespace bots_to_spawn {
 
 	void Add_Spec(Direction boxSide, int crd)			// spawn script à besoin de ça
 	{
-		if (end == NULL)	// list vide
+		if (end == NULL)	
 			start = end = new SpecificSpawn;
 		else
-			end = end->nxt = new SpecificSpawn;	// ajout d'un élément
+			end = end->nxt = new SpecificSpawn;	
 
 		end->spwCrd.border = boxSide;
 		end->spwCrd.spwNum = crd;
@@ -57,22 +55,22 @@ namespace bots_to_spawn {
 
 	bool Pop(SpwCrd& crd)		// find_next_spawn à besoin de ça
 	{
-		if (!Empty())		// Prend l'objet en dessous et le retire de la liste
+		if (!Empty())		
 		{
 			it = start;
-			crd.border = it->spwCrd.border;	// Copie la valeure de la crd du spawn
+			crd.border = it->spwCrd.border;	
 			crd.spwNum = it->spwCrd.spwNum;
 
-			if (start == end)	// Si ya juste 1 élément
+			if (start == end)	
 			{
-				delete it;			// et delete le spécific 
-				start = end = it = NULL;	// On va reset tout les pointeurs
+				delete it;		
+				start = end = it = NULL;
 			}
 			else
 			{
 				start = start->nxt;
-				delete it;			// et delete le spécific 
-				it = NULL;	// Reset pointeur
+				delete it;			
+				it = NULL;	
 			}
 			return true;
 		}
@@ -82,23 +80,21 @@ namespace bots_to_spawn {
 
 	// // Valeurs par défaut du prochain spawn
 	// -----------------------------------------------
-	void Reset_To_Default()		// Valeurs par défaut du prochain spawn
+	void Reset_To_Default()		
 	{
 		 gBoxSide = NONE;	// -1	(0 est déjà pris)
-		 gSpwNum = -1;		// -1
+		 gSpwNum = -1;		
 		 
 		 instantSpawn = false;
-		 gRandomSpwn = true;		// Spawn random
-		 gRandomBoxSide = true;		// BoxSide random
-		 gHorizontalSpawns = false;	// Le prochain spawn sera horizontal	
-		 gVerticalSpawns = false;	// Le prochain spawn sera vertical	
-		 gAllSides = true;			// Spawn sur une bordure random
+		 gRandomSpwn = true;		
+		 gRandomBoxSide = true;		
+		 gHorizontalSpawns = false;	
+		 gVerticalSpawns = false;	
+		 gAllSides = true;			
 		 type = BotType::REGULAR;	// I'll take a regular one please.
 
-		gNumSpawnTOT = 0;			// Le nombre de spawns maximal durant un cycle de "Current_Spawn_Cycle". Un cycle de spawn est consommé même si aucun bot n'est spawné
+		gNumSpawnTOT = 0;			
 		gAdditonnalSpawns = 0;		// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
-
-		gCrdInterval.active = false;// Donne un interval de coordonnée sur une bordure
 	}
 
 	// Setup un interval de coordonnée
@@ -108,15 +104,15 @@ namespace bots_to_spawn {
 		if (spawnGrid->Is_Inbound(border, max - 1))			// Ne vérifira pas si le min est valide.	:			Peut bugger si min < 0
 		{
 			ValidSpwnIntervals::Add_Primary_Interval(border, min, max);
-			return true;	// valid stuf
+			return true;	
 		}
 		else
-			return false;	// ain't gonna work
+			return false;	
 	}
 
 	// Ajoute des bots à spawner
 	// -------------------------
-	void Add(int amount)		// Le nombre supplémentaire de spawn. Par défaut, un spécific ajoute +1 au total de spawn durant ce cycle
+	void Add(int amount)	
 	{
 		gNumSpawnTOT += amount;		
 	}
@@ -134,7 +130,7 @@ namespace bots_to_spawn {
 		if (gSpwNum != -1 )
 			gRandomSpwn = false;
 	}
-	void Set_Custom_Bot(int delay, bool fixed , Colors color , int hp )	// Permet de set un bot custom
+	void Set_Custom_Bot(int delay, bool fixed , Colors color , int hp )	
 	{
 		gCustomBot.health = hp;
 		gCustomBot.clr = color;
@@ -149,22 +145,17 @@ namespace bots_to_spawn {
 // EN DEHORS DU NAMESPACE
 // **********************
 
-
-/// Empty stuff over here
-//-----------------------
-bool Empty() {	// liste vide
+bool Empty() {	
 	return start == NULL;
 }
 
-// Clear la liste just au cas
-// -------------------------
-void Clear_List() { // Vide la liste
+void Clear_List() {
 
 	if (it = start) {
 		start = start->nxt;
 		delete it;
 	}
 
-	it = start = end = NULL;	// bonne pratique
+	it = start = end = NULL;	
 }
 

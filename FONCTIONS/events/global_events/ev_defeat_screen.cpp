@@ -35,15 +35,6 @@ static std::string restart[NUM_RESTART_STR] = { " - I CAN DO BETTER -", "- A MIN
 "- I WAS ALMOST THERE! -","- I CAN DO THIS -", "- I SLIPPED -", "- THAT WON'T STOP ME -", "- FAILURE IS A LESSON -","- I WON'T GIVE UP -", "- AND SO I LEARNED, I THINK... -",
 "- LET'S RETRY -", "- I MUST TRY HARDER -", "- GETTING BETTER -", "- I WON'T BE DEFEATED -"};
 
-// Comment faire du ascii art
-//static const std::string heart_3[] = {};
-//static const std::string heart_2[] = {};
-//static const std::string heart_1[] = {};
-//static const std::string* allHearts[3] = { heart_1, heart_2, heart_3 };	// all of the hearts
-
-// CHOIX DE DESIGN
-// . . .
-
 void Ev_Slow_Defeat_Screen()				 // Affiche un écran punitif
 {
 	if (!ev_SlowDefeatScreen.Is_Active())
@@ -54,7 +45,7 @@ void Ev_Slow_Defeat_Screen()				 // Affiche un écran punitif
 
 		// refresh all
 		Clear_All_States();
-		gSkipTutorial = gDayStarted = true;	// Devient faux dans clr state :(
+		gSkipTutorial = gLevelStarted = true;	// Devient faux dans clr state :(
 		ev_SlowDefeatScreen.Activate();
 		ev_SlowDefeatScreen.Start(0);
 	}
@@ -106,7 +97,7 @@ void Ev_Fast_Defeat_Screen()				 // Prompt le joueur à restart!
 
 		// refresh all
 		Clear_All_States();
-		gSkipTutorial = gDayStarted = true;	// Devient faux dans clr state :(
+		gSkipTutorial = gLevelStarted = true;	// Devient faux dans clr state :(
 		ev_FastDefeatScreen.Activate();
 		ev_FastDefeatScreen.Start(0);
 	}

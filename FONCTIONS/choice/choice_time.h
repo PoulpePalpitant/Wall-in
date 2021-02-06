@@ -6,8 +6,15 @@
 #include "../events/global_events/clear_all_states.h"
 
 /* 
-	Choice Time: Fait apparaître des choix sur le terrain de jeu. Si le joueur se déplace sur le tit point en bas d'un choix, celui-ci sera sélectionné. Si le joueur pèse sur enter, le choix sera fait
+POST-MORTEM
+	
+	"Lors du processus de développement, il faut faire des sacrifices et abandonner des idées intéressantes qui ne sont pas un bon match avec le produit qu'on est en train de créer.
+	Ceci en était une que je trouvais quand même cool"
 
+
+	Choice Time: Fait apparaître des choix sur le terrain de jeu.
+	Si le joueur se déplace sur le tit point en bas d'un choix, celui-ci sera sélectionné. 
+	Si le joueur pèse sur enter, le choix sera fait.
 */
 
  int const MAX_CHOICES = 20;	// nb de choix max
@@ -22,9 +29,6 @@ struct Choice
 
 class ChoiceTime
 {
-	// FREIDN :)
-
-
 	static bool enterDrawn;
 	static Choice choiceList[MAX_CHOICES];	// liste des choix
 	static bool choiceTime;				// it is
@@ -39,16 +43,9 @@ class ChoiceTime
 	static void Clear_List();
 
 	/* Empêche de shooter quand c'est choice time  !!*/
-
 	static int Find_Selected();		// Retrouve le choix sélectionné par le joueur dans la liste
 	
-	
-	//static void Remove_Choice(std::string name);
-	//static void Highlight_Selected();	// Change la couleur du txt du choix sélectionné
-	//static bool Is_Player_On_Choice();	// Si le player est sur une case du grid contenant un choix
-
 	// UI
-
 	static void Draw_Choice(int index, Colors clr = BRIGHT_WHITE);
 	static void Erase_Choice(int index);
 	static void Draw_Dot(int index);

@@ -25,16 +25,16 @@ static void Set_Screen_Filler()
 
 	// Fill uniquement la box maintenant
 	// Exclut côté gauche
-	for (int row = 0; row < map.Get_Box_Limit(LEFT); row++)
+	for (int row = 0; row < map.Get_Limit(LEFT); row++)
 		charToDr.Empty_List(row);
 	// Exclut côté droit
-	for (int row = map.Get_Box_Limit(RIGHT) + 1; row < gConWidth; row++)
+	for (int row = map.Get_Limit(RIGHT) + 1; row < gConWidth; row++)
 		charToDr.Empty_List(row);
 	// Exclut côté up
-	for (int col = 0; col < map.Get_Box_Limit(UP); col++)
+	for (int col = 0; col < map.Get_Limit(UP); col++)
 		charToDr.Remove_Value_Everywhere(col);
 	// Exclut côté droit
-	for (int col = map.Get_Box_Limit(DOWN) + 1; col < gConHeight; col++)
+	for (int col = map.Get_Limit(DOWN) + 1; col < gConHeight; col++)
 		charToDr.Remove_Value_Everywhere(col);
 }
 

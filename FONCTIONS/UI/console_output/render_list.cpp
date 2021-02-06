@@ -1,18 +1,18 @@
 
 
+#include "render_list.h"
 
 #include "dsp_char.h"
 #include "dsp_string.h"
-#include "../../player/player.h"	// Uniquement pour empêcher f'afficher par dessus le joueur
+#include "../../player/player.h"	
 #include "../../time/timerOP.h"
 
-#include "render_list.h"
 
 
 StringAnimationList ConsoleRender::strList;
-RenderQueue ConsoleRender::mainQueue;					// Liste principale. Elle est vidé à chaque render. C'est ta responsabilité de ne pas la overfill et causé du lags avec "cout"
+RenderQueue ConsoleRender::mainQueue;					
 
-void ConsoleRender::Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& queue)// Ajoute un OutputData a la fin de la queue
+void ConsoleRender::Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& queue)
 {
 	if (queue.first == NULL)
 		queue.first = queue.last = new OutputData;
@@ -27,7 +27,7 @@ void ConsoleRender::Push_To_Queue(Coord crd, char sym, Colors clr, RenderQueue& 
 
 void ConsoleRender::Pop_From_Queue(RenderQueue& queue, OutputData& data)
 {
-	static OutputData *toDelete;		// Le charactère à draw
+	static OutputData *toDelete;		
 
 	toDelete = NULL;
 	toDelete = queue.first;
@@ -45,13 +45,11 @@ bool ConsoleRender::Is_Empty(const RenderQueue& queue) {
 		return false;
 }
 
-// Ajoute un charactère à afficher dans une des render queues
-// **********************************************************
-
 void ConsoleRender::Add_Char(Coord crd, unsigned char sym, Colors clr)
 {
 	Push_To_Queue(crd, sym, clr, mainQueue); // Ajoute un OutputData a la fin de la queue
 }
+
 void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , int speed, bool erase)
 {
 	if (text == "")
@@ -77,9 +75,9 @@ void ConsoleRender::Add_String(std::string text,Coord crd,  Colors clr , int spe
 	
 	// Création d'une nouvelle queue pour la string
 	if (strList.last == NULL)	// Liste vide	
-		strList.first = strList.last = new StringQueue((int)text.length(), speed);	// Nouvelle queue	
+		strList.first = strList.last = new StringQueue((int)text.length(), speed);	
 	else
-		strList.last = strList.last->nxt = new StringQueue((int)text.length(), speed);	// Nouvelle queue
+		strList.last = strList.last->nxt = new StringQueue((int)text.length(), speed);
 
 	strList.last->Add_String(crd, text, clr,erase);
 }
@@ -92,7 +90,7 @@ void ConsoleRender::Render_String_Animation()
 {
 	StringQueue* queueToPop = strList.first;		// Pourrait être null
 	StringQueue* prev = NULL;
-	CharData charToDraw = {};							// À draw
+	CharData charToDraw = {};							
 
 	while (queueToPop)	// tant que ta pas finis de traverser tout les listes
 	{
@@ -101,7 +99,7 @@ void ConsoleRender::Render_String_Animation()
 			charToDraw = queueToPop->Pop_First();
 			Push_To_Queue(charToDraw.crd, charToDraw.symbol, charToDraw.clr, mainQueue);	// Ajoute le symbole à la renderqueue
 
-			// Delete la queue si elle est vide				Garbo
+			// Delete la queue si elle est vide		
 			if (queueToPop->Is_Empty())
 			{
 				if (queueToPop == strList.first && queueToPop == strList.last)
@@ -136,8 +134,8 @@ void ConsoleRender::Render_String_Animation()
 		}
 
 		// Le temps n'est pas encore écoulé pour updater l'affichage ici. On passe donc à la prochaine queue
-		prev = queueToPop;	// relink
-		queueToPop = queueToPop->nxt;	// pass au prochain
+		prev = queueToPop;	
+		queueToPop = queueToPop->nxt;	
 	}
 }
 
@@ -146,29 +144,26 @@ void ConsoleRender::Render_String_Animation()
 
 void ConsoleRender::Empty_All()
 {
-	// Vide la main queue
 	OutputData toDraw;
 
-	while (mainQueue.size > 0)	// Tant que la liste est non vide
-		Pop_From_Queue(mainQueue, toDraw);	 // Prend un nouvel élément
+	while (mainQueue.size > 0)	
+		Pop_From_Queue(mainQueue, toDraw);	
 
-	mainQueue.first = mainQueue.last = NULL; // Good Practice!
+	mainQueue.first = mainQueue.last = NULL; 
 
-	// Vide animation queue
-	StringQueue* queueToPop = strList.first;		// Pourrait être null
+	StringQueue* queueToPop = strList.first;	
 	StringQueue* prev = NULL;
-	CharData charToDraw = {};							// À draw
+	CharData charToDraw = {};							
 
-	while (queueToPop)	// tant que ta pas finis de traverser tout les listes
+	while (queueToPop)
 	{
 			charToDraw = queueToPop->Pop_First();
 
-			// Delete la queue si elle est vide				Garbo
 			if (queueToPop->Is_Empty())
 			{
 				if (queueToPop == strList.first && queueToPop == strList.last)
 				{
-					delete queueToPop;	// Delete la queue actuelle»
+					delete queueToPop;	
 					queueToPop = strList.first = strList.last = NULL;
 					continue;
 				}
@@ -177,52 +172,47 @@ void ConsoleRender::Empty_All()
 					{
 						queueToPop = queueToPop->nxt;
 						delete strList.first;
-						strList.first = queueToPop;	// new first
-						prev = NULL; /*safety*/
+						strList.first = queueToPop;	
+						prev = NULL;
 					}
 					else
 						if (queueToPop == strList.last)
 						{
 							queueToPop = prev->nxt = NULL;
 							delete strList.last;
-							strList.last = prev;	// new last
+							strList.last = prev;	
 							continue;
 						}
 						else
 						{
 							prev->nxt = queueToPop->nxt;
 							delete queueToPop;
-							queueToPop = prev->nxt;	// Passe au prochain
+							queueToPop = prev->nxt;	
 						}
 			}
 
-		// Le temps n'est pas encore écoulé pour updater l'affichage ici. On passe donc à la prochaine queue
-		prev = queueToPop;	// relink
-		queueToPop = queueToPop->nxt;	// pass au prochain
+		prev = queueToPop;	
+		queueToPop = queueToPop->nxt;	
 	}
 
-	strList.first = strList.last = NULL; // safety
+	strList.first = strList.last = NULL; 
 
 }
 
-
-// Draw tout les éléments à draw dans les listes pour la frame actuelle
-// ********************************************************************
-
-void ConsoleRender::Render()				// Affiche tout les éléments présent dans la main queue durant une frame
+void ConsoleRender::Render()				
 {
-	static OutputData toDraw;		// Le charactère à draw
+	static OutputData toDraw;		
 
 	if (Is_Empty(mainQueue))
-		return;	// rien à afficher pour cette frame
+		return;	
 	else
 	{
-		while (mainQueue.size > 0)	// Tant que la liste est non vide
+		while (mainQueue.size > 0)	
 		{
-			Pop_From_Queue(mainQueue, toDraw);					// Prend un nouvel élément
-			UI_Dsp_Char(toDraw.crd, toDraw.symbol, toDraw.clr);	// Affiche du symbole dans la console
+			Pop_From_Queue(mainQueue, toDraw);					
+			UI_Dsp_Char(toDraw.crd, toDraw.symbol, toDraw.clr);	
 		}
 
-		mainQueue.first = mainQueue.last = NULL; // Good Practice!
+		mainQueue.first = mainQueue.last = NULL; 
 	}
 }

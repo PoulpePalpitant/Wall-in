@@ -4,11 +4,11 @@
 #include "bot_move_cycle.h"
 
 
-bool gMoveBotsThisCycle;	// On bouge les bots durant ce cycle
-int gBotMoveCycleTot;		// Le nombre total de botmove cycle ayant u lieu
+bool gMoveBotsThisCycle;	
+int gBotMoveCycleTot;		
 
-SpeedTimer gBotMoveTimer;	// Pour l'instant, les bots bougent tous à la même vitesse, et sur le même rythme
-int prevMovSpeed = 4000;	// Vitesse de bot précédante enregistré lors d'un switch temporaire de vitesse à lieu
+SpeedTimer gBotMoveTimer;	// Les bots bougent tous à la même vitesse, et sur le même rythme
+int prevMovSpeed = 4000;	
 
 
 void UPD_Bot_Move_Cycle()
@@ -16,7 +16,7 @@ void UPD_Bot_Move_Cycle()
 	while (gBotMoveTimer.Tick())
 	{
 		gMoveBotsThisCycle = true;
-		gBotMoveCycleTot++;						// Le nombre de cycle de spawn depuis le début de la game
+		gBotMoveCycleTot++;	
 	}
 }
 
@@ -30,11 +30,11 @@ bool Move_Bots_This_Cycle()
 		return true;
 	}
 
-	return false;	// no moverino
+	return false;	
 }
 
 
-void Temporary_Bot_Speed_Switch(int speed, bool overwritePrev)	// Instaure une vouelle vitesse de bots. "Store" la valeur de la vitesse précédante.
+void Temporary_Bot_Speed_Switch(int speed, bool overwritePrev)
 {
 	if(overwritePrev)
 		prevMovSpeed = gBotMoveTimer.Get_Speed();
@@ -42,7 +42,7 @@ void Temporary_Bot_Speed_Switch(int speed, bool overwritePrev)	// Instaure une v
 	gBotMoveTimer.Start_Timer(speed, 1, true);
 
 }
-void Restore_Prev_Bot_Speed()	// restaure la vitesse précédante
+void Restore_Prev_Bot_Speed()	
 {
 	gBotMoveTimer.Start_Timer(prevMovSpeed, 1, true);
 }

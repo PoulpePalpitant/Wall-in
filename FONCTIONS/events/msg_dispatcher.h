@@ -1,24 +1,12 @@
 #pragma once
 
-// La liste de tout les messages D'EVENT
 /*
-	Pour les events du jeu, j'ai décidé de limiter la complexité au maximum afin de pouvoir finir le plus rapidement possible. Il y aurait beaucoup de manière d'intégrer un système de gestion de message et j'ai du mal à trouver rapidement une
-	BONNE manière de faire à mon niveau de compréhension. Je crois pas que ce projet est le bon pour tester ça, surtout considérant les besoins limités en matière d'event. Pour le futur, voici desw pistes, en plus des recherches que
-	ta mis dans tes favoris su chrome.	/////fuckit, ima try something actually\\\\\
+POST-MORTEM:
 
+	Un système de messagerie un peu bâtard.
+	Au final, je crois que j'aurais probablement réussit à faire sans, surtout si on considère que les messages sont utilisés comme des méthodes.
+	Néanmoins c'était quand même utile lorsque j'essayais de faire une histoire avec le jeu, et que j'essayais de créer des triggers selon certaines intéractions du joueur.
 */
-
-
-
-
-
-
-// FUCK LES OBSERVATEURS. 
-
-
-// Tu peux combiner l,obs avec l'event
-
-// quand il est actif, l'empêche de checker pour s'activer :)
 
 enum MsgType
 {
@@ -31,10 +19,10 @@ enum MsgType
 
 	/*Level Stuff*/
 	, PLS_INTIALIZE_LVL
-	, STAGE_ADVANCE			// Passe au prochain stage dans le niveau
+	, STAGE_ADVANCE			
 	, LVL_INITIALIZED
 	, FINAL_HOUR
-	, WAIT_LAST_BOT			// attend que le dernier bot meurt avant de progress
+	, WAIT_LAST_BOT			
 	, VICTORY
 	, DEFEAT
 	, PRESS_X_TO_PROCEED
@@ -69,11 +57,11 @@ enum MsgType
 	/* Player Stuff*/
 	, SPAWN_PLAYER
 	, PLAYER_SPAWNED
-	, LOCK_PLAYER		// Player ne peut plus rien faire, its cutscene time!
-	, FREE_PLAYER		// CUTSCENE TERMINÉ, player peux bouger
+	, LOCK_PLAYER		
+	, FREE_PLAYER		
 	, IS_A_DOUCHE
 	, FIRST_HIT		
-	, BUMPED_BORDER		// Essayer de bouger en dehors du grid
+	, BUMPED_BORDER		
 	, TOUCHED_ENNEMY
 	, P1_LOST_HP
 	, PLAYER_DEAD
@@ -84,27 +72,27 @@ enum MsgType
 	, NO_BOTS_ALIVE
 	, JERRY_DIED
 	, SPECIAL_SPAWN
-	, STOP_BOT_SPAWNS	// n'update plus les spawn
-	, STOP_BOT_MOVE		// n'update plus les mouvements
-	, STOP_BOTS			// n'update plus les deux plus haut
-	, START_BOT_SPAWNS	// update les spawn
-	, START_BOT_MOVE	// update les mouvements
-	, START_BOTS		// update les deux plus haut
-	, RESET_SPW_TOT		// Reset le compteur à 0 pour repartir le script de spawn
+	, STOP_BOT_SPAWNS	
+	, STOP_BOT_MOVE		
+	, STOP_BOTS			
+	, START_BOT_SPAWNS	
+	, START_BOT_MOVE	
+	, START_BOTS		
+	, RESET_SPW_TOT		
 
 	/* Blast Stuff*/
 	, BLAST_REACHED_BORDER
 	, WALL_TRANSFER
 	, BLAST_HIT_ITEM
 	, BULLETS_DEPLETED
-	, ENABLE_BLAST	// Empêche le joueur de tirer
-	, DISABLE_BLAST	// Empêche le joueur de tirer
+	, ENABLE_BLAST	
+	, DISABLE_BLAST	
 
 	/* Window stuff*/
-	, CHANGE_WINSIZE	// Nécessiter de changer la window
+	, CHANGE_WINSIZE	
 
 	/* Clavier*/
-	, PRESSED_ENTER		/* Le joueur à pesé sur enter, pour faire un choix */
+	, PRESSED_ENTER		
 	, SELECTED_SOMETHING
 	, PRESSED_KEY
 	, BLOCK_ALL_INPUTS
@@ -112,28 +100,26 @@ enum MsgType
 };
 
 
-// CONST
-const int MSG_QUEUE_SIZE = 10000;	// Maximum de message par cycle. yup, taht many
 // Dépasser la queue size softlock le jeu :(
-
+const int MSG_QUEUE_SIZE = 10000;	
 
 // GLOBAL
-extern MsgType gCurrentMsg;		// Prend un msg qui sera interprété par les event Listeners
+extern MsgType gCurrentMsg;		
 
-class MsgQueue			// Initialisation à un ring buffer
+class MsgQueue			
 {
-	static MsgType queue[MSG_QUEUE_SIZE];	// La liste de tout les messages enregistré pendant une frame
-	static int head, tail;				// début, fin, itérateur d'indice du array
+	static MsgType queue[MSG_QUEUE_SIZE];	// Un vecteur aurait été nice, au lieux d'un ringbuffer
+	static int head, tail;					
 	static int total;
 
 	static void Unregister();
 public:
-	static void Register(MsgType msg);	// Ajoute le message à la liste des message à traiter pour ce cycle
+	static void Register(MsgType msg);	
 	static void Dispatch_Messages();
-	static void Unregister_All();		// Permet de retirer tout les messages de la queue
+	static void Unregister_All();		
 	static void Reset_Total();
 
 };
 
-void Dispatch_To_Lvl();	// Par ici qu'on va updater tout les events du niveau
-void Dispatch_To_Global();	// Update tout les autres qui sont pas dans des modules indépendants
+void Dispatch_To_Lvl();	
+void Dispatch_To_Global();	

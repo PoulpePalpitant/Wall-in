@@ -8,9 +8,9 @@
 #include "item_spawner.h"
 
 Item ItemsOnGrid::items[MAX_ITEMS] = {};
-int ItemsOnGrid::size;	// dimension de la liste
+int ItemsOnGrid::size;	
 
-bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	// 
+bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -24,7 +24,7 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
  
 	 items[index].active = false;
 
-	 for (int i = index; i < size; i++)		// Décale tout
+	 for (int i = index; i < size; i++)		
 		 items[i] = items[i + 1];
 
 	 size--;
@@ -37,7 +37,7 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
 		 if (Are_Equal(items[i].Get_Grd_Coord(), crd))
 		 {
 			 ItemsOnGrid::Remove(i);
-			 linkGrid->link[crd.c][crd.r].Er_Link();	// efface l'item
+			 linkGrid->link[crd.c][crd.r].Er_Link();	
 			 return true;
 		 }
 	 }
@@ -46,14 +46,14 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
 
  void ItemsOnGrid::Remove_All()
  {
-	 for (int i = 0; i < MAX_ITEMS; i++)		// Décale tout»
+	 for (int i = 0; i < MAX_ITEMS; i++)		
 	 {
 		 if (!(items[i].grdCrd.c > linkGrid->Get_Cols() || items[i].grdCrd.c < 0 || items[i].grdCrd.r > linkGrid->Get_Rows() || items[i].grdCrd.r < 0)) // hehe, fuck you
 			 linkGrid->link[items[i].grdCrd.c][items[i].grdCrd.r].Er_Link();
 		 else
 			 throw "hehehe";
 
-		 items[i] = {};	// erase tout anyway
+		 items[i] = {};	
 	 }
 	 size = 0;
  }
@@ -69,7 +69,7 @@ bool ItemsOnGrid::Is_Item_Here(GrdCoord crd)	//
 
 		 for (int i = 0; i < size; i++)
 		 {
-			 if (!items[i].Is_Active())				// ou item[i] = item info?
+			 if (!items[i].Is_Active())				
 			 {
 				 items[i] = item;
 				 break;
@@ -104,7 +104,6 @@ void ItemsOnGrid::Pickup_Item_Here(GrdCoord crd)
 	{
 		if (Are_Equal(items[i].Get_Grd_Coord(), crd))
 		{
-
 			if (Is_Item_Modifier(items[i]))
 			{
 				if (blastP1.Is_Active() && blastP1.Get_Modifier() == Modifier::REGULAR)
@@ -119,13 +118,11 @@ void ItemsOnGrid::Pickup_Item_Here(GrdCoord crd)
 			{
 				if (items[i].Get_Type() == ItemType::AMMO)	
 					blastP1.Get_Ammo_Manager().Add_Ammo(1);
-				//else
-				//	if (items[i].Get_Type() == ItemType::AMMO)
-				//		P1.Player_Gains_HP();	// 1 de vie
 			}
+
 			// Cancel l'animation de spawn ssi y elle avait lieux
 			DrawItemSpawnList::Cancel(linkGrid->link[items[i].grdCrd.c][items[i].grdCrd.r].Get_XY());	// ouach lol
-			Item::meta.Item_Picked_Up();	// picked up!
+			Item::meta.Item_Picked_Up();	
 			MsgQueue::Register(ITEM_PICKUP);
 
 			Remove(i);	// retire l'item de la liste des items actifs

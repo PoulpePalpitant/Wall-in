@@ -1,5 +1,5 @@
 //
-//#include "link_list.h"
+#include "link_list.h"
 //
 //
 //// si ça marche pas, t'aura pt besoin de crer un obj liste

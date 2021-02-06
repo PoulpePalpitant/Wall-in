@@ -4,7 +4,7 @@
 #include "axis.h"
 
 
-Axis Find_Opp_Axis(Axis ax)	// L'axe "opposé", soit l'autre
+Axis Find_Opp_Axis(Axis ax)	
 {
 	if (ax == HOR)
 		return VER;
@@ -13,10 +13,10 @@ Axis Find_Opp_Axis(Axis ax)	// L'axe "opposé", soit l'autre
 
 }
 
-Axis Find_Opp_Axis(Direction dir)	// Trouve l'axe "opposé" à une direction
+Axis Find_Opp_Axis(Direction dir)	
 {
-	if (dir == UP || dir == DOWN)	// L'axe est vertical si UP/DOWN
-		return HOR;	// opposé
+	if (dir == UP || dir == DOWN)
+		return HOR;	
 	else
 		return VER;
 }

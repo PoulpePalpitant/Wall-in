@@ -7,20 +7,12 @@
 #include "blast_ammo_animator.h"
 #include "../player/player.h"
 #include "../events/global_events/feedback/ev_ammo_depleted.h"
-#include "../events/global_events/feedback/ev_drain_health.h"
 #include "../events/global_events/feedback/ev_use_emergency_ammo.h"
 
 
-static int x = 8;	// case à droite de box limit right
-static int y = 2;	// case en dessous de box limit up
-static std::string eraseNum = "    ";	// pour erase un nombre
-
-
-/// shoot ou add ne modifie pas le ratioBarPerAmmo de la bar length
-// alors si barlength dépasse son max?
-// redraw la bar en vert?
-// fait juste changer le counter en cyan
-// draw une deuxième bar par dessus comme dans les jeux de fighter
+static int x = 8;	
+static int y = 2;	
+static std::string eraseNum = "    ";	
 
 void BlastAmmo::Deactivate() {
 	active = false;
@@ -69,20 +61,20 @@ bool BlastAmmo::Shoot()
 		}
 
 		if (--ammo >= 0)
-			DrawBlastAmmo::Update_Ammo_Count();// Signale d'update l'interface
+			DrawBlastAmmo::Update_Ammo_Count(); // Signale d'update l'interface
 				 
 		DrawBlastAmmo::Dr_Bar_Remove();	 // Réduit pt la longueur de la bar
 		return true;
 	}
 	else
-		return true;	// on peut tirer sans restrictions si ammo n'est pas actif
+		return true;	
 	
 }
 
 void BlastAmmo::Add_Ammo(int amm)
 {
 	if (active == false)
-		active = true;	// devient automatiquement actif
+		active = true;	
 	
 	ammo += amm;
 	
@@ -103,11 +95,10 @@ void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automati
 
 	if (active == false)
 	{
-		active = true;	// devient automatiquement actif
-		MsgQueue::Register(ENABLE_BLAST);	// Conséquamment, le joueur peut tirer!
+		active = true;	
+		MsgQueue::Register(ENABLE_BLAST);	
 
-		// Le ratioBarPerAmmo et l'ui est activé uniquement quand on utilise la méthode set
-		DrawBlastAmmo::Show_Ammo_UI();	// L'interface doit être modifié
+		DrawBlastAmmo::Show_Ammo_UI();	
 	}
 }
 
@@ -124,7 +115,7 @@ void BlastAmmo::Set_Nb_Emergency_Ammo(int nbShots) {
 //***********************
 void BlastAmmo::Dr_Or_Er_Ammo(bool erase)
 {
-	ConsoleRender::Add_String("- SHOTS -", { map.Get_Box_Limit(RIGHT) + x,map.Get_Box_Limit(UP) + y }, BRIGHT_WHITE, TXT_SPD_DR);
+	ConsoleRender::Add_String("- SHOTS -", { map.Get_Limit(RIGHT) + x,map.Get_Limit(UP) + y }, BRIGHT_WHITE, TXT_SPD_DR);
 	Dr_Or_Er_Ammo_Count(erase);
 }
 
@@ -137,7 +128,7 @@ void BlastAmmo::Dr_Or_Er_Ammo_Count(bool erase)
 	else 
 		clr = WHITE;
 
-	ConsoleRender::Add_String(eraseNum, { map.Get_Box_Limit(RIGHT) + x,map.Get_Box_Limit(UP) + -1 });	// Erase le nombre précédant
-	ConsoleRender::Add_String(std::to_string(ammo), { map.Get_Box_Limit(RIGHT) + x ,map.Get_Box_Limit(UP) - 1 }, clr,0,erase);
+	ConsoleRender::Add_String(eraseNum, { map.Get_Limit(RIGHT) + x,map.Get_Limit(UP) + -1 });	// Erase le nombre précédant
+	ConsoleRender::Add_String(std::to_string(ammo), { map.Get_Limit(RIGHT) + x ,map.Get_Limit(UP) - 1 }, clr,0,erase);
 
 }

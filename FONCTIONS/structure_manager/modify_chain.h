@@ -20,8 +20,8 @@ struct LinkToDestroy
 
 struct Chain // une pile d'item chainés
 {
-	LinkToDestroy* top = NULL; // indique le dessus de la pile
-	int count = 0;	// don't need
+	LinkToDestroy* top = NULL; 
+	int count = 0;	
 };
 
 class ChainToModify
@@ -35,16 +35,16 @@ class ChainToModify
 	Link *toErase = NULL;		// Le Link à effacer quand tu détruit une chaîne de mur. On l'efface APRÈS que le mur soit effacé
 	ModifyChain modification;	// L'action qui sera faite sur les éléments de la chaîne
 
-	Wall* parentWall = NULL;					// Le mur à détruire entre deux Link
+	Wall* parentWall = NULL;	// Le mur à détruire entre deux Link
 	ChainToModify* nxt = NULL;
 	
 
 
 	bool is_empty();
-	void push(Link* link);	// Ajoute un Link à détruire de la liste
-	bool pop(Link*& data);	// Enlève un Link à détruire de la liste
+	void push(Link* link);	
+	bool pop(Link*& data);	
 
-	~ChainToModify() // vide!/
+	~ChainToModify() 
 	{
 		Chain* toEmpty = &chain;
 		LinkToDestroy* above;
@@ -52,18 +52,17 @@ class ChainToModify
 		while (toEmpty->count)
 		{
 			above = chain.top;
-			chain.top = chain.top->below;	// le top devient l'item en dessous
-			delete above;			// pète le(ancien) top						
+			chain.top = chain.top->below;	
+			delete above;								
 			chain.count--;
 		}	
 	}
-
 };
 
-
+// Yikes!
 class ListsOfChainToModify {
 	friend class StructureManager;
-	friend void Clear_All_States(bool eraseLinks);	// Gros reset button()	
+	friend void Clear_All_States(bool eraseLinks);	// Gros reset button
 
 private:
 	static ChainToModify* start;
@@ -71,12 +70,12 @@ private:
 
 	static void Add_Children_To_List(ChainToModify* chain, Link* parent);
 
-	static void Modify_Element(ChainToModify* chain);	// Détruit un élément de la chaîne
+	static void Modify_Element(ChainToModify* chain);	
 	
 	static void Select_Modification(ChainToModify* chain);
-	static void Delete_Parents(ChainToModify* chain);	// Détruit un élément de la chaîne ainsi que son parent wall
-	static void Corrupt(ChainToModify* chain);			// Change le modifier de u link en Corrupted, et de ce fait, le wall aussi
-	static void Buff_Walls(ChainToModify* chain);		// Buff les walls 
+	static void Delete_Parents(ChainToModify* chain);	
+	static void Corrupt(ChainToModify* chain);			
+	static void Buff_Walls(ChainToModify* chain);		
 
 	static void Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev);
 	static void Remove_All();	// dangerous stuff!!
@@ -84,7 +83,6 @@ public:
 	static bool Is_Empty();	//
 	static bool annihilating;	// On est en train d'effacer tout les walls
 
-	// Détruit la chaine de link et de mur dépendant d'un Link
 	static void Annihilate_All_Links();	// Efface tout les murs et les links sur tout les grids
 	static void Update_Chain_Modification();
 	static void Add_Chain_To_Modify(GrdCoord crd = {}, Link* link = NULL, bool excludeParent = false, ModifyChain theModif = DESTROY);

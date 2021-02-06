@@ -6,7 +6,6 @@
 // Trouve la Coordonnée XY du premier élément Spawn de la bordure de spawn
 static Coord FindStartOfBorderXY(LinkGrid& linkGrid, int borderSide)
 {
-	
 	Coord SpawnXY = {};	// La coordonnée qu'on cherche
 
 	switch (borderSide)
@@ -17,10 +16,10 @@ static Coord FindStartOfBorderXY(LinkGrid& linkGrid, int borderSide)
 
 	switch (borderSide)
 	{
-	case UP: SpawnXY.y = map.Get_Box_Limit(UP) - GAP_BTW_GRID; break;	 // ajout de la distance entre linkGrid et SpawnGrid
-	case DOWN:	SpawnXY.y = map.Get_Box_Limit(DOWN) + GAP_BTW_GRID; break;	 // ajout de la distance entre linkGrid et SpawnGrid
-	case LEFT:	SpawnXY.x = map.Get_Box_Limit(LEFT) - GAP_BTW_GRID;break;	 //	ajout de la distance entre linkGrid et SpawnGrid
-	case RIGHT:	SpawnXY.x = map.Get_Box_Limit(RIGHT) + GAP_BTW_GRID; break;	 // ajout de la distance entre linkGrid et SpawnGrid
+	case UP: SpawnXY.y = map.Get_Limit(UP) - GAP_BTW_GRID; break;		
+	case DOWN:	SpawnXY.y = map.Get_Limit(DOWN) + GAP_BTW_GRID; break;	
+	case LEFT:	SpawnXY.x = map.Get_Limit(LEFT) - GAP_BTW_GRID;break;	
+	case RIGHT:	SpawnXY.x = map.Get_Limit(RIGHT) + GAP_BTW_GRID; break;	
 	}
 	return SpawnXY;	
 }
@@ -46,8 +45,7 @@ void SpawnBorder::Create_Border(LinkGrid& linkGrid, Direction border) {
 
 	for (int i = 0; i < numSpawns; i++)
 	{
-		spawn[i].Set_XY(SpawnXY);	// Assignation des valeurs XY pour chacun des spawns sur la bordure
-		spawn[i].Set_Spw_Index(i);		// Assigne l'index du spawn, à son spawn
+		spawn[i].Set_XY(SpawnXY);		// Assignation des valeurs XY pour chacun des spawns sur la bordure
 		*incrBtwSpw += btwSpw;			// Incrémentation de la distance séparant chaque spawns sur un Axe(x ou y)
 	}
 }

@@ -69,7 +69,7 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 			}
 											   
 			ConsoleRender::Add_String(grats, { Up_Txt_2(grats)}, clr);
-			ConsoleRender::Add_String(grats, { Find_Ctr_Grid(grats), map.Get_Box_Limit(DOWN) + 4}, clr);
+			ConsoleRender::Add_String(grats, { Find_Ctr_Grid(grats), map.Get_Limit(DOWN) + 4}, clr);
 
 			if (erOrDr)
 				erOrDr = false;
@@ -81,7 +81,7 @@ void Ev_Good_Job()	// Affiche 1 warning que le joueur n'a plus d'ammo
 			if (!ev_GoodJob.Is_Active())
 			{
 				ConsoleRender::Add_String(grats, { Up_Txt_2(grats) }, clr, 0,1);
-				ConsoleRender::Add_String(grats, { Find_Ctr_Grid(grats), map.Get_Box_Limit(DOWN) + 4 }, clr,0,1);
+				ConsoleRender::Add_String(grats, { Find_Ctr_Grid(grats), map.Get_Limit(DOWN) + 4 }, clr,0,1);
 			}
 		}
 }

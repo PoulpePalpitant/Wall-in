@@ -4,31 +4,30 @@
 #include "bot.h"
 
 
-const int SPWN_DLAY = 38;		// LEGACY = 14    Le nombre de bot move cycle avant que le bot va commencer à avancer
-
+const int SPWN_DLAY = 38;		
 
 C_D SpawnWarning::Show_Spawn_Warning()
 {
-	if (nbWarnCycles)	// Si le nombre de de warning cycles est plus grand que zéro
+	if (nbWarnCycles)	
 	{
 		Upd_Spwn_Warning_Color();
 		return	nbWarnCycles--;
 	}
 	else
-		return 0;	// Il , n'y aura pas de spawn warning à afficher
+		return 0;
 }
 
 //  Change la couleur du warning pour stresser le joueur
 void SpawnWarning::Upd_Spwn_Warning_Color() {
 
 	if (nbWarnCycles == 6)
-		warnColor = Colors::LIGHT_YELLOW;	// 6 cycle left
+		warnColor = Colors::LIGHT_YELLOW;	
 	else
 		if (nbWarnCycles == 3)
-			warnColor = Colors::LIGHT_RED;	// 3 cycle left
+			warnColor = Colors::LIGHT_RED;	
 }
 
-void SpawnWarning::Init_Spawn_Warning(Direction botDir, C_D warnCycles)					// Initialise le warning. 
+void SpawnWarning::Init_Spawn_Warning(Direction botDir, C_D warnCycles)					
 {
 	this->warnSym = BOT_WRNG_DESIGN[botDir];
 	this->nbWarnCycles = warnCycles;

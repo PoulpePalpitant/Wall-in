@@ -64,19 +64,6 @@ void Load() {
 		getline(saveFile, line);
 		gameCompleted = stoi(line);
 
-
-		// DEBUG 
-		// *****
-		// ConsoleRender::Add_String("Is Level 2 Unlocked?", { 30,1 }); ConsoleRender::Add_String(line, { 52,1 });
-		// ConsoleRender::Add_String("Is Level 3 Unlocked?", { 30,2 }); ConsoleRender::Add_String(std::to_string(gUnlockedLevels[2]), { 52,2 });
-		// ConsoleRender::Add_String("Which puzzle on lvl 1", { 30,3 }); ConsoleRender::Add_String(std::to_string(gCurrentPuzzle[0]), { 52,3 });
-		// ConsoleRender::Add_String("Which puzzle on lvl 2", { 30,4 }); ConsoleRender::Add_String(std::to_string(gCurrentPuzzle[1]), { 52,4 });
-		// ConsoleRender::Add_String("Which puzzle on lvl 3", { 30,5 }); ConsoleRender::Add_String(std::to_string(gCurrentPuzzle[2]), { 52,5 });
-		// ConsoleRender::Add_String("Was game completed?", { 30,6 }); ConsoleRender::Add_String(std::to_string(gameCompleted), { 52,6 });
-		// ConsoleRender::Add_String("Game Loaded", { 0,5 });
-		
-		
-		
 		saveFile.close();
 	}
 }

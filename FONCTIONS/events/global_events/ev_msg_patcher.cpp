@@ -55,7 +55,7 @@
 //
 //bool Event::Stop_If_No_More_Steps()
 //{
-//	if (curSteps > steps)		// > c'est un fail safe
+//	if (curSteps > MAX_STEPS)		// > c'est un fail safe
 //	{
 //		Deactivate();			// We deactivate!!!
 //		return true;

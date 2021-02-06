@@ -22,39 +22,35 @@
 #include "../../spawns/valid_spwn_intervals.h"
 #include "../../spawns/bots_to_spawn.h"
 #include "../../items/item_spw_drawer.h"
-#include "feedback/ev_drain_health.h"
 #include "../../blast/mod_queue_animator.h"
 
-//#include "../../grid/AllGrids.h"
 
-void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()	
+void Clear_All_States(bool eraseLinks, bool stopTimers)	
 {
-	// PRIME RESETS
-	
-	Clear_All_Renders();			// VIDE LA RENDER QUEUE
+	Clear_All_Renders();			
 
 	if (stopTimers)
 		SpeedTimer::Stop_All_Timers(); // STOP TOUT LES TIMERS du monde, sauf la gameloop bien entendu
 
-	blastP1.Clear_Blast();	// stop and clear
-	MsgQueue::Unregister_All();	// Tout les msg é
-	Event::Cancel_All();		// Tout les events
-	Reset_Input_Flags();				// Flags
-	gSkipTutorial = gDayStarted = gRefreshStage = false;	// Other important flags
+	blastP1.Clear_Blast();	
+	MsgQueue::Unregister_All();
+	Event::Cancel_All();		
+	Reset_Input_Flags();		
+	gSkipTutorial = gLevelStarted = gRefreshStage = false;	// Other important flags
 	ChoiceTime::Stop_Choice_Time();	// flag spécial
 
 	if (eraseLinks)	// efface les links et walls
 	{
-		ListsOfChainToModify::Annihilate_All_Links();	// Links
+		ListsOfChainToModify::Annihilate_All_Links();	
 		DrawWalls::Remove_All();
 		DrawWalls::Draw_Them_Walls();
 	}
 
 	//Vide tout les drawers et les queues : item spawns, warnings, wall drawers etc.
 	WarningDrawerList::Remove_All();
-	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
-	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
-	DrawItemSpawnList::Remove_All();	// hardcore
+	DrawModifierQueue::addNew.Remove_All();  
+	DrawModifierQueue::consume.Remove_All(); 
+	DrawItemSpawnList::Remove_All();		
 	DrawModifierQueue::isShown = false;
 	
 	BlastModifierQueue::Reset();
@@ -70,7 +66,6 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 	Reset_Spw_Cycle();			// Reset le nombre de spw cycle à 0
 	
 
-
 	MsgQueue::Register(HIDE_MOD_QUEUE);
 	MsgQueue::Register(LOCK_PLAYER);
 	MsgQueue::Register(STOP_BOT_SPAWNS);
@@ -79,19 +74,18 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)	// Gros reset button()
 }
 void Clear_Map()// Tout ce qui à une influence sur l'interface graphique 
 {
-	blastP1.Clear_Blast();	// stop and clear
+	blastP1.Clear_Blast();	
 	P1.Er_Player();
-	ListsOfChainToModify::Annihilate_All_Links();	// Links
-	botList.Destroy_All_Bots();	// Bots
-	ItemsOnGrid::Remove_All();	// enlève tout les items spawné
-	DrawModifierQueue::addNew.Remove_All();  // empty drawer qui ajoute des mod
-	DrawModifierQueue::consume.Remove_All(); // empty le drawer qui consume des mod
-	DrawItemSpawnList::Remove_All();	// hardcore
+	ListsOfChainToModify::Annihilate_All_Links();	
+	botList.Destroy_All_Bots();	
+	ItemsOnGrid::Remove_All();
+	DrawModifierQueue::addNew.Remove_All();  
+	DrawModifierQueue::consume.Remove_All(); 
+	DrawItemSpawnList::Remove_All();	
 	BlastModifierQueue::Reset();
 	
-	ChoiceTime::Stop_Choice_Time();	// flag spécial
+	ChoiceTime::Stop_Choice_Time();	// 
 	Set_Dr_Map_1();
-	Stop_Ev_Hp_Drain_Msg();
 }
 
 void Clear_All_Renders()

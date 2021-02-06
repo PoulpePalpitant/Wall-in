@@ -132,7 +132,7 @@ void Ev_Draw_Whole_Bar()	// Happens first
 		puzzleMarker = 0;
 		barLength = NUM_PUZZLES[gCurrentLevel - 1];
 		clr = GRAY;
-		coord = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength) - (int)tip[true].length()  + 2, 3 };	// pos de départ ouch
+		coord = { map.Get_Limit(LEFT) + (map.Get_Length() / 2) - (barLength) - (int)tip[true].length()  + 2, 3 };	// pos de départ ouch
 		Draw_tip(coord, true); coord.x += (int)tip[true].length();	//  left tip
 
 		ev_DrawWholeBar.Activate();
@@ -178,7 +178,7 @@ void Ev_Progress_Bar()
 	{
 		nextPuzzle = gCurrentPuzzle[gCurrentLevel - 1] + 1; // On se fie à cette valeur pour progresser dans la bar		
 		barLength = NUM_PUZZLES[gCurrentLevel - 1];
-		crd = { map.Get_Box_Limit(LEFT) + (map.Get_Length() / 2) - (barLength)+ 2, 3 };	// pos de départ ouch
+		crd = { map.Get_Limit(LEFT) + (map.Get_Length() / 2) - (barLength)+ 2, 3 };	// pos de départ ouch
 		crd.x += (gCurrentPuzzle[gCurrentLevel - 1]) * SPACE_BTW_DOTS;
 
 		barProgClr = LIGHT_GREEN;

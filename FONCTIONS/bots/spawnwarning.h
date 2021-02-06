@@ -1,47 +1,28 @@
 #pragma once
 
-#include <iostream>
-
 #include "../UI/txtstyle.h"
 #include "../UI/direction.h"
 #include "../math/math_stuff.h"
 
 
 
-
-
-
-// SPAWN WARNING SERA UNE ANIMATION "DÉCLANCHER PAR UN SPAWN" ET NON UN OBJET À L'INTÉRIEUR DE BOT
-
-
-// Sera différent selon le type de bot
-
-
-
-
 /* 
-	Même si cette class représente plus un élément d'l'UI, je la place ici parce qu'elle est intimement lié au bots.
-	À chaque fois qu'un bot va spawner, un warning visuel sera affichée à l'endroit de son spawn. 
-	Ce warning sera sous la forme d'une flèche clignotante qui change de couleur pour signifié l'arrivé imminente du bot.
+	À chaque fois qu'un bot va spawner, un warning visuel est affichée à l'endroit de son spawn. 
 */
 
-// SIDENOTE: si un bot est différent, ça serait hot d'avoir un warning différent
-
-
 const char BOT_WRNG_DESIGN[4]{ '^','<','v','>' };
-extern const int SPWN_DLAY; //Le nombre de bot move cycle avant que le bot va commencer à avancer
+extern const int SPWN_DLAY;		//Le nombre de bot move cycle avant que le bot va commencer à avancer
 
 class SpawnWarning {
 private:
 	friend class Bot;
-	C_D nbWarnCycles;			// Le nombre de cycle de mouvment que le warning de bot bot sera actif
-	char warnSym;				// Le symbole qui warn le player que le bot s'en vient!!
-	Colors warnColor;			// Sa couleur. Celle-ci va varier selon que le nbWarnCycles se rapproche de 0
+	C_D nbWarnCycles;			
+	char warnSym;				
+	Colors warnColor;			
 
-	//Cptr Chk_Spwn_Warning_Cycles();	// Update le nombre de warning: Pars de 10, diminue jusqu'à zéro
 public:
-	void Init_Spawn_Warning(Direction botDir, C_D warnCycles = SPWN_DLAY);						// to figure out
-	void Upd_Spwn_Warning_Color();	// Update la couleur. Passe du jaune au rouge
+	void Init_Spawn_Warning(Direction botDir, C_D warnCycles = SPWN_DLAY);						
+	void Upd_Spwn_Warning_Color();	
 	C_D Show_Spawn_Warning();
 };
 

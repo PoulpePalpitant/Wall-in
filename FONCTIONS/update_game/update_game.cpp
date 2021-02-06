@@ -3,7 +3,7 @@
 
 #include "../lvls/lvl_script.h"
 #include "../inputs/action_input.h"
-#include "../blast/blast.h" // testing
+#include "../blast/blast.h" 
 #include "../grid/AllGrids.h"
 #include "../player/player.h"
 #include "../player/player_move.h"
@@ -26,39 +26,37 @@
 #include "../events/global_events/feedback/ev_wrong_action.h"
 #include "../teleporter/teleporter.h"
 
-extern bool gPauseUpdates = false;		// le state du jeu
+extern bool gPauseUpdates = false;		
 static std::string pauseMsg = "Hey! You PAUSED the game!";
 static std::string pauseMsg_2 = "Press 'Space' To Go Back To The Menu ";
 
 
-void Update_Game()		// Update tout ce qui se passe dans le jeu
+void Update_Game()		
 {
 	Update_Player_Action();
 
 	if (!gPauseUpdates)	// GAME_PAUSED
 	{
-		blastP1.UPD_Blast_Shot();		// Devrais être un event global	
+		blastP1.UPD_Blast_Shot();		
 
 		UPD_Cycles_Stuff();		// Mouvement et spawn des bots
-		Peek_Lvl_Script();		// En ce moment, ça sert pas mal juste à peek le spawnscript...
+		Peek_Lvl_Script();		// Ça sert pas mal juste à peek le spawnscript finalement...
 		Do_Stuff_this_Cycle();	// Bouge et spawn les bots. 
-		MsgQueue::Dispatch_Messages();	// Envoie tout les messages pour vérifier si on update les events
+		MsgQueue::Dispatch_Messages();	
 		ListsOfChainToModify::Update_Chain_Modification();	// Un processus de destruction des murs
-		P1.Upd_Teleporter();	// Check si le teleporteur est détruit
 		
 		// Certaines animations 
 		// ********************
-		DrawItemSpawnList::Draw_Item_Spawn();	// Les items qui spawnent	// J'AI INVERSÉ UPDATE CHAIN MODIF AVEC ÇA
-		DrawModifierQueue::Update_Modifier_Queue();			// Une animation quelconque
-		DrawWalls::Draw_Them_Walls();	// draw les putains de walls
+		DrawItemSpawnList::Draw_Item_Spawn();	
+		DrawModifierQueue::Update_Modifier_Queue();		// Animation de l'UI
+		DrawWalls::Draw_Them_Walls();					
 
-		Event::Update_Active_Events();	// Update tout les events dans la queue d'events à updater
-
+		Event::Update_Active_Events();	
 	}
 }
 
 
-void Update_Game_NOT_60FPS()	// à Remove
+void Update_Game_NOT_60FPS()	// À Remove un jour
 {
 	P1.Upd_Player_Timeout();	// Si le joueur est en timeout, on update ça
 }
@@ -79,24 +77,20 @@ void Update_Player_Action()
 				gPauseUpdates = true;
 				ConsoleRender::Add_String(pauseMsg, { Find_Ctr_X((int)std::size(pauseMsg)) , 1 }, BRIGHT_WHITE);			
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight}, GRAY);			
-				if (gDayStarted)
+				if (gLevelStarted)
 				{
 					Press_X_To_Proceed(2);
 					gRetryCheckpoint = true;
 				}
 				break;
 
-			case CHANGE_BLAST:
-				Change_Blast();		// trying stuff
-				break;
-
 			case BLAST:
 				if (!ChoiceTime::Is_Choice_Time() && !gBlockBlast)
 				{
-					static GrdCoord grdCrd;	// Position du joueur
+					static GrdCoord grdCrd;	
 					grdCrd = P1.Get_Grd_Coord();
 
-					static Link* link;	// Link se trouvant sur la position du joueur
+					static Link* link;		// Link se trouvant sur la position du joueur
 					link = &linkGrid->link[grdCrd.c][grdCrd.r];
 
 					bool cancelBlast = false;
@@ -105,21 +99,19 @@ void Update_Player_Action()
 					BlastAmmo *ammo;	
 
 
-					blastP1.Set_WallType(WallType::REGULAR);	// dflt
+					blastP1.Set_WallType(WallType::REGULAR);	
 
-					// Action Spéciale: Un transfer
-					// Le Transfer à lieu quand le joueur se trouve sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. C'est comme si on transférait le Wall
+					// Le Transfer à lieu quand le joueur se TROUVE sur un Link FREE. Si il tire dans une autre direction que le parent du Link, le Link FREE est détruit et un blast à lieu. 
 					if (link->Get_State() == LinkState::FREE)
 					{
-						// Si on tir dans la même direction que son parent wall		
 						if (StructureManager::Is_Parent_In_This_Direction(link, keyDirection))
-							cancelBlast = true; // rien va se passer
+							cancelBlast = true; 
 						else
 						{
 							blastP1.Set_WallType(link->Get_Parent()->Get_Type());
-							blastP1.Setup_Modifier(link->Get_Modifier());	// dumb shit beurks fixes, yey!
+							blastP1.Setup_Modifier(link->Get_Modifier());		// dumb shit beurks fixes, yey!
 
-							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  /	// ensuite on fait un tir
+							ListsOfChainToModify::Add_Chain_To_Modify(grdCrd);	// On destroy le Link que l'on veut transférer  / ensuite on fait un tir
 							consumeQueue = false;
 							blastTransfer = true;	
 						}
@@ -128,13 +120,13 @@ void Update_Player_Action()
 					if (blastP1.Is_Player_Shooting_Border(keyDirection))
 					{
 						UI_Invalide_Action();
-						cancelBlast = true; // rien va se passer
+						cancelBlast = true; 
 					}
 
 					if (!blastTransfer && !cancelBlast)	// Check si le joueur a assé d'ammo pour tirer
 					{
-						ammo = &blastP1.Get_Ammo_Manager();		// WATCHOUT, va pt retourner l'adresse d'une variable temporaire ou je sais pas trop
-						cancelBlast = !ammo->Shoot();			// Failure to shoot means we cancel that blast
+						ammo = &blastP1.Get_Ammo_Manager();		
+						cancelBlast = !ammo->Shoot();			
 					}
 
 					if (!cancelBlast)
@@ -143,15 +135,13 @@ void Update_Player_Action()
 						P1.Get_Teleporter().Remove_Teleport_Location();
 					}
 					else
-					{
-						Ev_Wrong_Action_Add();			// Flash le joueur
-					}
+						Ev_Wrong_Action_Add();			
 
 				}
 				else
 				{
 					Blast_Disabled_While_CD();		// Check si c'est à cause de ça
-					Ev_Wrong_Action_Add();			// Flash le joueur
+					Ev_Wrong_Action_Add();			
 					ConsoleRender::Add_Char(P1.Get_XY(), P1.Get_Sym(), LIGHT_PURPLE);		
 				}
 				break;
@@ -163,14 +153,10 @@ void Update_Player_Action()
 
 			case TELEPORT:
 				if (blastP1.Is_Active())
-				{
 					return;	// Conserve l'action
-				}
 				else
-				{
 					if (!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
-						Ev_Wrong_Action_Add();			// Flash le joueur
-				}
+						Ev_Wrong_Action_Add();			
 				break;
 			}
 		}
@@ -180,7 +166,7 @@ void Update_Player_Action()
 				gPauseUpdates = false;
 				ConsoleRender::Add_String("                         ", { Find_Ctr_X((int)std::size(pauseMsg)) , 1 });			
 				ConsoleRender::Add_String(pauseMsg_2, { Find_Ctr_X((int)std::size(pauseMsg_2)) ,gConHeight }, GRAY,0, true);	
-				if (gDayStarted)
+				if (gLevelStarted)
 				{
 					Press_X_To_Proceed(2, true);
 					gRetryCheckpoint = true;

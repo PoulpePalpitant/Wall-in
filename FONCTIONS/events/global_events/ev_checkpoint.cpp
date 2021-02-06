@@ -20,7 +20,6 @@
 #include "feedback/ev_good_job.h"
 #include "ev_spwn_player.h"
 #include "ev_update_heart.h"
-#include "../../events/global_events/feedback/ev_drain_health.h"
 #include "feedback/ev_ammo_depleted.h"
 #include "../../DB/database.h"
 
@@ -64,9 +63,6 @@ void Ev_Reach_Checkpoint()				 // Affiche un écran qui gratifiant
 			else
 				if (!gAllBotMeta.alive && P1.Get_HP())
 				{
-					// Nouvelle version avec plusieurs scripts
-
-
 					Clear_Map();						// Effacer la map est satisfaisant
 					P1.Dr_Player();						// doit redraw le joueur quand on fait ça
 					Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante

@@ -5,75 +5,58 @@
 #include "../time/countdown_clock.h"
 #include "../teleporter/teleporter.h"
 
-enum PlayerState { DEAD, ALIVE, INVINCIBLE };		// Statut Héro 
+enum PlayerState { DEAD, ALIVE, INVINCIBLE };		
 
 const unsigned char AllPlyrSym[5] = { 193,180,194,195,197 };	// Haut, Left, Down, Droite,  Neutre
 
 
 class Player {
 private:
+	int hp = 1;								// Hp est arbitraire: dès qu'un bot réussit à sortir, la joueur "meurt" et doit recommencer le puzzle
+	PlayerState state = PlayerState::ALIVE;
+	bool canDoStuff = true;					
+	Colors clr = Colors::LIGHT_GREEN;		
+	char sym;								
 
-
-	// ATTRIBUTES
-	int hp = 3;								// La vie du joueur. : Le nombre de bots qui peuvent sortir de la bot avant qu'il soit dead
-	PlayerState state = PlayerState::ALIVE; //
-	bool canDoStuff = true;					// Freeze les inputs du joueur
-	bool isOnGrid = true;					// Pt que le joueur peut s'aventurer à l'extérieur du grid?
-	// UI
-	Colors clr = Colors::LIGHT_GREEN;		// Sa couleur
-	char sym;								// Le symbole représentant le player
-
-	// POSITION
-	GrdCoord grdCrd = {0,0};						// On utilise le système de coordonnées des grids pour changer la position du joueur
-
-
+	GrdCoord grdCrd = {0,0};						
 	Teleporter teleporter;		// Permet de se téléporter
-
-	// TIMEOUT
 	CDTimer timeout;			// Freeze les actions du player
 
 public:
 	// GETS
-	int Get_On_Grid() { return isOnGrid; }					
-	int Get_HP() { return hp; }					// La vie
-	char Get_Sym() { return sym; }				// Le symbole pour l'affichage
-	Colors Get_Clr() { return clr; }			// Couleur
-	GrdCoord Get_Grd_Coord() { return this->grdCrd; }	// Sa position dans le grid
-	PlayerState Get_State() { return state; }			// Le state du joueur
-	bool Is_Timeout() { return timeout.Is_Running(); }	// Joueur en timeout
-	Coord Get_XY();										// Retrouva la crd du player dans la console
+	int Get_HP() { return hp; }					
+	char Get_Sym() { return sym; }				
+	Colors Get_Clr() { return clr; }			
+	GrdCoord Get_Grd_Coord() { return this->grdCrd; }	
+	PlayerState Get_State() { return state; }			
+	bool Is_Timeout() { return timeout.Is_Running(); }	
+	Coord Get_XY();										
 	Teleporter& Get_Teleporter() { return teleporter; }
 	bool Cant_Do_Stuff();
 	
 
 	// SETS 
-	bool Set_On_Grid();												// 
-	void Set_Position(GrdCoord newPos) { this->grdCrd = newPos; }			// Change la position du joueur sur le Grid
-	void Set_State(PlayerState newState) { state = newState; }		// Permet de détruire le joueur:  Le réssuciter : Ou le Rendre invincible
-	void Set_Sym(char newSym) { sym = newSym; }						// Change le symbole du joueur
-	void Set_Color(Colors newColor) { clr = newColor; }				// Change la couleur du joueur
-	void Set_Hp(int HP) { hp = HP; }								// Chane l'hp pour une valeur fixe
-	void Reset_Hp_And_Heart(int HP = 3);							// Met l'hp à 3, et réaffiche le coeur
-	void Set_Timeout(int time);										// Freeze le joueur
+	void Set_Position(GrdCoord newPos) { this->grdCrd = newPos; }	
+	void Set_State(PlayerState newState) { state = newState; }		
+	void Set_Sym(char newSym) { sym = newSym; }					
+	void Set_Color(Colors newColor) { clr = newColor; }			
+	void Set_Hp(int HP) { hp = HP; }							
+	void Reset_Hp_And_Heart(int HP = 3);						
+	void Set_Timeout(int time);									
 
 	// UPDATES
 	void Upd_Player_Timeout();
-	void Upd_Sym_From_Direction(Direction dir);							// Change le symbole du joueur lors d'un mouvement ou d'un tir dans une direction
-	void Upd_State();													// Ceci change le state du joueur quand il pred ou gagne du HP
-	void Upd_Color();													// Change la couleur du joueur quand il pred ou gagne de la vie
-	void Player_Lose_HP(int hpLost = 1);								// En général, le joueur perdra 1hp seulement
-	void Player_Gains_HP(int hpGain = 1);								// En général, le joueur gagnera 1hp seulement
-	void Upd_Teleporter() { teleporter.Upd_Teleporter_State(); }		// Check si yé actif
+	void Upd_Sym_From_Direction(Direction dir);							
+	void Upd_State();													
+	void Upd_Color();													
+	void Player_Lose_HP(int hpLost = 1);								
+	void Player_Gains_HP(int hpGain = 1);								
 
 	// SPÉCIALE
-	void Move_And_Draw_Player(GrdCoord crd);			// Teleporte virtuellement le joueur
-	void Dr_Player();									// fait juste afficher le joueur. Utilisé plutôt UI_Move_Player, qui efface le symbole derrière lui aussi
-	void Er_Player();									// fait juste effacer
-	void Reset_State();	// health, crd, and state
-// changer le symbole selon la direction du dernier move du player
-
+	void Move_And_Draw_Player(GrdCoord crd);			
+	void Dr_Player();									
+	void Er_Player();									
 };
 
 extern Player P1;
-extern Player P2;		// It's a YOU!
 

@@ -1,20 +1,17 @@
 
 #include "lvl_script.h"
 
-/* LEs LEvels*/
-#include "../menu/menu_script.h"
 #include "lvl_1/lvl_1_spwn_script.h"
 #include "lvl_2/lvl_2_spwn_script.h"
 #include "lvl_3/lvl_3_spwn_script.h"
-#include "lvl_1/sub_lvl_1_script.h"
 #include "../UI/console_output/render_list.h"
 
 const int NB_LVLS = 3;								// Nombre de niveau que j'ai fais
-const int NUM_PUZZLES[NB_LVLS] = { 18, 24,20 };		// Nombre de Puzzles dans chaque lvl
+const int NUM_PUZZLES[NB_LVLS] = { 18, 24,20 };		
 
 
-int gCurrentLevel = 0;		// Le niveau actuel!!1
-int gCurrentStage = 0;		// Chaque niveau peut avoir plusieurs stages
+int gCurrentLevel = 0;		
+int gCurrentStage = 0;		
 int gCurrentPuzzle[NB_LVLS] = {};	// Le checkpoint que le joueur à réussie à reach durant chaque niveau. Si 0, le joueur na reach aucun checkpoint encore
 int gUnlockedLevels[3] = {1,0,0};
 int gLastLvlUnlocked = -1;
@@ -25,10 +22,10 @@ int gCurrPuzzleStepMax = 0;
 const short TUTO_TOTAL_STEPS = 7;
 short tutoStep = 0;
 
-bool gDayStarted = false;
+bool gLevelStarted = false;
 bool gSkipTutorial = false;		
-bool gRefreshStage = false;		// Refresh un stage
-bool gRetryCheckpoint = false;		// Restart le niveau à partir d'un checkpoint
+bool gRefreshStage = false;		
+bool gRetryCheckpoint = false;	
 											
 bool gameCompleted = false;
 
@@ -37,7 +34,7 @@ void Peek_Lvl_Script()
 	switch (gCurrentLevel)
 	{
 	case 0: break;
-	case 1:	Lvl_1_Spwn_Script(); break;	// Détermine quel sera la prochaine wave de spawn
+	case 1:	Lvl_1_Spwn_Script(); break;	// Détermine quel sera la prochaine wave de BOTS
 	case 2: Lvl_2_Spwn_Script(); break;
 	case 3: Lvl_3_Spwn_Script(); break;
 	}

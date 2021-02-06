@@ -22,8 +22,6 @@
 #include "../../player/player.h"
 #include "../../items/item_spw_drawer.h"
 #include "../../spawns/valid_spwn_intervals.h"
-
-// TO REMOVE
 #include "../../console/sweet_cmd_console.h"
 
 
@@ -124,7 +122,7 @@ void Puzzle_1_0(){
 
 	case 1:	MsgQueue::Register(ENABLE_BLAST);
 
-		Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; // Erase la border au cas où le joueur est pas en mode quickstartS
+		Set_Dr_Map_1(TXT_SPD_DR * 4); skip = 6; 
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, LEFT, 2);
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() / 2 ,linkGrid->Get_Rows() / 2 }, RIGHT, 2);
 
@@ -138,8 +136,8 @@ void Puzzle_1_0(){
 	case 2:
 		// Présentation des mécaniques de bases pour le noob qui skip le tutorial
 		Set_Flashy_Border(LEFT);
-		Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
-		ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR);
+		Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller les bots
+		ConsoleRender::Add_String(codeRecycling, { map.Get_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Limit(UP) - 2 }, GRAY, TXT_SPD_DR);
 		Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 
 	case 3: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
@@ -151,7 +149,7 @@ void Puzzle_1_0(){
 	case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
 	case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
 	case 11:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; 
-		ConsoleRender::Add_String(codeRecycling, { map.Get_Box_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Box_Limit(UP) - 2 }, GRAY, TXT_SPD_DR, true);	// erase le message
+		ConsoleRender::Add_String(codeRecycling, { map.Get_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Limit(UP) - 2 }, GRAY, TXT_SPD_DR, true);	// erase le message
 		MsgQueue::Register(CHECKPOINT_REACHED);
 		break;
 	}
@@ -326,14 +324,6 @@ void Puzzle_1_6() {
 
 		gGrids.Make_Chain_Of_Walls({ 10,8 }, LEFT, 1);
 		gGrids.Make_Chain_Of_Walls({ 9,7 }, RIGHT, 1);
-
-		// Wall du milieu à transfer
-		//gGrids.Make_Chain_Of_Walls({ 4,11 }, LEFT, 1);
-		//gGrids.Make_Chain_Of_Walls({ 4,10 }, RIGHT, 1);
-		//gGrids.Make_Chain_Of_Walls({ 5,9 }, LEFT, 1);
-		//gGrids.Make_Chain_Of_Walls({ 5,8 }, RIGHT, 1);
-		//gGrids.Make_Chain_Of_Walls({ 6,7 }, LEFT, 1);
-		//gGrids.Make_Chain_Of_Walls({ 6,6 }, RIGHT, 1);
 		break;
 
 	case 2:Add_Spec(RIGHT, 0); skip = 2; break;
@@ -407,13 +397,6 @@ void Puzzle_1_8(){
 	case 10:Add(1);gBoxSide = LEFT; gSpwNum = 3;break;
 	case 11:Add(1);gBoxSide = LEFT; gSpwNum = 2;break;
 	case 12:Add(1);gBoxSide = LEFT; gSpwNum = 1; skip = 1;break;
-		// Pt de trop
-	//case 13:Add(1);gBoxSide = LEFT; gSpwNum = 13;break;
-	//case 14:Add(1);gBoxSide = LEFT; gSpwNum = 13;break;
-	//case 15:Add(1);gBoxSide = LEFT; gSpwNum = 13;break;
-	//case 16:Add(1);gBoxSide = LEFT; gSpwNum = 13;break;
-	//case 17:Add(1);gBoxSide = LEFT; gSpwNum = 13;break;
-	//case 18:Add(1);gBoxSide = LEFT; gSpwNum = 13;break;
 	case 13:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 	}
 }

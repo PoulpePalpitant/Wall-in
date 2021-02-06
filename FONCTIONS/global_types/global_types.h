@@ -1,37 +1,39 @@
 #pragma once
 
-enum Duality
-{
-	GOOD, BAD
-};
 
-
-
-// Les modifiers sont une propriété du blast et des links. Le modifier par défaut s'appel REGULAR. Pour activer un nouveau modifier il faut prendre un item modifier, voir items.h
 
 /*
+	 Les modifiers sont une propriété du blast et des links. Le modifier par défaut s'appel REGULAR. Pour activer un nouveau modifier il faut prendre un item modifier, voir items.h
+	 *******************************************************************************************************************************************************************************
+
 	INTÉRACTIONS AVEC LES MODIFIERS
 
-	Chaque blast qui impact un link du même type va créer 1 mur de la force même force du type. Le link free au bout possèdera le même modifier
+	TL:DR
+	BUFFER double la résistance des murs face au bot
+	BLOCKER détruit tout, sauf les autres blockers. Il n'est compatible qu'avec lui-même
+	FORCEFIELD les wall ENERGIZED ou WEAK passent au travers. Tout les autres, non.
+	WEAK ne stop pas les bots. Si ce fait traversé par un bot, ou si traverse un force field, se transforme en REGULAR
+	ENERGIZED peut passé à travers les forcefield à l'infinie. Se déplace super rapidement.
 
-	- BUFFER : BLAST
+	-----------
+
+	BUFFER BLAST -> REGULAR LINK
 	Créer un super link. Tout les walls ENFANT connectés au super link deviennent un super wall. Les supers walls sont capable d'arrêter 2 bots!
 
-	- REGULAR : LINK
-	Tout les tirs régulier ou de types BUFFER sur ce link vont générer un super wall. 
+	REGULAR BLAST -> BUFFER LINK
+	Tout les tirs régulier vont générer un super wall.  ou de types BUFFER sur ce link 
 
-	- BLOCKER : BLAST
+	BUFFER/REGULAR BLAST -> BLOCKER LINK
+	Détruit le blast. Aucun mur ne sera créé
+	
+	BLOCKER BLAST -> REGULAR/BUFFER LINK 
 	Le blocker détruit tout les childs connectés au link qu'il rencontre. Il transforme le link rencontré en BLOCKER, sans créer de wall. 
 
-	- REGULAR : LINK
-	Le blocker Link est impassable et absorbe tout les AUTRES types de blast.
+	BLOCKER BLAST -> BLOCKER LINK
+	Créer un mur ordinaire, en convertissant auss le link free en blocker 
 
-	- CORRUPTED : BLAST
-	Une fois le blast terminé, il créer, ou convertit 1 Link en link CORRUPTED. Il peut convertir les deux autres types de modifiers?
-	Tout les nouveaux walls qui seront attaché à ce Link n'auront aucun effet sur les bots, et les bots qui les traversent ne les détruiront pas
-
-	- CORRUPTED : LINK
-	Le link corrompue transforme tout les blasts REGULAR et BUFFER qui le percutent en corrompus. 
+	BUFFER/BLOCKER BLAST -> BUFFER/BLOCKER LINK
+	Si deux modifier identiques se rencontrent, ça créer un mur, avec l'addition de créer un link free convertit au MODIFIER du blast
 
 */
 
@@ -40,10 +42,4 @@ enum Modifier
 	REGULAR, BUFFER, BLOCKER,  CORRUPTER, FORCEFIELD,  ENERGIZER, COLOR_B, BLIND_COLOR
 };
 
-// Le joueur aurait une queue de modifiers qui sont appliqués au prochain blast qu'il tir
-// Les intercations d'un modifiers du blast et celui d'un link créer des intéractions uniques
-
-
-
-
-// BOTS QUI CONVERTI TES MURS EN CORRUPTED!
+// CORRUPUTER, COLOR_B ET BLIND_COLOR SONT INUTILISÉS

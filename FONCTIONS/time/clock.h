@@ -8,7 +8,10 @@
 using Time = int;
 
 
-// L'horloge
+/*
+ Première tentative de gestion du temps dans ce projet. 
+ Est également une source d'expérimentation mour du multithreading en c++
+*/
 
 class GameClock{	
 private:
@@ -19,20 +22,20 @@ private:
 	// Le timer qui servira à incrémenter le temps
 	time_t origin, realTime , timePassed;	
 
-	bool running = false;	// Pause l'horloge
+	bool running = false;	
 
 	// Le temps updaté par le timer
 	time_t time = 0;
 
-	void Reset_Time() { time = 0; running = false; }		// reset le temps
-	void Update_Time();		// Update le temps écoulé
+	void Reset_Time() { time = 0; running = false; }		
+	void Update_Time();		
 
-public:		// Cette clock est threadé, le temps avance continuellement à très petites intervalles
+public:					// Cette clock est threadé, le temps avance continuellement à très petites intervalles
 	void Start_Clock();	// Enclanche le temps. Conserve les données relié au temps écoulé
-	void Pause_Clock();		// Pause le temps
+	void Pause_Clock();	// Pause le temps
 	void Tick();		// Update le temps écoulé
 
-	time_t Get_Time() { return time; }	// Get le temps
+	time_t Get_Time() { return time; }	
 
 	// UI
 	int updateDelay = 5;							// Le temps qui sépare chaque display de l'horloge, exprimé en millisecondes 

@@ -28,10 +28,10 @@ void DrawerQueue::Cancel(Coord XY)	// Stop l'animation  sur cette position
 			queue[index].cancel = true;
 	}
 }
- void DrawerQueue::Step(int index, int speed, int steps, bool infinite)
+ void DrawerQueue::Step(int index, int speed, int MAX_STEPS, bool infinite)
  { 
 	 queue[index].currStep++;
-	 queue[index].timer.Start_Timer(speed, steps, infinite);
+	 queue[index].timer.Start_Timer(speed, MAX_STEPS, infinite);
  }
 
 bool DrawerQueue::Add(Coord XY)		// Ajoute l'item à draw dans la list

@@ -1,24 +1,13 @@
-#include <iostream>
-
-
-
-#include "../UI/console(v1.9).h"
-#include "../UI/txtstyle.h"
-#include "../UI/console_output/render_list.h"
-#include "../grid/AllGrids.h"
 
 #include "UI_move_blast.h"
 
 SpeedTimer UI_MoveBlast::eraserTimer;	// Erase le reste d'un blast qui à fail	
 
-
 // L'animation va se faire dans cette ordre:
-
 /*
 	1)	Affichage du symbole du blast à sa position XY EN AVANT des autres symboles de blast précédant. Si c'est le premier, le symbole s'affichera PAR-DESSUS le symbole du joueur.
 	2)	Vérification de la grandeur maximale du blast. Si le blast à atteint sa longueur maximale, on va commencer à effacer les symboles derrière.
-	3)	Effacement du symbole du blast se trouvant le plus loin derrière la tête du blast. Ceci trim la longueur du blast pour qu'elle conserve une certaine taille. Il se peut que le blast s'arrête avant même 
-	d'atteindre	sa grandeur maximale, it's all fine.
+	3)	Effacement du symbole du blast se trouvant le plus loin derrière la tête du blast. Ceci trim la longueur du blast pour qu'elle conserve une certaine taille. 
 */
 
 
@@ -31,26 +20,22 @@ void UI_MoveBlast::Animate_Blast(Blast* blast) // voir paragraph
 
 }
 
-void UI_MoveBlast::Move_Blast_Head_Forward(Blast* blast)	// DISPLAY: la tête du blast
+void UI_MoveBlast::Move_Blast_Head_Forward(Blast* blast)	
 {
-	// Affichage du symbole du blast 
 	ConsoleRender::Add_Char(blast->frontXY.coord, blast->sym, blast->color);
 }
 
-bool UI_MoveBlast::Chk_Max_Blast_Length(Blast* blast)	// CHECK: Si le blast à atteint sa taille max
+bool UI_MoveBlast::Chk_Max_Blast_Length(Blast* blast)	
 {
 	return blast->nbSteps >= blast->length ;	
 }
 
 void UI_MoveBlast::Erase_Blast_Tail(Blast* blast)	// ERASE: la queue du blast, si le blast à parcouru une distance >= que sa taille max
 {
-	// Efface la tail!
 	ConsoleRender::Add_Char(blast->tailXY.coord, TXT_CONST.SPACE);
-
-	// Incrémentation da la prochaine position XY
 	blast->tailXY.Increment_Coord();
-
 }
+
 void UI_MoveBlast::Setup_Blast_Eraser(Blast* blast)
 {
 	int length = blast->length;
@@ -66,22 +51,8 @@ void UI_MoveBlast::Setup_Blast_Eraser(Blast* blast)
 void UI_MoveBlast::Erase_Whole_Blast(Blast* blast){
 	
 	while (eraserTimer.Tick())
-	{	
-		//// temp bad: Remove after tests
-		//if (Are_Equal(blast->frontXY.coord, blast->tailXY.coord)) 
-		//{
-		//	eraserTimer.Stop();
-		//	break;
-		//} 
 		Erase_Blast_Tail(blast);
-
-		//ConsoleRender::Add_Char(blast->tailXY.coord, TXT_CONST.SPACE);
-		//blast->tailXY.Increment_Coord(); // Incrémentation da la prochaine position XY
-		
-
-	}
 	
-	// Godd final
 	if (!eraserTimer.Is_On())
 		blast->active = false;
 }

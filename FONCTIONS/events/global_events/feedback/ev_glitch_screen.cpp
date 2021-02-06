@@ -54,16 +54,16 @@ void Set_Screen_Filler(bool erase, int speed, Colors color)
 
 	// Fill uniquement la box maintenant
 	// Exclut côté gauche
-	for (int row = 0; row < map.Get_Box_Limit(LEFT); row++)
+	for (int row = 0; row < map.Get_Limit(LEFT); row++)
 		list->Empty_List(row);
 	// Exclut côté droit
-	for (int row = map.Get_Box_Limit(RIGHT) + 1; row < gConWidth; row++)
+	for (int row = map.Get_Limit(RIGHT) + 1; row < gConWidth; row++)
 		list->Empty_List(row);
 	// Exclut côté up
-	for (int col = 0; col < map.Get_Box_Limit(UP); col++)
+	for (int col = 0; col < map.Get_Limit(UP); col++)
 		list->Remove_Value_Everywhere(col);
 	// Exclut côté droit
-	for (int col = map.Get_Box_Limit(DOWN) + 1; col < gConHeight; col++)
+	for (int col = map.Get_Limit(DOWN) + 1; col < gConHeight; col++)
 		list->Remove_Value_Everywhere(col);
 }
 //
@@ -180,7 +180,7 @@ void Ev_Glitch_Map_Retry()			//  Remplis la screen de char cool pendant un bref 
 			case 1:
 				if (!ev_Dr_GlitchMap.Is_Active())
 				{
-					ConsoleRender::Add_String(retry, { map.Get_Box_Limit(LEFT) + map.Get_Length() / 2 - (int)retry.size() / 2 , map.Get_Box_Limit(UP) + map.Get_Height() / 2 }, LIGHT_RED, TXT_SPD_DR / 3);
+					ConsoleRender::Add_String(retry, { map.Get_Limit(LEFT) + map.Get_Length() / 2 - (int)retry.size() / 2 , map.Get_Limit(UP) + map.Get_Height() / 2 }, LIGHT_RED, TXT_SPD_DR / 3);
 					ev_GlitchMap.delay.Stop();
 					ev_GlitchMap.Advance(500);
 				}

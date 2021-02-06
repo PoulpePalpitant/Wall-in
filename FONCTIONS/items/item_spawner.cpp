@@ -7,7 +7,22 @@
 
 Intervals::ManageIntervalLists ItemSpawner::availableLinks(0, 0, 0);	// Position disponibles dans le grid pour spawner des items
 ItemSpawnPool ItemSpawner::pool = {};
-bool ItemSpawner::pause = false;	// permet de pauser les updates
+bool ItemSpawner::pause = false;	
+
+
+/*
+	LES SPAWNS DISPONIBLES SONT LESQUELLES?
+
+	L'intervalle manager fonctionne comme suit:
+	Chaque liste représente une colonne du linkgrid :											instance[3] = colonne #3 dans le grid;
+	Chaque valeurs présentes dans les intervalles de ces listes sont des row du Linkgrid:		instance[colonne].start.min	= 2(row);
+	Ne pas oublier que la valeur max de chaque intervalles est tjrs ingorés
+	Donc pour accéder à une coord :
+
+	instance[5].start -> Start est un intervalle. Il contient une valeur min et max	: tout les valeurs >= à min et < max sont les rows disponibles
+	instance[5].start.min = 2(row)		-> crd{5,2}
+*/
+
 
 
 bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool noanimation, bool rdmCoord)	// Bypass la pool et le timer pour faire spawner un item
@@ -21,37 +36,37 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool
 	if (!ItemsOnGrid::Reached_Max())
 	{
 		availableLinks.Reset_All_Lists();	// refresh that shit
-		Items_Exclusion();			// Exclut les items déjà présents
+		Items_Exclusion();			
 
 		if(!rdmCoord)
 			if (Pick_Specific_Coord(crd))
 			{
-				availableLinks.Remove_Value(crd.c, crd.r);	// gotta remove it	?
-				if (!linkGrid->Is_Link_Alive_Here(crd))	// Un link était sur la coord
+				availableLinks.Remove_Value(crd.c, crd.r);	
+				if (!linkGrid->Is_Link_Alive_Here(crd))	
 					found = true;
 			}
 
 		while (!found)
 		{
 			if (cancel)
-				return false;	// we don't spawn elsewhere
+				return false;	
 			else
-				if (!ItemSpawner::Find_Spawn_Location(crd))	// // Generate random coord Si aucun spawn location found. Spawn juste pas 
+				if (!ItemSpawner::Find_Spawn_Location(crd))
 					return false;	// we couldn't spawn yo shit
 				else
 					found = true;
 
-			if (linkGrid->Is_Link_Alive_Here(crd))	// Un link était sur la coord
+			if (linkGrid->Is_Link_Alive_Here(crd))
 				found = false;
 		}
 
 		item.grdCrd = crd;
-		ItemsOnGrid::Add(item); // Add à la lsite des items sur le grid
+		ItemsOnGrid::Add(item); 
 
 		if (noanimation)
-			DrawItemSpawnList::Draw_Item(item.itemType, item.grdCrd);	// draw l'item sans animation
+			DrawItemSpawnList::Draw_Item(item.itemType, item.grdCrd);
 		else
-			DrawItemSpawnList::Add(item.itemType, item.grdCrd);	// Add a la list du drawer de spawn
+			DrawItemSpawnList::Add(item.itemType, item.grdCrd);
 
 		return true;
 	}
@@ -64,32 +79,31 @@ bool ItemSpawner::Add_To_Pool(ItemType type, int timerSpeed, int rngDelay)
 {
 	TypeSpawner temp;
 
-	for (int i = 0; i < pool.size; i++) // but why?
+	for (int i = 0; i < pool.size; i++) 
 	{
-		if (pool.spawner[i].type == type)			// Était déjà dans la pool
+		if (pool.spawner[i].type == type)			
 		{
-			Set_Spawner_Timer(pool.spawner[i], timerSpeed, rngDelay);	// set le nouveau timer
+			Set_Spawner_Timer(pool.spawner[i], timerSpeed, rngDelay);
 			return false;
 		}
 	}
 
-	//for (int i = 0; i < MAX_ITEM_TYPE; i++)
-	for (int i = pool.size; i < MAX_ITEM_TYPE; i++)	// dafuck was this?
+	for (int i = pool.size; i < MAX_ITEM_TYPE; i++)	
 	{
 		if (pool.spawner[i].type == type)
 		{
-			if (i != pool.size)	// Si n'était pas simplement le prochain
+			if (i != pool.size)	
 			{
-				temp = pool.spawner[i];						// Switch l'ordre
+				temp = pool.spawner[i];						
 				pool.spawner[i] = pool.spawner[pool.size];
 				pool.spawner[pool.size] = temp;
 			}
 
-			Set_Spawner_Timer(pool.spawner[pool.size], timerSpeed, rngDelay);	// set le nouveau timer
+			Set_Spawner_Timer(pool.spawner[pool.size], timerSpeed, rngDelay);	
 		}
 	}
 
-	pool.size++;						// Plus 1
+	pool.size++;						
 	return true;
 }
 
@@ -97,25 +111,25 @@ bool ItemSpawner::Remove_From_Pool(ItemType type)
 {
 	TypeSpawner temp;
 
-	pool.size--;	//	1 de moins
+	pool.size--;	
 
 	for (int i = 0; i < pool.size; i++)
 	{
-		if (pool.spawner[i].type == type)			// décale tout les autres items
+		if (pool.spawner[i].type == type)			
 		{
-			temp = pool.spawner[i];	// temp
+			temp = pool.spawner[i];	
 
 			for (i; i < pool.size; i++)			
 				pool.spawner[i] = pool.spawner[i + 1];
 			
-			pool.spawner[i] = temp;	// restore
+			pool.spawner[i] = temp;	
 			return true;
 		}
 	}
 
 	return false;
 }
- void ItemSpawner::Init_Pool_Types()	// Initialize la pool avec tout les types actuel. Devrait être fait 1 seul fois?
+ void ItemSpawner::Init_Pool_Types()	
  {
 	 for (int type = 0; type < MAX_ITEM_TYPE; type++)
 		 pool.spawner[type].type = (ItemType)type;
@@ -127,7 +141,7 @@ bool ItemSpawner::Remove_From_Pool(ItemType type)
  {
 	 spawner.spwSpeed = timerduration;
 	 spawner.rdmDelay = rngDelay;
-	 spawner.timer.Start_Timer(timerduration);	// start le timer aussi?
+	 spawner.timer.Start_Timer(timerduration);	
  }
 
  bool ItemSpawner::Set_Spawner_Timer(ItemType type, int timerduration, int rngDelay)
@@ -144,15 +158,13 @@ bool ItemSpawner::Remove_From_Pool(ItemType type)
 	 {
 		 spawner->spwSpeed = timerduration;
 		 spawner->rdmDelay = rngDelay;
-		 spawner->timer.Start_Timer(timerduration);	// start le timer aussi?
+		 spawner->timer.Start_Timer(timerduration);	
 		 return true;
 	 }
 	 else
 		 return false;
  }
 
-
- // Va chercher le spawner selon le type
  TypeSpawner* ItemSpawner::Get_Spawner(ItemType type) 
  {
 	 TypeSpawner* spawner = NULL;
@@ -168,20 +180,18 @@ bool ItemSpawner::Remove_From_Pool(ItemType type)
 
 
 
- int ItemSpawner::Add_Delay(TypeSpawner * spawner)	// ajoute du délay sur le prochain spawn
+ int ItemSpawner::Add_Delay(TypeSpawner * spawner)	
  {
 	 if (!spawner)
-		 return 0 ;	// spawner null? wtf
+		 return 0 ;	
 
-	 float delaySec;	// delay en secondes
+	 float delaySec;	
 
-	 // Reset timer avec extra sauce(delay random)
 	 if (spawner->rdmDelay)
-		 delaySec = rand() % spawner->rdmDelay;	// prochain timer aura des secondes de plus
+		 delaySec = rand() % spawner->rdmDelay;	
 	 else
 		 return 0;
 
-	 // Convert delay from seconds to speed
 	 return (int)(delaySec * 1000);
  }
 
@@ -194,7 +204,7 @@ void ItemSpawner::UPD_Item_Spawn_Timers()
 
 	for (int i = 0; i < pool.size; i++)
 	{
-		while (pool.spawner[i].timer.Tick())	// si le tick finis
+		while (pool.spawner[i].timer.Tick())	
 		{
 			if (!ItemsOnGrid::Reached_Max())
 			{
@@ -204,18 +214,16 @@ void ItemSpawner::UPD_Item_Spawn_Timers()
 					setupSpawnList = true;
 				}
 
-				// Generate random coord
 				if (ItemSpawner::Find_Spawn_Location(item.grdCrd))	// Si aucun spawn location found?? Spawn juste pas pour ce cycle 
 				{
-					item.active = true;	// Activate that boi
-					item.itemType = pool.spawner[i].type;		// le bon type
+					item.active = true;	
+					item.itemType = pool.spawner[i].type;		
 
 					ItemsOnGrid::Add(item); // Add à la lsite des items sur le grid
 					DrawItemSpawnList::Add(item.itemType, item.grdCrd);	// Add a la list du drawer de spawn
 				}
 			}
 
-			// Remplacer ceci par un delay. Donc ajouter du temps, préférablement en secondes
 			pool.spawner[i].timer.Start_Timer(pool.spawner[i].spwSpeed,1, false, Add_Delay(&pool.spawner[i]));
 		}
 	}
@@ -233,39 +241,39 @@ void ItemSpawner::Player_Exclusion(GrdCoord P1Pos)
 }
 
 // On voudrait pas spawner 1 item sur la même ligne qu'un blast, serait moche
-void ItemSpawner::Blast_Exclusion(GrdCoord P1Pos)	// Thats a long name
+void ItemSpawner::Blast_Exclusion(GrdCoord P1Pos)	
 {
-	availableLinks.Empty_List(P1Pos.c);				// Remove tout les spawn sur la même colonne
-	availableLinks.Remove_Value_Everywhere(P1Pos.r);	// vide la row
+	availableLinks.Empty_List(P1Pos.c);				
+	availableLinks.Remove_Value_Everywhere(P1Pos.r);	
 }
 
 //// Exclut les links occupés par des items
-void ItemSpawner::Items_Exclusion()	// 
+void ItemSpawner::Items_Exclusion()	
 {
 	GrdCoord crd;
 
 	for (int i = 0; i < ItemsOnGrid::size; i++)
 	{
 		crd = ItemsOnGrid::items[i].Get_Grd_Coord();
-		availableLinks.Remove_Value(crd.c, crd.r);	//yey
+		availableLinks.Remove_Value(crd.c, crd.r);
 	}
 }
-void ItemSpawner::Refresh_Available_Spawn_List()		// Refresh le trouver de spawn libre
+void ItemSpawner::Refresh_Available_Spawn_List()		
 {
 	GrdCoord P1Pos = P1.Get_Grd_Coord();
-	availableLinks.Reset_All_Lists();	// refresh that shit
-	Blast_Exclusion(P1Pos);		// Exclut d'abord les coord irrecevable
-	Player_Exclusion(P1Pos);	// Exclut 1 case tout autours du joueur
-	Items_Exclusion();			// Exclut les items déjà présents
+	availableLinks.Reset_All_Lists();	
+	Blast_Exclusion(P1Pos);		
+	Player_Exclusion(P1Pos);	
+	Items_Exclusion();			
 }
 
 
-bool ItemSpawner::Generate_Rdm_Coord(GrdCoord &itmCrd)	// Trouve une coord. si non-dispo, en trouve une autre au hasard
+bool ItemSpawner::Generate_Rdm_Coord(GrdCoord &itmCrd)	
 {	
 	return availableLinks.Pick_From_Lists(itmCrd.c, itmCrd.r, true, true, Intervals::RDM_ALL);	// si échoue, aucune coord n'est dispo
 }
 
-bool ItemSpawner::Pick_Specific_Coord(GrdCoord& itmCrd)	// Prend la coord dispo qu'on veut
+bool ItemSpawner::Pick_Specific_Coord(GrdCoord& itmCrd)	
 {
 	return availableLinks.Find_Value(itmCrd.c, itmCrd.r);	
 }
@@ -278,16 +286,15 @@ bool ItemSpawner::Find_Spawn_Location(GrdCoord &itemCrd)
 	{
 		if (Generate_Rdm_Coord(itemCrd))
 		{
-			if (!linkGrid->Is_Link_Alive_Here(itemCrd))	// Trouvé une coord !
+			if (!linkGrid->Is_Link_Alive_Here(itemCrd))	
 				validCrd = true;
 			else
-				availableLinks.Remove_Value(itemCrd.c, itemCrd.r);	// gotta remove it	?
+				availableLinks.Remove_Value(itemCrd.c, itemCrd.r);
 		}
 		else
-			return false;	// Plus de coord disponibles dans le grid
+			return false;	
 	}
 
-	// Liste 4 Exclut tout les autres invalidés par les Links
 	return true;
 }
 

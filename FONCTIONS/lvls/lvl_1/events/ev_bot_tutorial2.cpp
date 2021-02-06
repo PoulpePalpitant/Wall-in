@@ -36,13 +36,15 @@ static void Retry_If_Fail();
 static Event ev_BotTutorial2(Ev_Bot_Tutorial2, 150);
 static Event ev_RetryIfFail(Retry_If_Fail,2);
 
-/* Dis gonna be a long one:
+/* 
 	
 	Tutorial qui montre au joueur comment jouer. 
 	Choses à montrer:
 
-	- Les Bots, leurs déplacement et leur destination
+	- Bouger
+	- Comprendre les limites du jeu
 	- Tirer, comment stacker perpendiculairement
+	- Les Bots, leurs déplacement et leur destination
 	- Détuire les bots, en utilisant la méthode de tirer, ne peut pas tirer directement dessus(en fait techniquement oui)
 	- La notion d'ammo limité
 	- Enticiper les déplacements
@@ -186,8 +188,8 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 5:
-				ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(LEFT) - Half_String(_15_1) - 4 , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);
-				ConsoleRender::Add_Char({ map.Get_Box_Limit(LEFT) + Half_String(_15_1) - 2 , map.Get_Box_Limit(UP) - 3 }, BOT_DESIGN_1C[1], LIGHT_RED);
+				ConsoleRender::Add_String(_15_1, { map.Get_Limit(LEFT) - Half_String(_15_1) - 4 , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);
+				ConsoleRender::Add_Char({ map.Get_Limit(LEFT) + Half_String(_15_1) - 2 , map.Get_Limit(UP) - 3 }, BOT_DESIGN_1C[1], LIGHT_RED);
 
 				Set_Flashy_Border(LEFT);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
@@ -212,8 +214,8 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				{
 					if (P1.Get_HP() == 3)	// Si le joueur à péter Jerry
 					{
-						ConsoleRender::Add_String(_15_1, { map.Get_Box_Limit(LEFT) - Half_String(_15_1) - 4 , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR, 1);
-						ConsoleRender::Add_Char({ map.Get_Box_Limit(LEFT) + Half_String(_15_1) - 2 , map.Get_Box_Limit(UP) - 3 }, TXT_CONST.SPACE);
+						ConsoleRender::Add_String(_15_1, { map.Get_Limit(LEFT) - Half_String(_15_1) - 4 , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_DR, 1);
+						ConsoleRender::Add_Char({ map.Get_Limit(LEFT) + Half_String(_15_1) - 2 , map.Get_Limit(UP) - 3 }, TXT_CONST.SPACE);
 
 						gBotMoveTimer.Start_Timer(prevMovSpeed, 1, true);	// Rétablit la vitesse précédante
 						ev_BotTutorial2.delay.Stop();
@@ -258,7 +260,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 13:
-				ConsoleRender::Add_String(_15_2, { map.Get_Box_Limit(RIGHT) - Half_String(_15_2) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_2, { map.Get_Limit(RIGHT) - Half_String(_15_2) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Set_Flashy_Border(RIGHT, 11);
 				Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller Jerry
 
@@ -301,7 +303,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 			case 19:
 				if (!jerryTime && P1.Get_HP() != 0)
 				{
-					ConsoleRender::Add_String(_15_2, { map.Get_Box_Limit(RIGHT) - Half_String(_15_2) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(_15_2, { map.Get_Limit(RIGHT) - Half_String(_15_2) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
 
 					Draw_Tuto_Progression(1);
 					Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
@@ -319,7 +321,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				Draw_Tuto_Progression(0);
 
 				stepToSendBack = 20;	// si le joueur fail ce test, il sera send back icitte
-				ConsoleRender::Add_String(_24, Jerry_Txt_Crd(_24), WHITE, TXT_SPD_DR);
+				ConsoleRender::Add_String(_24, { map.Get_Limit(RIGHT) + 35 - (int)std::size(_24) / 2, map.Get_Limit(UP) }, WHITE, TXT_SPD_DR);
 
 
 				MsgQueue::Register(DISABLE_BLAST);
@@ -339,7 +341,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 
 			case 22:
 				Build_Lvl_1_Walls();
-				ConsoleRender::Add_String(_25, { map.Get_Box_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, GRAY, TXT_SPD_DR);	// lols
+				ConsoleRender::Add_String(_25, { map.Get_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, GRAY, TXT_SPD_DR);	// lols
 
 				MsgQueue::Register(DISABLE_BLAST);
 
@@ -355,7 +357,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				break;
 
 			case 24:
-				ConsoleRender::Add_String(_15_2, { map.Get_Box_Limit(RIGHT) - Half_String(_15_2) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
+				ConsoleRender::Add_String(_15_2, { map.Get_Limit(RIGHT) - Half_String(_15_2) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);	// réaffichage
 				Set_Flashy_Border(RIGHT, 11);
 				Ev_Flash_Map_Border();
 
@@ -416,11 +418,11 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				if (!jerryTime && P1.Get_HP() != 0)
 				{
 					blastP1.Get_Ammo_Manager().Deactivate();
-					ConsoleRender::Add_String(_24, Jerry_Txt_Crd(_24), gBossClr, TXT_SPD_ER, 1);
-					ConsoleRender::Add_String(_25, { map.Get_Box_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, WHITE, TXT_SPD_ER, true);	// lols
+					ConsoleRender::Add_String(_24, { map.Get_Limit(RIGHT) + 35 - (int)std::size(_24) / 2, map.Get_Limit(UP) }, gBossClr, TXT_SPD_ER, 1);
+					ConsoleRender::Add_String(_25, { map.Get_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, WHITE, TXT_SPD_ER, true);	// lols
 
 
-					ConsoleRender::Add_String(_15_2, { map.Get_Box_Limit(RIGHT) - Half_String(_15_2) , map.Get_Box_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
+					ConsoleRender::Add_String(_15_2, { map.Get_Limit(RIGHT) - Half_String(_15_2) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
 					ListsOfChainToModify::Annihilate_All_Links();
 					P1.Set_Hp(3);
 
@@ -466,6 +468,7 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 		}
 	}
 }
+
 
 void Cancel_All_That_Buggy_Shit() {
 	ev_BotTutorial2.Cancel();

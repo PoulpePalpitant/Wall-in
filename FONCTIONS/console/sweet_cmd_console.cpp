@@ -3,8 +3,6 @@
 #include "../UI/map.h"
 
 
-// Globales stuff
-
 HWND GAME_WND = GetConsoleWindow();		// La fenêtre du jeu
 RECT rect; // Dimension de la fenêtre
 int gConWidth;
@@ -28,14 +26,12 @@ void Upd_Console_Size()
 
 void Set_Console_Name()
 {
-	
 	LPCTSTR GameName = "Wall In "; // LE TITRE DU JEU
 	SetConsoleTitle(GameName);
 }
 
 void Set_Dflt_WND()
 {
-	
 	// Bon, ce que j'ai trouvé: Je met la font par défaut que j'apprécie sur mon écran, je met ensuite la console en fullscreen pour calculer c'est quoi la largeur et la longueur max
 	// Par après je reset la console et je fais la même chose. Sauf que cette fois-ci, la dimension de la font est ralative au valeur max trouvé!!
 
@@ -68,7 +64,7 @@ void Set_Dflt_WND()
 
 
 
-
+// Cette façon de faire ne marchera pas bien si la personne utilise une résolution plus grande ou plus petite que 100% dans ses paramètres d'écrans
 static int Adapt_Font_To_Screen()	// permet de changer la font du jeu selon le gear du joueur
 {
 	// 236 de longueur, mon écran
@@ -77,7 +73,7 @@ static int Adapt_Font_To_Screen()	// permet de changer la font du jeu selon le g
 	if (gConHeight <= 46)
 		return 10;
 	else
-		if (gConHeight > 46 && gConHeight <= 50)	// écran d'étienne, un écran de portable de gaming
+		if (gConHeight > 46 && gConHeight <= 50)
 			return 12;
 		else
 			if (gConHeight > 50 && gConHeight <= 60)
@@ -98,11 +94,11 @@ void Change_Font(bool deflt, int size ) {
 	if (deflt)
 		cfi.dwFontSize.Y = size;
 	else
-		cfi.dwFontSize.Y = Adapt_Font_To_Screen();                  // Height
+		cfi.dwFontSize.Y = Adapt_Font_To_Screen();                  
 
 	cfi.FontFamily = FF_DONTCARE;
 	cfi.FontWeight = FW_NORMAL;
-	wcscpy_s(cfi.FaceName, L"Consolas"); // Choose your font
+	wcscpy_s(cfi.FaceName, L"Consolas"); 
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
 
@@ -119,9 +115,9 @@ void Hide_Cursor()			// rend le curseur invisible
 	SetConsoleCursorInfo(hout, &cursor);			//pass the cursor info structure and our handle	to this function and we're done :)
 }
 
-void Change_Typography()	// oldway
+void Change_Typography()	
 {
-	_COORD con;	// Dimension de la console
+	_COORD con;
 
 	// LA FONT DES CHARACTÈRES DE LA CONSOLE
 	// **************************************
@@ -202,13 +198,6 @@ void Disable_Quick_Edit()
 	SetConsoleMode(hInput, prev_mode & ENABLE_EXTENDED_FLAGS);
 }
 
-
-void Shake_That_Window()
-{
-
-
-
-}
 
 // Tools
 // *****

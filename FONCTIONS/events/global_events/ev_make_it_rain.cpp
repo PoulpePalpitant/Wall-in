@@ -7,10 +7,10 @@
 #include "../../grid/AllGrids.h"
 #include "../../console/sweet_cmd_console.h"
 
-static int steps = 5;
+static int MAX_STEPS = 5;
 
-static Event ev_MakeItRain(Ev_Make_It_Rain, steps);
-DrawerQueue Q_ev_MakeItRain(1550 , steps);		// Queue de 50, avec 5 steps
+static Event ev_MakeItRain(Ev_Make_It_Rain, MAX_STEPS);
+DrawerQueue Q_ev_MakeItRain(1550 , MAX_STEPS);		// Queue de 50, avec 5 MAX_STEPS
 
 static Coord xy;	// dollars positions
 const int rainSpd = 110000;	// viteese d'apparition des dollars	

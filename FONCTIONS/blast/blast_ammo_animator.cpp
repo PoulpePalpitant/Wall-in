@@ -36,7 +36,7 @@ namespace DrawBlastAmmo {
 
 	Coord Get_Ori()		// Permet de trouver la coord d'origine d'où on va afficher la bar. Cette crd se fit elle même au coin HAUT_DROIT de la map. 
 	{
-		return { map.Get_Box_Limit(RIGHT) + mapToBar, (map.Get_Box_Limit(UP) - 1) };
+		return { map.Get_Limit(RIGHT) + mapToBar, (map.Get_Limit(UP) - 1) };
 	}
 
 
@@ -372,12 +372,12 @@ namespace DrawBlastAmmo {
 		if (show)
 		{
 			if (ammoCount < 100)
-				ConsoleRender::Add_String(ammoTitle, { (map.Get_Box_Limit(RIGHT) + 11),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
+				ConsoleRender::Add_String(ammoTitle, { (map.Get_Limit(RIGHT) + 11),(map.Get_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
 			else
-				ConsoleRender::Add_String(ammoTitle, { (map.Get_Box_Limit(RIGHT) + 12),(map.Get_Box_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
+				ConsoleRender::Add_String(ammoTitle, { (map.Get_Limit(RIGHT) + 12),(map.Get_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
 		}
 		else
-			ConsoleRender::Add_String("       ", { (map.Get_Box_Limit(RIGHT) + 10),(map.Get_Box_Limit(UP) - 1) }, WHITE, 0, 1);	// AMMO
+			ConsoleRender::Add_String("       ", { (map.Get_Limit(RIGHT) + 10),(map.Get_Limit(UP) - 1) }, WHITE, 0, 1);	// AMMO
 
 	}
 

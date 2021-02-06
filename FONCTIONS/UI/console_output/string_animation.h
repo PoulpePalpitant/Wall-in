@@ -6,30 +6,26 @@
 #include "../../time/movement_timer.h"
 #include "../../events/global_events/clear_all_states.h"
 
-/*
-OPTIMISATION:
-	Ultimement, l'animation queue devrait plutôt être convertit en 1 event qui gère des drawer queues! Ça règlerais le problème de framerate sur tout les affichages de string
-*/
 
-// Une data de base à afficher dans la console
+// Une donnée de base à afficher dans la console
 struct CharData
 {
-	Coord crd = { 0,0 };		// position
-	char symbol = 'B';		// symbole ascii
-	Colors clr = WHITE;		// couleur
+	Coord crd = { 0,0 };	
+	char symbol = 'B';		
+	Colors clr = WHITE;		
 };
 
 
 class StringQueue
 {
 	int nbChar = 0;
-	int curr = 0;	// La position où on se trouve, le prochain char à afficher dnas la liste
+	int curr = 0;		
 
-	void Add(Coord XY, char sym, Colors clr);		// Ajoute un élément à draw
+	void Add(Coord XY, char sym, Colors clr);		
 public:
-	SpeedTimer* timer;	// Entre chaque output dans cette liste
-	CharData* queue = NULL;			// La queue de la string à afficher
-	StringQueue* nxt = NULL;			// La prochaine
+	SpeedTimer* timer;				
+	CharData* queue = NULL;			
+	StringQueue* nxt = NULL;		
 
 	void Add_String(Coord XY, std::string, Colors clr, bool erase);
 	int Get_Current() { return curr; }
@@ -40,7 +36,7 @@ public:
 	{
 		queue = new CharData[stringLength];
 		timer = new SpeedTimer(false);				// dumb fix pour éviter d'utiliser le constructor qui assigne un id
-		timer->Start_Timer(speed, stringLength);	// Le timer va reset pour le nb de char présent dans la string
+		timer->Start_Timer(speed, stringLength);	
 	}
 
 	~StringQueue()

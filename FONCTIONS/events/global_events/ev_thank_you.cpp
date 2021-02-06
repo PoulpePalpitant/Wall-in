@@ -35,7 +35,7 @@ void Ev_Thks_For_Playing()
 		clrscr();
 		Event::Cancel_All();		// Tout les events
 		ConsoleRender::Add_String(grats, { Find_Ctr_String_X(grats),y}, BRIGHT_WHITE, TXT_SPD_DR * .75);
-		Ev_GG();
+		Ev_GG();		
 
 		ev_ThksForPlaying.Activate();
 		ev_ThksForPlaying.Start(300);

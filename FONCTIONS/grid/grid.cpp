@@ -3,16 +3,11 @@
 #include "grid.h"
 #include "../console/sweet_cmd_console.h"
 
-// CONSTANTES POUR L'AFFICHAGE SEULEMENT
-// *************************************
-//
-//const int START_X = 54;	// Position, sur l'axe des X de la console, du coin supérieur gauche du MAIN grid
-//const int START_Y = 8;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du MAIN grid
 
 int START_X = 0;	// Dépend de l'écran du joueur mon gars!!!!
-int START_Y = 0;	// Dépend de l'écran du joueur mon gars!!!!
+int START_Y = 0;
 
-const int DELTA_X = 5;	// Distance séparant chaque point du du Main Grid en X 
+const int DELTA_X = 5;	
 const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer sur cette distance
 
 
@@ -20,36 +15,41 @@ const int DELTA_Y = 3;	// Note:  Le joueur peut uniquement se déplacer sur cette
 GrdCoord gGrd;
 
 
-// LOGIQUES DES GRIDS: MAIN GRID, WALL GRID ET SPAWN GRID
+// LOGIQUES DES GRIDS: Link GRID, WALL GRID ET SPAWN GRID
 // ------------------------------------------------------
 
 /*	
+"POST-MORTEM
+	Ceci est extrêmement stupide xD"
+
+
 	Chaque niveau est consitué de plusieurs Grids logiques qui permettent notamment de naviguer l'espace de la console.
-	Le terrain de jeu est construit par un Grid (main Grd) sur lequelle le joueur peut se déplacer. Le joueur ne peut sortir
+	Le terrain de jeu est construit par un Grid (LinkGrd) sur lequelle le joueur peut se déplacer. Le joueur ne peut sortir
 	de Ce Grid, et ne peut pas bouger autrement que par l'intervalle qui sépare chaque point du Grid. Le joueur peut tirer,
-	et ces tirs laissent une ligne qu'on appel simplement un Wall. Chaque Walls sont relié par les point du Main Grid comme 
-	ça : O----O----O		 Mgrid = O    Walls = ---- 
+	et ces tirs laissent une ligne qu'on appel simplement un Wall. Chaque Walls sont relié par les "Link" du LinkGrid comme 
+	ça : O----O----O		 Lgrid = O    Walls = ---- 
 	
 	Pour retracer la localisation de chaque wall, un Grid horizontal[col][lig] et vertical[col][lig] est nécessaire.
-	À NOTER: contrairement au main Grid qui est constitué d'unique	Coordonnées XY dans la console, un Wall sur le wall grid
+	À NOTER: contrairement au LinkGrid qui est constitué d'unique coordonnées XY dans la console, un Wall sur le wall grid
 	est constitué de plusieurs charatères sur une suite de case. Pour convertir la position logique en une Coord XY	dans 
 	la console on procède avec la logique suivante : le premier char du wall se trouve à +1 case du main grid	 
 
-	 LEGENDE:	M= XY Main Grid			W = XY WallGrid 		Le reste des walls : ---, |||
+	 LEGENDE:	L= XY LinkGrid			W = XY WallGrid 		Le reste des walls : ---, |||
 
-		HorizontalWall Grid:	MW---	(+1 en X)				Vertical Wall Grid : M	(+1 en Y)
+		HorizontalWall Grid:	LW---	(+1 en X)				Vertical Wall Grid : M	(+1 en Y)
 																					 w
 																					 |
 																					 |
-	
-	SPAWN GRID: ...
+	SPAWN GRID: 
+	Le spawngrid sert à faire spawner des "bots". Il est constitué de 4 "bordures" de spawns(1 pour chaque côté de la box du jeu,
+	 contenants chaucun un certain nombre de spawns (coord XY). Ce "grid"  se situe en à l'extérieur du Linkgrid (distance de  map.Get_Limit +/- GAP_BTW_GRID)
+	 La position xY suivent la même logiques que les wallGrid, c'est à dire un décalage de 1 case droite, ou en bas de chaque Links
 
+	 Tout ces grids sont contenus dans un objet global nommé AllGrids.
 */
 
-// Méthode de Création de base d'un grid selon les dimensions colonnes et lignes (ici, le grid est de type int, et sera aussi jamais utilisé lol)
 void Grid::Create(int col, int row, int** &grid)	 // Ceci entâme la CRÉATION D'UN GRID!
 {
-	// Le grid va pointer vers la liste de colonnes
 	grid = new int * [col];
 
 	// Chaques colonnes aura une liste de lignes(rows) contenant chacun 1 élément du Grid
@@ -57,35 +57,32 @@ void Grid::Create(int col, int row, int** &grid)	 // Ceci entâme la CRÉATION D'U
 		grid[i] = new int[row];
 
 		for (int j = 0; j < row; j++){
-			grid[i][j] = {};	// Peut mettre une valeur par défaut
+			grid[i][j] = {};
 		}
 	}
-	UpdSize(col, row);	// Update le nb de col et de rows
+	UpdSize(col, row);	
 }
 
 // Détruit tout ce qui se trouvait sur le grid et le redimensionne
 void Grid::Resize(int col, int row, int** &grid)
 {	
-	int maxCol = this->Get_Cols();	// Le nombre max de colonnes
+	int maxCol = this->Get_Cols();	
 
-	// DESTRUCTION
 	for (int i = 0; i < maxCol; ++i) {
 		delete[] grid[i];
 	}
 
-	delete[] grid;	// Détruit le tableau de tableaux
+	delete[] grid;	
 
-	// CRÉATION
 	Create(col, row, grid);
 }
 
-// Vérification de si le nb de col et de row son valide selon la dimension du Grid
 bool Grid::Is_Inbound(GrdCoord crd)
 {
-	if (crd.c > this->Get_Cols() - 1 || crd.r > this->Get_Rows() - 1)	// Validation d'une coordonnée trop grande
+	if (crd.c > this->Get_Cols() - 1 || crd.r > this->Get_Rows() - 1)	
 		return false;
 
-	if (crd.c < 0 || crd.r < 0)		// Validation d'une coordonnée dans les négatifs
+	if (crd.c < 0 || crd.r < 0)		
 		return false;
 
 	return true;
@@ -98,7 +95,6 @@ void Equal_Coordinates(GrdCoord& from, GrdCoord to)
 	from.r = to.r;
 }
 
-// Permet de comparer deux points ensemble. Si les deux ne sont pas égals, return false
 bool Are_Equal(const GrdCoord &crd1, const GrdCoord &crd2)
 {
 	if (crd1.c == crd2.c)

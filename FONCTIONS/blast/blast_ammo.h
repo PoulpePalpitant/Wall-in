@@ -8,7 +8,7 @@
 class BlastAmmo
 {
 	bool active = false;		// Si inactif, le joueur peut tirer à l'infinie	
-	int ammo;			// Le nombre de shot restant que le joueur peut faire
+	int ammo;			
 	int emergencyAmmo;
 
 	// UI
@@ -17,15 +17,14 @@ class BlastAmmo
 
 public:
 	// FONCTIONS PRINCIPALES 
-	bool Is_Active() { return active; }	// is it?
+	bool Is_Active() { return active; }	
 	void Deactivate();	
 	void Activate(bool redraw = 1);
-	bool Ammo_Available() { return ammo; }	// Can we shoot?
-	bool Shoot();	// Spend un "shot"
-	int Get_Nb_Ammo() { return ammo; }	// that amount
+	bool Ammo_Available() { return ammo; }	
+	bool Shoot();	
+	int Get_Nb_Ammo() { return ammo; }
 	int Get_Nb_Emergency_Ammo() { return emergencyAmmo; }
 	void Add_Ammo(int amm = 1);
-	bool Drain_Health_For_Shot();	
 	bool Use_Emergency_ammo();		// Si le joueur ne possède plus d'ammo, il peut tirer encore 2 fois 
 
 	// SET

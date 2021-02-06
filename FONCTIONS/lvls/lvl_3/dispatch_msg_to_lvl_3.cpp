@@ -26,6 +26,7 @@
 #include "../../events/global_events/ev_thank_you.h"
 #include "../../grid/managegrids.h"
 #include "../../items/item_spawner.h"
+#include "../../DB/database.h"
 
 static bool seenLevelTitle = false;
 
@@ -36,15 +37,15 @@ void Dispatch_Msg_To_Lvl_3()
 	// The bare minimum!
 	switch (gCurrentMsg)
 	{
-	case PLS_INTIALIZE_LVL: Lvl_3_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
+	case PLS_INTIALIZE_LVL: Lvl_3_Initializer();	break;		
 
 	case STAGE_ADVANCE:
-		Event::Cancel_All();		// Tout les events en cours sont annulés
+		Event::Cancel_All();		
 		clrscr();
 		ListsOfChainToModify::Annihilate_All_Links();
 		botList.Destroy_All_Bots();
 
-		if (gCurrentPuzzle[gCurrentLevel - 1] == 0)	// Si le checkpoint actuel est autre que ZÉRO
+		if (gCurrentPuzzle[gCurrentLevel - 1] == 0)	
 		{
 
 			if (!seenLevelTitle)
@@ -77,9 +78,9 @@ void Dispatch_Msg_To_Lvl_3()
 		Init_Puzzle();
 
 
-		MsgQueue::Register(START_BOTS); // Here they come baby
+		MsgQueue::Register(START_BOTS); 
 		gSkipTutorial = false;
-		gDayStarted = true;
+		gLevelStarted = true;
 		break;
 
 	case LOAD_CHECKPOINT:
@@ -93,6 +94,8 @@ void Dispatch_Msg_To_Lvl_3()
 		if (gCurrentStage == 2)
 		{
 			Ev_Thks_For_Playing();	// Le jeu est finit
+			gameCompleted = true;
+			Save();
 		}
 		else
 			Go_Back_To_Menu();

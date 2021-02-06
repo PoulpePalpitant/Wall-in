@@ -23,7 +23,7 @@ void Ev_Dr_Game_Title()
 	int x = Find_Ctr_X(sizeof("                                                                                                         "));
 	int y = 12;
 	
-	Colors clr = gameCompleted ? LIGHT_YELLOW : WHITE;
+	Colors clr = gameCompleted ? LIGHT_AQUA: WHITE;
 
 	ConsoleRender::Add_String("WWWWWWWW                           WWWWWWWW                lllllll lllllll     IIIIIIIIII                ",{x,y}, clr);y++;
 	ConsoleRender::Add_String("W::::::W                           W::::::W                l:::::l l:::::l     I::::::::I                ",{x,y}, clr);y++;

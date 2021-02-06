@@ -6,18 +6,17 @@ namespace DrawModifierQueue {
 													
 	DrawerQueue consume = {};		// Queue d'animation pour le swipe gauche-droite quand le premier élément est retiré
 
-	// 13
-	static const int baseSpd = 5000;// vitesse constante
+	static const int BASE_SPEED = 5000;
 
 	void UI_Dr_Consume_First()
 	{
-		if (!consume.total) return;	// Liste vide
+		if (!consume.total) return;	
 
-		static Drawer* draw;	/// my pencil	
-		static int X;				// facilite l'affichage
-		static int Y;				// facilite l'affichageS
+		static Drawer* draw;		
+		static int X;				
+		static int Y;				
 		static int toUpdate;
-		static int updated;				// nb d'animations updaté
+		static int updated;			
 
 		updated = 0;
 		toUpdate = consume.total;
@@ -25,10 +24,10 @@ namespace DrawModifierQueue {
 		for (int index = 0; updated < toUpdate; index++)
 		{
 			if (!consume.Is_Active(index))
-				continue;	// passe au suivant
+				continue;
 
 			draw = &consume.drawer[index];
-			updated++;	// updated
+			updated++;	
 
 			while (draw->timer.Tick())
 			{
@@ -49,8 +48,7 @@ namespace DrawModifierQueue {
 					ConsoleRender::Add_Char({ X - 4, Y }, 219);
 					ConsoleRender::Add_Char({ X + 6,Y }, 250, LIGHT_RED);
 					ConsoleRender::Add_Char({ X - 6,Y }, 250, LIGHT_RED);
-					//ConsoleRender::Add_String(line, { titleCrd.x + 3, titleCrd.y + 4 }, LIGHT_RED);
-					draw->timer.Start_Timer(baseSpd);
+					draw->timer.Start_Timer(BASE_SPEED);
 					draw->currStep++;
 					break;
 
@@ -65,8 +63,7 @@ namespace DrawModifierQueue {
 					ConsoleRender::Add_Char({ X - 4, Y }, TXT_CONST.SPACE, BLACK);
 					ConsoleRender::Add_Char({ X + 6,Y }, 250, WHITE);
 					ConsoleRender::Add_Char({ X - 6,Y }, 250, WHITE);
-					//ConsoleRender::Add_String(line, { titleCrd.x + 3, titleCrd.y + 4 }, WHITE);
-					consume.Remove(index);// fin
+					consume.Remove(index);
 					break;
 				}
 			}

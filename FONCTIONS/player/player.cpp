@@ -1,4 +1,3 @@
-#include <iostream>
 
 #include "../grid/AllGrids.h"
 #include "../UI/console(v1.9).h"
@@ -11,50 +10,36 @@
 #include "../blast/blast_ammo.h"
 #include "../inputs/action_input.h"
 
-extern Player P1 = {};		// Un joueur! 
-extern Player P2 = {};		// Des joueurs!
-
-
+extern Player P1 = {};		
 
 bool Player::Cant_Do_Stuff() {
 	return gBlockInputs;
 }
 
-
-
-// En général, le joueur perdra 1hp seulement
-void Player::Player_Lose_HP(int hpLost)
+void Player::Player_Lose_HP(int hpLost)	
 {
 	if (hp > 0)
 	{
 		hp -= hpLost;
-
-		//if (hp > 0)
-		//	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
-		//else
-		//	Start_Ev_Dr_Heart(0);	// important de mettre 0 ici, car ça peut être plus bas
-
 		Upd_State();
 	}
 }
 
 
-// Gagne 1 point de vie!
 void Player::Player_Gains_HP(int hpGain)
 {
 	hp += hpGain; 
-	Upd_State();	// Change le state du joueur
-	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
+	Upd_State();	
+	Start_Ev_Dr_Heart(hp);		 
 }
 
-void Player::Reset_Hp_And_Heart(int HP)	// 3 d'hp par défaut
+void Player::Reset_Hp_And_Heart(int HP)	
 {
 	hp = HP;
-	Upd_State();	// Change le state du joueur
-	Start_Ev_Dr_Heart(hp);		 //  coeur est réaffiché
+	Upd_State();	
+	Start_Ev_Dr_Heart(hp);		 
 }
 
-// Change le STate du joueur quand son hp tombe à 0 ou devient plus grand que zéro
 void Player::Upd_State()
 {
 	if (hp > 0)
@@ -62,24 +47,17 @@ void Player::Upd_State()
 	else
 	{
 		state = PlayerState::DEAD;	
-		MsgQueue::Register(DEFEAT);	// dead
+		MsgQueue::Register(DEFEAT);	
 	}
 }
 
-void Player::Reset_State()	// health, crd, and state
-{
-	Set_Hp(3);
-	state = ALIVE;
-	Set_Position({ 6,6 });
-}
-
-// Change la couleur du joueur quand il pred ou gagne de la vie
+// Change la couleur du joueur quand son prochain tir est d'un certains type
 void Player::Upd_Color()													
 {
 	static int tempMod;
 
-	if (!BlastModifierQueue::queue.Get_Nth_Element(1, tempMod))	// Prend le premier élément.
-		tempMod = 0;	// si vide, tempmod est égal à regular
+	if (!BlastModifierQueue::queue.Get_Nth_Element(1, tempMod))
+		tempMod = 0;	
 
 	switch ((Modifier)tempMod)
 	{
@@ -93,7 +71,7 @@ void Player::Upd_Color()
 
 	}
 
-	Dr_Player(); // Display le joueur si on update sa couleur booda
+	Dr_Player(); 
 }
 
 
@@ -101,19 +79,18 @@ void Player::Upd_Color()
 void Player::Dr_Player()
 {
 	static Coord crd;
-	crd = Get_XY();	// Position XY
+	crd = Get_XY();
 	
-	ConsoleRender::Add_Char(crd, sym, clr); 	// display
+	ConsoleRender::Add_Char(crd, sym, clr); 	
 }
 
-void Player::Er_Player()									// fait juste effacer
+void Player::Er_Player()						
 {
-	ConsoleRender::Add_Char(Get_XY(), TXT_CONST.SPACE); 	// display
+	ConsoleRender::Add_Char(Get_XY(), TXT_CONST.SPACE); 	
 }
 
 void Player::Move_And_Draw_Player(GrdCoord crd)			// Teleporte virtuellement le joueur
 {
-	// On teleport le joueur à un endroit probablement ailleurs
 	if (gGrids.linkGrd.link[crd.c][crd.r].Get_State() != LinkState::DEAD)
 		gGrids.linkGrd.link[crd.c][crd.r].Dsp_Link();
 	else
@@ -123,7 +100,6 @@ void Player::Move_And_Draw_Player(GrdCoord crd)			// Teleporte virtuellement le 
 	P1.Dr_Player();
 }
 
-// Change le symbole du joueur lors d'un mouvement
 void Player::Upd_Sym_From_Direction(Direction dir)								
 {
 	sym = AllPlyrSym[dir];
@@ -131,7 +107,7 @@ void Player::Upd_Sym_From_Direction(Direction dir)
 
 void Player::Set_Timeout(int time)			// Freeze le joueur pour une durée de temps 
 {	
-	timeout.Set_Cd_Duration((float)time);				// Sert principalement pour lui montrer un queue visuel quand il ne peut pas se déplacer
+	timeout.Set_Cd_Duration((float)time);	// Sert principalement pour lui montrer un queue visuel quand il ne peut pas se déplacer
 	timeout.Start_CountDown();
 }
 
@@ -141,20 +117,16 @@ void Player::Upd_Player_Timeout()
 	{
 		timeout.Tick_Timer();
 		
-		if (!timeout.Is_Running())	// Timer finit
+		if (!timeout.Is_Running())	
 			ConsoleRender::Add_Char(Get_XY(), sym, clr);		// Ré-affiche toujours le joueur après un timeout
 	}
 }
 
-Coord Player::Get_XY()										// Retrouva la crd du player dans la console
+Coord Player::Get_XY()									
 {
 	if (linkGrid->Is_Inbound(grdCrd))
 		return linkGrid->link[grdCrd.c][grdCrd.r].Get_XY();
 	else
-		return { -1,-1 };	// Player n'est pas dans le grid
+		return { -1,-1 };	
 }
 
-bool Player::Set_On_Grid()												// 
-{
-	return (isOnGrid = linkGrid->Is_Inbound(grdCrd));
-}

@@ -5,8 +5,6 @@
 
 const int MAX_ITEMS = 500;
 
-
-
 class ItemsOnGrid
 {
 public:

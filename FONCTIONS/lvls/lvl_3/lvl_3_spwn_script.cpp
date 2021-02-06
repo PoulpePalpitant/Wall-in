@@ -48,12 +48,11 @@ void Puzzle_3_15();
 void Puzzle_3_16();
 void Puzzle_3_17();
 void Puzzle_3_18();
-//void Puzzle_3_19();
 void Puzzle_3_FINAL();
 
 
 // VOICI  l'ordre dans lequel sera joué les puzzles
-void (*LVL3_PUZZLES[])() = {	// definition 
+void (*LVL3_PUZZLES[])() = {	
 Puzzle_3_0,
 Puzzle_3_1,
 Puzzle_3_2,
@@ -73,7 +72,6 @@ Puzzle_3_15,
 Puzzle_3_16,
 Puzzle_3_17,
 Puzzle_3_18,
-//Puzzle_3_19,
 Puzzle_3_FINAL
 };
 
@@ -87,8 +85,8 @@ void Lvl_3_Spwn_Script()	// HERE WE GO AGAIN
 	{
 		skip = 0;		
 
-		LVL3_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
-		gCurrPuzzleStep++;	// Prochain step du puzzle!
+		LVL3_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	
+		gCurrPuzzleStep++;
 
 		if (skip)
 			gSpwBotTimer.Add_Count(skip);
@@ -101,8 +99,8 @@ void Puzzle_3_0()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2 , 11 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(7);// Quantité d'ammo
+	case 0:P1.Set_Position({ linkGrid->Get_Cols() / 2 , 11 });			
+		blastP1.Get_Ammo_Manager().Set_Ammo(7);
 		gCurrPuzzleStepMax = 12;
 		seenFinalHour = false;
 
@@ -141,7 +139,6 @@ void Puzzle_3_1()
 		blastP1.Get_Ammo_Manager().Set_Ammo(1);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
-		// Very Temporary! Doit être remove
 		ConsoleRender::Add_String(" TELEPORTATION SHOT", { (Find_Ctr_X((int)std::size(" TELEPORTATION SHOT")) / 2) / 2, (gConHeight / 2) / 2 }, BRIGHT_WHITE, TXT_SPD_DR);
 		ConsoleRender::Add_String("(Shoot, then spacebar)", { (Find_Ctr_X((int)std::size("(Shoot , then spacebar)")) / 2) / 2 , (gConHeight / 2) / 2 + 2 }, WHITE, TXT_SPD_DR);
 
@@ -322,17 +319,16 @@ void Puzzle_3_4()
 		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 
-		// Version horizontal
 		for (short c = 0; c < linkGrid->Get_Cols(); c++)
 		{
 			gGrids.Activate_Link({ c, 5 }, Modifier::BLOCKER);
 			gGrids.Activate_Link({ c, 9 }, Modifier::BLOCKER);
 		}
 
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 8 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 6 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ 0, 6 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ 0, 8 }, Modifier::BLOCKER); // tip
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 8 }, Modifier::BLOCKER); 
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 6 }, Modifier::BLOCKER); 
+		gGrids.Activate_Link({ 0, 6 }, Modifier::BLOCKER); 
+		gGrids.Activate_Link({ 0, 8 }, Modifier::BLOCKER); 
 
 		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2 - 1].Activate_Lonely_Link(Modifier::FORCEFIELD);
 		linkGrid->link[linkGrid->Get_Cols() / 2][linkGrid->Get_Rows() / 2].Activate_Lonely_Link(Modifier::FORCEFIELD);
@@ -779,11 +775,11 @@ void Puzzle_3_13()
 			gGrids.Activate_Link({ c, 9 }, Modifier::BLOCKER);
 		}
 
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 8 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 7 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 6 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ 0, 6 }, Modifier::BLOCKER); // tip
-		gGrids.Activate_Link({ 0, 8 }, Modifier::BLOCKER); // tip
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 8 }, Modifier::BLOCKER);
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 7 }, Modifier::BLOCKER);
+		gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 6 }, Modifier::BLOCKER);
+		gGrids.Activate_Link({ 0, 6 }, Modifier::BLOCKER);
+		gGrids.Activate_Link({ 0, 8 }, Modifier::BLOCKER);
 
 		gGrids.Make_Chain_Of_Walls({ start , linkGrid->Get_Rows() / 2 }, RIGHT, numWalls, WallType::REGULAR, Modifier::REGULAR);
 		linkGrid->link[linkGrid->Get_Cols() / 2 + numWalls][linkGrid->Get_Rows() / 2].Activate_Lonely_Link(Modifier::BUFFER);
@@ -833,7 +829,7 @@ void Puzzle_3_14()
 			if(c < 13)
 			 gGrids.Activate_Link({ 6 + c, 4 }, Modifier::BLOCKER);
 		}
-		gGrids.Activate_Link({ 18, 3 }, Modifier::BLOCKER);//tip
+		gGrids.Activate_Link({ 18, 3 }, Modifier::BLOCKER);
 
 		for (int r = 0; r < 8; r++)
 		{
@@ -850,7 +846,7 @@ void Puzzle_3_14()
 			if (c < 16)
 				gGrids.Activate_Link({ 6 + c, 8 }, Modifier::BLOCKER);
 		}
-		gGrids.Activate_Link({ 21, 9 }, Modifier::BLOCKER);//tip
+		gGrids.Activate_Link({ 21, 9 }, Modifier::BLOCKER);
 		break;
 
 	case 1:Add_Spec(UP, 16); instantSpawn = true; break;
@@ -1242,7 +1238,7 @@ void Puzzle_3_FINAL()
 
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 13,7 });				// Coord de départ du jouer
+	case 0:P1.Set_Position({ 13,7 });				
 		blastP1.Get_Ammo_Manager().Set_Ammo(15);
 		gCurrPuzzleStepMax = 12;
 
@@ -1265,7 +1261,7 @@ void Puzzle_3_FINAL()
 		if (!seenFinalHour)
 		{
 			MsgQueue::Register(LOCK_PLAYER);
-			MsgQueue::Register(FINAL_HOUR);	// montre ça juste une fois, EVER
+			MsgQueue::Register(FINAL_HOUR);	
 			P1.Er_Player();
 			seenFinalHour = true;
 			skip = 10;
@@ -1287,8 +1283,6 @@ void Puzzle_3_FINAL()
 
 		for (int c = 0; c < linkGrid->Get_Cols(); c++)
 		{
-			//gGrids.Make_Chain_Of_Walls({ c,5 }, UP, 1);
-			//gGrids.Make_Chain_Of_Walls({ c,9 }, DOWN, 1);
 			gGrids.Activate_Link({ c,5 });
 			gGrids.Activate_Link({ c,9 });
 		}
@@ -1399,7 +1393,7 @@ void Puzzle_3_FINAL()
 		}
 		break;
 
-	case 17:dir = LEFT; /*Add(2);Set_Interval(dir, 5, 9); skip = 7;*/ skip = 3; break;
+	case 17:dir = LEFT;skip = 3; break;
 	case 18:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
 	case 19:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
 	case 20:Add(2);Set_Interval(dir, 5, 9);skip = 3;		 break;
@@ -1418,8 +1412,6 @@ void Puzzle_3_FINAL()
 			Clear_Map();
 
 			blastP1.Get_Ammo_Manager().Activate(0);
-			DrawBlastAmmo::Dr_Or_Er_Bar(DrawBlastAmmo::barLength + 1, DrawBlastAmmo::barProgClr);	// Fix un bug d'ui
-			
 
 			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
@@ -1432,8 +1424,6 @@ void Puzzle_3_FINAL()
 				gGrids.Activate_Link({ c,9 }, Modifier::BUFFER);
 			}
 
-			/*gGrids.Activate_Link({ 11,7 }, Modifier::BUFFER);
-			gGrids.Activate_Link({ 15,7 }, Modifier::BUFFER);*/
 			gGrids.Activate_Link({ 11,8 }, Modifier::BUFFER);
 			gGrids.Activate_Link({ 15,6 }, Modifier::BUFFER);
 			gGrids.Activate_Link({ 13,7 }, Modifier::BUFFER);
@@ -1558,7 +1548,7 @@ void Puzzle_3_FINAL()
 
 		// The end...
 		MsgQueue::Register(STOP_BOT_SPAWNS);
-		Ev_Wait_For_Victory(); // Wait que le dernier bot meurt pour trigger la victoire
+		Ev_Wait_For_Victory(); 
 		break;
 	}
 	

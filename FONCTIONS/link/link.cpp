@@ -7,18 +7,17 @@
 #include "link.h"
 
 
-LinkMeta Link::meta = {};	// metton
+LinkMeta Link::meta = {};	
 
-// La position x et y du Link dans la console, par rapport à son propre LinkGrid
 void Link::Set_LinkXY(int col, int row)
 {
 	this->coord.x = START_X + DELTA_X * col;			
 	this->coord.y = START_Y + DELTA_Y * row;
 }
 
-void Link::Set_State(Wall* child )	// Assigne le state 
+void Link::Set_State(Wall* child )	
 {
-	if (!this->pParent)	// Pas de Parent? T'es le premier d'une ligné!
+	if (!this->pParent)			// Pas de Parent? T'es le premier d'une ligné!
 		state = LinkState::ROOT;
 	else
 		if (child == NULL)
@@ -27,38 +26,34 @@ void Link::Set_State(Wall* child )	// Assigne le state
 			state = LinkState::BOUND;		// Ah, tu es lié finalement
 }
 
-// Change la couleur et le symbole selon le Type et le State du Link
 void Link::Set_UI()						
 {
 	switch (this->modifier)
 	{
 	case Modifier::REGULAR:
-		clr = WHITE;	//default bitch
+		clr = WHITE;	
 
 		if (state == LinkState::BOUND)
 			sym = (char)LinkSym::PARENT;
 		if (state == LinkState::FREE)
 		{
-			sym = (char)LinkSym::CHILD;	// BREAK!
+			sym = (char)LinkSym::CHILD;	
 			clr = GRAY;
 		}
 		break;
 
 	case BUFFER:
-		//sym = 254;		
 		sym = (char)LinkSym::PARENT;
 
 		clr = LIGHT_YELLOW;
 		break;
 
 	case Modifier::BLOCKER:
-		//sym = 158;
 		sym = (char)LinkSym::PARENT;
 		clr = LIGHT_RED;
 		break;
 
 	case Modifier::CORRUPTER:
-		//sym = 207;
 		sym = (char)LinkSym::PARENT;
 		clr = LIGHT_PURPLE;
 		break;
@@ -77,7 +72,7 @@ void Link::Set_UI()
 		sym = (char)LinkSym::ROOT;
 }
 
-bool Link::Set_First_Modifier(Modifier mod)		// Ne convertit pas le modifier si celui déjà existant est REGULAR
+bool Link::Set_First_Modifier(Modifier mod)		
 {
 	if (Get_State() != LinkState::FREE && modifier == REGULAR)	// shame.		dont' edit, it makes sense
 	{
@@ -94,21 +89,20 @@ void Link::Convert_Modifier(Modifier mod,bool overRideDumbRuleOfSpaghetti)	// I 
 	if (mod != Modifier::REGULAR || overRideDumbRuleOfSpaghetti == true)		// J'ai overide cette façon miteuse de faire. Fuck this shit
 	{
 		modifier = mod;
-		Set_UI();	// affichage
+		Set_UI();	
 
 		if (!Are_Equal(P1.Get_XY(), coord))
-			Dsp_Link();	// Réaffiche le sym 
+			Dsp_Link();	
 	}
 }
 
-void Link::Modifier_Inheritance(Modifier& mod)		//  le modifier
+void Link::Modifier_Inheritance(Modifier& mod)
 {
 	if(pParent != NULL)
 		if (pParent->Get_Parent_Modifier() == CORRUPTER)
 			mod = CORRUPTER;
 }
 
-// Active un Link et le relie à un Child
 bool Link::Activate_Link(Modifier& mod, Wall* child)
 {
 	// INTÉRACTIONS
@@ -117,21 +111,18 @@ bool Link::Activate_Link(Modifier& mod, Wall* child)
 			Modifier_Inheritance(mod);
 
 	if (this->state == LinkState::DEAD || this->state == LinkState::FREE || modifier == Modifier::FORCEFIELD)		// error brah, le link était pas libre ou DEAD
-	{
-		Set_State(child);				// Set le state selon le fait qu'il a un child ou non, ou si ya pas de parent
-	}
+		Set_State(child);				
 
-	StructureManager::Bond_Link_To_Child(this, child);	// assigne les pointeurs parent/enfant
+	StructureManager::Bond_Link_To_Child(this, child);	
 	Set_First_Modifier(mod);		// Si le link est free, il ne peut avoir autre modifier que le REGULAR. Il pourra être convertit par un blast plus tard . Why?, parce que je veut qu'un buffer puisse
-								// transformer le child d'un corrupter? Et que les child des corrupter soit toujours Regular pour que ce soit claire que le joueur peut uniquement bouger sur des tits points
-	Set_UI();											// affichage
+									// transformer le child d'un corrupter? Et que les child des corrupter soit toujours Regular pour que ce soit claire que le joueur peut uniquement bouger sur des tits points
+	Set_UI();						
 
 	meta.Add();
 	MsgQueue::Register(LINK_ACTIVATED);
 	return true;
 }
 
-// Active un Link et le relie à un Child
 bool Link::Activate_Lonely_Link(Modifier mod)
 {
 	bool dead = false;
@@ -141,11 +132,11 @@ bool Link::Activate_Lonely_Link(Modifier mod)
 	modifier = mod;
 	
 	if (mod == Modifier::FORCEFIELD)
-		state = LinkState::ROOT;	// this doesnt matter i think
+		state = LinkState::ROOT;	
 	else
-		Set_State(NULL);				// Set le state de root
+		Set_State(NULL);				
 
-	Set_UI();						// affichage
+	Set_UI();
 
 	if (dead)
 	{
@@ -175,7 +166,7 @@ void Link::Deactivate_Link()
 	meta.Remove();
 	
 	if(!ListsOfChainToModify::annihilating)
-		MsgQueue::Register(LINK_DEACTIVATED); // we did
+		MsgQueue::Register(LINK_DEACTIVATED); 
 }
 
 void Link::Unbound_All_Child()	
@@ -214,39 +205,36 @@ bool Link::Unbound_Wall_Child(Wall* child)
 		if (state == LinkState::BOUND)
 		{
 			state = LinkState::FREE;
-			this->Set_UI();		// change le sym
-			this->Dsp_Link();	// Affiche le sym
+			this->Set_UI();		
+			this->Dsp_Link();	
 		}
 		else
 			if (state == LinkState::ROOT && modifier == REGULAR)		// Si le root n'a plus de Child, il mourre, SAUF SI C'EST UN MOTHERFUCKER MODIFIER
 			{
 				this->Deactivate_Link();				
-				Er_Link();		// Efface le Link		// Pourrait être mis à pars
+				Er_Link();		
 			}
-		return true;		// success
+		return true;		
 	}
 
-	return false;	// Ça se peut que le wall ne soit même pas un de ses childs
+	return false;
 }
 
-
-
-//UI
 void Link::Change_Color(Colors clr)
 {
 	this->clr = clr;
 	Dsp_Link();
 }
 
-void Link::Dsp_Link()						// Affiche le Link
+void Link::Dsp_Link()						
 {
 	ConsoleRender::Add_Char(this->coord, this->sym, this->clr);
 }
 
-void Link::Er_Link( )						// Clear le Link
+void Link::Er_Link( )						
 {
 	if (!Are_Equal(P1.Get_XY(), Get_XY()))
-		ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);	// Efface pas le player!!
+		ConsoleRender::Add_Char(this->coord, TXT_CONST.SPACE, WHITE);	
 	else
 		return;
 }

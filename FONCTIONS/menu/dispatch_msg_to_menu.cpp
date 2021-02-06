@@ -99,9 +99,6 @@ void Dispatch_Msg_To_Menu()
 							gSkipTutorial = true;
 						else
 						{
-							if (P1.Set_On_Grid())
-								P1.Set_Position({ 6,7 });
-
 							tutoStep = 0;
 						}
 

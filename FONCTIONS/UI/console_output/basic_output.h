@@ -1,3 +1,3 @@
 
 
-void Basic_Output(char sym);	// Affiche un charactère
+void Basic_Output(const char sym);	// Affiche un charactère

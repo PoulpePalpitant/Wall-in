@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <thread>
 #include "../UI/console_output/render_list.h"
-// ceci
 #include "action_input.h"
 
 #include "../time/timerOP.h"
@@ -24,15 +23,12 @@ static DWORD cNumRead;
 
 static int keyCode;
 static int lastKeyPressed;
-static int loopBuffer;		// Ceci va enregistrer la dernière touche p`ser entre deux loop pour essayer d'éviter que le jeu detect pas un input
+static int loopBuffer;			// Ceci va enregistrer la dernière touche p`ser entre deux loop pour essayer d'éviter que le jeu detect pas un input
 static bool keyHandled = false;	// Si un input à été traité avec succès
-/* Ceci est basé sur le modèle d'exemple de l'utilisation de la fonction "Reading Input Buffer Events" sur le site web de microsoft. J'ai enlevé quelque truc comme la détection des mouse events, ou la redimension
+
+/* Ceci est basé sur le modèle d'exemple de l'utilisation de la fonction "Reading Input Buffer Events" sur le site web de microsoft. 
+J'ai enlevé quelque truc comme la détection des mouse events, ou la redimension
 du buffer size*/
-
-/* V2 */
-
-
-//void KeyEventProc(KEY_EVENT_RECORD);
 
 void KeyEventProc(KEY_EVENT_RECORD ker)
 {
@@ -64,7 +60,7 @@ void Set_Input_Buffer_Handle()
 	if (buffHandle == INVALID_HANDLE_VALUE)
 		ExitProcess(0);
 
-	fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;	// pt nécessaire
+	fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;	
 }
 
 void Refresh_Buffer()
@@ -80,121 +76,6 @@ void Reset_For_Next_Frame()
 	for (int i = 0; i < Buttons::BUTTON_COUNT; i++)
 		input.buttons[i].changed = false;
 }
-
-// V1
-//void Read_Input_Buffer()
-//{
-//	static DWORD cNumRead;
-//	static int counter;
-//
-//	cNumRead = 0;	 //reset
-//
-//	// Wait for the events. 
-//	if (!PeekConsoleInput(
-//		buffHandle,      // input buffer handle 
-//		buffer,     // buffer to read into 
-//		128,         // size of read buffer 
-//		&cNumRead)) // number of records read 
-//		ExitProcess(0);
-//
-//	// Dispatch the events to the appropriate handler. 
-//
-//	//for (counter = 0; counter < cNumRead; counter++)// Test de juste prendre le dernier piton
-//	{
-//		counter = cNumRead - 1; // Test de juste prendre le dernier piton
-//		
-//		if (buffer[counter].EventType == KEY_EVENT)
-//		{
-//			keyCode = buffer[counter].Event.KeyEvent.wVirtualKeyCode;
-//			if (gMenuInputs)
-//			{
-//				gMenuKey = keyCode;
-//				MsgQueue::Register(PRESSED_KEY);
-//			}
-//			else
-//			switch (keyCode)	// Input de charactères
-//			{
-//			case VK_LEFT:
-//				if (input.buttons[ARROW_LEFT].isDown)
-//					input.buttons[ARROW_LEFT].isDown = false;
-//				else {
-//					input.buttons[ARROW_LEFT].isDown = true;
-//					input.buttons[ARROW_LEFT].changed = true;
-//					keyDirection = LEFT;		action = BLAST;
-//				}
-//				break;
-//
-//			case VK_RIGHT:
-//				input.buttons[ARROW_RIGHT].isDown = true;
-//				input.buttons[ARROW_RIGHT].changed = true;
-//				keyDirection = RIGHT;	action = BLAST;	break;
-//			case VK_UP:
-//				input.buttons[ARROW_UP].isDown = true;
-//				input.buttons[ARROW_UP].changed = true;
-//				keyDirection = UP;		action = BLAST;break;
-//			case VK_DOWN: 
-//				input.buttons[ARROW_DOWN].isDown = true;
-//				input.buttons[ARROW_DOWN].changed = true;
-//				keyDirection = DOWN;	action = BLAST;break;
-//
-//			case 'W':case 'w':	
-//				input.buttons[MOVE_UP].isDown = true;
-//				input.buttons[MOVE_UP].changed = true;
-//				keyDirection = UP; action = MOVE; break;
-//			case 'A':case 'a':
-//				if (input.buttons[MOVE_LEFT].isDown)
-//					input.buttons[MOVE_LEFT].isDown = false;
-//				else
-//				{
-//					input.buttons[MOVE_LEFT].isDown = true;
-//					input.buttons[MOVE_LEFT].changed = true;
-//					keyDirection = LEFT; action = MOVE; 
-//				}
-//				break;	// faire mouvement
-//			case 'S':case 's':
-//				input.buttons[MOVE_DOWN].isDown = true;
-//				input.buttons[MOVE_DOWN].changed = true;
-//				keyDirection = DOWN; action = MOVE; break;
-//			case 'D':case 'd':
-//				input.buttons[MOVE_RIGHT].isDown = true;
-//				input.buttons[MOVE_RIGHT].changed = true;
-//				keyDirection = RIGHT;action = MOVE; break;
-//
-//			case 'Q':case 'q':	action = CHANGE_BLAST; break;
-//
-//			case 27:
-//				if (gProceedTime)	/* Esc */
-//				{
-//					MsgQueue::Register(PROCEED);
-//					gProceedTime = false;
-//				}
-//				break;
-//
-//			case 13:	/* enter */
-//				if (ChoiceTime::Is_Choice_Time())
-//					ChoiceTime::Apply_Choice();
-//
-//				MsgQueue::Register(PRESSED_ENTER);
-//				action = ENTER;
-//				break;	// 13 = enter
-//
-//			case ' ':
-//				if (!GameLoopClock::pause)
-//					action = ActionType::PAUSE;
-//				else
-//					action = ActionType::UNPAUSE;
-//				break;
-//			default: keyCode = NULL;
-//			}
-//
-//		}
-//	}
-//
-//	Handle_Input();
-//	FlushConsoleInputBuffer(buffHandle);
-//	Refresh_Buffer();
-//	Reset_For_Next_Frame();
-//}
 
 void Handle_Input()
 {
@@ -213,7 +94,7 @@ void Handle_Input()
 
 	case 'P':case 'p':	lastKey = KeyPressed::JERRY; break;
 	case 'R':case 'r':			
-		if (gDayStarted)
+		if (gLevelStarted)
 		{
 			
 			gRetryCheckpoint = false;
@@ -223,9 +104,6 @@ void Handle_Input()
 		else
 			gRefreshStage = true; 
 		break;	
-	// Refresh un stage, quand c'est possible
-	//case 'P':case 'p':
-	//break;	//Skip le stage actuel, on avance
 
 	case 27: /*Esc */
 		if (!gPauseUpdates)
@@ -235,7 +113,7 @@ void Handle_Input()
 		break;
 
 	case 13:	/* enter */
-		if (gDayStarted)
+		if (gLevelStarted)
 		{
 			if (gPauseUpdates)
 			{

@@ -2,7 +2,6 @@
 
 
 #include "../UI/polarisation.h"
-
 #include "grid.h"
 
 class GridIndexIncrementor {	// Permet d'incrémenter une pair d'index [col][row] facilement
@@ -12,12 +11,14 @@ public:
 	Polarization polar;			// La polarisation positive ou négative du déplacement. +1 (pos) = Droite/Bas : -1 (neg) = Left/haut
 	int* axis;					// Le pointeur vers l'axe à incrémenter
 	
-	void Initialize_All(GrdCoord crd, Direction dir);	// Initialize tout 
-	void Initialize_Axis(Direction direction);// Initialise une position			
-	void Increment_Coord();							// Incrémente une position [col][row] dans le grid	-Forward!
-	void Decrement_Coord();							// Décrémente une position [col][row] dans le grid	-BackWard!
+	void Initialize_All(GrdCoord crd, Direction dir);
+	void Initialize_Axis(Direction direction);
+	void Increment_Coord();						
+	void Decrement_Coord();						
 
-	void operator = (const GridIndexIncrementor& crd) {	// Peremet d'égaliser deux objets comme ça
+
+	// Cette façon de faire est quand même dangerous. J'ai appris à mes dépens que les pointeur et l'opérateur '=' sont sources de bugs assez insidieux
+	void operator = (const GridIndexIncrementor& crd) {
 		index = crd.index;
 		polar = crd.polar;
 

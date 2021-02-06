@@ -9,7 +9,7 @@ void Ev_Wrong_Action(); // Fait flasher le joueur en rose quand il fait dequoi d
 static Event ev_WrongAction(Ev_Wrong_Action,2); // Def //
 
 
-void Ev_Wrong_Action() // Fait flasher le joueur en rose quand il fait dequoi de pas correct. Ex: tirer quand il peut pas, se déplacer à un endroit blocké ()
+void Ev_Wrong_Action() 
 {
 	if (!ev_WrongAction.Is_Active())
 	{
@@ -31,5 +31,5 @@ void Ev_Wrong_Action_Add()	// Cancel et et réinitialise l'event() s'il est actif
 {
 	if (ev_WrongAction.Is_Active())
 		ev_WrongAction.Cancel();
-	Ev_Wrong_Action();	// Refait l'event
+	Ev_Wrong_Action();	
 }

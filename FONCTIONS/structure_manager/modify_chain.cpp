@@ -1,22 +1,20 @@
 
-#include <mutex>
 
 #include "../time/clock.h"
 #include "modify_chain.h"
 #include "../UI/console_output/render_list.h"
 #include "../walls/wall_drawer.h"
-//#include "../player/player.h"
 
 ChainToModify* ListsOfChainToModify::start = NULL;
 ChainToModify* ListsOfChainToModify::end = NULL;
-bool ListsOfChainToModify::annihilating = false;	// On est en train d'effacer tout les walls
+bool ListsOfChainToModify::annihilating = false;	
 
 // Fonctions publiques du module stack
 // -----------------------------------
 
 bool ChainToModify::is_empty()
 {
-	return chain.top == NULL;		// Si le top est vide ou plein
+	return chain.top == NULL;		
 }
 
 
@@ -31,7 +29,7 @@ void ChainToModify::push(Link* link)
 	chain.top->link = link;
 }
 
-bool ChainToModify::pop(Link*& data)	// Détruit l'item sur le dessus, mais conserve la donnée en référence
+bool ChainToModify::pop(Link*& data)
 {
 	data = NULL;
 
@@ -41,10 +39,10 @@ bool ChainToModify::pop(Link*& data)	// Détruit l'item sur le dessus, mais conse
 		{
 			LinkToDestroy* above = chain.top;
 
-			data = chain.top->link;		// data devient l'item du top
+			data = chain.top->link;			// data devient l'item du top
 			chain.top = chain.top->below;	// le top devient l'item en dessous
 
-			delete above;			// pète le(ancien) top										// pt que ça bug icite
+			delete above;			
 			chain.count--;
 		}
 		else
@@ -67,15 +65,15 @@ bool ChainToModify::pop(Link*& data)	// Détruit l'item sur le dessus, mais conse
 
 void ListsOfChainToModify::Add_Children_To_List(ChainToModify* chain, Link* parent)
 {
-	int numChild;					// Nombre de child à ajouter à la liste de destruction
+	int numChild;					
 
 	numChild = parent->numChild;
 
 	for (int i = 0; i < numChild; i++)	// 4 children max
 	{
-		if (parent->pWalls[i] != NULL)/*sécurité*/
+		if (parent->pWalls[i] != NULL)
 		{
-			chain->push(parent->pWalls[i]->pChild);	// Ajoute CHILD LINK à la liste(le child du wall, qui est lui le child du LINK Parent)	
+			chain->push(parent->pWalls[i]->pChild);	
 		}
 	}
 }
@@ -86,9 +84,8 @@ void ListsOfChainToModify::Add_Children_To_List(ChainToModify* chain, Link* pare
 
 void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool excludeParent, ModifyChain theModif)
 {
-	ChainToModify* it;	// itérateur
+	ChainToModify* it;	
 
-	// NOUVELLE CHAIN À DESTROY
 	if (start == NULL)
 		it = start = end = new ChainToModify;
 	else
@@ -98,9 +95,9 @@ void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool ex
 
 	// 2 choix pour détruire: L'adresse du Link ou sa crd dans le grd de links
 	if (link == NULL)
-		it->selectedLink = &linkGrid->link[crd.c][crd.r]; // le premier de la liste
+		it->selectedLink = &linkGrid->link[crd.c][crd.r]; 
 	else
-		it->selectedLink = link;	// le premier de la liste
+		it->selectedLink = link;	
 
 	if (excludeParent || theModif == BUFF || theModif == CORRUPT)
 	{
@@ -111,7 +108,6 @@ void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool ex
 		{
 			link->Unbound_All_Child(); 
 		}
-			
 		// ET C'EST tout, on ne détruit pas le link
 	}
 	else
@@ -121,17 +117,17 @@ void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool ex
 			if (it->selectedLink->state != LinkState::ROOT)	// un root n'a pas de parent
 			{
 				// Déconnecte le parent du link à détruire
-				it->parentWall = it->selectedLink->pParent;	// Le wall connectant le parent au link à modifier
-				parentLink = it->parentWall->pParent;	// Le parentLink du link à modifier
-				parentLink->Unbound_Wall_Child(it->parentWall);// On retire le lien unissant le parent Link au wall			ici, on retire 1child de la liste du Link qui était le parent de la chaîne de destruction		
+				it->parentWall = it->selectedLink->pParent;
+				parentLink = it->parentWall->pParent;		
+				parentLink->Unbound_Wall_Child(it->parentWall);	
 				Modify_Element(it);	// Pète le link original
 			}
 			else 
-			{	// Si le premier Link est une Root			
-				Add_Children_To_List(it, it->selectedLink);	 // Ajoute tout de suite ses enfants
+			{	
+				Add_Children_To_List(it, it->selectedLink);	
 				
-				if(it->selectedLink->Get_Modifier() == REGULAR)	// Désactive uniquement si c'est un regular
-					it->selectedLink->Deactivate_Link();	 // Et on désactive tout de suite 	
+				if(it->selectedLink->Get_Modifier() == REGULAR)	
+					it->selectedLink->Deactivate_Link();	
 			}
 		}
 	}
@@ -142,7 +138,7 @@ void ListsOfChainToModify::Add_Chain_To_Modify(GrdCoord crd, Link* link, bool ex
 
  }
 
-bool ListsOfChainToModify::Is_Empty()	//
+bool ListsOfChainToModify::Is_Empty()	
 {
 	if (start)
 		return false;
@@ -150,20 +146,20 @@ bool ListsOfChainToModify::Is_Empty()	//
 		return true;
 }
 
-void ListsOfChainToModify::Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev)	// BUG DE DELETE: Soit ici
+void ListsOfChainToModify::Remove_Chain(ChainToModify* &toRemove, ChainToModify* &prev)	
 {
 	if (toRemove == start && toRemove == end)
 	{
 		start = end = NULL;
 		delete toRemove;
-		toRemove = NULL;	// safety
+		toRemove = NULL;	
 	}
 	else
 		if (toRemove == start)
 		{
 			start = start->nxt;
 			delete toRemove;
-			toRemove = start;	// Continuation
+			toRemove = start;	
 		}
 		else
 			if (toRemove == end)
@@ -179,57 +175,55 @@ void ListsOfChainToModify::Remove_Chain(ChainToModify* &toRemove, ChainToModify*
 				toRemove = prev->nxt;
 			}
 }
-void ListsOfChainToModify::Remove_All()	// dangerous stuff!!
+void ListsOfChainToModify::Remove_All()
 {
 	ChainToModify* prev, * toRemove;
 
 	prev = NULL;
 	toRemove = start;
 
-	//start->EMPTY();
 	while (toRemove)
 	{
-		Remove_Chain(toRemove,prev);	// bam
+		Remove_Chain(toRemove,prev);	
 	}
 
 	start = end = NULL;
 }
 
-void ListsOfChainToModify::Delete_Parents(ChainToModify* chain)	// Détruit un élément de la chaîne ainsi que son parent wall
+void ListsOfChainToModify::Delete_Parents(ChainToModify* chain)	
 {
-	chain->parentWall = chain->selectedLink->pParent;	 // trouve le mur parent
+	chain->parentWall = chain->selectedLink->pParent;	 
 
 	// Tous les root qui possèdent un modifiers ne seront jamais détruits...
 	if (!(chain->selectedLink->Get_Modifier() != REGULAR && chain->selectedLink->Get_State() == LinkState::ROOT))
-		if (chain->selectedLink->Get_Modifier() != Modifier::FORCEFIELD)	// forcefields d'ont die i guess
-			chain->selectedLink->Deactivate_Link();	 // Détruit le Link			
+		if (chain->selectedLink->Get_Modifier() != Modifier::FORCEFIELD)	
+			chain->selectedLink->Deactivate_Link();	 		
 
 
-	chain->parentWall->Deactivate_Wall();		 // Désactive le mur,	ensuite on attend que le mur c'est effacé continuer l'opération			
+	chain->parentWall->Deactivate_Wall();		 // Désactive le mur, ensuite on attend que le mur soit effacé pour continuer l'opération			
 	chain->parentWall->Set_Drawer(true);
 	chain->toErase = chain->selectedLink;
 }
-void ListsOfChainToModify::Corrupt(ChainToModify* chain)			// Change le modifier de u link en Corrupted, et de ce fait, le wall aussi
+void ListsOfChainToModify::Corrupt(ChainToModify* chain)			
 {
-	chain->parentWall = chain->selectedLink->pParent;	 // trouve le mur parent
+	chain->parentWall = chain->selectedLink->pParent;	 
 	
-	// JE TESTE CECI: ne pas corrupt de free link
 	if(chain->selectedLink->Get_State() != LinkState::FREE)
-		chain->selectedLink->Convert_Modifier(CORRUPTER);	// corrupt le link(réaffiche aussi)
+		chain->selectedLink->Convert_Modifier(CORRUPTER);	
 
 	chain->parentWall->Set_Strength_From_Parent();				// Rend le mur weak
-	chain->parentWall->Set_Drawer();					// et le redraw
+	chain->parentWall->Set_Drawer();					
 }
-void ListsOfChainToModify::Buff_Walls(ChainToModify* chain)		// Buff les walls 
+void ListsOfChainToModify::Buff_Walls(ChainToModify* chain)		
 {	
-	chain->parentWall = chain->selectedLink->pParent;	 // trouve le mur parent
+	chain->parentWall = chain->selectedLink->pParent;	 
 	chain->parentWall->Set_Strength_From_Parent(WallType::STRONG);		 // buff le mur,ensuite on attend que le mur soit réafficher pour continuer l'opération
-	chain->parentWall->Set_Drawer();	// Redraw taht damn wall
+	chain->parentWall->Set_Drawer();	
 }
 void ListsOfChainToModify::Select_Modification(ChainToModify* chain)
 {
 	if (chain->modification == DESTROY)
-		Delete_Parents(chain);			// Delete le link sélectionné, ainsi que son parent wall. Pour le joueur, le mur s'efface d'abord, ensuite le link se fait effacer. Il se fait effacer dans la grosse loop
+		Delete_Parents(chain);			// Delete le link sélectionné, ainsi que son parent wall. 
 
 	if (chain->modification == BUFF)
 		Buff_Walls(chain);				// Buff simplement le parent wall. Le link reste inchangé
@@ -241,23 +235,15 @@ void ListsOfChainToModify::Select_Modification(ChainToModify* chain)
 
 void ListsOfChainToModify::Modify_Element(ChainToModify* chain)
 {
-	/* check la direction ici, si tu destroy dans le sens de la ROOT, ou des CHILD*/
-	// Ajout du parent
-	
-	// Ajout des child
-	Add_Children_To_List(chain, chain->selectedLink);	 // Ajoute les enfants du Link à la liste de destruction
+	Add_Children_To_List(chain, chain->selectedLink);	 
 
 	if (chain->selectedLink->pParent)	// Il se peut que son parent soit détruit à partir d'une liste précédante
 	{
-		Select_Modification(chain);	// 
+		Select_Modification(chain);	
 	}
 
-	chain->selectedLink = NULL;	// we got nothing selected anymore
+	chain->selectedLink = NULL;	
 }
-
-/*
-	Notes sur la destruction: Il semblerait que le joueur va pouvoir  tirer sur des Links faisant partie d'une chaîne qui est en train d'être détruite
-*/
 
 void ListsOfChainToModify::Update_Chain_Modification()
 {
@@ -267,29 +253,29 @@ void ListsOfChainToModify::Update_Chain_Modification()
 	prev = NULL;
 	it = ListsOfChainToModify::start;
 
-	while (it)		// Tant qu'on a pas parcouru tout les chaînes 
+	while (it)		
 	{
-		if (it->parentWall)	// Parentwall de sélectionné pour un redraw
+		if (it->parentWall)
 		{
-			if (it->parentWall->drawer.timer.Is_On()/* && it->parentWall->Get_State()()is bel et bien dead*/)	// Destruction ou affichage du mur n'est pas encore terminé
+			if (it->parentWall->drawer.timer.Is_On())	// Destruction ou affichage du mur n'est pas encore terminé
 			{
 				prev = it;
-				it = it->nxt;	//Next chain to modify
-				continue;		 // Le mur est désactivé dès qu'on commence à l'effacer
+				it = it->nxt;	
+				continue;		
 			}
 			else
-				it->parentWall = NULL;	// déselectionne le parentwall. finit le redraw
+				it->parentWall = NULL;	
 		}
 		else
 		{
 			if (!it->selectedLink)			// On a pas de link de sélectionné pour la modification
 			{
 				if(it->modification == DESTROY)	// dumb stuff
-					if (it->toErase) // the dumbest shit
+					if (it->toErase)			// the dumbest shit
 						if (it->toErase->Get_State() == LinkState::DEAD)
-							it->toErase->Er_Link();	// Efface le link
+							it->toErase->Er_Link();	
 
-				if (!it->pop(it->selectedLink))	// Prend un élément da liste de Link 
+				if (!it->pop(it->selectedLink))	
 				{
 					Remove_Chain(it, prev);
 					continue;
@@ -298,25 +284,13 @@ void ListsOfChainToModify::Update_Chain_Modification()
 			}
 			else
 				while (it->timer.Tick())
-				{
 					Modify_Element(it);
-				}
 		}
 		
 		prev = it;
 		it = it->nxt;	//Next chain to destroy
-
-
-	// Si ya pas de link à désactivé. check si ya un wall à désactivés
-	// Si non, POP
-	// si ya un wall à désactivé, update la destruction
-	// if Destroy_Wall()			est finit
-
-
 	}
 }
-
-// Destroy wall()			Reprend ou t'en étais
 
 void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les links sur le Grid
 {
@@ -325,10 +299,10 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 	WallGrid* wallGrid = NULL;
 
 
-	DrawWalls::Finish_All();	// Si des walls devait être afficher/ ou effacer, ou finis ça NOW
-	ListsOfChainToModify::Remove_All(); // empty list of chain to modify/delete
+	DrawWalls::Finish_All();			// Si des walls devait être afficher/ ou effacer, ou finis ça NOW
+	ListsOfChainToModify::Remove_All();
 
-	annihilating = true;	// empêche la désactivation des links d'envoyer un msg à chaque fois que tu désactive un link
+	annihilating = true;				// empêche la désactivation des links d'envoyer un msg à chaque fois que tu désactive un link
 
 	col = linkGrid->Get_Cols();
 	row = linkGrid->Get_Rows();
@@ -339,24 +313,24 @@ void ListsOfChainToModify::Annihilate_All_Links()	// Efface tout les murs et les
 			linkGrid->link[c][r].Er_Link();
 		}
 
-	wallGrid = wallGridHor;	// commence par wallgrid horizontal
+	wallGrid = wallGridHor;	
 
 	for (int i = 0; i < 2; i++)
 	{
 		col = wallGrid->Get_Cols();
 		row = wallGrid->Get_Rows();
-		for (int c = 0; c < col; c++)	// clear les walls
+		for (int c = 0; c < col; c++)	
 		{
 			for (int r = 0; r < row; r++)
 			{
 				{
-					wallGrid->wall[c][r].Set_Drawer(true, true);	// ERASE d'ABORd
-					wallGrid->wall[c][r].Deactivate_Wall();	// Ensuite delete le shit
+					wallGrid->wall[c][r].Set_Drawer(true, true);	
+					wallGrid->wall[c][r].Deactivate_Wall();
 				}
 			}
 		}
 
-		wallGrid = wallGridVer;	// finis par wallgrid vertical
+		wallGrid = wallGridVer;
 	}
 
 	annihilating = false;

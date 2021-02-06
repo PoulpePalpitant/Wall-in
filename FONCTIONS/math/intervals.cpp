@@ -5,7 +5,7 @@
 
 namespace Intervals {
 
-	bool IntervalList::Is_Empty()	// Liste est vide?
+	bool IntervalList::Is_Empty()
 	{
 		if (count)
 			return false;
@@ -13,7 +13,7 @@ namespace Intervals {
 			return true;
 	}
 
-	void IntervalList::Empty_List()															// Enlève tout les données de la liste
+	void IntervalList::Empty_List()														
 	{
 		Interval* it = start;
 	
@@ -23,21 +23,20 @@ namespace Intervals {
 			delete it;
 		}
 
-		start = end = NULL;	// safety
-		count = 0;			// pu rien
+		start = end = NULL;	
+		count = 0;			
 	}
 
 	void IntervalList::Reset_List()
 	{
-		Empty_List();	// vide
-		Set_First_Interval(); // qekchose
+		Empty_List();	
+		Set_First_Interval(); 
 	}
 
-	// INITIALIZATION
-	bool IntervalList::Set_First_Interval()		// Set le premier interval, soit de min à max
+	bool IntervalList::Set_First_Interval()	
 	{
 		if (start)
-			return false;			// t'avais pas vidé la liste avant
+			return false;			
 
 		start = end = new Interval;
 
@@ -49,17 +48,13 @@ namespace Intervals {
 		return true;
 	}
 
-	// Première intialisation
-	void IntervalList::Initialize_List(int min, int max)				// intialize une lsite
+	void IntervalList::Initialize_List(int min, int max)				
 	{
 		Set_Dflt_Interval(min, max);
 		Set_First_Interval();
 	}
 
-	// TROUVE UNE VALEUR DISPONIBLE
-	// ----------------------------
-
-	bool IntervalList::Search_Value(int value)			// trouve une valeur					PREVIOUS POINTERS EST TRÈS AGAÇANT
+	bool IntervalList::Search_Value(int value)			
 	{
 		Interval* it = start;
 
@@ -69,67 +64,62 @@ namespace Intervals {
 		while (it)
 		{
 			if (Is_Value_Within(it, value))
-				return true;	// it's here
+				return true;	
 			else
 				it = it->nxt;
 		}
 
-		return false;	// it Ain't here
+		return false;	
 	}
 
-	bool IntervalList::Pick(int& value, bool rdmValue)	// On trouve un intervalle qui ensuite trouve un spawn disponible
+	bool IntervalList::Pick(int& value, bool rdmValue)	
 	{
 		Interval* intval = NULL, * prevIter = NULL;
 		bool found = false;
 
-		// SI TU VEUX PRENDRE UNE AUTRE VALEUR AU HASARD AU CAS OÙ CELLE-CI N'EST PAS TROUVÉ
-		//if(!rdmValue)
-		//	rdmValue = Pick_Value(prevIter, intval, value);	// vrai si trouvé
-				// SI TU VEUX PRENDRE UNE AUTRE VALEUR AU HASARD AU CAS OÙ CELLE-CI N'EST PAS TROUVÉ
-
 		if (!rdmValue)
-			found = Pick_Value(prevIter, intval, value);	// vrai si trouvé
+			found = Pick_Value(prevIter, intval, value);	
 
 		if (rdmValue)
 		{
-			intval = Pick_Random_Interval(prevIter);
+			intval = Pick_Random_Interval(prevIter);	// Ceci pourrait fail si aucun interval n'est disponible
 			value = Pick_Random_Value(intval);
 			found = true;
 		}
 
 		if (found)
-			Exclude_Value_From_Interval(prevIter, intval, value);	// Élimine l'élément de l'intervalle
+			Exclude_Value_From_Interval(prevIter, intval, value);	
 
-		return found;	// retourne si on a trouvé ce qu'on cherchait								
+		return found;								
 	}
 
 
-	int IntervalList::Pick_Random_Value(Interval* intval)	// On trouve une valeure dans un intervalle 
+	int IntervalList::Pick_Random_Value(Interval* intval)	
 	{
 		int value, length;
 
-		length = intval->max - intval->min;			//	le nombre de spawn présent dans l'intervalle
+		length = intval->max - intval->min;			
 		value = rand() % length + intval->min;
 
-		return value; // Extraction Complete!
+		return value; 
 	}
 
-	Interval* IntervalList::Pick_Random_Interval(Interval*& previous)// On trouve un intervalle qui ensuite trouve un spawn disponible
+	Interval* IntervalList::Pick_Random_Interval(Interval*& previous)
 	{
-		Interval* intval;	// L'intervalle
-		int intvalNum;		// Le combientième intervalle de la liste
+		Interval* intval;	
+		int intvalNum;		
 
-		intvalNum = rand() % count;		//  Prend 1 # d'intervalle parmis le total présent dans la liste
+		intvalNum = rand() % count;		
 		intval = start;					// Début de la liste, Intervalle numéro 1!
 
 		if (count != 1)				// % 1 donne toujours 1.		% > 1  peut donner 0		(par définition, un intervalle de zéro n'existe pas)
 			for (int i = 0; i < intvalNum; i++)
 			{
-				previous = intval;			// voilà!!
+				previous = intval;			
 				intval = intval->nxt;
 			}
 
-		return intval;	// L'Intervalle !
+		return intval;	
 	}
 
 	// PREND UNE VALEUR NON-ALÉATOIREMENT
@@ -140,19 +130,19 @@ namespace Intervals {
 		static bool found; found = false;
 
 		intval = previous = NULL;	// À chaque fois qu'on cherche un nouvel item, on va reset le previous* ptr
-		intval = start;				// Premier élément de la liste
+		intval = start;				
 
-		while (intval)	// liste non-vide
+		while (intval)	
 		{
 			if (intval->min <= value)
 				if (intval->max > value)
 				{
-					found = true;	// La donnée est dans cet interval	     intrv >= min      intrv < max 
+					found = true;	
 					break;
 				}
 
-			previous = intval;		// previous
-			intval = intval->nxt;	// Passe au prochain
+			previous = intval;		
+			intval = intval->nxt;	
 		}
 
 		if (found)
@@ -164,16 +154,16 @@ namespace Intervals {
 	// INFORMATION SUR LES LISTES
 	// --------------------------
 
-	bool IntervalList::Is_Mono_Interval(Interval* intval)	// Si l'intervalle , ne  contient qu'une seule valeur
+	bool IntervalList::Is_Mono_Interval(Interval* intval)
 	{
-		if (intval->max - intval->min == 1)	// Si on a intervalle de 1
+		if (intval->max - intval->min == 1)
 			return true;
 		else
 			return false;
 	}
-	bool IntervalList::Is_Value_Within(Interval* intval, int value)		// Si l'interval est nul(devra être delete)
+	bool IntervalList::Is_Value_Within(Interval* intval, int value)		
 	{
-		if (intval->min <= value && intval->max > value)		// La valeur Max est exclut implicitement
+		if (intval->min <= value && intval->max > value)		
 			return true;
 		else
 			return false;
@@ -185,21 +175,23 @@ namespace Intervals {
 		else
 			return false;
 	}
-	bool IntervalList::Can_Be_Reduced_By_1(Interval* intval, int value)				// Si l'interval devient null , si réduit
+	
+	// Cette méthode est vraisemblablement la même affaire que Is_Mono_Interval
+	bool IntervalList::Cant_Be_Reduced_By_1(Interval* intval, int value)				
 	{
-		if (Is_Mono_Interval(intval) && Equals_Min(intval, value))		// Réduire l'intervalle le détruirait
+		if (Is_Mono_Interval(intval) && Equals_Min(intval, value))		
 			return false;
 		else
 			return true;
 	}
-	bool IntervalList::Equals_Min(Interval* intval, int value)			// Valeur est égal au minimum
+	bool IntervalList::Equals_Min(Interval* intval, int value)			
 	{
 		if (intval->min == value)
 			return true;
 		else
 			return false;
 	}
-	bool IntervalList::Equals_Max_Minus_1(Interval* intval, int value)	// Valeur est égal au max - 1
+	bool IntervalList::Equals_Max_Minus_1(Interval* intval, int value)
 	{
 		if (intval->max - 1 == value)
 			return true;
@@ -210,20 +202,20 @@ namespace Intervals {
 	// RETIRE UNE VALEUR D'UN INTERVALLE
 	// ---------------------------------
 
-	void IntervalList::Find_And_Remove_Value(int value)	// Retire une valeur d'un intervalle. Mais doit d'abord le trouver
+	void IntervalList::Find_And_Remove_Value(int value)	
 	{
 		Interval* intval = start, * prev = NULL;
 
-		if (!count)	// yo stais vide
+		if (!count)
 			return;
 
-		if (end->max <= value || start->min > value)	// On skip la recherche au complet si aucun élément de la liste à une valeur suffisament élevée
+		if (end->max <= value || start->min > value)	
 			return;
 
 		while (intval)
 		{
 			if (Is_Value_Within(intval, value))
-				break;	// it's here
+				break;
 			else
 			{
 				prev = intval;
@@ -231,15 +223,15 @@ namespace Intervals {
 			}
 		}
 
-		if (intval)	// n'a pas atteint end->nxt = null
+		if (intval)	
 			Exclude_Value_From_Interval(prev, intval, value);
 	}
 
 
 	void IntervalList::Exclude_Value_From_Interval(Interval*& previous, Interval*& intval, int value)
 	{
-		if (!Can_Be_Reduced_By_1(intval, value))	// Si on a intervalle de 1  // Et qu'on doit réduire une des deux extrémités		
-			Destroy_Interval(previous, intval);// On doit détruire l'intervalle	
+		if (!Cant_Be_Reduced_By_1(intval, value))	
+			Destroy_Interval(previous, intval); 
 		else
 		{
 			if (Equals_Min(intval, value))	// On peut juste exclure le min 
@@ -252,13 +244,13 @@ namespace Intervals {
 		}
 	}
 
-	void IntervalList::Modify_Min(Interval*& intval, int newMin)	// Augmente le min de 1
+	void IntervalList::Modify_Min(Interval*& intval, int newMin)	
 	{
-		intval->min = newMin;	// Augmente la borne de min 	
+		intval->min = newMin;	
 	}
-	void IntervalList::Modify_Max(Interval*& intval, int newMax)	// Réduit le Max de 1
+	void IntervalList::Modify_Max(Interval*& intval, int newMax)	
 	{
-		intval->max = newMax;	// Réduit la borne de max 
+		intval->max = newMax;	
 	}
 
 	// Delete un intervalle quand il est vide
@@ -266,24 +258,24 @@ namespace Intervals {
 
 	void IntervalList::Destroy_Interval(Interval*& previous, Interval*& intval)
 	{
-		if (intval == start && intval == end)	// 1 élément dans la liste
+		if (intval == start && intval == end)	
 		{
-			delete intval;		// on le delete
-			intval = start = end = NULL;	// bonne pratique
+			delete intval;		
+			intval = start = end = NULL;	
 		}
 		else
 		{
-			if (intval == start)	// Delete le début
+			if (intval == start)	
 			{
 				start = start->nxt;
 				delete intval;
 				intval = start;	// Égal au prochain
 			}
 			else
-				if (intval == end)	// end isnt recorded!!!
+				if (intval == end)	
 				{
 					end = previous;
-					delete intval;	// Delete l'élément de la liste
+					delete intval;	
 
 					intval = previous->nxt = NULL;
 				}
@@ -291,20 +283,20 @@ namespace Intervals {
 					if (previous)	// Redirection des pointeurs
 					{
 						previous->nxt = intval->nxt;
-						delete intval;	// Delete l'élément de la liste
+						delete intval;
 
-						intval = previous->nxt;	// Passe au prochain
+						intval = previous->nxt;
 					}
 		}
 
-		count--;	// -1 intervalle
+		count--;	
 
 	}
 
 	// SPLIT UN INTERVALLE EN DEUX
 	// ---------------------------
 
-	void IntervalList::Split_At_Value(Interval*& previous, Interval*& intval, int newMax)	// Quand tu ajoute une nouvelle valeur à exclure dans la liste d'interval
+	void IntervalList::Split_At_Value(Interval*& previous, Interval*& intval, int newMax)	
 	{
 		int oldMax = intval->max;
 
@@ -315,7 +307,7 @@ namespace Intervals {
 		Create_Interval(intval, newMax + 1, oldMax);	// Créer un nouvel intervalle suivant 
 	}
 
-	void IntervalList::Exclude_Interval_From_Interval(Interval*& previous, Interval*& intval, int newMax, int newMin)	// Créer un gap dans un intervalle avec un intervalle
+	void IntervalList::Exclude_Interval_From_Interval(Interval*& previous, Interval*& intval, int newMax, int newMin)	
 	{
 		if (newMax < intval->min || newMin > intval->max)	//	[old min, newmax,	[newMin, oldMax[   // j'ai des doutes icic
 			throw "you fucked up";
@@ -341,7 +333,7 @@ namespace Intervals {
 		// Si ce trouve pas à aucune extremités
 		int oldMax = intval->max;
 		Modify_Max(intval, newMax);
-		Create_Interval(intval, newMin + 1, oldMax);	// Créer un nouvel intervalle suivant 
+		Create_Interval(intval, newMin + 1, oldMax);	
 	}
 
 	// CRÉER UN NOUVEL INTERVALLE!!
@@ -351,12 +343,12 @@ namespace Intervals {
 	{
 		static Interval* newIntval; newIntval = NULL;	// Fais des static cuz i dont know if it really helps
 
-		newIntval = new Interval;	// Nouvel Intervalle
+		newIntval = new Interval;	
 		newIntval->min = min;
 		newIntval->max = max;
 		newIntval->nxt = NULL;
 
-		if (!count)	// Début et fin
+		if (!count)	
 			start = end = newIntval;
 		else
 			if (previous->nxt == NULL)
@@ -370,9 +362,12 @@ namespace Intervals {
 					previous->nxt = newIntval;
 				}
 
-		count++;	// 1 de plus les amis!
+		count++;	
 		return newIntval;
 	}
+
+
+	// This is where the shit hits the fan
 
 	void IntervalList::Add_Interval_On_Top(int min, int max)					// Ajoute un intervalle de valeurs qui va combiner toute celle qui contiendrait l'une de ses valeur
 	{
@@ -380,8 +375,8 @@ namespace Intervals {
 		Interval* last = NULL;
 		Interval* next = NULL;
 		Interval* prev = NULL;
-		int intvLeft;		// Nombre d'intervalle restant à chequer
-		bool foundMin = false;		// Trouvé un intervalle contenant la valeur minimale
+		int intvLeft;		
+		bool foundMin = false;		
 		int newMax = max;
 
 		first = start;
@@ -394,8 +389,8 @@ namespace Intervals {
 					return;																									//		Modify_Max(first, 14);
 
 				foundMin = true;			
-				intvLeft--;      //		Prend le plus grand Max: 14
-				break;			// Trouvé, we out
+				intvLeft--;     
+				break;			
 			}
 			else
 			{
@@ -433,7 +428,7 @@ namespace Intervals {
 			Create_Interval(prev, min, max);	// From scratch. On va créer l'intervalle 
 	}
 
-	void IntervalList::Exclude_Interval_From_List(int min, int max)						// Retire un intervalle de valeurs de la liste
+	void IntervalList::Exclude_Interval_From_List(int min, int max)						
 	{
 		Interval* first = NULL;
 		Interval* last = NULL;																									// Pour REMOVE un intervalle:  prendre tout les intervalles qui contiennent l'intervalle à enlever, et les deletes
@@ -445,26 +440,26 @@ namespace Intervals {
 		if (!count)  // Si aucun Intervalle: SKIP																				// 		Prend l'intervalle contenant le max(10): [10 ,14[	(si y'en a un) Ajuste l'intervalle max en lui assisgnant max(14) comme nouveau min: Modify_Min(max)
 			return;																												//
 																																//	Delete TOUT les autres intervalles se trouvant entre ces deux intervalles
-		first = start; // début de listeS																						  
+		first = start; 																					  
 
-		for (intvLeft = count; intvLeft > 0; intvLeft--)		// Le nombre d'éléments restants		
+		for (intvLeft = count; intvLeft > 0; intvLeft--)				
 		{
 			if (first->min <= min)
 			{
-				if (max <= first->max)			// Interval trouvé
+				if (max <= first->max)			
 				{
 					Exclude_Interval_From_Interval(prev, first, min, max);	// si t'arrive ici, c'est que les TOUT valeurs que tu veux exlure se trouvent TOUS dans 1 seul interval. ex opposé  : ToExclude [-5 , 10} interval {0, 10} = marchera pas
 					return;
 				}
 
-				foundMin = true;				//	Prend le plus grand Max: 14
-				intvLeft--;						// Réduit de 1 le nombre à checker la fin
+				foundMin = true;				
+				intvLeft--;					
 				break;
 			}
 			else
 			{
 				prev = first;
-				first = first->nxt;	// passse au prochain
+				first = first->nxt;
 			}
 		}
 
@@ -501,7 +496,6 @@ namespace Intervals {
 			if (max <= last->max)
 			{
 				// Le max fut trouvé!
-				// Si l'intervalle serait réduit à un intervalle null par le nouveau min
 				if (max >= last->max - 1)
 					Destroy_Interval(prev, last);
 				else

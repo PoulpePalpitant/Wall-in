@@ -6,7 +6,7 @@
 #include "dsp_char.h"
 
 
-// OBSELETE
+// CECI EST  OBSELETE
 
 
 // AFFICHE UNE STRING SELON UNE VITESSE ET UNE COULEUR
@@ -29,3 +29,4 @@ void UI_Dsp_String(Coord crd, std::string txt, Colors clr, time_t time)
 	//mu.unlock();
 }
 
+// CECI EST  OBSELETE

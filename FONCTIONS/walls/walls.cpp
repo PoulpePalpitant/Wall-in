@@ -62,7 +62,7 @@ void Wall::Set_Wall_UI()
 
 void Wall::Set_Strength_From_Parent(WallType newStrgt)
 {
-	if (StructureManager::Is_Link_Corrupted(pParent)) 
+	if (StructureManager::Is_Parent_Corrupted(pParent)) 
 	{
 		type = WallType::WEAK;
 		hp = (int)type;

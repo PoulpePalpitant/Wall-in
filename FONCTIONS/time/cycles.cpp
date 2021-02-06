@@ -12,11 +12,11 @@
 void UPD_Cycles_Stuff()
 {
 	if (!stopSpwCycle)
-		UPD_Spawn_Cycle();		// Update le cycle de spawn 
+		UPD_Spawn_Cycle();		
 	if (!stopMoveCycle)
-		UPD_Bot_Move_Cycle();	// Update le cycle de bots
+		UPD_Bot_Move_Cycle();	
 	if (!stopItmSpwCycle)
-		ItemSpawner::UPD_Item_Spawn_Timers();	// Update timers des spawners
+		ItemSpawner::UPD_Item_Spawn_Timers();
 		
 }
 

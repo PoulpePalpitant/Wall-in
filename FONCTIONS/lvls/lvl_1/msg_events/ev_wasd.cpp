@@ -13,19 +13,14 @@ static Coord crd;
 static std::string _1 = "M O V E";
 static std::string _2 = "[W]";
 static std::string _3 = "[A] [S] [D]";
-//static std::string _2 = "[W]";
-//static std::string _3 = "[A]";
-//static std::string _4 = "[S]";
-//static std::string _5 = "[D]";
 
-
-void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
+void Ev_Dr_Wasd()		
 {
 	if (!ev_Dr_Wasd.Is_Active())
 	{
 		crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2};
 		ev_Dr_Wasd.Activate();
-		ev_Dr_Wasd.Start(600);	// 1000 / 2 = 500.		2 secondes
+		ev_Dr_Wasd.Start(600);	
 	}
 	else
 	{
@@ -34,19 +29,19 @@ void Ev_Dr_Wasd()			// Accueil Le joueur quand il sort de son répit
 			{
 			case 1:
 				ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
-				ev_Dr_Wasd.Advance(1000);	// Delay 
+				ev_Dr_Wasd.Advance(1000);
 				break;
 				
 			case 2:
-				ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_DR);	// x -3, y + 2
-				ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_DR);	// x -3, y + 2
-				ev_Dr_Wasd.Advance(0);	// finito
+				ConsoleRender::Add_String(_2, { crd.x + 2, crd.y + 2 }, WHITE, TXT_SPD_DR);
+				ConsoleRender::Add_String(_3, { crd.x - 2 ,crd.y + 3 }, WHITE, TXT_SPD_DR);
+				ev_Dr_Wasd.Advance(0);	
 				break;
 			}
 	}
 }
 
-void Just_Dr_Wasd(bool erase)// Draw fast
+void Just_Dr_Wasd(bool erase)
 {
 	static Coord crd = { (Find_Ctr_X((int)std::size(_1)) / 2) / 2, (gConHeight / 2) / 2 };
 	ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE,0, erase);

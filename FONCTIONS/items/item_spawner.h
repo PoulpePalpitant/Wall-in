@@ -6,10 +6,10 @@
 
 struct TypeSpawner
 {
-	ItemType type;		// Tout les types d'item dans la pool
-	SpeedTimer timer;// 
-	int rdmDelay;	// La variation de temps entre chaque spawn. mon système marche avec la speed et non en seconde. Je peux pas réduire la vitesse facilement pour créer 1 délay d'une seconde:	
-	int spwSpeed;		// vitesse de spawn																														 // 1000 = 1 sec 2000 = .5 seconde
+	ItemType type;		
+	SpeedTimer timer; 
+	int rdmDelay;		// La variation de temps entre chaque spawn. mon système marche avec la speed et non en seconde. Je peux pas réduire la vitesse facilement pour créer 1 délay d'une seconde:	
+	int spwSpeed;																																				// 1000 = 1 sec 2000 = .5 seconde
 };																																								 // 100 = 10 sec
 																																								 // 1000 + 10 != 11 secondes :/
 struct ItemSpawnPool																																			 //
@@ -21,13 +21,13 @@ struct ItemSpawnPool																																			 //
 class ItemSpawner
 {
 private:
-	friend void Ev_Resize_From_Grids();	// Permet de resize les available spawns
-	friend void Initialize_Game();		// Initialize la pool de types d'items
+	friend void Ev_Resize_From_Grids();	
+	friend void Initialize_Game();		
 	static void Init_Pool_Types();	// Initialize la pool avec tout les types actuel
-	static bool pause;	// permet de pauser les updates
+	static bool pause;	
 
 public:
-	static Intervals::ManageIntervalLists availableLinks;	// Tout les emplacements disponibles pour spawner un item
+	static Intervals::ManageIntervalLists availableLinks;	
 	static ItemSpawnPool pool;
 
 	// TIMERS
@@ -38,23 +38,22 @@ public:
 	static TypeSpawner* Get_Spawner(ItemType type);
 
 	// POOL
-	static bool Add_To_Pool(ItemType type, int timerduration, int rngDelay);			// Ajoute un type d'item à la pool
+	static bool Add_To_Pool(ItemType type, int timerduration, int rngDelay);				
 	static bool Remove_From_Pool(ItemType type);
-	static void Set_Spawner_Timer(TypeSpawner& spawner, int timerduration, int rngDelay);	// Set le timer pour le type dans la pool
-	static bool Set_Spawner_Timer(ItemType type, int timerduration, int rngDelay);			// trouve le type dans la pool, retourne false si ne le trouve pas 
+	static void Set_Spawner_Timer(TypeSpawner& spawner, int timerduration, int rngDelay);	
+	static bool Set_Spawner_Timer(ItemType type, int timerduration, int rngDelay);			
 
 	// SPAWNER
-	static bool Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel = false, bool noanimation = false , bool rdmCoord = false);	// Fait spawner un item. Si l'endroit que l'on voulait faire spawner marche pas, génère une crd random automatiquement. 
+	static bool Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel = false, bool noanimation = false , bool rdmCoord = false);	
 	static void Refresh_Available_Spawn_List();
 	static bool Find_Spawn_Location(GrdCoord &itemCrd);
-	static bool Generate_Rdm_Coord(GrdCoord& itmCrd);	// Trouve une coord dispo
-	static bool Pick_Specific_Coord(GrdCoord& itmCrd);	// Trouve la coord dispo qu'on veut
+	static bool Generate_Rdm_Coord(GrdCoord& itmCrd);	
+	static bool Pick_Specific_Coord(GrdCoord& itmCrd);	
 
 	// EXCLUT LES POSITIONS DU GRIDS SUIVANTES
 	static void Player_Exclusion(GrdCoord P1Pos);	// Exclut les spawns trop proches du joueur
 	static void Blast_Exclusion(GrdCoord P1Pos);	// Exclut les spawns perpendiculaire au joueur
 	static void Items_Exclusion();					// Exclut les spawns occupés par d'autres items
-	static void Exclude_Unavailable_Link(GrdCoord crd);
 
 };
 

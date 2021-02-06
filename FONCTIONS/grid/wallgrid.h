@@ -10,17 +10,15 @@ private:
 	Axis gridAxis;				// Le sens vertical ou horizontal des walls. Ne doit jamais changer
 public:								
 	WallGrid(Axis axis) {	
-		this->gridAxis = axis;		//Constructor
+		this->gridAxis = axis;		
 				wall = NULL;
 	}
 
 	Wall** wall;						// Va contenir le Grid contenant les pointeurs vers les arrays de Walls
-	void Create(LinkGrid& linkGrid);	// Créer le Grid. (Les dimensions dépendent du LinkGrid) ET Assignent une valeur XY pour chacun des éléments du Grid 
-	void Resize(LinkGrid& linkGrid);	// Redimensionne.... Mais détruit aussi le grid...
-	void Adapt_To_LinkGrid_Size(int &col, int & row, LinkGrid& linkGrid);	// Calcul les dimensions qu'aura le grid selon celle des Link Grid
-	Axis Get_Grid_Axis() { return gridAxis; }				// Accès vers l'axe des murs
+	void Create(LinkGrid& linkGrid);	
+	void Resize(LinkGrid& linkGrid);	
+	void Adapt_To_LinkGrid_Size(int &col, int & row, LinkGrid& linkGrid);	
+	Axis Get_Grid_Axis() { return gridAxis; }				
 	bool Is_Wall_here(GrdCoord);		// WHERE IS WALL? I CAN'T FIND IT!
-	GrdCoord Find_Wall_Btwn_Links();						// Trouve le wall entre deux Link
-
 };
 

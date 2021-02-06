@@ -15,10 +15,6 @@ const unsigned char ITEM_SYM[MAX_ITEM_TYPE] = { '+',  254 ,158, 207, 176,176,245
 	Pour activer un item, le joueur peut soit marcher dessus, ou tirer dessus
 	Il y a des items MODIFIER, et les autres
 	Si le joueur pogne un modifier, son prochain blast sera modifié
-
-	-AMMO
-	Donne +1 de vie au joueur
-
 */
 
 enum class ItemType
@@ -29,25 +25,17 @@ enum class ItemType
 class ItemMeta
 {
 private:
-	//static ItemMeta AllMeta;
 public:
-	int total;		// Le nombre d'items spawné
-	int current;	// Le nombre d'item dans la box en ce moment
-	int pickup;		// Le nombre d'item pickup
-	int missed;		// Le nombre d'item pas pickup
-	
+	int total;		
+	int current;	
+	int pickup;		
 
 	void Item_Spawned() {
 		this->current++; this->total++; 
-	//	AllMeta.current++; AllMeta.total++;
 	}
 	void Item_Picked_Up() {
-		this->current--;//AllMeta.current--;
-		this->pickup++;	//AllMeta.pickup++;
-	}
-	void Item_Disappeared() { 
-	this->current--;	//AllMeta.current--; 
-	this->missed++; 	//AllMeta.missed++;
+		this->current--;
+		this->pickup++;	
 	}
 };
 
@@ -61,21 +49,17 @@ private:
 	ItemType  itemType;
 	bool active = false;					
 
-	// POSITION
-	GrdCoord grdCrd;						// On utilise le système de coordonnées des grids pour changer faire apparâitre les items
+	GrdCoord grdCrd;					
 
-	static ItemMeta meta;	// info sur le groupe d'items
+	static ItemMeta meta;	
 
-	// SETS
-	void Set_Position(GrdCoord newPos) { grdCrd = newPos; }			// Change sa position sur le Grid
+	void Set_Position(GrdCoord newPos) { grdCrd = newPos; }			
 
 public:
-	// GETS
-	GrdCoord Get_Grd_Coord() { return grdCrd; }	// Sa position dans le grid
+	GrdCoord Get_Grd_Coord() { return grdCrd; }	
 	ItemType Get_Type() { return itemType; }
 	bool Is_Active() { return active; }
 
-	// SET
 	void Set_Coord(GrdCoord coord) { grdCrd = coord; }
 	void Set_Type(ItemType type) { itemType = type; }
 	void Activate() { active = true; }

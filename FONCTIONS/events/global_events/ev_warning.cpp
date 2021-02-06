@@ -8,20 +8,18 @@
 #include "../../UI/map.h"
 #include "../../lvls/lvl_1/msg_events/ev_speeding_up.h"
 
-int WarningDrawerList::animationSteps = 1;							// Nombre de steps dans cet animation
-WarningDrawer  WarningDrawerList::drawer[MAX_WAR_DRAWERS] = {};		// why not 20?
+int WarningDrawerList::animationSteps = 1;							
+WarningDrawer  WarningDrawerList::drawer[MAX_WAR_DRAWERS] = {};		
 int WarningDrawerList::total;
 
-static Event ev_DrawWarnings(Ev_Draw_Warnings);	// qui va draw!
+static Event ev_DrawWarnings(Ev_Draw_Warnings);
 static Event ev_MultiColorWarnings(Ev_MultiColor_Warnings, 4);
-//static Event ev_Dr_Warning(Ev_Dr_Warning);	// draw désuet*
-//static Event ev_Er_Warning(Ev_Er_Warning);	// draw	désuet*
+
 
 static Coord ori;	// Origine du titre, coin gauche up
 static Distance YBtw = 7;
 static int numWarnings = 6;
 
-//static std::string day_1 = " DAY 1";
 const std::string T_WARNING[] =	// Le titre principal	font = slant
 {
 " _       _____    ____  _   _______   ________ ",
@@ -171,20 +169,7 @@ void Ev_MultiColor_Warnings() // voici un event custom
 			{
 			case 1: 
 				modulo = ev_MultiColorWarnings.delay.Get_Moves_Left() % 2;
-				
-				// V1
-				//if (modulo == 3)
-				//	clr = LIGHT_YELLOW;
-				//else
-				//	if(modulo == 2)
-				//		clr = LIGHT_PURPLE;
-				//	else
-				//		if(modulo == 1)
-				//			clr = LIGHT_RED;
-				//		else
-				//			if (modulo == 0)
-				//				clr = LIGHT_GREEN;
-				//v2 
+
 				if(modulo == 1)
 					clr = LIGHT_YELLOW;
 				else
@@ -250,64 +235,3 @@ bool WarningDrawerList::Add(bool dr_Er, Colors clr, int speed)		// Ajoute un dra
 	else
 		return false;
 }
-
-
-
-//
-//
-//void Ev_Dr_Warning()			// DRAW
-//{
-//	static int step;
-//	static Colors clr = WHITE;
-//	if (!ev_Dr_Warning.Is_Active())
-//	{
-//
-//		step = 0;
-//		ev_Dr_Warning.Activate();
-//		ev_Dr_Warning.Start(10000, numWarnings);
-//	}
-//	else
-//	{
-//		while (ev_Dr_Warning.delay.Tick())
-//		{
-//			Set_Ori(true, true);
-//			ori.y = ori.y + (step * YBtw);	// ceci va faire starter en haut
-//			Dr_Warning(clr);
-//
-//			Set_Ori(false, false);
-//			ori.y -= (step * YBtw);	// ceci va faire starter en bas
-//			Dr_Warning(clr);
-//			step++;
-//			ev_Dr_Warning.Advance(0);
-//		}
-//	}
-//}
-//
-//
-//void Ev_Er_Warning()			// ERASE
-//{
-//	static int step;
-//	static Colors clr = WHITE;
-//	if (!ev_Er_Warning.Is_Active())
-//	{
-//		step = 0;
-//		ev_Er_Warning.Activate();
-//		ev_Er_Warning.Start(10000, numWarnings);
-//	}
-//	else
-//	{
-//		while (ev_Er_Warning.delay.Tick())
-//		{
-//			Set_Ori(true, true);
-//			ori.y = ori.y + (step * YBtw);	// ceci va faire starter en haut
-//			Dr_Warning(clr);
-//
-//			Set_Ori(false, false);
-//			ori.y -= (step * YBtw);	// ceci va faire starter en bas
-//			Dr_Warning(clr);
-//			step++;
-//			ev_Er_Warning.Advance(0);
-//		}
-//	}
-//
-//}

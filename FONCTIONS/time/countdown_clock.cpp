@@ -8,7 +8,7 @@
 
 // OLDVERSION : pour nouvelle version, checker speedtimer dans movement_timer.h
 /*
-	Cette version de timer fonctionne avec le delta time provenant du timer principale de la gameloop de mon jeu. Chaque countdown sera décrémenté en fonction de ce deltatime.
+	
 */
 
 float dbugDelay_Lol = 1;

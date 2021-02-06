@@ -4,7 +4,7 @@
 extern const int NB_LVLS;
 extern const int NUM_PUZZLES[];		
 
-void (*LVL1_PUZZLES[])();// declare!
+void (*LVL1_PUZZLES[])(); // Déclaration d'un tableau de pointeurs de fonctions en c++. Quand même hideux.
 void (*LVL2_PUZZLES[])();
 void (*LVL3_PUZZLES[])();
 
@@ -12,14 +12,14 @@ extern int gCurrentLevel;
 extern int gUnlockedLevels[3];
 extern int gLastLvlUnlocked;
 
-extern int gCurrentStage;	// Le sous-niveau actuel
-extern int gCurrentPuzzle[];	// Le checkpoint que le joueur à réussie à reach durant le niveau
-extern bool gDayStarted;	// Si le lvl à vraiment commencé
+extern int gCurrentStage;		
+extern int gCurrentPuzzle[];	
+extern bool gLevelStarted;		
 extern bool gSkipTutorial;		
-extern bool gRefreshStage;	// Refresh un stage
-extern bool gRetryCheckpoint;		// Restart le niveau à partir d'un checkpoint
+extern bool gRefreshStage;		
+extern bool gRetryCheckpoint;	
 
-extern int gCurrPuzzleStep;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
+extern int gCurrPuzzleStep;		
 extern int gCurrPuzzleStepMax;
 
 extern short tutoStep;

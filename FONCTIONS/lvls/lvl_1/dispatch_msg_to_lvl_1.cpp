@@ -23,10 +23,8 @@
 #include "msg_events/ev_new_goal2.h"
 #include "msg_events/EV_Hello.h"
 #include "msg_events/ev_wasd.h"
-#include "msg_events/ev_waking_up.h"
 #include "msg_events/ev_arr_keys.h"
 #include "msg_events/ev_day_1.h"
-#include "msg_events/ev_health_is_ammo.h"
 #include "../../events/global_events/ev_level_title.h"
 
 // others
@@ -54,7 +52,7 @@ void Dispatch_Msg_To_Lvl_1()
 		{
 			Cancel_All_That_Buggy_Shit();
 			clrscr();
-			ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
+			ListsOfChainToModify::Annihilate_All_Links(); 			
 			botList.Destroy_All_Bots();
 			Clear_All_Renders();
 			gSkipTutorial = true;
@@ -102,7 +100,7 @@ void Dispatch_Msg_To_Lvl_1()
 			Init_Puzzle();
 
 			MsgQueue::Register(START_BOTS); // Here they come baby
-			gDayStarted = true;
+			gLevelStarted = true;
 		}
 		break;
 

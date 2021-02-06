@@ -16,8 +16,8 @@ struct OutputData {
 };
 
 struct RenderQueue {
-	OutputData* first = NULL;	// Le premier élément de la liste à afficher. Il sera le premier partie
-	OutputData* last = NULL;	// Le dernier élément de la liste à afficher. Il sera le dernier partie
+	OutputData* first = NULL;	// premier partie
+	OutputData* last = NULL;	// dernier partie
 	int size = 0;			// Nombre d'élémentsde la liste à afficher
 };
 

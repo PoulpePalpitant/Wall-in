@@ -25,15 +25,15 @@ class DrawerQueue
 public:
 	Drawer * queue;			// public stuff
 	int Get_Total() { return total; }
-	void Step(int index, int speed = 0, int steps = 1, bool infinite = false);		// Avance l'event d'un step
+	void Step(int index, int speed = 0, int MAX_STEPS = 1, bool infinite = false);		// Avance l'event d'un step
 	void Cancel(Coord XY);		// Stop l'animation sur cette position
 	bool Add(Coord XY);		// Ajoute un élément à draw
 	void Remove(int index);
 
-	DrawerQueue(int MAX, int steps)
+	DrawerQueue(int MAX, int MAX_STEPS)
 	{
 		MAX_QUEUE = MAX;
-		animationSteps = steps;
+		animationSteps = MAX_STEPS;
 		queue = new Drawer[MAX];
 	}
 

@@ -7,9 +7,8 @@
 #include "movement_timer.h"
 
 SpeedTimer* SpeedTimer::start;
-SpeedTimer* SpeedTimer::end;	// La liste de tous les timers
+SpeedTimer* SpeedTimer::end;	
 
-//SpeedTimer* SpeedTimer::allTimers[MAX_TIMERS] = {};
 unsigned long long  SpeedTimer::idTotal = 0;				// Le nombre timer total actuel
 
 // Overload l'opérateur égal! =
@@ -17,13 +16,11 @@ SpeedTimer& SpeedTimer::operator= (const SpeedTimer& speedTimer)
 {
 	// Copie toute. Sauf le pointeur nxt et l'id
 	this->tickedThisFrame = speedTimer.tickedThisFrame;
-	this->movesThisFrame = speedTimer.movesThisFrame;
 	this->moving = speedTimer.moving;
 	this->cd = speedTimer.cd;
 	this->cdDuration = speedTimer.cdDuration;
 	this->infinite = speedTimer.infinite;
 	this->timeLeft = speedTimer.timeLeft;
-	this->totalSteps = speedTimer.totalSteps;
 	this->spd = speedTimer.spd;
 	
 	return *this;
@@ -50,7 +47,6 @@ SpeedTimer::SpeedTimer()
 
 SpeedTimer::SpeedTimer(bool noId)
 {
-	// n'ajoute pas de id dans la liste des timers créés
 	id = -1;
 }
 
@@ -60,7 +56,7 @@ SpeedTimer::~SpeedTimer()	// Reconnecte les éléments de la liste
 	static SpeedTimer* it, * prev;
 	static bool found;
 
-	if (id != -1)	// si est présent dans la liste on le delete
+	if (id != -1)	
 	{
 		it = start;
 		prev = NULL;
@@ -68,7 +64,7 @@ SpeedTimer::~SpeedTimer()	// Reconnecte les éléments de la liste
 
 		while (it)
 		{
-			if (it->id >= 2160)
+			if (it->id >= 2160)	// no idea wtf is this
 				found = true;
 
 			if (it == this)
@@ -100,47 +96,23 @@ SpeedTimer::~SpeedTimer()	// Reconnecte les éléments de la liste
 	}
 }
 
-void SpeedTimer::Override_Ticks_Per_Frame()	// NE JAMAIS UTILISER
-{
-	resetThisFrame = false;
-}
-
-void SpeedTimer::katch_Up()
-{
-	if (this->timeLeft <= 0)
-	{
-		movesThisFrame++;
-		timeLeft += cdDuration;		// reset le temps pour le prochain mouvement
-
-		if (infinite)	
-			katch_Up();	
-		else
-			if (cd.Count())		// Nombre de moves Max terminé					
-				Stop();	// Stop le mouvement		
-			else
-				katch_Up();
-		return;			
-	}
-}
-
 // Set la durée de base du CountDown. Quand le count down se termine, 1 mouvement peut être fait
-void SpeedTimer::Start_Timer(int speed, int numMove, bool inf, int addDuration)		// Speed est en millisecondes
+void SpeedTimer::Start_Timer(int speed, int numMove, bool inf, int addDuration)		
 {
 	if (!addDuration)
 	{
 		if (speed == 0)
-			timeLeft = cdDuration = (speed * GameLoopClock::Get_Delta_Time());	// Finis instantannément			TEST
+			timeLeft = cdDuration = (speed * GameLoopClock::Get_Delta_Time());	// Finis instantannément			
 		else
-			timeLeft = cdDuration = 1000;	// DEFAULT.		1000ms = 1seconde
+			timeLeft = cdDuration = 1000;	
 	}
 	else
-		timeLeft = cdDuration = 1000 + addDuration;	// J'ai ajouté ceci pour modifier la durée du  timer, mais je crois que ça va exploser. Bref, besoin de tester avec d'utiliser
+		timeLeft = cdDuration = 1000 + addDuration;	// NE PAS UTILISER "addDuration" Lol. J'ai ajouté ceci pour modifier la durée du timer, mais je crois que ça fait exploser tout 
 
 	if (!inf)
-		cd.Set(numMove);				// Nombre de mouvement à faire
+		cd.Set(numMove);				
 
-	// MÉTHODE #2
-	if (tickedThisFrame)	// On ne tick pas deux fois dans dans le même cycle, même si tu reset le timer 1 fois
+	if (tickedThisFrame)	
 	{
 		tickedThisFrame = false;
 		resetThisFrame = true;
@@ -151,49 +123,20 @@ void SpeedTimer::Start_Timer(int speed, int numMove, bool inf, int addDuration)	
 	moving = true;
 }
 
-bool SpeedTimer::Updates_Left()  // Dans un while, fait les updates que ta de besoin selon le le nombre de moves durant une frame
-{
-	if (movesThisFrame)
-		return movesThisFrame--;
-	else
-		return false;
-}	
-
-bool SpeedTimer::OLD_Tick()	// Update le temps écoulé à partir de delta time
-{
-	if (this->moving)
-		this->timeLeft -= (spd * GameLoopClock::Get_Delta_Time());	// Réduit le countdown à partir de DeltaTime
-	else
-		return false;	// NO MOVE
-
-	katch_Up();
-
-	if (movesThisFrame)
-		return true;	// MOVING
-	else
-		return false;	// NO MOVING
-}
-
-
-
- // MÉTHODE NUMÉRO DEUX -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// Permet d'utiliser un seul while
-// Difficile à débugger, et pas évident ce que ça fait
 
 bool SpeedTimer::Update_Timer()
 {
 	if (this->timeLeft <= 0)
 	{
-		timeLeft += cdDuration;		// reset le temps pour le prochain mouvement
+		timeLeft += cdDuration;		
 
 		if (infinite)
-			return true;	// We move
+			return true;	
 		else
-			if (cd.Count())		// Nombre de moves Max terminé					
-				Stop();	// Stop le mouvement		
+			if (cd.Count())						
+				Stop();		
 
-		return true; // We move
+		return true;
 	}
 
 	return false;
@@ -205,8 +148,8 @@ bool SpeedTimer::Catchup_Needed()				// Katchup le timer si le temps écoulé dura
 		return true;
 	else
 	{
-		tickedThisFrame = false; // stahp for good
-		return false; // we stahp
+		tickedThisFrame = false; 
+		return false; 
 	}
 }
 
@@ -218,26 +161,26 @@ bool SpeedTimer::Tick()	// Update le temps écoulé à partir de delta time
 		if (Timer_Was_Reset())	// Safety: Pour ne pas update un timer qui s'est fait reset dans une frame
 		{
 			resetThisFrame = false;
-			return false;	// we no update
+			return false;	
 		}
 
 		if(tickedThisFrame)
-			return Catchup_Needed(); // update maybe?
+			return Catchup_Needed();
 		else
 		{
-			this->timeLeft -= (spd * GameLoopClock::Get_Delta_Time());	// Réduit le countdown à partir de DeltaTime
+			this->timeLeft -= (spd * GameLoopClock::Get_Delta_Time());	
 			
 			if (Update_Timer()) 
 			{
 				tickedThisFrame = true;
-				return true;		// we update
+				return true;		
 			}
 		}
 	}
 
-	return false;	// we NO update
+	return false;	
 }
-void SpeedTimer::Stop_All_Timers()	// Stop tout les timers qui sont listés.		// La seule exception à date c'est les timer des affichages de strings
+void SpeedTimer::Stop_All_Timers()	
 {
 	static SpeedTimer* it;
 	it = start;

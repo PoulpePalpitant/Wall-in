@@ -10,14 +10,14 @@
 void Bot::Init_Bot_Coord_Stuff(SpwCrd& spGrdCrd)
 {
 	static BotSpawner* spawn;
-	spawn = &spawnGrid->border[spGrdCrd.border].spawn[spGrdCrd.spwNum];	// Le spawn du bot en question
+	spawn = &spawnGrid->border[spGrdCrd.border].spawn[spGrdCrd.spwNum];	
 
-	Equal_Coordinates(this->XY, spawn->Get_XY());		// La coordonnée xy du Bot sera égale à celle du spawn sur lequel il se trouve
+	Equal_Coordinates(this->XY, spawn->Get_XY());				// La coordonnée xy du Bot sera égale à celle du spawn sur lequel il se trouve
 	dir = Find_Opposite_Dir((Direction)spGrdCrd.border);		// La direction de déplacement sera l'opposé de la direction de son spawn. Si spawn en bas, va se diriger vers le haut Ex: la colonne C représente le numéro de bordure de spawn(0 à 4, pour chaque côté de la console)
 	
 	nxtWallCrd.Initialize_Axis(dir);				// L'axe d'incrémentation et la polarisation son intialisé. Manque plus que trouvé la coordXY du premier wall			
-	Find_First_Wall_Grd_Index((Direction)spGrdCrd.border, spGrdCrd.spwNum, nxtWallCrd);	// Tu dois passer somehow ici, les deux index du spawnborder
-	onAWall = {};	// le bot ne sera pas encore sur un wall
+	Find_First_Wall_Grd_Index((Direction)spGrdCrd.border, spGrdCrd.spwNum, nxtWallCrd);	
+	onAWall = {};	
 }
 
 // Ceci permet de trouver la coord( en col et en row) du premier élément "Wall" se trouvant sur le wallgrid que le bot percutera dans sa folle aventure linéaire
@@ -27,11 +27,11 @@ void Bot::Find_First_Wall_Grd_Index(Direction indexBoxSide, int indexrow, GridIn
 {
 	switch (indexBoxSide)
 	{
-	case UP:case DOWN: wallcrd.index.c = indexrow; break;		// Trouve le numero de colonne selon la bordure
-	case LEFT:case RIGHT:wallcrd.index.r = indexrow;			// Trouve le numero de row selon la bordure
+	case UP:case DOWN: wallcrd.index.c = indexrow; break;		
+	case LEFT:case RIGHT:wallcrd.index.r = indexrow;			
 	}
 
-	switch (indexBoxSide)	// trouve le reste
+	switch (indexBoxSide)
 	{
 	case UP:wallcrd.index.r = 0; break;
 	case DOWN: wallcrd.index.r = wallGridHor->Get_Rows() - 1; break;	// La dernière ligne du wallgrid

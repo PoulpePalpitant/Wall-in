@@ -3,14 +3,14 @@
 
 const int MAX_ANIMATIONS = MAX_ITEMS;	// screw it, make this shit laggy if you want
 
-int DrawItemSpawnList::animationSteps = 8;			// Nombre de steps dans cet animation
-ItemDrawer  DrawItemSpawnList::drawer[MAX_ANIMATIONS] = {};		// why not 20?
+int DrawItemSpawnList::animationSteps = 8;					
+ItemDrawer  DrawItemSpawnList::drawer[MAX_ANIMATIONS] = {};	
 int DrawItemSpawnList::total;
 
 
-void DrawItemSpawnList::Remove(int index)	// On delete rien au final
+void DrawItemSpawnList::Remove(int index)	
 {
-	for (int i = index; i < total; i++)		// Décale tout
+	for (int i = index; i < total; i++)		
 	{
 		drawer[i] = drawer[i + 1];
 	}
@@ -21,9 +21,8 @@ void DrawItemSpawnList::Remove(int index)	// On delete rien au final
 
 void DrawItemSpawnList::Remove_All()
 {
-	for (int i = 0; i < MAX_ANIMATIONS; i++)		// ALL SHALL BE DELETED
+	for (int i = 0; i < MAX_ANIMATIONS; i++)
 	{
-		//drawer[i] = { {0,0},ItemType::REGULAR, 0, 1};	// dafuck, ceci créer et détruit l'objet timer, même si je fais aucune assignation?!!?
 		drawer[i].cancel = true;
 		drawer[i].currStep = 0;
 		drawer[i].type = ItemType::REGULAR;
@@ -33,7 +32,7 @@ void DrawItemSpawnList::Remove_All()
 	
 	total = 0;
 }
-void DrawItemSpawnList::Cancel(Coord XY)	// Stop l'animation de l'item sur cette position
+void DrawItemSpawnList::Cancel(Coord XY)
 {
 	for (int index = 0; index < total; index++)		
 	{
@@ -42,13 +41,13 @@ void DrawItemSpawnList::Cancel(Coord XY)	// Stop l'animation de l'item sur cette
 	}
 }
 
-bool DrawItemSpawnList::Add(ItemType type, GrdCoord crd)		// Ajoute l'item à draw dans la list
+bool DrawItemSpawnList::Add(ItemType type, GrdCoord crd)		
 {
 	if (total < MAX_ANIMATIONS)
 	{
 		drawer[total].type = type;
 		drawer[total].XY = linkGrid->link[crd.c][crd.r].Get_XY();
-		drawer[total].timer.Start_Timer(0);		// First step de l'animation
+		drawer[total].timer.Start_Timer(0);		
 		drawer[total].cancel = false;
 
 		total++;	
@@ -59,8 +58,8 @@ bool DrawItemSpawnList::Add(ItemType type, GrdCoord crd)		// Ajoute l'item à dra
 }
 
 
-static unsigned char sym;	// le sym de l'item
-static Colors clr;	// le sym de l'item
+static unsigned char sym;	
+static Colors clr;	
 
 void DrawItemSpawnList::Find_Item_Sym(ItemType type)
 {
@@ -77,20 +76,20 @@ void DrawItemSpawnList::Find_Item_Sym(ItemType type)
 	}
 }
 
-void DrawItemSpawnList::Draw_Item(ItemType type, GrdCoord crd)	// sans aucune animations
+void DrawItemSpawnList::Draw_Item(ItemType type, GrdCoord crd)	
 {
 	Find_Item_Sym(type);
-	ConsoleRender::Add_Char(linkGrid->link[crd.c][crd.r].Get_XY(), sym, clr);	// Pour l'instant, tout les items sont verts
+	ConsoleRender::Add_Char(linkGrid->link[crd.c][crd.r].Get_XY(), sym, clr);	
 }
 
 void DrawItemSpawnList::Draw_Item_Spawn()
 {
-	if (!total) return;	// Liste vide
+	if (!total) return;	
 
-	static ItemDrawer* draw;	/// my pencil	
-	static int X;				// facilite l'affichage
-	static int Y;				// facilite l'affichage
-	static const int spd = 7000;// vitesse constante
+	static ItemDrawer* draw;	
+	static int X;				
+	static int Y;				
+	static const int spd = 7000;
 
 	for (int index = 0; index < total; index++)
 	{
@@ -98,18 +97,16 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 
 		while (draw->timer.Tick())
 		{
-			X = draw->XY.x;	//yep
-			Y = draw->XY.y;	//xep
+			X = draw->XY.x;
+			Y = draw->XY.y;
 
-			// ANIMATION TIME
 			switch (draw->currStep)
 			{
 			case 0:// emmerde pas l'étape 0, pour cette fois
 				if (!draw->cancel)
 				{
-					//sym = ITEM_SYM[(int)draw->type];
 					Find_Item_Sym(draw->type);
-					ConsoleRender::Add_Char({ X,Y }, sym, GRAY);	// Pour l'instant, tout les items sont verts
+					ConsoleRender::Add_Char({ X,Y }, sym, GRAY);	
 				}
 				ConsoleRender::Add_Char({ X + 2,Y + 2 }, 250, GRAY);	
 				ConsoleRender::Add_Char({ X + 2,Y - 2 }, 250, GRAY);	
@@ -170,8 +167,6 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 				if (!draw->cancel)
 				{
 					ConsoleRender::Add_Char({ X,Y }, '-', WHITE);
-					//ConsoleRender::Add_Char({ X - 1,Y }, 250, GRAY);
-					//ConsoleRender::Add_Char({ X + 1,Y }, 250, GRAY);
 				}
 				draw->timer.Start_Timer(spd);
 				draw->currStep++;
@@ -182,33 +177,17 @@ void DrawItemSpawnList::Draw_Item_Spawn()
 				{
 					Find_Item_Sym(draw->type);
 					ConsoleRender::Add_Char({ X,Y }, sym, clr);
-					//ConsoleRender::Add_Char({ X - 2,Y }, 250, GRAY);
-					//ConsoleRender::Add_Char({ X + 2,Y }, 250, GRAY);
-					//ConsoleRender::Add_Char({ X - 1,Y }, '-', WHITE);
-					//ConsoleRender::Add_Char({ X + 1,Y }, '-', WHITE);
 				}
 				draw->timer.Start_Timer(spd);
 				draw->currStep++;
 				break;
 
 			case 7:
-				if (!draw->cancel)
-				{
-					//ConsoleRender::Add_Char({ X - 1,Y }, TXT_CONST.SPACE);
-					//ConsoleRender::Add_Char({ X + 1,Y }, TXT_CONST.SPACE);
-					//ConsoleRender::Add_Char({ X - 2,Y }, '-', GRAY);
-					//ConsoleRender::Add_Char({ X + 2,Y }, '-', GRAY);
-				}
 				draw->timer.Start_Timer(spd);
 				draw->currStep++;
 				break;
 
 			case 8:
-				if (!draw->cancel)
-				{
-					//ConsoleRender::Add_Char({ X - 2,Y }, TXT_CONST.SPACE);
-					//ConsoleRender::Add_Char({ X + 2,Y }, TXT_CONST.SPACE);
-				}
 				Remove(index);	// we done here
 			}
 		}

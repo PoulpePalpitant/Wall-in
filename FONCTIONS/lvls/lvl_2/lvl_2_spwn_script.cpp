@@ -17,12 +17,7 @@
 #include "../lvl_1/msg_events/ev_speeding_up.h"		// hérésie!
 #include "lvl_2_initializer.h"
 #include "../../events/global_events/ev_spwn_player.h"
-// GENERAL RULES FOR THIS DUMB BROKEN SHIT: 
-// Dépasse jamais le nombre de spawn permis sur une bordure
-// AddSpecific(): Ne setup jamais une boxside random avec un spw précis
-// CETTE FORMULE CRASH 100% DU TEMPS // Add(1); gBoxSide = LEFT; gSpwNum = spawnGrid->Get_MaxSpwnCrdY() - 1; 
-// Combiner BoxSide, Spwnum avec plus qu'un spawn, ça créer des exceptions
-// Setup un intervalle de spawn trop petit pour le total va faire crashé le shit Ex : Set_Interval(RIGHT, 10, 13);Add(4); break;
+
 
 using namespace bots_to_spawn;
 
@@ -88,14 +83,14 @@ Puzzle_2_FINAL
 
 
 
-void Lvl_2_Spwn_Script()	// HERE WE GO AGAIN
+void Lvl_2_Spwn_Script()	
 {
 	if (gSpawnThisCycle)
 	{
 		skip = 0;		
 
-		LVL2_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();	// Script du puzzle
-		gCurrPuzzleStep++;	// Prochain step du puzzle!
+		LVL2_PUZZLES[gCurrentPuzzle[gCurrentLevel - 1]]();
+		gCurrPuzzleStep++;	
 
 		if (skip)
 			gSpwBotTimer.Add_Count(skip);

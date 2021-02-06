@@ -7,7 +7,6 @@
 
 /*
 	Une queue qui contient tout les modifiers de blast accumulés par le joueur
-
 */
 
 extern const int MAX_BLAST_MOD_Q;

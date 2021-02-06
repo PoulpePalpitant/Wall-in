@@ -21,7 +21,7 @@
 //	bool ignore = false;			// Permet d'ingore le listener si l'event n'est pas supposé être répété
 //	void (*Handler)();				// POINTEURS DE FONCTION	- Sera la fonction à invoker pour faire l'event
 //
-//	int steps;						// Le nombre de stade de l'event
+//	int MAX_STEPS;						// Le nombre de stade de l'event
 //	int curSteps = 0;				// Le stade actuelle
 //
 //	void Define_Handler(void (*toDefine)())
@@ -64,7 +64,7 @@
 //	//	CONSTRUCTOR
 //	Event(void (*toDefine)(), int eventSteps = 1) {
 //		
-//		steps = eventSteps;	// Le nombre d'étape que contient l'event. 
+//		MAX_STEPS = eventSteps;	// Le nombre d'étape que contient l'event. 
 //		
 //		eventsID[total] = this;	// Criss l'event dans l'array
 //		ID = total;	// Associe l'ID

@@ -11,18 +11,12 @@
 
 /* Level  events !*/
 #include "../../events/global_events/ev_update_heart.h"
-#include "events/ev_build_labyrinth.h"
-#include "events/ev_lvl2_training.h"
-#include "events/ev_lvl2_training_1.h"
-#include "events/ev_lvl2_training_2.h"
-#include "events/ev_lvl2_training_3.h"
 #include "../../events/global_events/ev_spwn_player.h"
 #include "../../events/global_events/ev_lvl_unlocked.h"
 #include "../../events/global_events/ev_back_to_menu.h"	 
 
 
 /* Msg events*/
-#include "msg_events/ev_waking_up_2.h"
 #include "../../events/global_events/ev_level_title.h"
 
 
@@ -44,10 +38,10 @@ void Dispatch_Msg_To_Lvl_2()
 	// The bare minimum!
 	switch (gCurrentMsg)
 	{
-	case PLS_INTIALIZE_LVL: Lvl_2_Initializer();	break;			// Initialize plein de choses	/* Remarque ce n'est pas un observateur, car c'est pas vraiment un event, en fin je crois */
+	case PLS_INTIALIZE_LVL: Lvl_2_Initializer();	break;			
 
 	case STAGE_ADVANCE:
-		Event::Cancel_All();		// Tout les events en cours sont annulés
+		Event::Cancel_All();		
 		clrscr();
 
 		if (gCurrentPuzzle[gCurrentLevel - 1] == 0)
@@ -59,40 +53,38 @@ void Dispatch_Msg_To_Lvl_2()
 				return;
 			}
 
-			//Just_Dr_Map_Borders();
 			P1.Er_Player();
-			gCurrPuzzleStep = 0;	// SAFETY				
+			gCurrPuzzleStep = 0;				
 			Set_Ev_Spawn_Player(3);													
 		}
 		else
 		{
-			Checkpoint_Delay();// Delay Next spawn
+			Checkpoint_Delay();
 
 			if (gCurrentPuzzle[gCurrentLevel - 1] + 1 != NUM_PUZZLES[gCurrentLevel - 1])	// Veut dire qu'on est rendu au final hour qui est le dernier checkpoint.
 				Set_Ev_Spawn_Player(3);														// Je sais, c'est très clair
 		}
 
-		/*safety*/
-		ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links				
+		ListsOfChainToModify::Annihilate_All_Links(); 	
 		botList.Destroy_All_Bots();
 
 		P1.Set_Hp(1);
 		Ev_Progress_Bar();
 		Init_Puzzle();
 
-		MsgQueue::Register(START_BOTS); // Here they come baby
+		MsgQueue::Register(START_BOTS);
 		gSkipTutorial = false;
-		gDayStarted = true;
+		gLevelStarted = true;
 
 		// Pour debug
 		//gGrids.Dr_Spawngrid();
 		break;
 
 
-	case LOAD_CHECKPOINT:						// Restart le level, met en ajustant le Checkpoint
-		Clear_All_States();	// Thats a fucking quick reset brah
+	case LOAD_CHECKPOINT:						
+		Clear_All_States();	
 		clrscr();
-		gSkipTutorial = true;	// clear state clear aussi ça, qui est agaçant
+		gSkipTutorial = true;	
 		MsgQueue::Register(PLS_INTIALIZE_LVL);
 		break;
 

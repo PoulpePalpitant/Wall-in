@@ -7,12 +7,10 @@
 #include "../../msg_dispatcher.h"
 #include "../../../player/player.h"
 #include "ev_draw_map.h"
-//#include "../../../animation/UI_draw_map.h"
 
-#include "../../../lvls/lvl_1/msg_events/ev_waking_up.h"
 
-static Event ev_DrawMap1(Ev_Dr_Map_Borders_1);	// das event
-static Event ev_FlashMapBorder(Ev_Flash_Map_Border, 1);	// das event
+static Event ev_DrawMap1(Ev_Dr_Map_Borders_1);	
+static Event ev_FlashMapBorder(Ev_Flash_Map_Border, 1);	
 static Direction brderToFlash;
 static int numOfFlash;
 
@@ -43,10 +41,10 @@ void Ev_Dr_Map_Borders_1()
 			sym = TXT_CONST.SPACE;
 
 		/* Les limites*/
-		right = map.Get_Box_Limit(RIGHT) + 1;
-		up = map.Get_Box_Limit(UP) - 1;
-		left = map.Get_Box_Limit(LEFT) - 1;
-		down = map.Get_Box_Limit(DOWN) + 1;
+		right = map.Get_Limit(RIGHT) + 1;
+		up = map.Get_Limit(UP) - 1;
+		left = map.Get_Limit(LEFT) - 1;
+		down = map.Get_Limit(DOWN) + 1;
 		crd = { left + 1, up };
 
 		if (erase)
@@ -167,8 +165,8 @@ static void Draw_Or_Erase_Border(bool erase = false)	// Pour faire flasher une b
 	switch (brderToFlash)
 	{
 	case UP:
-		crd = { map.Get_Box_Limit(LEFT), map.Get_Box_Limit(UP) - 1 };
-		for (int i = crd.x; i <= map.Get_Box_Limit(RIGHT); i++)
+		crd = { map.Get_Limit(LEFT), map.Get_Limit(UP) - 1 };
+		for (int i = crd.x; i <= map.Get_Limit(RIGHT); i++)
 		{
 			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
 			crd.x++;
@@ -176,8 +174,8 @@ static void Draw_Or_Erase_Border(bool erase = false)	// Pour faire flasher une b
 		break;
 
 	case RIGHT:
-		crd = { map.Get_Box_Limit(RIGHT) + 1, map.Get_Box_Limit(UP) /*- 2*/ };
-		for (int i = crd.y; i <= map.Get_Box_Limit(DOWN); i++)
+		crd = { map.Get_Limit(RIGHT) + 1, map.Get_Limit(UP) /*- 2*/ };
+		for (int i = crd.y; i <= map.Get_Limit(DOWN); i++)
 		{
 			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
 			crd.y++;
@@ -185,8 +183,8 @@ static void Draw_Or_Erase_Border(bool erase = false)	// Pour faire flasher une b
 		break;
 
 	case DOWN:
-		crd = { map.Get_Box_Limit(RIGHT), map.Get_Box_Limit(DOWN) + 1 };
-		for (int i = crd.x; i >= map.Get_Box_Limit(LEFT); i--)
+		crd = { map.Get_Limit(RIGHT), map.Get_Limit(DOWN) + 1 };
+		for (int i = crd.x; i >= map.Get_Limit(LEFT); i--)
 		{
 			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
 			crd.x--;
@@ -194,8 +192,8 @@ static void Draw_Or_Erase_Border(bool erase = false)	// Pour faire flasher une b
 		break;
 
 	case LEFT:
-		crd = { map.Get_Box_Limit(LEFT) - 1, map.Get_Box_Limit(DOWN) };
-		for (int i = --crd.y; i >= map.Get_Box_Limit(UP); i--)
+		crd = { map.Get_Limit(LEFT) - 1, map.Get_Limit(DOWN) };
+		for (int i = --crd.y; i >= map.Get_Limit(UP); i--)
 		{
 			ConsoleRender::Add_Char(crd, sym, BRIGHT_WHITE);
 			crd.y--;
@@ -251,10 +249,10 @@ void Ev_Flash_Map_Border()		 // Affiche instantannément
 void Just_Dr_Map_Borders(Colors clr)
 {
 	/* Les limites*/
-	int right = map.Get_Box_Limit(RIGHT);
-	int up = map.Get_Box_Limit(UP);
-	int left = map.Get_Box_Limit(LEFT);
-	int down = map.Get_Box_Limit(DOWN);
+	int right = map.Get_Limit(RIGHT);
+	int up = map.Get_Limit(UP);
+	int left = map.Get_Limit(LEFT);
+	int down = map.Get_Limit(DOWN);
 	/*
 		Animation va comme suis. Top et bot par et vont en direction opposé. Les deux atteignent un corner et on passe aux bordures left et right
 		->	&&	v	synchro

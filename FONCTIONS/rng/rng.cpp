@@ -7,5 +7,5 @@
 // RNG 
 void Initialize_Rng()
 {
-	srand(time(0));	// Setup le rand()
+	srand(time(0));
 }

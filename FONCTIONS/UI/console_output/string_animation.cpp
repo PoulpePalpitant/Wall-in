@@ -1,38 +1,32 @@
 
-
-
-#include "dsp_char.h"
-#include "dsp_string.h"
-#include "../../player/player.h"	// Uniquement pour empêcher f'afficher par dessus le joueur
-#include "../../time/timerOP.h"
+#include "../../player/player.h"
 #include "string_animation.h"
 
 
-//StringAnimationList strList;
 
 
-CharData StringQueue::Pop_First()	// Prend le prochain élément dans la liste
+CharData StringQueue::Pop_First()	
 {
 	nbChar--;
-	return queue[curr++];	// Je devrait tester ça first, mais ça devrait work
+	return queue[curr++];	
 }
 
-void StringQueue::Add_String(Coord crd, std::string txt, Colors clr, bool erase) // Ajoute chaque charactère de la string dans la queue
+void StringQueue::Add_String(Coord crd, std::string txt, Colors clr, bool erase) 
 {
-	int size = (int)txt.length();	// Assignation de la longueur de la string 	
+	int size = (int)txt.length();	
 	if (erase)
 	{
 		for (int ch = 0; ch < size; ch++)
 		{
 			Add(crd, TXT_CONST.SPACE, clr);
-			crd.x++;										// Incrémente x pour le prochain charactère	
+			crd.x++;										
 		}
 	}
 	else
 		for (int ch = 0; ch < size; ch++)
 		{
 			Add(crd, txt[ch], clr);
-			crd.x++;										// Incrémente x pour le prochain charactère	
+			crd.x++;										
 		}
 }
 

@@ -16,8 +16,7 @@
 
 void Lvl_3_Initializer()
 {
-	// Pour un normal quick start
-	gCurrentStage = 1; // Normal
+	gCurrentStage = 1; 
 
 	// TEST DU SPAWN SCRIPT ICI
 	// **************************

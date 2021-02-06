@@ -11,7 +11,6 @@
 #include "../../items/item_spawner.h"
 #include "../../spawns/valid_spwn_intervals.h"
 #include "../lvl_script.h"
-#include "events/ev_build_labyrinth.h"
 
 
 void Lvl_2_Initializer()

@@ -52,8 +52,8 @@ void  Ev_Speeding_Up()			// Les bots spawnent plus vite!
 				Dr_Er = true;
 
 			//ConsoleRender::Add_String(*increase, { Up_Txt_1(*increase).x,  Up_Txt_1(*increase).y - 1 }, clr, 0, Dr_Er);	// fais clignoter ce titre
-			ConsoleRender::Add_String(*increase , { map.Get_Box_Limit(LEFT) - (int)(*increase).size() - GAP_GRID,/* gConHeight / 2*/(map.Get_Box_Limit(DOWN)) / 2 }, clr, 0, Dr_Er);	// fais clignoter ce titre
-			ConsoleRender::Add_String(*increase, { map.Get_Box_Limit(RIGHT) + (int)(*increase).size() - GAP_GRID, (map.Get_Box_Limit(DOWN) ) / 2  }, clr, 0, Dr_Er);	// fais clignoter ce titre
+			ConsoleRender::Add_String(*increase , { map.Get_Limit(LEFT) - (int)(*increase).size() - GAP_GRID,/* gConHeight / 2*/(map.Get_Limit(DOWN)) / 2 }, clr, 0, Dr_Er);	// fais clignoter ce titre
+			ConsoleRender::Add_String(*increase, { map.Get_Limit(RIGHT) + (int)(*increase).size() - GAP_GRID, (map.Get_Limit(DOWN) ) / 2  }, clr, 0, Dr_Er);	// fais clignoter ce titre
 			
 		}
 	}
