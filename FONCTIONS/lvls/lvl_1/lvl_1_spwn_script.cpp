@@ -408,6 +408,10 @@ void Puzzle_1_9()
 	case 0:P1.Set_Position({ 11,7 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(18);// Quantité d'ammo
 		gCurrPuzzleStepMax = 8;
+
+
+		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 1, 3 }, LEFT, 1);
+		//gGrids.Activate_Link({ linkGrid->Get_Cols() - 1, 9 });
 		break;
 
 	case 1:Add(1); gBoxSide = LEFT; gSpwNum = 9; break;
@@ -512,38 +516,36 @@ void Puzzle_1_13()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 7,5 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(1);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		gCurrPuzzleStepMax = 21;
 		gGrids.Make_Chain_Of_Walls({ 0,10 }, RIGHT, 9);
-		gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 7);	// max = 9[
-		gGrids.Make_Chain_Of_Walls({ 8,10 }, UP, 3);
-		gGrids.Make_Chain_Of_Walls({ 7,10 }, UP, 3);
-		gGrids.Make_Chain_Of_Walls({ 6,10 }, UP, 4);
-		gGrids.Make_Chain_Of_Walls({ 5,10 }, UP, 5);
-		gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 7);
+		gGrids.Make_Chain_Of_Walls({ 9,10 }, UP, 6);	// max = 9[
+		gGrids.Make_Chain_Of_Walls({ 8,10 }, UP, 2);
+		gGrids.Make_Chain_Of_Walls({ 7,10 }, UP, 2);
+		gGrids.Make_Chain_Of_Walls({ 6,10 }, UP, 3);
+		gGrids.Make_Chain_Of_Walls({ 5,10 }, UP, 4);
+		gGrids.Make_Chain_Of_Walls({ 4,10 }, UP, 6);
 		break;
 
-	case 1:Add_Spec(RIGHT, 3);Add_Spec(LEFT, 3);break;
+	case 1:Add_Spec(RIGHT, 4);Add_Spec(LEFT, 4);break;
 	case 2: Add_Spec(UP, 4);skip = 1;break;
 	case 3: Add_Spec(UP, 6);skip = 2;break;
-	case 4: Add_Spec(UP, 5);skip = 3;break;
-	case 5: Add_Spec(LEFT, 4);Add_Spec(RIGHT, 4);skip = 6;break;
-	case 6: Add_Spec(UP, 5);skip = 1;break;
-	case 7: Add_Spec(UP, 7);skip = 2;break;
-	case 8: Add_Spec(UP, 7);skip = 1;break;
-	case 9: Add_Spec(UP, 7);skip = 1;break;
-	case 10:Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);skip = 6;break;
-	case 11:Add_Spec(UP, 8);skip = 1;break;
-	case 12:Add_Spec(UP, 4);skip = 2;break;
-	case 13:Add_Spec(UP, 4);skip = 3;break;
-	case 14:Add_Spec(UP, 7);skip = 1;break;
-	case 15:Add_Spec(LEFT, 6);Add_Spec(RIGHT, 6);skip = 6;break;
-	case 16:Add_Spec(UP, 4);skip = 2;break;
-	case 17:Add_Spec(LEFT, 7);Add_Spec(UP, 4);skip = 2;break;
-	case 18:Add_Spec(UP, 8);skip = 1;break;
-	case 19:Add_Spec(LEFT, 9);Add_Spec(RIGHT, 8);Add_Spec(UP, 7);skip = 2;break;
-	case 20:Add_Spec(RIGHT, 9);skip = 3;break;
-	case 21:Add(9);Set_Interval(DOWN, 0, 9); MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
+	case 4: Add_Spec(LEFT, 5);Add_Spec(RIGHT, 5);skip = 4;break;
+	case 5: Add_Spec(UP, 5);skip = 1;break;
+	case 6: Add_Spec(UP, 7);skip = 2;break;
+	case 7: Add_Spec(LEFT, 6);Add_Spec(RIGHT, 6);skip = 4;break;
+	case 8: Add_Spec(UP, 8);skip = 1;break;
+	case 9:	Add_Spec(UP, 4);skip = 2;break;
+	case 10:Add_Spec(UP, 4);skip = 2;break;
+	case 11:Add_Spec(LEFT, 7);Add_Spec(RIGHT, 7);Add_Spec(UP, 4);skip = 4;break;
+	case 12:Add_Spec(UP, 8);skip = 3;break;
+	case 13:Add_Spec(LEFT, 8);Add_Spec(RIGHT, 8);Add_Spec(UP, 7);
+		Add_Spec(RIGHT, 9);
+		Add_Spec(LEFT, 9);
+		skip = 6;
+		break;
+
+	case 14:Add(9);Set_Interval(DOWN, 0, 9); MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE 
 	}
 }
 
@@ -585,7 +587,7 @@ void Puzzle_1_15()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 12,3 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(33);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(33);	// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 		gGrids.Make_Chain_Of_Walls({ 3,14 }, UP, 14);
 		gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 14);

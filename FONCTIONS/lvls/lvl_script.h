@@ -21,6 +21,7 @@ extern bool gRetryCheckpoint;
 
 extern int gCurrPuzzleStep;		
 extern int gCurrPuzzleStepMax;
+extern int finalLevelCheckpoint;
 
 extern short tutoStep;
 extern const short TUTO_TOTAL_STEPS;

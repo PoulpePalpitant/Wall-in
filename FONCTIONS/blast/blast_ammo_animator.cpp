@@ -427,8 +427,8 @@ namespace DrawBlastAmmo {
 			clr = LIGHT_RED;
 		}
 
-		//ConsoleRender::Add_Char({ ori.x + 2,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.PLUS, WHITE);
-		//ConsoleRender::Add_String(std::to_string(ammo), { ori.x + 4  ,ori.y + MAX_BAR_SIZE + 1 - 9 }, clr);	// 
+		ConsoleRender::Add_Char({ ori.x + 2,ori.y + MAX_BAR_SIZE + 1 - 9 }, TXT_CONST.PLUS, WHITE);
+		ConsoleRender::Add_String(std::to_string(ammo), { ori.x + 4  ,ori.y + MAX_BAR_SIZE + 1 - 9 }, clr);	// 
 
 	}
 

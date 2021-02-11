@@ -103,6 +103,7 @@ void Puzzle_3_0()
 		blastP1.Get_Ammo_Manager().Set_Ammo(7);
 		gCurrPuzzleStepMax = 12;
 		seenFinalHour = false;
+		finalLevelCheckpoint = 1;
 
 		for (int r = 0; r <= 14; r++)
 		{
@@ -148,6 +149,10 @@ void Puzzle_3_1()
 		gGrids.Make_Chain_Of_Walls({ linkGrid->Get_Cols() - 2, linkGrid->Get_Rows() - 3 }, LEFT, linkGrid->Get_Cols() - 4);
 		gGrids.Make_Chain_Of_Walls({ 2, linkGrid->Get_Rows() - 3 }, UP, 10);
 		gGrids.Make_Chain_Of_Walls({ 2, 2 }, RIGHT, 5);
+
+		gGrids.Activate_Link({ 26, 0 }); // visual aid
+		gGrids.Activate_Link({ 0,1 });
+		gGrids.Activate_Link({ 1,14 });
 		break;
 		
 	case 1:
@@ -492,29 +497,41 @@ void Puzzle_3_8() {
 		gGrids.Make_Chain_Of_Walls({ 8 , 1 }, LEFT, 2, WallType::WEAK);
 		gGrids.Activate_Link({ 8, 2 });
 
-		gGrids.Activate_Link({ 6 , 8 });
-		gGrids.Activate_Link({ 7 , 8 });
-		gGrids.Make_Chain_Of_Walls({ 8 , 7 }, UP, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ 9 , 7 }, UP, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ 10 , 7 }, UP, 1);
+		gGrids.Activate_Link({ 6 , 9 });
+		gGrids.Activate_Link({ 7 , 9 });
+		gGrids.Make_Chain_Of_Walls({ 8 , 8 }, UP, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 9 , 8 }, UP, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 10 , 8 }, UP, 1);
 
-		gGrids.Activate_Link({ 23 , 6 });
-		gGrids.Make_Chain_Of_Walls({ 23 , 7 }, LEFT, 2, WallType::WEAK);
-
+		gGrids.Activate_Link({ 23 , 7 });
+		gGrids.Make_Chain_Of_Walls({ 23 , 8 }, LEFT, 2, WallType::WEAK);
 
 		gGrids.Activate_Link({ 22 , 13 });
 		gGrids.Activate_Link({ 21 , 13 });
 		gGrids.Make_Chain_Of_Walls({23 , 12 }, UP, 1, WallType::WEAK);
 
-
 		gGrids.Activate_Link({ 2 , 11 });
 		gGrids.Activate_Link({ 3 , 12 });
+
+		for (int i = 0; i < 6; i++)
+			gGrids.Activate_Link({ i , 5 },Modifier::BLOCKER);
+		
+		//for (int i = 0; i < 7; i++)
+		//	gGrids.Activate_Link({ 9 , i }, Modifier::BLOCKER);
+
+		for (int i = 9; i < 26; i++)
+			gGrids.Activate_Link({ i , 5 }, Modifier::BLOCKER);
+
+		for (int i = 0; i < 21; i++)
+			gGrids.Activate_Link({ i , 10 }, Modifier::BLOCKER);
+
+
 
 		break;
 
 	case 1:Add_Spec(LEFT, 1); instantSpawn = 1; break;
-	case 2:Add_Spec(UP, 7); Add_Spec(UP, 6); Add_Spec(LEFT, 7);Add_Spec(LEFT, 6);break;
-	case 3:Add_Spec(LEFT, 7); skip = 8;break;
+	case 2:Add_Spec(UP, 7); Add_Spec(UP, 6); Add_Spec(LEFT, 8);Add_Spec(LEFT, 7);break;
+	case 3:Add_Spec(LEFT, 8); skip = 8;break;
 	case 4:Add_Spec(DOWN, 21);Add_Spec(DOWN, 22);skip = 5;break;
 	case 5:Add_Spec(RIGHT, 12);break;
 	case 6:Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 11);skip = 15;break;
@@ -646,8 +663,8 @@ void Puzzle_3_11()
 
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 15 ,1 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(4);// Quantité d'ammo
+	case 0:P1.Set_Position({ 15 ,9 });				
+		blastP1.Get_Ammo_Manager().Set_Ammo(0);		
 		gCurrPuzzleStepMax = 12;
 
 		for (int r = 0; r <= 14; r++)
@@ -673,10 +690,12 @@ void Puzzle_3_11()
 		gGrids.Activate_Link({ 8 - 2, 5 - 1 }, Modifier::FORCEFIELD);
 		gGrids.Activate_Link({ 5 - 2, 3 - 1 }, Modifier::FORCEFIELD);
 		gGrids.Activate_Link({ 6 - 2, 3 - 1 }, Modifier::FORCEFIELD);
-		gGrids.Activate_Link({ 16, 2 - 1 }, Modifier::REGULAR);
-		gGrids.Activate_Link({ 16, 4 - 1 }, Modifier::REGULAR);
-		gGrids.Activate_Link({ 16, 6 - 1 }, Modifier::REGULAR);
-		gGrids.Activate_Link({ 16, 8 - 1 }, Modifier::REGULAR);
+
+		gGrids.Make_Chain_Of_Walls({ 16, 2 - 1 }, LEFT,1);
+		gGrids.Make_Chain_Of_Walls({ 16, 4 - 1 }, LEFT,1);
+		gGrids.Make_Chain_Of_Walls({ 16, 6 - 1 }, LEFT,1);
+		gGrids.Make_Chain_Of_Walls({ 16, 8 - 1 }, LEFT,1);
+
 		gGrids.Make_Chain_Of_Walls({ 15 , 14 }, UP, 4, WallType::WEAK);
 
 		for (int c = 17; c <= 21; c++)
@@ -712,7 +731,7 @@ void Puzzle_3_12() {
 
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ distance - 4,7 });				// Coord de départ du jouer
+	case 0:P1.Set_Position({ distance - 4,8 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);			// EXCEPTIONNAL
 		gCurrPuzzleStepMax = 12;
@@ -735,8 +754,7 @@ void Puzzle_3_12() {
 		gGrids.Make_Chain_Of_Walls({ distance - 1 , 7 }, LEFT, 1, WallType::WEAK);
 		gGrids.Make_Chain_Of_Walls({ distance - 2 , 7 }, LEFT, 1, WallType::WEAK);
 
-		gGrids.Make_Chain_Of_Walls({ distance - 1 , 8 }, LEFT, 1, WallType::WEAK);
-		gGrids.Make_Chain_Of_Walls({ distance - 2 , 8 }, LEFT, 1, WallType::REGULAR);
+		gGrids.Make_Chain_Of_Walls({ distance - 1 , 8 }, LEFT, 2, WallType::WEAK);
 		break;
 
 
@@ -745,8 +763,8 @@ void Puzzle_3_12() {
 	case 3:Add_Spec(UP, 0);skip = 2;break;
 	case 4:Add_Spec(UP, 0);skip = 2;break;
 	case 5:Add_Spec(DOWN, 0);skip = 2;break;
-	case 6:Add_Spec(DOWN, 0);skip = 2;break;
-	case 7:Add_Spec(UP, 0);skip = 2;break;
+	case 6:Add_Spec(UP, 0);skip = 4;break;
+	case 7:Add_Spec(DOWN, 0);skip = 2;break;
 	case 12:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
 }
@@ -974,14 +992,16 @@ void Puzzle_3_16()
 {
 	switch (gCurrPuzzleStep)
 	{
-	case 0:P1.Set_Position({ 15,9 });				// Coord de départ du jouer
+	case 0:P1.Set_Position({ 15,6 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(0);// Quantité d'ammo
 		blastP1.Get_Ammo_Manager().Set_Nb_Emergency_Ammo(0);			// EXCEPTIONNAL
 		gCurrPuzzleStepMax = 12;
 
 
 
-		gGrids.Make_Chain_Of_Walls({ 15,7 }, DOWN, 1, WallType::WEAK);
+		gGrids.Make_Chain_Of_Walls({ 15,9 }, UP, 1, WallType::WEAK); // the tricky one
+
+
 		gGrids.Make_Chain_Of_Walls({ 16,9 }, UP, 1, WallType::WEAK);
 
 		gGrids.Make_Chain_Of_Walls({ 12,5 }, DOWN, 1, WallType::WEAK);
@@ -1117,9 +1137,9 @@ void Puzzle_3_17() {
 		gGrids.Extremely_Dumb_Fix_To_Redraw_Walls(); // wowsies
 		break;
 
-	case 2:	Add_Spec(UP, 13); skip = 2;break;
-	case 3:	Add_Spec(UP, 13); skip = 2;break;
-	case 4:	Add_Spec(UP, 13); skip = 1;break;
+	case 2:	Add_Spec(UP, 13); skip = 4;break;
+	case 3:	Add_Spec(UP, 13); skip = 3;break;
+	case 4:	Add_Spec(UP, 13); skip = 2;break;
 	case 5:	Add_Spec(UP, 13); skip = 1;break;
 	case 6:	Add_Spec(UP, 13); skip = 8;break;
 	case 7:	Add_Spec(UP, 13); 
@@ -1212,11 +1232,16 @@ void Puzzle_3_18()
 		linkGrid->link[23][12].Convert_Modifier(Modifier::REGULAR, 1);
 		linkGrid->link[2][11].Convert_Modifier(Modifier::REGULAR, 1);
 		linkGrid->link[3][2].Convert_Modifier(Modifier::REGULAR, 1);
+
+		gGrids.Activate_Link({ 26,3 });
+		gGrids.Activate_Link({ 25, 14 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 0,13 }, Modifier::REGULAR);
+		gGrids.Activate_Link({ 1 ,0 }, Modifier::REGULAR);
 		break;
 
 
-	case 1:skip = 4;break;
-	case 2:Add_Spec(UP, 20); skip = 19;break;
+	case 1:skip = 10;break;
+	case 2:Add_Spec(UP, 20); skip = 20;break;
 	case 3:Add_Spec(DOWN, 24);break;
 	case 4:MsgQueue::Register(CHECKPOINT_REACHED); break; // CHECKPOINTHERE CHECKPOINTHERE CHECKPOINTHERE
 	}
@@ -1236,10 +1261,11 @@ void Puzzle_3_FINAL()
 	const int SHAPES_TO_KILL = 15;
 	static int shapesRemaining;
 
+
+
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 13,7 });				
-		blastP1.Get_Ammo_Manager().Set_Ammo(15);
 		gCurrPuzzleStepMax = 12;
 
 		upOrDown = false;
@@ -1247,6 +1273,8 @@ void Puzzle_3_FINAL()
 		shapesRemaining = SHAPES_TO_KILL;
 		crd = { Find_Ctr_String_X(_1) - 1, 6 };
 
+		if(finalLevelCheckpoint == 1)
+			blastP1.Get_Ammo_Manager().Set_Ammo(15);
 
 		// DEBUG 
 		// *****
@@ -1271,43 +1299,55 @@ void Puzzle_3_FINAL()
 		break;
 
 	case 2:
-		if (P1.Cant_Do_Stuff())
+		if (finalLevelCheckpoint == 1)
 		{
-			P1.Set_Position({ 13,7 });				// Coord de départ du jouer
-			Set_Ev_Spawn_Player(3);
+
+			ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
+			ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
+			ConsoleRender::Add_String("???", { crd.x + 13,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
+
+			if (P1.Cant_Do_Stuff())
+			{
+				P1.Set_Position({ 13,7 });				// Coord de départ du jouer
+				Set_Ev_Spawn_Player(3);
+			}
+
+			for (int c = 0; c < linkGrid->Get_Cols(); c++)
+			{
+				gGrids.Activate_Link({ c,5 });
+				gGrids.Activate_Link({ c,9 });
+			}
+
+			gGrids.Make_Chain_Of_Walls({ 11,7 }, LEFT, 1);
+			gGrids.Make_Chain_Of_Walls({ 15,7 }, RIGHT, 1);
+
+			for (int c = 12; c < 15; c++)
+			{
+				ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,6 });
+				ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,8 });
+
+				if (c != 13)
+					ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,7 });
+			}
+
+			skip = 5;
+
+		}
+		else
+		{
+
+			ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE);
+		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE);
+		ConsoleRender::Add_String("???", { crd.x + 13,crd.y + 1 }, LIGHT_AQUA);
+			switch (finalLevelCheckpoint) // Checkpoint bâtard ajouté pour nerfer le niveau
+			{
+			case 2:gCurrPuzzleStep = 15;break;
+			case 3:gCurrPuzzleStep = 24;break;
+			case 4:gCurrPuzzleStep = 31; break;
+			case 5:gCurrPuzzleStep = 46; break;
+			}
 		}
 
-		ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
-		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
-		ConsoleRender::Add_String("???", { crd.x + 13,crd.y + 1 }, LIGHT_AQUA, TXT_SPD_DR);
-
-		for (int c = 0; c < linkGrid->Get_Cols(); c++)
-		{
-			gGrids.Activate_Link({ c,5 });
-			gGrids.Activate_Link({ c,9 });
-		}
-
-		gGrids.Activate_Link({ 11,7 });
-		gGrids.Activate_Link({ 15,7 });
-
-
-		for (int c = 12; c < 15; c++)
-		{
-			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,6 });
-			ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,8 });
-
-			if (c != 13)
-				ItemSpawner::Spawn_This_Item(ItemType::AMMO, { c,7 });
-		}
-
-		// DEBUG
-		/// ****
-		//gCurrPuzzleStep = 15;//PHASE 2
-		//gCurrPuzzleStep = 24;//PHASE 3
-		//gCurrPuzzleStep = 31;//PHASE 4
-		//gCurrPuzzleStep = 50;//PHASE 5
-		//gCurrPuzzleStep = 63;//PHASE 6
-		//gCurrPuzzleStep = 82;//PHASE 7
 		break;
 
 
@@ -1327,8 +1367,13 @@ void Puzzle_3_FINAL()
 			gCurrPuzzleStep--;
 		else
 		{
+			if (finalLevelCheckpoint < 2)
+				finalLevelCheckpoint = 2;
+
+
 			Clear_Map();
-			blastP1.Get_Ammo_Manager().Activate(0);
+			blastP1.Get_Ammo_Manager().Deactivate();
+			blastP1.Get_Ammo_Manager().Set_Ammo(4);
 
 			P1.Set_Position({ 13,7 });
 			Set_Ev_Spawn_Player(3);
@@ -1409,9 +1454,11 @@ void Puzzle_3_FINAL()
 			gCurrPuzzleStep--;
 		else
 		{
+			if (finalLevelCheckpoint < 3)
+				finalLevelCheckpoint = 3;
+			
 			Clear_Map();
-
-			blastP1.Get_Ammo_Manager().Activate(0);
+			blastP1.Get_Ammo_Manager().Set_Ammo(10);
 
 			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
@@ -1450,9 +1497,12 @@ void Puzzle_3_FINAL()
 			gCurrPuzzleStep--;
 		else
 		{
-			Clear_Map();
+			if (finalLevelCheckpoint < 4)
+				finalLevelCheckpoint = 4;
 
-			blastP1.Get_Ammo_Manager().Activate(0);
+			Clear_Map();
+			blastP1.Get_Ammo_Manager().Set_Ammo(0);
+
 
 			P1.Set_Position({ 13,6 });
 			Set_Ev_Spawn_Player(3);
@@ -1523,13 +1573,15 @@ void Puzzle_3_FINAL()
 		// PHASE 5, the bait
 		// *****************
 	case 47:
-
 		if (gAllBotMeta.alive || !P1.Get_HP())
 			gCurrPuzzleStep--;
 		else
 		{
+			if (finalLevelCheckpoint < 5)
+				finalLevelCheckpoint = 5;
+
 			Clear_Map();
-			blastP1.Get_Ammo_Manager().Activate(0);
+			blastP1.Get_Ammo_Manager().Set_Ammo(999);
 
 			P1.Set_Position({ 13,11 });
 			Set_Ev_Spawn_Player(3);

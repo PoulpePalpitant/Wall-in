@@ -18,6 +18,7 @@ int gLastLvlUnlocked = -1;
 
 int gCurrPuzzleStep = 0;		// Le step du puzzle en cours, chaque puzzle start à 0. Dès qu'un botspawncycle est fait, on avance de 1. S'arrête à currPuzzleStepMax
 int gCurrPuzzleStepMax = 0;
+int finalLevelCheckpoint = 1;	// Le final lvl était trop hard, alors j'ai mis des checkpoints à la place
 
 const short TUTO_TOTAL_STEPS = 7;
 short tutoStep = 0;
