@@ -18,17 +18,6 @@
 #include "../FONCTIONS/DB/database.h"
 
 
-using namespace std;
-
-/*r
-			TITRE DU JEU : WALL IN
-
-			Description: "Wall in" est un jeu de puzzle de style top-down shooter ou le joueur doit empêcher des formes de traverser les frontière de son territoire.
-			Il doit faire ceci en tirant des murs qui permettent de stopper ces formes.
-
-			FAIT PAR : Laurent Montreuil
-*/
-
 
 void main()	
 {
@@ -75,8 +64,6 @@ void main()
 			//if (++frames == 60)	
 			//{
 				//ConsoleRender::Add_String(std::to_string(GameLoopClock::Get_Delta_Time()),crd);					// Affiche le temps écoulé pour 1 frame. 
-				//ConsoleRender::Add_String(std::to_string(gLvlTime), crd, WHITE);									// Le temps actuel
-				//ConsoleRender::Add_String("  ", crd);																// efface la dizaine
 				//ConsoleRender::Add_String(std::to_string(/*(int)*/(1 / GameLoopClock::Get_Delta_Time())), crd);	// Le nombre de FRAMES en une seconde, soit le framerate : 60
 				//ConsoleRender::Add_String(std::to_string(gAllBotMeta.alive), { crd3.x + 4, crd3.y });				// Nombre de bot en vie
 				//ConsoleRender::Add_String(std::to_string(gCurrPuzzleStep), {crd3.x + 3, crd3.y });				// Nombre de cycles fais

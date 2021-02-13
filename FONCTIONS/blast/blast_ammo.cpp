@@ -58,17 +58,26 @@ bool BlastAmmo::Shoot()
 				return true;
 			else
 				return false;
+
 		}
 
 		if (--ammo >= 0)
+		{
 			DrawBlastAmmo::Update_Ammo_Count(); // Signale d'update l'interface
-				 
+			
+			if(ammo == 0)
+				if (this->emergencyAmmo == 0)
+					Ev_Ammo_Depleted();
+		}
+		
+
+
 		DrawBlastAmmo::Dr_Bar_Remove();	 // Réduit pt la longueur de la bar
 		return true;
 	}
 	else
-		return true;	
-	
+		return true;
+
 }
 
 void BlastAmmo::Add_Ammo(int amm)
@@ -84,8 +93,8 @@ void BlastAmmo::Add_Ammo(int amm)
 		Stop_Ev_Use_Emergency_Ammo();
 	}
 
-	DrawBlastAmmo::Dr_Ammo_Gain();
 	DrawBlastAmmo::Update_Ammo_Count();
+	DrawBlastAmmo::Dr_Ammo_Gain();
 }
 
 void BlastAmmo::Set_Ammo(int nbShots) // Setter un nombre d'ammo active automatiquement le limitateur

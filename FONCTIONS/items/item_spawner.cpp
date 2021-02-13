@@ -37,12 +37,13 @@ bool ItemSpawner::Spawn_This_Item(ItemType type, GrdCoord crd, bool cancel, bool
 	{
 		availableLinks.Reset_All_Lists();	// refresh that shit
 		Items_Exclusion();			
+		availableLinks.Remove_Value(P1.Get_Grd_Coord().c, P1.Get_Grd_Coord().r);
 
 		if(!rdmCoord)
 			if (Pick_Specific_Coord(crd))
 			{
 				availableLinks.Remove_Value(crd.c, crd.r);	
-				if (!linkGrid->Is_Link_Alive_Here(crd))	
+				if (!linkGrid->Is_Link_Alive_Here(crd) && !Are_Equal(crd, P1.Get_Grd_Coord()))
 					found = true;
 			}
 

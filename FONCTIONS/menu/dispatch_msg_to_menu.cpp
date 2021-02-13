@@ -38,7 +38,7 @@ void Dispatch_Msg_To_Menu()
 		
 		// DEBUG
 		//*******
-		Quick_STart(1, 1);
+		//Quick_STart(3, 1);
 		break;	
 	
 	case LVL_INITIALIZED:	

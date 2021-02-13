@@ -6,6 +6,7 @@ enum ActionType { MOVE, BLAST, CHANGE_BLAST, PAUSE, UNPAUSE, TELEPORT, IDLE, ENT
 
 enum class KeyPressed {NONE, ENTER, JERRY};
 extern KeyPressed lastKey;
+extern bool teleportBuffered;
 extern ActionType action;			
 extern Direction keyDirection;		
 extern bool gChoiceTime;		

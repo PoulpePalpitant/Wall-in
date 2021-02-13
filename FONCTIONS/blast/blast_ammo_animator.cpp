@@ -307,6 +307,7 @@ namespace DrawBlastAmmo {
 	void Hide_Ammo_UI() // Efface l'ui instantannément
 	{
 		Dr_Or_Er_Bar(MAX_BAR_SIZE, WHITE, true);
+		Dr_Ammo_Title(false);
 		isShown = false;
 	}
 
@@ -323,9 +324,8 @@ namespace DrawBlastAmmo {
 	{
 		int ammo = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();	// Nombre de munitions du joueur
 
-		if (ammo <= round(nextAmmoEr))	// UPDATE la bar
+		if (ammo <= round(nextAmmoEr) || nextAmmoEr < 0)	// UPDATE la bar
 		{
-
 			if (!ev_DrFullBar.Is_Active())
 			{
 				Dr_Bar_Sym(barLength, WHITE, true);	// Réduit la longueur de la bar
@@ -333,15 +333,17 @@ namespace DrawBlastAmmo {
 				if (barLength == MAX_BAR_SIZE)
 					Dr_Bar_Tip(true, WHITE, 0, 0);	// déconnect le petit char du tip
 				
-				barLength--;
+				if(barLength > 0)
+					barLength--;
 
 				if (Upd_Bar_Progression_Color())
 					Dr_Or_Er_Bar(barLength, barProgClr);	// Recolorie la bar au complet
 
 
-				if (ammo == 0) //draw les deux tips en rouges. or not
+				if (ammo == 0) //draw le top tips en rouges. Efface l'autre
 				{
 					Dr_Bar_Tip(1, LIGHT_RED, 0, 0);
+					Dr_Bar_Tip(0, WHITE, 1, 0);	
 				}
 			}
 			else
@@ -349,9 +351,14 @@ namespace DrawBlastAmmo {
 
 
 			nextAmmoDraw = ammo +  ratioBarPerAmmo; 
-			nextAmmoEr -= ratioBarPerAmmo;
 			
-			Dr_Bar_Remove();	// On le refait une deuxième fois, car il se peut que l'on doit erase 2 fois la bar si le nombre de tir est plus petit que la bar
+			if (nextAmmoEr > 0)
+			{
+				nextAmmoEr -= ratioBarPerAmmo;
+				
+				if (!(nextAmmoEr < 0 && ammo > 0))
+					Dr_Bar_Remove();	// On le refait une deuxième fois, car il se peut que l'on doit erase 2 fois la bar si le nombre de tir est plus petit que la bar
+			}
 		}
 	}
 
@@ -374,7 +381,10 @@ namespace DrawBlastAmmo {
 			if (ammoCount < 100)
 				ConsoleRender::Add_String(ammoTitle, { (map.Get_Limit(RIGHT) + 11),(map.Get_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
 			else
+			{
+				ConsoleRender::Add_String("       ", { (map.Get_Limit(RIGHT) + 11),(map.Get_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	
 				ConsoleRender::Add_String(ammoTitle, { (map.Get_Limit(RIGHT) + 12),(map.Get_Limit(UP) - 1) }, WHITE, TXT_SPD_DR);	// AMMO
+			}
 		}
 		else
 			ConsoleRender::Add_String("       ", { (map.Get_Limit(RIGHT) + 10),(map.Get_Limit(UP) - 1) }, WHITE, 0, 1);	// AMMO
@@ -489,7 +499,10 @@ namespace DrawBlastAmmo {
 	void Show_Ammo_UI(bool instant)
 	{
 		int ammo = blastP1.Get_Ammo_Manager().Get_Nb_Ammo();	// Nombre de munitions du joueur
-		Cancel_Ev_Ammo_Depleted();
+		
+		if (Is_Ev_Ammo_Depleted_Active())
+			Cancel_Ev_Ammo_Depleted();
+
 
 		barLength = !ammo ? 0 : MAX_BAR_SIZE;
 		ammoMaxTresholdClr = !ammo ? MAX_BAR_SIZE : ammo;

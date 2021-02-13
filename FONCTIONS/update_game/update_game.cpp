@@ -69,8 +69,12 @@ void Update_Player_Action()
 		if (!gPauseUpdates)
 		{
 			if (blastP1.Is_Active() && action != PAUSE)	// Empêche de refresh l'action. Ceci est le buffer du blast
+			{
+				if (action == TELEPORT)
+					teleportBuffered = true;	// Dès que le joueur p`se sur space durant un blast, il sera obligatoirement teleport à la fin de celui-ci
 				return;
-			
+			}
+
 			switch (action)
 			{
 			case PAUSE:
@@ -152,11 +156,8 @@ void Update_Player_Action()
 				break;
 
 			case TELEPORT:
-				if (blastP1.Is_Active())
-					return;	// Conserve l'action
-				else
-					if (!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
-						Ev_Wrong_Action_Add();			
+				if (!P1.Get_Teleporter().Teleport_Player())	// BAM! Teleport
+					Ev_Wrong_Action_Add();			
 				break;
 			}
 		}

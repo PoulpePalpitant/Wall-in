@@ -26,6 +26,7 @@ static int lastKeyPressed;
 static int loopBuffer;			// Ceci va enregistrer la dernière touche p`ser entre deux loop pour essayer d'éviter que le jeu detect pas un input
 static bool keyHandled = false;	// Si un input à été traité avec succès
 
+
 /* Ceci est basé sur le modèle d'exemple de l'utilisation de la fonction "Reading Input Buffer Events" sur le site web de microsoft. 
 J'ai enlevé quelque truc comme la détection des mouse events, ou la redimension
 du buffer size*/

@@ -1,64 +1,31 @@
-Naming Convention
------------------
-Class Name: CamelCase
-ex: GrosJoueur
 
-Méthodes/fonctions: CamelCase + Underscore entre les mots
-ex: Détruire_Le_Monde
+	TITRE DU JEU : Wall In
 
-Variables/Paramètres/objets: CamelCase, mais le premier mot est tout en minuscule
-ex: voiciLaMort
-  : tuPu, cptrDeDoigts
+	Description: Wall In est un jeu de puzzle fait dans la console windows! 
+	Le joueur doit empêcher des formes de traverser les frontière de son territoire.
+	en 'tirant' des murs autours de lui.
 
-Pointeurs: 'p' avant le nom. CamelCase
-ex: pSwagLord
-
-Référence: 'r' avant le nom. CamelCase
-ex: rSwagLord
-
-Variables globale: 'g' avant le nom, CamelCase
-ex: gLaGlobalisation
-
-Constantes globales: ALL CAPS. Underscore sépare les mots
-ex: THAT_ASS
-
-Variables d'enum: ALL_CAPS. Underscore comme word seperator
-ex: NORD, SUD, EST, NORD_OUEST, NORD_SUD? (woah)
+	FAIT PAR : Laurent Montreuil
 
 
- NOICE VISAL STUDIO SHORTCUTS
-/************
+	AVERTISSEMENT: 
+	
+	Au cas où le jeu ne s'affiche pas bien sur certains moniteurs, la résolution peut être en quelque sorte modifié par la taille de la police de charactère.
+	Pour modifier la police, faire click droit sur la console > propriété > Font et choisir la taille qui convient.
+	
+	
+	-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ctrl+shift+s		Save all documents
+	GAME TITLE : Wall In 
 
-f5			Debug
-f7			Compile
-shift + f5		Stop Debugger
-CTRL+SHIFT+F5 		to Stop and Re-Build
-F11 			Steps Into Constructor
-shift +F11 		Sort de la fonction
+	Description: Wall In is a top-down puzzle game entirely played in the windows console!
+	The player must stop incoming shapes from crossing his territory by shooting destructible walls. 
 
-f12			Trouve définition
-ctrl+f12		Trouve Déclaration
-Shift+f12		Trouve tout les référence	la vie
+	BY : Laurent Montreuil
 
+	WARNING
 
-Alt + arrow		Bouge une ligne
-Alt + Shift+ click	Area selectiom
-CTRL + ] 		Finds Closing Braces ({})
-
-CTRL+K+C 		for Bulk Comment 
-CTRL+K+C 		for Uncomment
-
-Ctrl+x			delete une ligne
-Ctrl+w + del		delete word at cursor		woah
-CTRL+SHIFT+V 		for the Clipboard Ring		bientôt la vie
-
-Click Alt souris	Step Through History
-
-CTRL+R+R 		Renames A Property		la vie
-ctrl+shift+u		ALL CAPS
-ctrl+u			all pas caps :)
-
-*************\
-
+	If the game's display is all messed up, you can change the fontsize of the console to make it fit the screen
+	right-click the game window > properties > Font and select the right one for you. 
+	Moving the window around or exiting fullscreen can also mess the display. In all case you can press 'r' to reset the screen when playing a level
+	

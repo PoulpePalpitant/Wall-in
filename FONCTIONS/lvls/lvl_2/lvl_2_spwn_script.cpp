@@ -6,7 +6,6 @@
 #include "../../spawns/bots_to_spawn.h"
 #include "../../events/msg_dispatcher.h"
 #include "../lvl_script.h"
-
 #include "../../player/player.h"
 
 //some events Shhh...
@@ -17,7 +16,7 @@
 #include "../lvl_1/msg_events/ev_speeding_up.h"		// hérésie!
 #include "lvl_2_initializer.h"
 #include "../../events/global_events/ev_spwn_player.h"
-
+#include "../../console/sweet_cmd_console.h"
 
 using namespace bots_to_spawn;
 
@@ -1356,7 +1355,7 @@ void Puzzle_2_FINAL()
 	switch (gCurrPuzzleStep)
 	{
 	case 0:P1.Set_Position({ 6,7 });				// Coord de départ du jouer
-		blastP1.Get_Ammo_Manager().Set_Ammo(20);// Quantité d'ammo
+		blastP1.Get_Ammo_Manager().Set_Ammo(18);// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
 		
 		upOrDown = false;
@@ -1364,7 +1363,7 @@ void Puzzle_2_FINAL()
 		shapesRemaining = SHAPES_TO_KILL;
 		crd = { Find_Ctr_String_X(_1) - 1, 6 };
 
-		seenFinalHour = 1;
+		//seenFinalHour = 1;	// debug
 
 		if (!seenFinalHour)
 		{
@@ -1435,8 +1434,9 @@ void Puzzle_2_FINAL()
 		//tips
 		gGrids.Make_Chain_Of_Walls({ 6,0 }, DOWN, 4, WallType::STRONG, Modifier::BUFFER);
 		gGrids.Make_Chain_Of_Walls({ 6,14 }, UP, 4, WallType::REGULAR, Modifier::BLOCKER);
-		/*gGrids.Activate_Link({ 6,0 }, Modifier::BUFFER);
-		gGrids.Activate_Link({ 6,14 }, Modifier::BLOCKER);*/
+
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 4, 7 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 8, 7 });
 		break;
 
 	case 3:
@@ -1444,40 +1444,42 @@ void Puzzle_2_FINAL()
 		ConsoleRender::Add_String(_1, crd, BRIGHT_WHITE, TXT_SPD_DR);
 		ConsoleRender::Add_String(_2, { crd.x - 5, crd.y + 1 }, WHITE, TXT_SPD_DR);
 
-		MsgQueue::Register(ENABLE_ITEM_SPAWN);
-		ItemSpawner::Add_To_Pool(ItemType::AMMO, 200, 0);
-
 		Set_Interval(LEFT, 0, 4);
 		Set_Interval(RIGHT, 0, 4);
 		Add(8);
 		Add_Spec(LEFT, 10);Add_Spec(LEFT, 11);Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 13);
-		skip = 16;
+		skip = 12;
 		break;
 
-	case 4:Add(1);skip = 3;
+	case 4:
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 1 });
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 13 });
+		MsgQueue::Register(ENABLE_ITEM_SPAWN);
+		Add_Spec(LEFT, 8);
+		skip = 5;
 		break;
 
-	case 5:Add(1);skip = 5;break;
-
-	case 6:Add(1);skip = 10;break;
+	case 5:Add_Spec(RIGHT, 5);skip = 5;break;
+	case 6:Add(1);skip = 5;break;
 	case 7:Add(1);skip = 5;break;
 	case 8:
-		Add(1);skip = 5;
+		Add_Spec(LEFT, 5);skip = 5;
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 2 });
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 12 });
 		break;
 
-	case 9:Add(1);skip = 8;break;
+	case 9:Add_Spec(RIGHT, 8);skip = 8;break;
 	case 10:
+		Hide_Cursor();
 		Add(1);
 		skip = 2;
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 4, 7 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 8, 7 });
 		break;
 
 	case 11:Add(1);skip = 2;break;
-	case 12:Add(1);skip = 2;break;
-	case 13:Add(1);skip = 5;break;
+	case 12:Add_Spec(LEFT, 8);skip = 2;break;
+	case 13:Add_Spec(RIGHT, 5);skip = 5;break;
 	case 14:
 		Add(1);skip = 9;
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 3 });
@@ -1485,16 +1487,17 @@ void Puzzle_2_FINAL()
 		break;
 
 	case 15:Add(1);	skip = 5;break;
-	case 16:Add(1);	skip = 5;break;
-	case 17:Add(1);skip = 5;break;
+	case 16:Add_Spec(LEFT, 8);skip = 5;
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 4, 7 });
+		ItemSpawner::Spawn_This_Item(ItemType::AMMO, { 8, 7 });
+		break;
 
+	case 17:Add_Spec(RIGHT, 5);skip = 5;break;
 	case 18:
 		Set_Interval(LEFT, 0, 4);
 		Set_Interval(RIGHT, 0, 4);
 		Add(8);
 		Add_Spec(LEFT, 10);Add_Spec(LEFT, 11);Add_Spec(RIGHT, 12);Add_Spec(RIGHT, 13);
-		skip = 14;
-
 		ItemSpawner::Spawn_This_Item(ItemType::BUFFER, { 6, 4 });
 		ItemSpawner::Spawn_This_Item(ItemType::BLOCKER, { 6, 10 });
 
@@ -1505,9 +1508,9 @@ void Puzzle_2_FINAL()
 	}
 
 	if (gCurrPuzzleStep % 2 == 0)
-		Set_Interval(LEFT, 5, 9);
+		Set_Interval(LEFT, 6, 7);
 	else
-		Set_Interval(RIGHT, 5, 9);
+		Set_Interval(RIGHT, 6, 7);
 
 	if (gCurrPuzzleStep > 3)
 	{

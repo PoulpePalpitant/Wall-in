@@ -30,6 +30,7 @@
 #include "../msg_events/ev_wasd.h"
 #include "../../../events/global_events/feedback/ev_good_job.h"
 #include "../../../events/global_events/feedback/ev_rainbow_borders.h"
+#include "../../../blast/blast_ammo_animator.h"
 
 static void Retry_If_Fail();
 
@@ -336,15 +337,13 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				Set_CountDown(10);
 				Ev_CountDown();	// Countdown
 				blastP1.Get_Ammo_Manager().Set_Ammo(7);
+				MsgQueue::Register(DISABLE_BLAST);
 				ev_BotTutorial2.Advance(420);
 				break;
 
 			case 22:
 				Build_Lvl_1_Walls();
 				ConsoleRender::Add_String(_25, { map.Get_Limit(RIGHT) + 4 , linkGrid->link[0][linkGrid->Get_Rows() / 2].Get_XY().y - 2 }, GRAY, TXT_SPD_DR);	// lols
-
-				MsgQueue::Register(DISABLE_BLAST);
-
 				ev_BotTutorial2.Advance(350);
 				break;
 
@@ -423,12 +422,15 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 
 
 					ConsoleRender::Add_String(_15_2, { map.Get_Limit(RIGHT) - Half_String(_15_2) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_ER, true);
-					ListsOfChainToModify::Annihilate_All_Links();
 					P1.Set_Hp(3);
-
 					Draw_Tuto_Progression(1);
 					Ev_Rainbow_Borders();				// fait flasher tout de manière gratifiante
 					Ev_Good_Job();						// Félicite le joueur
+
+					DrawBlastAmmo::isShown = false;
+					ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
+					MsgQueue::Register(DISABLE_BLAST);
+
 
 					ev_BotTutorial2.delay.Stop();
 					ev_BotTutorial2.Advance(300);
@@ -443,10 +445,13 @@ void Ev_Bot_Tutorial2()// Trace un chemin vers une fausse porte de sortie
 				P1.Dr_Player();
 
 				gCurrentStage = 2;
-				Press_X_To_Proceed(1);
 				Cancel_Ev_Ammo_Depleted();
-
+				ListsOfChainToModify::Annihilate_All_Links(); // Efface tout les Murs et Les Links										
+				
+				Press_X_To_Proceed(1);
 				ConsoleRender::Add_String(_20, Up_Txt_2(_20), LIGHT_GREEN, TXT_SPD_DR);
+				MsgQueue::Register(DISABLE_BLAST);
+
 				ev_BotTutorial2.Advance(500);
 				break;
 

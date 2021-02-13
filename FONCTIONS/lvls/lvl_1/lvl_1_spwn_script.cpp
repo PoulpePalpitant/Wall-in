@@ -589,7 +589,7 @@ void Puzzle_1_15()
 	case 0:P1.Set_Position({ 12,3 });				// Coord de départ du jouer
 		blastP1.Get_Ammo_Manager().Set_Ammo(33);	// Quantité d'ammo
 		gCurrPuzzleStepMax = 12;
-		gGrids.Make_Chain_Of_Walls({ 3,14 }, UP, 14);
+		gGrids.Make_Chain_Of_Walls({ 3,14 }, UP, 13);
 		gGrids.Make_Chain_Of_Walls({ 9,0 }, DOWN, 14);
 		gGrids.Make_Chain_Of_Walls({ 9,linkGrid->Get_Rows() - 1 }, LEFT,1);
 		break;
@@ -600,7 +600,7 @@ void Puzzle_1_15()
 	case 4:Add_Spec(RIGHT, 0);Add_Spec(RIGHT, 1); break;
 	case 5:Add_Spec(UP, 9);Add_Spec(UP, 10);Add_Spec(UP, 11);skip = 2;break;
 	case 6:Add_Spec(RIGHT, 0);skip = 2;break;
-	case 7:Add(4);Set_Interval(DOWN, 4, 8); skip = 12;break;
+	case 7:Add(4);Set_Interval(DOWN, 3, 7); skip = 12;break;
 	case 8:Add_Spec(UP, 0);Add_Spec(UP, 1); skip = 3;break;
 	case 9:Add_Spec(LEFT, 13); skip = 4; break;
 	case 10:Add_Spec(LEFT, 7);Add_Spec(LEFT, 8);skip = 6; break;
@@ -681,6 +681,8 @@ void Puzzle_1_17()
 		shapesRemaining = SHAPES_TO_KILL;
 
 		crd = { Find_Ctr_String_X(_1) - 1, 6 };
+
+		//seenFinalHour = 1;//debug
 
 		if (!seenFinalHour)
 		{

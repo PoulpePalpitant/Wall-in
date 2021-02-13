@@ -188,7 +188,7 @@ void Ev_GG()
 			
 			grats = "GG";//CONGRATULATIONS[rand() % NUM_CONGRATULATIONS];
 
-			if (clrNum > 80)
+			if (clrNum > 220)
 			{
 				switch (clrNum % NUM_COLOR)
 				{

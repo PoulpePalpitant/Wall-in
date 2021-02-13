@@ -23,6 +23,7 @@
 #include "../../spawns/bots_to_spawn.h"
 #include "../../items/item_spw_drawer.h"
 #include "../../blast/mod_queue_animator.h"
+#include "../../blast/blast_ammo_animator.h"
 
 
 void Clear_All_States(bool eraseLinks, bool stopTimers)	
@@ -52,7 +53,7 @@ void Clear_All_States(bool eraseLinks, bool stopTimers)
 	DrawModifierQueue::consume.Remove_All(); 
 	DrawItemSpawnList::Remove_All();		
 	DrawModifierQueue::isShown = false;
-	
+	DrawBlastAmmo::isShown = false;
 	BlastModifierQueue::Reset();
 
 	P1.Get_Teleporter().Remove_Teleport_Location();	// Prévient des abus

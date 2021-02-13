@@ -1274,12 +1274,12 @@ void Puzzle_3_FINAL()
 		crd = { Find_Ctr_String_X(_1) - 1, 6 };
 
 		if(finalLevelCheckpoint == 1)
-			blastP1.Get_Ammo_Manager().Set_Ammo(15);
+			blastP1.Get_Ammo_Manager().Set_Ammo(10);
 
 		// DEBUG 
 		// *****
 		//seenFinalHour = 1;
-
+		//finalLevelCheckpoint = 4;
 
 		if (seenFinalHour)
 			Cancel_Checkpoint_Delay();
@@ -1502,6 +1502,7 @@ void Puzzle_3_FINAL()
 
 			Clear_Map();
 			blastP1.Get_Ammo_Manager().Set_Ammo(0);
+			DrawBlastAmmo::Dr_Emergency_Ammo(2);
 
 
 			P1.Set_Position({ 13,6 });
@@ -1582,6 +1583,8 @@ void Puzzle_3_FINAL()
 
 			Clear_Map();
 			blastP1.Get_Ammo_Manager().Set_Ammo(999);
+			DrawBlastAmmo::Dr_Ammo_Title(false);
+			DrawBlastAmmo::Dr_Ammo_Title();
 
 			P1.Set_Position({ 13,11 });
 			Set_Ev_Spawn_Player(3);

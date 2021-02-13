@@ -11,6 +11,7 @@
 #include "../../../blast/mod_queue_animator.h"
 #include "../../msg_dispatcher.h"
 #include "../../../player/player.h"
+#include "../../../blast/blast_ammo_animator.h"
 
 using namespace DrawBlastAmmo;
 using namespace DrawModifierQueue;
@@ -62,12 +63,19 @@ void Ev_Ammo_Depleted()	// Affiche 1 warning que le joueur n'a plus d'ammo
 
 void Cancel_Ev_Ammo_Depleted()	// permet de cancel cet event for the sake of speed
 {
+	ev_AmmoDepleted.Cancel();
+
 	ConsoleRender::Add_String(depleted, crd, LIGHT_RED, 0, true);
-	
 	ConsoleRender::Add_String(depleted2, { realTitleCrd.x - 3,realTitleCrd.y }, LIGHT_RED, 0, 1);
 	
 	if (DrawModifierQueue::isShown)
 		MsgQueue::Register(SHOW_MOD_QUEUE);
+	
+	if(DrawBlastAmmo::isShown)
+		DrawBlastAmmo::Dr_Ammo_Title(1);
 
-	ev_AmmoDepleted.Cancel();
+}
+
+bool Is_Ev_Ammo_Depleted_Active() {
+	return ev_AmmoDepleted.Is_Active();
 }

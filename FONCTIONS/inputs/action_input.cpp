@@ -5,6 +5,7 @@
 ActionType action = IDLE;
 Direction keyDirection = Direction::NONE;
 KeyPressed lastKey = KeyPressed ::NONE;
+bool teleportBuffered = false;
 bool gChoiceTime = false;
 bool gBlockInputs = false;
 bool gTypeTime = false;
@@ -22,6 +23,7 @@ void Reset_Input_Flags()	// Cancel tout les flags
 	action = IDLE;
 	keyDirection = Direction::NONE;
 	lastKey = KeyPressed::NONE;
+	teleportBuffered = false;
 	gChoiceTime = false;
 	gBlockInputs = false;
 	gTypeTime = false;

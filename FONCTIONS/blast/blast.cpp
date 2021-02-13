@@ -11,6 +11,11 @@
 #include "mod_queue_animator.h"
 #include "../events/global_events/feedback/ev_blast_splash.h"
 
+
+#include "../inputs/action_input.h"
+#include "../events/global_events/feedback/ev_wrong_action.h"
+
+
 extern const Distance DFLT_BLAST_LENGTH_HOR = DELTA_X + 1;		// Le +1 c'est pour afficher l'extrémité du blast
 extern const Distance DFLT_BLAST_LENGTH_VER = DELTA_Y + 1;		
 extern const time_t DFLT_BLAST_SPD_VER = 85000;		
@@ -290,7 +295,7 @@ void Blast::Stop_Blast()
 {
 	if (active)
 	{
-		UI_MoveBlast::Erase_Blast_Tail(this); 	
+		UI_MoveBlast::Erase_Blast_Tail(this);
 
 		while (!ffToRedraw.empty())	// vide cette liste de merde
 			ffToRedraw.pop_back();
@@ -301,9 +306,17 @@ void Blast::Stop_Blast()
 		// Le Blast peut resté actif si il ne créé pas de mur. Il faut attendre que ses char soit effacés
 		active = gGrids.Activate_Walls_And_Links_From_Blast(this);	// Active les murs qui ont été tirés, ou convertit un link, ou élimine le blast complètement
 		updateTimer.Stop();
-		
+
 
 		Setup_Modifier(REGULAR);	// spaghetti
+
+		if (teleportBuffered)		// and even more
+		{
+			if (!P1.Get_Teleporter().Teleport_Player())	// Teleport le joueur si ya peser sur space durant un blast
+				Ev_Wrong_Action_Add();
+
+			teleportBuffered = false;
+		}
 	}
 }
 
