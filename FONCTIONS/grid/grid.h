@@ -1,56 +1,37 @@
 #pragma once
 
-// p = pointeur!
+#include "../UI/direction.h"
 
-// COORDONNÉES LOGIQUES DANS LA CONSOLE
-
-struct grdCoord { int c; int l; };	//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
-										
-// LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DE DÉPLACEMENT DU JEU
-
-enum class CaseMainGrd { Empty, Item, Player, Link, WeakLink };	// Les links sont les points qui relient chaque WALLS créés par le joueur. 
-
-// LES OBJETS POUVANT SE TROUVER SUR UNE CASE DU GRID DES "WALLS" 
-
-enum class CaseWallGrd {Empty, Wall, Bot};
-
-//	LES TYPES DE MURS POUVANT 
-
-enum class WallType {Weak, Normal, Ghost, Strong, BIGSTRONGWOW};	// Par défaut, les tirs du joueur font des murs normal
-															// "Ghost" : pourrait être des murs que les bot peuvent traverser
+struct GrdCoord { int c; int r; };		//  Les grids du jeux seront tous navigué par la logique: Colonnes(x) Lignes(y)
 
 // CONSTANTES POUR L'AFFICHAGE SEULEMENT
 // *************************************
 
-extern const int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
-extern const int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
+// Je me rend compte que si l'écran du joueur est petite, ça vaut plus rien tout ça, alors START_ ne sera pas constante
+extern int START_X;	// Position, sur l'axe des X de la console, du coin supérieur gauche du main Grid
+extern int START_Y;	// Position, sur l'axe des Y de la console, du coin supérieur gauche du main Grid
 
-extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre
+extern const int DELTA_X;	// Saut sur l'axe des X d'une case à l'autre(Main Grid)
 extern const int DELTA_Y;	// Saut sur l'axe des Y d'une case à l'autre
 
+// Ceci fut ma première tentative ever à faire de l'héritage en programmation orienté objet...
 
-// Les pointeurs vers les dimensions MAX des trois différents grids du jeu
-extern const grdCoord *pMaxGrdMain;							
-extern const grdCoord *pMaxGrdWall;
-extern const grdCoord *pMaxGrdSpw;
+class Grid {	// Le Grid servira uniquement de références pour le LinkGrid et le WallGrid
+private:
+	int numCol;	// Quand on accède au max, il faut faire [numCol -1]
+	int numRow;	// Quand on accède au max, il faut faire [numRow -1]
+protected:
+	void UpdSize(int col, int row) { this->numCol = col;this->numRow = row; }	
+public:
+	void Create(int col, int row, int**& grid);	// Créer le Grid. Persistera jusqu'au prochain Resize
+	void Resize(int col, int row, int**& grid);	// Redimensionne.... Mais détruit aussi les valeurs du grid...
+	bool Is_Inbound(GrdCoord crd);			
+	int Get_Rows() { return this->numRow; }	
+	int Get_Cols() { return this->numCol; }	
+};
 
-
-
-
-
-
-
-//	PLUS COMPLIQUÉ QUE PRÉVU! voir lvl1grid.cpp
-// Les pointeurs vers ces différents Grd(ceux-ci changeront pour chaque niveaux
-//extern HERE* pgrdMain;
-//extern WallType* pgrdWall;
-//extern HERE* pgrdSpw;			
-
-// Variable qui servira à naviguer dans les tableaux des grids
-extern grdCoord grd;
+void Equal_Coordinates(GrdCoord& from, GrdCoord to);		
+bool Are_Equal(const GrdCoord &crd1, const GrdCoord &crd2);	
 
 
-//	FONCTIONS
-//	---------
 
-void DEL_lvlgrid();	// Détruit tous les variables créés pour les grid du niveau
