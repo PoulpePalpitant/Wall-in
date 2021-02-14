@@ -24,12 +24,10 @@ static Event ev_ThksForPlaying(Ev_Thks_For_Playing,2000);
 
 static int y;
 
-static std::string grats = "You are a true Winner! ";
-
 static std::string paragraph[] = 
 { "You saved the universe,",
 "became king of the world,",
-"and achieved eternal happiness n'shit.",
+"and achieved eternal happiness n' shit.",
  "You are a true Winner!"
  };
 static std::string ty = "Thank you so much for playing!";
@@ -38,7 +36,7 @@ static std::string tyTesters = "Un \202nomre MERCI \205 mes testeurs, je vous do
 static std::string testersName[] = 
 { "Charles Paris\202",
 "\220tienne Montreuil",
-"Marc-Andr\202 de Launi\212re",
+"Marc-Andr\202 De Launi\212re",
 "\220mile Laforce"};
 void Ev_Thks_For_Playing()	
 {

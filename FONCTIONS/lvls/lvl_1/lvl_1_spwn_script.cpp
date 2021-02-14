@@ -137,7 +137,7 @@ void Puzzle_1_0(){
 		// Présentation des mécaniques de bases pour le noob qui skip le tutorial
 		Set_Flashy_Border(LEFT);
 		Ev_Flash_Map_Border();	// Fait flasher la border pour signaler au joueur ou va aller les bots
-		ConsoleRender::Add_String(codeRecycling, { map.Get_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Limit(UP) - 2 }, GRAY, TXT_SPD_DR);
+		ConsoleRender::Add_String(codeRecycling, { map.Get_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_DR);
 		Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
 
 	case 3: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2; break;
@@ -149,7 +149,7 @@ void Puzzle_1_0(){
 	case 9: Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
 	case 10:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; break;
 	case 11:Add(1); gBoxSide = RIGHT;gSpwNum = spawnGrid->Get_MaxSpwnCrdY() / 2 - 1; 
-		ConsoleRender::Add_String(codeRecycling, { map.Get_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Limit(UP) - 2 }, GRAY, TXT_SPD_DR, true);	// erase le message
+		ConsoleRender::Add_String(codeRecycling, { map.Get_Limit(LEFT) - Half_String(codeRecycling) , map.Get_Limit(UP) - 3 }, GRAY, TXT_SPD_DR, true);	// erase le message
 		MsgQueue::Register(CHECKPOINT_REACHED);
 		break;
 	}
