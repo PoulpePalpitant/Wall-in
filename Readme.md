@@ -13,6 +13,11 @@
 	Au cas où le jeu ne s'affiche pas bien sur certains moniteurs, la résolution peut être en quelque sorte modifié par la taille de la police de charactère.
 	Pour modifier la police, faire click droit sur la console > propriété > Font et choisir la taille qui convient.
 	
+	------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
+	DOWNLOAD LINK : https://github.com/PoulpePalpitant/Wall-in/releases/download/1.0/Wall.in.7z
+	
 	
 	-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
