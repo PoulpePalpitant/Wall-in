@@ -1,4 +1,3 @@
-
 	TITRE DU JEU : Wall In
 
 	Description: Wall In est un jeu de puzzle fait dans la console windows! 
@@ -6,6 +5,8 @@
 	en 'tirant' des murs autours de lui.
 
 	FAIT PAR : Laurent Montreuil
+
+
 
 
 	AVERTISSEMENT: 
@@ -17,6 +18,7 @@
 	
 	
 	DOWNLOAD LINK : https://github.com/PoulpePalpitant/Wall-in/releases/download/1.0/Wall.in.7z
+	Itch.io : https://poulpepalpitant.itch.io/wall-in
 	
 	
 	-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,3 +36,4 @@
 	right-click the game window > properties > Font and select the right one for you. 
 	Moving the window around or exiting fullscreen can also mess the display. In all case you can press 'r' to reset the screen when playing a level
 	
+![image](https://user-images.githubusercontent.com/64504737/115088385-0e9c8880-9ede-11eb-8110-08fcb1f07fca.png)
